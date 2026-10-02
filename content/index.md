@@ -13,7 +13,7 @@ MSc student in Industrial Engineering (System Modeling & Data Analysis) at Iran 
 
 The thesis builds a knowledge graph of a machine-learning course and a tutor that answers by walking that graph, then tests it with students against a plain chatbot and ordinary text retrieval.
 
-**[Open the interactive thesis website →](/thesis/)** It has timelines of AI and education, the Iran education map, the ML-courses study, the evaluation datasets, who builds AI for education, and the research design. It is in English and Persian.
+<a href="/thesis/" data-router-ignore><b>Open the interactive thesis website →</b></a> It has timelines of AI and education, the Iran education map, the ML-courses study, the evaluation datasets, who builds AI for education, and the research design. It is in English and Persian.
 
 ## Notes
 

@@ -14,6 +14,10 @@ Built with [Quartz](https://quartz.jzhao.xyz) v5, deployed to GitHub Pages by `.
 In `Thesis-coding-projects/thesis-site`, run `make publish`. It exports the built site for the `/thesis` sub-path into `thesis-build/`
 here (downloaded course materials are never included) and also refreshes the local Docker copy. Commit `thesis-build/` and push.
 
+## Linking to the thesis site
+Always link it as `<a href="/thesis/" data-router-ignore>…</a>`, not a Markdown link. Quartz's page-switching otherwise
+swaps the thesis page in without running its scripts, and every page comes up empty.
+
 ## Local preview
 `npx quartz build --serve` (notes only), or build + `cp -R thesis-build public/thesis` + any static server.
 

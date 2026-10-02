@@ -885,7 +885,7 @@
   "paper": {
    "title": "The Computer Science Ontology: A Large-Scale Taxonomy of Research Areas",
    "year": 2018,
-   "doi": "10.1007/978-3-030-00668-6_14",
+   "doi": "10.1007/978-3-030-00668-6_12",
    "arxiv": ""
   },
   "use": "KG seed vocabulary and alignment target: map our extracted ML concepts to CSO topics (ML subtree).",

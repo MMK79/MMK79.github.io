@@ -1,0 +1,464 @@
+[
+  {
+    "id": "holoniq-vc",
+    "name": "EdTech venture capital (HolonIQ series)",
+    "type": "analyst data",
+    "country": "global",
+    "founded": null,
+    "segment": "both",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "Global EdTech VC 2021 peak",
+        "value": "$20.8B",
+        "as_of": "2021",
+        "basis": "estimated",
+        "source": "https://marketbrief.edweek.org/financing-investment/2024-was-the-worst-year-for-ed-tech-vc-funding-in-a-decade-this-year-looks-even-worse/2025/05"
+      },
+      {
+        "metric": "Global EdTech VC 2014",
+        "value": "$1.8B",
+        "as_of": "2014",
+        "basis": "estimated",
+        "source": "same"
+      },
+      {
+        "metric": "Global EdTech VC 2024",
+        "value": "$2.4B (lowest since 2014; -89% vs 2021)",
+        "as_of": "2024",
+        "basis": "estimated",
+        "source": "https://www.holoniq.com/notes/edtech-vc-reached-2-4b-for-2024-representing-the-lowest-level-of-investment-in-a-decade"
+      },
+      {
+        "metric": "Global EdTech VC Q1 2025",
+        "value": "$410M",
+        "as_of": "2025-Q1",
+        "basis": "estimated",
+        "source": "EdWeek Market Brief"
+      },
+      {
+        "metric": "Global EdTech VC 2025",
+        "value": "$2.6B (+11% vs 2024)",
+        "as_of": "2025",
+        "basis": "estimated",
+        "source": "https://www.holoniq.com/notes/edtech-hits-2-6b-in-investment-as-the-market-stabilizes-bigger-bets-in-ai-and-workforce-training"
+      }
+    ],
+    "evidence": [],
+    "business": [
+      {
+        "metric": "EdTech M&A",
+        "value": "~342 deals, ~$28B disclosed",
+        "as_of": "2024",
+        "basis": "estimated",
+        "source": "https://www.holoniq.com/notes/edtech-vc-reached-2-4b-for-2024-representing-the-lowest-level-of-investment-in-a-decade"
+      }
+    ],
+    "privacy_note": "",
+    "sources": [
+      "https://www.holoniq.com/notes/edtech-hits-2-6b-in-investment-as-the-market-stabilizes-bigger-bets-in-ai-and-workforce-training",
+      "https://www.holoniq.com/notes/edtech-vc-reached-2-4b-for-2024-representing-the-lowest-level-of-investment-in-a-decade"
+    ],
+    "verified": true,
+    "note": "2022 and 2023 values not retrieved. AI share not quantified by HolonIQ in notes read. Crunchbase/PitchBook not retrieved."
+  },
+  {
+    "id": "openai-edu",
+    "name": "OpenAI (ChatGPT Edu, NextGenAI)",
+    "type": "AI lab",
+    "country": "US",
+    "founded": 2015,
+    "segment": "both",
+    "ai_features": [
+      {
+        "name": "ChatGPT Edu",
+        "launched": "2024-05",
+        "what": "Campus ChatGPT for institutions"
+      },
+      {
+        "name": "NextGenAI consortium",
+        "launched": "2025-03-04",
+        "what": "$50M grants, compute, API access to 15 institutions (US/UK)"
+      }
+    ],
+    "scale": [
+      {
+        "metric": "NextGenAI commitment",
+        "value": "$50M, 15 institutions",
+        "as_of": "2025-03",
+        "basis": "claimed",
+        "source": "https://siliconangle.com/2025/03/04/openai-launches-nextgenai-consortium-15-research-institutions-50m-funding/"
+      },
+      {
+        "metric": "AFT academy contribution",
+        "value": "$8M cash + $2M in-kind",
+        "as_of": "2025-07",
+        "basis": "claimed",
+        "source": "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://siliconangle.com/2025/03/04/openai-launches-nextgenai-consortium-15-research-institutions-50m-funding/"
+    ],
+    "verified": true,
+    "note": "Cal State deal not verified here."
+  },
+  {
+    "id": "anthropic-edu",
+    "name": "Anthropic (Claude for Education)",
+    "type": "AI lab",
+    "country": "US",
+    "founded": 2021,
+    "segment": "he",
+    "ai_features": [
+      {
+        "name": "Claude for Education / Learning Mode",
+        "launched": "2025-04-02",
+        "what": "Campus-wide Claude; Socratic Learning Mode; first Northeastern, LSE, Champlain"
+      },
+      {
+        "name": "Knowledge Graph + Evaluators with CZI",
+        "launched": null,
+        "what": "Learning-science grounding for classroom AI"
+      }
+    ],
+    "scale": [
+      {
+        "metric": "Gates Foundation partnership",
+        "value": "$200M over 4 years (health, education, mobility, agriculture; education in US, sub-Saharan Africa, India)",
+        "as_of": "2026-05-14",
+        "basis": "claimed",
+        "source": "https://www.anthropic.com/news/gates-foundation-partnership"
+      },
+      {
+        "metric": "AFT academy contribution",
+        "value": "$500k first year",
+        "as_of": "2025-07",
+        "basis": "claimed",
+        "source": "AFT press release"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://techcrunch.com/2025/04/02/anthropic-launches-an-ai-chatbot-tier-for-colleges-and-universities",
+      "https://www.anthropic.com/news/gates-foundation-partnership"
+    ],
+    "verified": true,
+    "note": "Education share of the $200M not published in sources read."
+  },
+  {
+    "id": "google-edu",
+    "name": "Google / Google.org (Gemini for Education, AI for Education Accelerator)",
+    "type": "big tech + philanthropy",
+    "country": "US",
+    "founded": 1998,
+    "segment": "both",
+    "ai_features": [
+      {
+        "name": "Google AI for Education Accelerator",
+        "launched": "2025-08",
+        "what": "Free AI training + Career Certificates; free 12-month Google AI Pro for students 18+"
+      }
+    ],
+    "scale": [
+      {
+        "metric": "US AI education/training commitment",
+        "value": "$1B over 3 years",
+        "as_of": "2025-08",
+        "basis": "claimed",
+        "source": "https://www.foxbusiness.com/economy/google-commits-1b-train-us-college-students-artificial-intelligence-over-three-years"
+      },
+      {
+        "metric": "Google.org educators/students",
+        "value": "$25M for 500k+",
+        "as_of": "2025",
+        "basis": "claimed",
+        "source": "https://www.maginative.com/article/google-commits-25m-to-boost-ai-education-in-u-s-classrooms/"
+      },
+      {
+        "metric": "AI Opportunity Fund",
+        "value": "$75M",
+        "as_of": "2024",
+        "basis": "claimed",
+        "source": "https://pulse2.com/google-org-announces-new-funding-for-education-and-ai-partners/"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://blog.google/company-news/outreach-and-initiatives/google-org/educause-2026/"
+    ],
+    "verified": true,
+    "note": "Much of the $1B is in-kind (training, tools, credits); 2026 Google.org grants to aiEDU, ISTE, Renaissance Philanthropy."
+  },
+  {
+    "id": "microsoft-elevate",
+    "name": "Microsoft Elevate",
+    "type": "big tech programme",
+    "country": "US",
+    "founded": 1975,
+    "segment": "both",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "Elevate commitment",
+        "value": "$4B cash, technology and training over 5 years; target 20M AI credentials",
+        "as_of": "2025-07",
+        "basis": "claimed",
+        "source": "https://www.geekwire.com/2025/as-ai-reshapes-its-workforce-microsoft-commits-4-billion-to-help-others-adapt/"
+      },
+      {
+        "metric": "AFT academy lead partner",
+        "value": "$12.5M over 5 years",
+        "as_of": "2025-07",
+        "basis": "claimed",
+        "source": "AFT press release"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.geekwire.com/2025/as-ai-reshapes-its-workforce-microsoft-commits-4-billion-to-help-others-adapt/"
+    ],
+    "verified": true,
+    "note": "Largely in-kind; do not sum with other commitments."
+  },
+  {
+    "id": "aft-academy",
+    "name": "AFT National Academy for AI Instruction",
+    "type": "union / multi-funder programme",
+    "country": "US",
+    "founded": 2025,
+    "segment": "k12",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "Total funding",
+        "value": "$23M; free training for 400k teachers by 2030; AFT has 1.8M members",
+        "as_of": "2025-07-08",
+        "basis": "claimed",
+        "source": "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
+    ],
+    "verified": true,
+    "note": "Funders: Microsoft, OpenAI, Anthropic."
+  },
+  {
+    "id": "gates",
+    "name": "Gates Foundation",
+    "type": "philanthropy",
+    "country": "US",
+    "founded": 2000,
+    "segment": "both",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "AI in education pledge",
+        "value": "~$400M over 2 years within $1B AI pledge; +$100M AI building blocks (underrepresented-language datasets)",
+        "as_of": "2026-09-16",
+        "basis": "claimed",
+        "source": "https://www.philanthropy.com/news/experts-raise-concerns-about-gates-foundations-400-million-ai-education-pledge/"
+      },
+      {
+        "metric": "Digital Promise grant",
+        "value": "$9.5M",
+        "as_of": "2025-12",
+        "basis": "claimed",
+        "source": "https://www.gatesfoundation.org/about/committed-grants/2025/12/inv-086095"
+      },
+      {
+        "metric": "Open-source K-12 AI math tutor RFP",
+        "value": "up to $8M",
+        "as_of": "2025",
+        "basis": "claimed",
+        "source": "https://www.edtechinnovationhub.com/news/digital-promise-program-opens-8-million-ai-tutoring-grant-backed-by-gates-foundation"
+      },
+      {
+        "metric": "CMU Learnvia",
+        "value": "$55M",
+        "as_of": "unknown",
+        "basis": "claimed",
+        "source": "https://edscoop.com/carnegie-mellon-gates-foundation-fund-ai-powered-learning-platform/"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.philanthropy.com/news/experts-raise-concerns-about-gates-foundations-400-million-ai-education-pledge/"
+    ],
+    "verified": false,
+    "note": "Critics (Reckhow, Wexler) question evaluation and equity. Learnvia date unconfirmed."
+  },
+  {
+    "id": "czi",
+    "name": "Chan Zuckerberg Initiative / Learning Commons",
+    "type": "philanthropy",
+    "country": "US",
+    "founded": 2015,
+    "segment": "k12",
+    "ai_features": [
+      {
+        "name": "Knowledge Graph and Evaluators",
+        "launched": "2025",
+        "what": "Developer tools aligning AI inputs/outputs with standards and learning science"
+      }
+    ],
+    "scale": [],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://chanzuckerberg.com/newsroom/ai-developer-tools-for-education-launch/",
+      "https://learningcommons.org/about-us/"
+    ],
+    "verified": true,
+    "note": "Grant sizes not retrieved."
+  },
+  {
+    "id": "walton",
+    "name": "Walton Family Foundation",
+    "type": "philanthropy",
+    "country": "US",
+    "founded": 1987,
+    "segment": "k12",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "Gallup-Walton: teachers using AI weekly save",
+        "value": "5.9 h/week (~6 weeks/year)",
+        "as_of": "2025",
+        "basis": "claimed",
+        "source": "https://www.waltonfamilyfoundation.org/learning/six-weeks-a-year-how-ai-gives-teachers-time-back"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.waltonfamilyfoundation.org/learning/six-weeks-a-year-how-ai-gives-teachers-time-back"
+    ],
+    "verified": false,
+    "note": "Self-reported survey, not learning impact. Grant amounts not retrieved."
+  },
+  {
+    "id": "schmidt",
+    "name": "Schmidt Sciences",
+    "type": "philanthropy",
+    "country": "US",
+    "founded": 2024,
+    "segment": "he",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "AI in Science fellows",
+        "value": "~160 postdocs + 20 faculty per year, 9 universities",
+        "as_of": "2025",
+        "basis": "claimed",
+        "source": "https://www.schmidtsciences.org/ai-in-science/"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.schmidtsciences.org/ai-in-science/"
+    ],
+    "verified": true,
+    "note": "Funds AI in science research, not education delivery. Jacobs and Ballmer not researched."
+  },
+  {
+    "id": "gov-us",
+    "name": "US federal: EO Advancing AI Education for American Youth",
+    "type": "government",
+    "country": "US",
+    "founded": 2025,
+    "segment": "both",
+    "ai_features": [],
+    "scale": [
+      {
+        "metric": "Pledge to America's Youth signers",
+        "value": "60+ organisations (June 2025), more later",
+        "as_of": "2025-06",
+        "basis": "claimed",
+        "source": "https://www.whitehouse.gov/releases/2025/06/60-organizations-sign-white-house-pledge-to-support-americas-youth-and-invest-in-ai-education/"
+      }
+    ],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://www.ai.gov/initiatives/education"
+    ],
+    "verified": true,
+    "note": "EO 23 Apr 2025: Task Force on AI Education, Presidential AI Challenge; pledges are voluntary."
+  },
+  {
+    "id": "gov-china",
+    "name": "China Ministry of Education AI education guidelines",
+    "type": "government",
+    "country": "China",
+    "founded": null,
+    "segment": "k12",
+    "ai_features": [],
+    "scale": [],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://en.people.cn/n3/2025/0513/c90000-20313921.html",
+      "http://english.scio.gov.cn/pressroom/2025-05/13/content_117871666.html"
+    ],
+    "verified": true,
+    "note": "May 2025: AI education across basic education from age 6; independent generative AI use barred for primary pupils; AI must not replace teaching duties."
+  },
+  {
+    "id": "gov-uae",
+    "name": "UAE national K-12 AI curriculum",
+    "type": "government",
+    "country": "UAE",
+    "founded": null,
+    "segment": "k12",
+    "ai_features": [],
+    "scale": [],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://thebrewnews.com/thebrew-news/uae/uae-ai-school-curriculum-2025/"
+    ],
+    "verified": false,
+    "note": "Cabinet approved May 2025; from 2025-26, KG to Grade 12; secondary-source reporting only."
+  },
+  {
+    "id": "gov-india",
+    "name": "India AI and Computational Thinking curriculum (MoE, CBSE, NCERT)",
+    "type": "government",
+    "country": "India",
+    "founded": null,
+    "segment": "k12",
+    "ai_features": [],
+    "scale": [],
+    "evidence": [],
+    "business": [],
+    "privacy_note": "",
+    "sources": [
+      "https://news.careers360.com/centre-introduce-ai-in-school-curriculum-from-class-3-onwards-from-2026-27-session"
+    ],
+    "verified": false,
+    "note": "From Class 3, 2026-27; teacher training via NISHTHA; secondary-source reporting only."
+  }
+]

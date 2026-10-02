@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<!--
+  Computing and AI in Iran — scrolling story (view: ai, 18 events)
+  Open this file in any browser; no server needed. Press ? for the controls.
+  Rebuild: python3 build.py   (in "Presentations/AI and Education Timelines - 2026-09-30/")
+  Data:    data/ai.json · data/edu.json · data/lags.json · data/diffusion.json — edit there, never here.
+  Evidence rule: every metric carries its source + "as of" date; items marked unverified say so on
+  the card. Era names and the lag pairings are our framing, not a published periodisation.
+  Languages: UI strings come from the thesis site's i18n/en.json + fa.json (tl.* keys, inlined by build.py as the
+  English fallback; on the site /assets/i18n.js supplies both); Persian event text is D.fa (i18n/fa/timeline-*.json).
+-->
+<html lang="en">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Computing and AI in Iran</title>
+<script>window.TL_EN = {"lv.k12": "Schools", "lv.he": "Universities", "lv.both": "All levels", "tl.story": "Story", "tl.slide": "Slide", "tl.nav_ai": "AI", "tl.nav_edu": "Education", "tl.nav_comb": "Lab → classroom", "tl.modes_aria": "How much to show", "tl.mode_key": "Key milestones", "tl.mode_key_t": "Only the milestones on the one-page slide", "tl.mode_story_t": "Milestones and the main measurements", "tl.mode_all": "All detail", "tl.mode_all_n": "All detail (+{n})", "tl.mode_all_t": "Every event, including detail-level measurements", "tl.strip_aria": "Every event on one axis; click a tick to jump to it", "tl.help_aria": "Help", "tl.help_h": "How to read this page", "tl.help_p1": "Scroll down through time. Each card says <b>what it said<\/b> (the idea, in one line) and <b>what it caused<\/b> (the measured impact, with its source and date).", "tl.help_p2": "• Click a tick on the strip at the top to jump to that event.<br>• <b>Key milestones<\/b> shows just the events on the one-page slide; <b>Story<\/b> (the default) adds the main measurements; <b>All detail<\/b> adds every detail-level figure (significance 3).<br>• Cards marked <span style=\"color:var(--warn)\">unverified<\/span> have a figure we could not confirm from a primary source.<br>• <code>?<\/code> or Esc toggles this panel.", "tl.help_p3": "Rebuild: <code>python3 build.py<\/code> · data in <code>data/*.json<\/code>", "tl.eyebrow": "Timeline · evidence as of {d}", "tl.st_events": "events", "tl.st_span": "span", "tl.st_figs": "sourced figures", "tl.st_unv": "flagged unverified", "tl.leg_ai": "AI milestone", "tl.leg_tick": "large tick = on the one-page slide", "tl.lv.k12": "Schools (K-12)", "tl.lv.he": "Universities", "tl.lv.both": "All levels", "tl.lane_k12": "Schools · K-12", "tl.lane_he": "Universities · higher ed", "tl.lane_ai": "In AI", "tl.lane_edu": "In education", "tl.unv": "unverified", "tl.unv_t": "not confirmed from a primary source", "tl.quality_t": "source quality", "tl.study_t": "study type", "tl.funding_t": "who paid for or sells into this measurement", "tl.said": "What it said", "tl.caused": "What it caused", "tl.asof": "as of {d}", "tl.source": "source", "tl.src_local": "source: the project's own dataset (local, not published)", "tl.before": "before {y}", "tl.precursors": "Precursors", "tl.kind.paper": "paper", "tl.kind.system": "system", "tl.kind.product": "product", "tl.kind.event": "event", "tl.kind.policy": "policy", "tl.kind.study": "study", "tl.kind.stat": "stat", "tl.quality.official": "official", "tl.quality.peer-reviewed": "peer-reviewed", "tl.quality.press": "press", "tl.quality.secondary": "secondary", "tl.same_month": "same month", "tl.months": "{n} months", "tl.years": "{n} years", "tl.year1": "{n} year", "tl.lag_aria": "Years from invention to classroom", "tl.lags_h": "How long it takes", "tl.lags_p": "Each bar runs from an idea in AI (amber) to the point it measurably reached schools or universities (teal). Lags are computed from the two dated events, never typed in.", "tl.lags_note": "Pairings are our framing; both endpoints are sourced events below.", "tl.diff_h": "How fast it spreads", "tl.diff_p": "Measured share of classrooms, students or teachers using each technology at dated points. Hover a point for its source and how comparable it is.", "tl.diff_aria_long": "Adoption curves, the long view", "tl.diff_aria_zoom": "Adoption curves since ChatGPT", "tl.zoom_h": "Since ChatGPT, zoomed in", "tl.zoom_p": "The generative-AI series on their own axis, 2023–2026. Students lead, instructors follow, institutions trail.", "tl.more": "More curves (+{n})", "tl.pt": "{l}: {v}% in {y}", "tl.diff_note": "Series use different populations and survey instruments, so compare shapes and speed, not levels. HEPI is plotted by report year; Tyton and IHE by survey season. Dashed lines are other series of the same level.", "tl.foot": "Evidence as of {d}. Metrics carry their own source and date; <span style=\"color:var(--warn)\">unverified<\/span> marks a figure not confirmed from a primary source. Era names and lag pairings are our framing. Rebuild with <code>python3 build.py<\/code>.", "tl.showing": "showing {a} of {b}", "tl.s_eyebrow": "Timeline · key milestones · evidence as of {d}", "tl.s_hint": "? help · ← → step · click for detail", "tl.s_help_h": "Reading the slide", "tl.s_help_p1": "Each dot is a milestone; its label gives the year, the name and its headline figure. Click a dot or label to see <b>what it said<\/b>, <b>what it caused<\/b> and the sourced numbers at the bottom.", "tl.s_help_p2": "← → step through milestones · Esc clears · the full story (every event, every source) is the <code>-story.html<\/code> page.", "tl.s_mo": "{n} mo", "tl.s_yr": "+{n} yr", "tl.s_headline": "Longest: {a} years ({la}). Shortest: {b} ({lb}).", "tl.s_same": "the same month", "tl.s_n_lags": "{n} idea → classroom lags", "tl.s_n_ms": "{n} milestones", "tl.s_click": "Click any dot or label.", "tl.s_reading": "Reading it", "tl.s_read_comb": "Each bar runs from an idea (left dot) to the moment it measurably reached classrooms or practice (right dot), on a linear year axis.", "tl.s_read_edu": "Schools above the line, universities below, all levels in violet.", "tl.s_read_ai": "Amber labels give each milestone's headline figure; detail sits here.", "tl.s_measured": "Measured", "tl.s_source_q": "source: {q}", "tl.s_footl": "{a} of {b} events shown", "tl.s_dotonly": " · {n} dot-only (no room for a label)", "tl.s_framing": " · era names and lag pairings are our framing"};</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B0D12; --panel:#121620; --panel2:#171C28; --line:#242B38; --text:#E9ECF2; --muted:#98A0B0; --faint:#5E6677;
+  --ai:#F2A93B; --k12:#7C9CFF; --he:#3CC7B4; --both:#C28BFF; --warn:#FF8A65;
+  --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{background:var(--bg);color:var(--text);font:15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.bar{position:sticky;top:var(--hdr,0px);z-index:20;display:flex;gap:14px;align-items:center;flex-wrap:wrap;padding:10px 28px;
+  background:rgba(11,13,18,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.bar .yr{font:500 22px var(--mono);color:var(--text);min-width:64px}
+.bar nav{display:flex;gap:6px;flex-wrap:wrap}
+.bar nav a,.chip{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;
+  padding:5px 10px;border:1px solid var(--line);border-radius:99px;color:var(--muted);background:none;cursor:pointer}
+.bar nav .sep{width:1px;background:var(--line);margin:0 6px}
+.bar nav a.on,.chip.on{color:var(--bg);background:var(--text);border-color:var(--text)}
+.bar .sp{flex:1}
+.hero{max-width:1180px;margin:0 auto;padding:88px 28px 40px}
+.eyebrow{font:500 12px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+h1{font:300 clamp(40px,6vw,76px)/1.02 var(--display);margin:14px 0 18px;letter-spacing:-.01em}
+.sub{font-size:19px;color:var(--muted);max-width:760px}
+.stats{display:flex;gap:40px;margin-top:34px;flex-wrap:wrap}
+.stats b{display:block;font:500 34px var(--display)}
+.stats span{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.strip{max-width:1180px;margin:10px auto 0;padding:0 28px}
+.strip svg{width:100%;height:120px;display:block}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin:12px 0 0;font:500 11px var(--mono);letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:7px;vertical-align:-1px}
+section.sec{max-width:1180px;margin:0 auto;padding:60px 28px 10px}
+section.sec h2{font:300 38px/1.1 var(--display);margin-bottom:8px}
+section.sec p.lede{color:var(--muted);max-width:760px;margin-bottom:26px}
+/* timeline */
+.tl{position:relative;max-width:1180px;margin:30px auto 120px;padding:0 28px}
+.tl:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(var(--line),var(--line));transform:translateX(-1px)}
+.era{position:relative;text-align:center;margin:70px 0 30px}
+.era span{position:relative;display:inline-block;background:var(--bg);padding:6px 18px;border:1px solid var(--line);border-radius:99px;
+  font:500 12px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.era em{display:block;font:300 30px var(--display);font-style:normal;color:var(--text);margin-top:8px;background:var(--bg);position:relative}
+.row{position:relative;display:grid;grid-template-columns:1fr 64px 1fr;align-items:start;margin:18px 0}
+.row .dot{grid-column:2;justify-self:center;margin-top:22px;width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 0 5px var(--bg),0 0 18px var(--c)}
+.row.s1 .dot{width:20px;height:20px;margin-top:19px}
+.card{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px 16px;
+  opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.card.in{opacity:1;transform:none}
+.card{scroll-margin-top:calc(var(--hdr,0px) + 110px)}
+.row.L .card{grid-column:1}.row.R .card{grid-column:3}
+.row.C .card{grid-column:1 / 4;max-width:640px;justify-self:center;margin-top:44px;z-index:1}
+.row.C .dot{position:absolute;left:50%;top:0;transform:translateX(-50%)}
+.row.s1 .card{background:linear-gradient(160deg,var(--panel2),var(--panel));border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+.card:before{content:"";position:absolute;top:0;left:18px;right:18px;height:2px;background:var(--c);border-radius:2px;opacity:.8}
+.meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.meta .d{color:var(--c);font-size:13px}
+.tag{padding:2px 7px;border:1px solid var(--line);border-radius:5px}
+.card h3{font:500 22px/1.2 var(--display);margin:8px 0 2px}
+.row.s1 .card h3{font-size:27px}
+.who{color:var(--faint);font-size:13px;margin-bottom:10px}
+.q{display:grid;grid-template-columns:86px 1fr;gap:4px 12px;font-size:14.5px}
+.q dt{font:500 10.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--faint);padding-top:3px}
+.q dd{color:var(--text)}
+.q dd.imp{color:#fff}
+.metrics{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.m{flex:1 1 150px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.m b{display:block;font:500 22px/1.15 var(--display);color:var(--c)}
+.m span{display:block;font-size:12.5px;color:var(--muted)}
+.m a{font:400 10.5px var(--mono);color:var(--faint);text-decoration:none}
+.m a:hover,.src:hover{color:var(--text)}
+.src{display:inline-block;margin-top:10px;font:400 11px var(--mono);color:var(--faint);text-decoration:none;word-break:break-all}
+.warn{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 50%,var(--line))}
+.lanehead{position:sticky;top:calc(var(--hdr,0px) + 52px);z-index:5;display:grid;grid-template-columns:1fr 64px 1fr;max-width:1180px;margin:0 auto;padding:10px 28px;
+  font:500 12px var(--mono);letter-spacing:.2em;text-transform:uppercase;background:linear-gradient(var(--bg) 70%,transparent)}
+.lanehead div:first-child{text-align:end}.lanehead div:last-child{grid-column:3}
+body.key .row.s2,body.key .row.s3,body.story .row.s3{display:none}
+body.key .era.empty,body.story .era.nostory{display:none}
+#modes{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.live-count{font:500 12px var(--mono);color:var(--muted);border-radius:6px;padding:2px 6px}
+/* lags */
+.lags svg{width:100%;display:block}
+.diff svg{width:100%;display:block}
+.note{font:400 12px var(--mono);color:var(--faint);margin-top:10px}
+footer{max-width:1180px;margin:0 auto;padding:40px 28px 80px;color:var(--faint);font-size:13px;border-top:1px solid var(--line)}
+.help{position:fixed;inset:0;z-index:50;display:none;place-items:center;background:rgba(0,0,0,.7)}
+.help.on{display:grid}
+.help div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px 30px;max-width:560px;font-size:14px}
+.help h4{font:500 22px var(--display);margin-bottom:10px}
+.help code{font:12px var(--mono);color:var(--ai)}
+.qbtn{position:fixed;inset-inline-end:18px;bottom:18px;z-index:30;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:var(--muted);font:500 15px var(--mono);cursor:pointer}
+.tip{position:fixed;z-index:40;pointer-events:none;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12.5px;max-width:320px;display:none}
+@media (max-width:820px){
+  .bar{gap:6px 8px;padding:8px 14px}.bar .yr,.bar .sp,.bar nav .sep{display:none}.bar nav a,.chip{padding:4px 8px;letter-spacing:.04em}
+  #modes .live-count{flex-basis:100%;padding-left:0}
+  .tl:before{left:auto;inset-inline-start:36px}.row,.lanehead{grid-template-columns:48px 1fr}.row .dot{grid-column:1}
+  .row.L .card,.row.R .card,.row.C .card{grid-column:2;max-width:none;margin-top:0}
+  .row.C .dot{position:static;transform:none}.lanehead{display:none}.era{text-align:start;padding-inline-start:56px}
+}
+@media (prefers-reduced-motion:reduce){.card{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+html[lang="fa"] .q{grid-template-columns:96px 1fr}
+html[lang="fa"] h1{font-size:clamp(30px,4.4vw,54px);line-height:1.35;font-weight:500}
+html[lang="fa"] section.sec h2,html[lang="fa"] .era em{font-weight:500;line-height:1.45}
+html[lang="fa"] .card h3{line-height:1.5}
+html[lang="fa"] body{line-height:1.8}
+html[lang="fa"] .src{font-family:var(--body)}
+.src[lang="en"]{font-family:var(--mono)}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:var(--warn);border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px}
+</style>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+html[lang="fa"]{--display:"Vazirmatn",Tahoma,sans-serif;--body:"Vazirmatn",Tahoma,sans-serif;--mono:"Vazirmatn",ui-monospace,Menlo,monospace}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr nav{display:flex;gap:4px;flex-wrap:nowrap;min-width:0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+.site-hdr nav a{position:relative;padding:8px 12px;border-radius:8px;font-size:14px;color:#98A0B0;text-decoration:none;white-space:nowrap}
+.site-hdr nav a:hover{color:#E9ECF2;background:#151A24}
+.site-hdr nav a[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav a[aria-current="page"]::after{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media (max-width:760px){.site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}.site-hdr nav a{padding:8px 7px;font-size:13px}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}.site-hdr nav{overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}.site-hdr nav a[aria-current="page"]::after{bottom:0}}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the glossary note on the thesis page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <nav aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-sec="home" data-i18n="nav.home">Home</a>
+    <a href="/thesis/timelines/index.html" data-sec="timelines" data-i18n="nav.timelines">Timelines</a>
+    <a href="/thesis/challenges.html" data-sec="challenges" data-i18n="nav.challenges">Challenges</a>
+    <a href="/thesis/iran-map.html" data-sec="iran-map" data-i18n="nav.iran_map">Iran education map</a>
+    <a href="/thesis/ml-courses.html" data-sec="ml-courses" data-i18n="nav.ml_courses">ML courses</a>
+    <a href="/thesis/datasets.html" data-sec="datasets" data-i18n="nav.datasets">Datasets</a>
+    <a href="/thesis/ecosystem.html" data-sec="ecosystem" data-i18n="nav.ecosystem">Who builds it</a>
+    <a href="/thesis/thesis.html" data-sec="thesis" data-i18n="nav.thesis">Thesis</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{const p=location.pathname, sec=p.includes("/thesis/timelines/")?"timelines":(p.split("/").pop().replace(".html","")||"index");
+  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ if(a.dataset.sec===(sec==="index"?"home":sec)) a.setAttribute("aria-current","page"); });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<a href="/thesis/thesis.html#glossary">${I.t("i18n.banner")}</a><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=0, src=null, done=false;
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div class="bar">
+  <div class="yr" id="yr">—</div>
+  <nav id="views"></nav>
+  <div class="sp"></div>
+  <nav id="modes" aria-label="How much to show" data-i18n-attr="aria-label:tl.modes_aria"><button class="chip" data-m="key" title="Only the milestones on the one-page slide" data-i18n-attr="title:tl.mode_key_t" data-i18n="tl.mode_key">Key milestones</button><button class="chip" data-m="story" title="Milestones and the main measurements" data-i18n-attr="title:tl.mode_story_t" data-i18n="tl.story">Story</button><button class="chip" data-m="all" id="m-all" title="Every event, including detail-level measurements" data-i18n-attr="title:tl.mode_all_t">All detail</button></nav><span class="live-count" id="mcount" aria-live="polite"></span>
+</div>
+
+<header class="hero">
+  <div class="eyebrow" id="eyebrow"></div>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="strip"><svg id="strip" aria-label="Every event on one axis; click a tick to jump to it" data-i18n-attr="aria-label:tl.strip_aria"></svg><div class="legend" id="legend"></div></div>
+
+<div id="extras"></div>
+<div class="lanehead" id="lanehead"></div>
+<main class="tl" id="tl"></main>
+
+<footer id="foot"></footer>
+<button class="qbtn" id="qbtn" aria-label="Help" data-i18n-attr="aria-label:tl.help_aria">?</button>
+<div class="help" id="help"><div>
+  <h4 data-i18n="tl.help_h">How to read this page</h4>
+  <p data-i18n-html="tl.help_p1">Scroll down through time. Each card says <b>what it said</b> (the idea, in one line) and <b>what it caused</b> (the measured impact, with its source and date).</p>
+  <p style="margin-top:8px" data-i18n-html="tl.help_p2">• Click a tick on the strip at the top to jump to that event.<br>• <b>Key milestones</b> shows just the events on the one-page slide; <b>Story</b> (the default) adds the main measurements; <b>All detail</b> adds every detail-level figure (significance 3).<br>• Cards marked <span style="color:var(--warn)">unverified</span> have a figure we could not confirm from a primary source.<br>• <code>?</code> or Esc toggles this panel.</p>
+  <p style="margin-top:8px" data-i18n-html="tl.help_p3">Rebuild: <code>python3 build.py</code> · data in <code>data/*.json</code></p>
+</div></div>
+<div class="tip" id="tip"></div>
+
+<script>
+const D = {"view": "ai", "title": "Computing and AI in Iran", "sub": "From the first computer at the oil company (1962) to Persian language models and a national AI document: what happened, and what it changed.", "events": [{"id": "ibm1620-nioc-1962", "date": "1962", "track": "ai", "level": null, "kind": "system", "title": "First true computer in Iran: IBM 1620 at the National Iranian Oil Company", "who": "NIOC / IBM", "one_liner": "An IBM 1620 installed early 1962 tracked oil production; second and third machines followed in 1963.", "impact": "Start of computing in Iran; 100+ machines by 1972 and ~600 by 1977, all imported.", "metrics": [{"label": "computers installed, 1972", "value": ">100", "as_of": "2026-10-01", "source": "https://www.iranicaonline.org/articles/computers-in-persia/"}, {"label": "computers installed, 1977", "value": ">600 (30 IBM/370)", "as_of": "2026-10-01", "source": "https://www.iranicaonline.org/articles/computers-in-persia/"}], "source": "https://www.iranicaonline.org/articles/computers-in-persia/", "significance": 1, "verified": true, "note": "Encyclopaedia Iranica entry; 1954 IBM unit-record machines for the 1956 census preceded it.", "quality": "secondary"}, {"id": "lala-1984", "date": "1984", "track": "ai", "level": null, "kind": "system", "title": "Domestic computers: M-1 minicomputer (1980) and Lala microcomputer (1984)", "who": "College of Computer Programming; Institute for Communications Research", "one_liner": "Post-revolution domestic minicomputer and microcomputer builds.", "impact": "Shows early local hardware capacity, before sanctions-era reliance on imports.", "metrics": [], "source": "https://www.iranicaonline.org/articles/computers-in-persia/", "significance": 3, "verified": true, "note": "1975-78 Iran Computer Manufacturing Industries produced terminals.", "quality": "secondary"}, {"id": "ipm-internet-1993", "date": "1993-01", "track": "ai", "level": null, "kind": "event", "title": "IPM links Iran to the Internet via BITNET/EARN through Vienna", "who": "IPM (Larijani), University of Vienna", "one_liner": "A single 9600-baud leased line to Vienna, Jan 1993, made IPM the first Iranian node; .ir was assigned by IPM.", "impact": "Gateway for Iranian academia; users rose from ~0% (1995) to 85% (2024, World Bank).", "metrics": [{"label": "individuals using the Internet, 2000", "value": "0.9%", "as_of": "2026-10-01", "source": "https://api.worldbank.org/v2/country/IRN/indicator/IT.NET.USER.ZS?format=json"}, {"label": "individuals using the Internet, 2024", "value": "85.3%", "as_of": "2026-10-01", "source": "https://api.worldbank.org/v2/country/IRN/indicator/IT.NET.USER.ZS?format=json"}], "source": "https://en.wikipedia.org/wiki/Internet_in_Iran", "significance": 1, "verified": false, "note": "Date and line speed from Wikipedia/NSRC-type secondary sources; primary IPM/EARN record not opened. Solar Hijri 1371 ش.", "quality": "secondary"}, {"id": "csicc-1995", "date": "1995-12", "track": "ai", "level": null, "kind": "event", "title": "First CSI Computer Conference (CSICC), Sharif University", "who": "Computer Society of Iran", "one_liner": "Annual national computer conference from 1995 with AI and expert-systems and Persian language processing tracks.", "impact": "Became the national venue for Iranian AI and NLP papers (29th edition in 2025).", "metrics": [], "source": "https://sharif.ac.ir/~ghodsi/csi/csicc.html", "significance": 3, "verified": true, "note": "Dates 25-28 Dec 1995 (Azar-Dey 1374 ش); fetch of the page failed, taken from search snippet of the same URL.", "quality": "secondary"}, {"id": "robocup-iran-1998", "date": "1998", "track": "ai", "level": null, "kind": "event", "title": "Iranian university teams enter RoboCup", "who": "Sharif, Amirkabir, Azad Qazvin teams", "one_liner": "Iranian teams compete in RoboCup from 1998; IranOpen started in 2006.", "impact": "IranOpen grew from ~100 teams (2006) to ~350 teams from 14 countries (2011), a pipeline for robotics and AI students.", "metrics": [{"label": "IranOpen 2006 teams", "value": "~100", "as_of": "2026-10-01", "source": "https://en.wikipedia.org/wiki/IranOpen"}, {"label": "IranOpen 2011 teams", "value": "~350", "as_of": "2026-10-01", "source": "https://en.wikipedia.org/wiki/IranOpen"}], "source": "https://en.wikipedia.org/wiki/IranOpen", "significance": 2, "verified": true, "note": "Claims of a 1999 world title by Sharif were not confirmed and are left out.", "quality": "secondary"}, {"id": "hazm-2014", "date": "2014", "track": "ai", "level": null, "kind": "system", "title": "Hazm: open-source Persian NLP toolkit", "who": "Sobhe / Roshan", "one_liner": "Normalisation, tokenisation and POS tagging for Persian.", "impact": "De facto baseline tool for Persian text preprocessing in Iranian NLP work.", "metrics": [], "source": "https://github.com/roshan-research/hazm", "significance": 3, "verified": false, "note": "Year and repository owner from search summaries; not checked against the repo.", "quality": "secondary"}, {"id": "openalex-iran-ai-2015", "date": "2015", "track": "ai", "level": null, "kind": "stat", "title": "Iran's share of world AI publications peaks near 0.9 percent", "who": "OpenAlex (subfield Artificial Intelligence)", "one_liner": "Iran-affiliated AI works rose from 1,523 (2010) to 2,751 (2015) and 4,267 (2025).", "impact": "Output grew 2.8x since 2010 (world 2.5x), but only 1.6x since 2015 (world 2.2x), so Iran's share fell from 0.91 pct (2015) to 0.65 pct (2025).", "metrics": [{"label": "Iran AI works 2010", "value": "1,523 (0.58% of world)", "as_of": "2026-10-01", "source": "https://api.openalex.org/works?filter=authorships.institutions.country_code:IR,topics.subfield.id:1702&group_by=publication_year"}, {"label": "Iran AI works 2015", "value": "2,751 (0.91%)", "as_of": "2026-10-01", "source": "https://api.openalex.org/works?filter=authorships.institutions.country_code:IR,topics.subfield.id:1702&group_by=publication_year"}, {"label": "Iran AI works 2020", "value": "3,753 (0.88%)", "as_of": "2026-10-01", "source": "https://api.openalex.org/works?filter=authorships.institutions.country_code:IR,topics.subfield.id:1702&group_by=publication_year"}, {"label": "Iran AI works 2025", "value": "4,267 (0.65%)", "as_of": "2026-10-01", "source": "https://api.openalex.org/works?filter=authorships.institutions.country_code:IR,topics.subfield.id:1702&group_by=publication_year"}, {"label": "world AI works 2025", "value": "658,777", "as_of": "2026-10-01", "source": "https://api.openalex.org/works?filter=topics.subfield.id:1702&group_by=publication_year"}], "source": "https://openalex.org", "significance": 1, "verified": true, "note": "Computed 2026-10-01 from OpenAlex group_by counts (Iran: authorships.institutions.country_code:IR; subfield 1702). 2026 is partial. Indexing changes can shift counts.", "quality": "secondary"}, {"id": "parsivar-2018", "date": "2018-05", "track": "ai", "level": null, "kind": "paper", "title": "Parsivar: A Language Processing Toolkit for Persian", "who": "Mohammadi & Ghasemi Nejad et al.", "one_liner": "LREC 2018 toolkit for Persian normalisation, tokenisation, stemming and parsing.", "impact": "Second widely used Persian toolkit after Hazm.", "metrics": [], "source": "https://aclanthology.org/L18-1179.pdf", "significance": 3, "verified": true, "note": "", "quality": "peer-reviewed"}, {"id": "parsbert-2020", "date": "2020-05", "track": "ai", "level": null, "kind": "paper", "title": "ParsBERT: Transformer-based Model for Persian Language Understanding", "who": "Farahani et al., Hooshvare", "one_liner": "Monolingual Persian BERT pretrained on 3.9M documents (1.3B words); beat mBERT on sentiment, classification, NER.", "impact": "First widely used Persian transformer; base for most later Persian NLP in Iran.", "metrics": [{"label": "pretraining words", "value": "1.3B", "as_of": "2026-10-01", "source": "https://arxiv.org/abs/2005.12515"}], "source": "https://arxiv.org/abs/2005.12515", "significance": 1, "verified": true, "note": "arXiv 2005.12515, May 2020; journal version not checked.", "quality": "peer-reviewed"}, {"id": "dadmatools-2022", "date": "2022-07", "track": "ai", "level": null, "kind": "system", "title": "DadmaTools: NLP toolkit for Persian", "who": "Dadmatech (NAACL 2022 demo)", "one_liner": "Neural toolkit for Persian tokenisation, tagging, parsing and NER.", "impact": "Shows the Persian NLP stack moving from rules to neural pipelines.", "metrics": [], "source": "https://aclanthology.org/2022.naacl-demo.13.pdf", "significance": 3, "verified": true, "note": "", "quality": "peer-reviewed"}, {"id": "chatgpt-block-2023", "date": "2023", "track": "ai", "level": "both", "kind": "policy", "title": "ChatGPT unavailable in Iran: OpenAI does not serve Iran and the service is filtered", "who": "OpenAI; Iranian state filtering", "one_liner": "Iran is not on OpenAI's supported-country list, and web tools are routed through VPNs.", "impact": "Iranian students meet frontier LLMs late, through VPNs and local models. Sanctions and filtering are a structural constraint.", "metrics": [], "source": "https://community.openai.com/t/access-to-chatgpt-from-iran-without-vpn-may-2025-is-access-restored/1250817", "significance": 1, "verified": false, "note": "Evidence is a user forum thread and press summaries; no primary OpenAI or ICT-ministry document found. Date approximate (2023). Users reported access without VPN around May 2025.", "quality": "press"}, {"id": "internet-2024", "date": "2024", "track": "ai", "level": "both", "kind": "stat", "title": "Individuals using the Internet in Iran reach 85 percent", "who": "World Bank / ITU", "one_liner": "Usage climbed from 0.9 percent (2000) to 15.9 (2010), 75.6 (2020), 85.3 (2024).", "impact": "Connectivity is high, but access to foreign AI tools is filtered (see ChatGPT item).", "metrics": [{"label": "2024", "value": "85.3%", "as_of": "2026-10-01", "source": "https://api.worldbank.org/v2/country/IRN/indicator/IT.NET.USER.ZS?format=json"}], "source": "https://data.worldbank.org/indicator/IT.NET.USER.ZS?locations=IR", "significance": 2, "verified": true, "note": "World Bank API series pulled 2026-10-01.", "quality": "official"}, {"id": "persianmind-2024", "date": "2024-01", "track": "ai", "level": null, "kind": "paper", "title": "PersianMind: cross-lingual Persian-English LLM", "who": "Rostami, Salemi, Dousti (Sharif)", "one_liner": "LLaMA2-7B with 10,000 added Persian tokens and ~2B Persian tokens of training; claims GPT-3.5-turbo parity on Persian.", "impact": "Open Persian LLM from an Iranian university lab.", "metrics": [], "source": "https://arxiv.org/abs/2401.06466", "significance": 2, "verified": true, "note": "Preprint; parity claim is the authors' own.", "quality": "peer-reviewed"}, {"id": "national-ai-doc-2024", "date": "2024-06", "track": "ai", "level": "both", "kind": "policy", "title": "National AI Document approved by the Supreme Council of the Cultural Revolution", "who": "SCCR (19 Jun 2024, 29 Khordad 1403 ش)", "one_liner": "14 policies and 11 goals; target: top-10 AI nation by 2032; education is a listed priority sector.", "impact": "Sets the legal basis for ministries (incl. Education and Science) to adopt AI; mandates a national AI organisation.", "metrics": [{"label": "target", "value": "top 10 AI nations by 2032", "as_of": "2026-10-01", "source": "https://aibusiness.com/verticals/iran-vies-to-become-top-10-ai-nation-by-2032"}], "source": "https://regulations.ai/regulations/RAI-IR-NA-SUMMARY-2026", "significance": 1, "verified": true, "note": "Via regulations.ai summary and Filterwatch/press; the SCCR original text (Persian) was not opened.", "quality": "secondary"}, {"id": "naio-2024", "date": "2024-07", "track": "ai", "level": null, "kind": "policy", "title": "National AI Organization (NAIO) created by decree", "who": "President's office (10 Jul 2024)", "one_liner": "Independent body reporting to the President for AI strategy, data and hardware.", "impact": "Gives AI policy a single owner, separate from Education and Science ministries.", "metrics": [], "source": "https://regulations.ai/regulations/RAI-IR-NA-SUMMARY-2026", "significance": 2, "verified": true, "note": "Date from the regulations.ai summary; 1403-04 ش.", "quality": "secondary"}, {"id": "matina-2025", "date": "2025-02", "track": "ai", "level": null, "kind": "paper", "title": "Matina: 73B-token Persian text corpus", "who": "Persian NLP group", "one_liner": "Large Persian pretraining corpus released on arXiv.", "impact": "Persian pretraining data at LLM scale, open for Iranian and foreign labs.", "metrics": [], "source": "https://arxiv.org/pdf/2502.09188", "significance": 3, "verified": true, "note": "Preprint.", "quality": "peer-reviewed"}, {"id": "national-ai-platform-2025", "date": "2025-03", "track": "ai", "level": null, "kind": "system", "title": "Prototype national AI platform unveiled with Sharif University", "who": "VP Hossein Afshin; Sharif; ~100 researchers", "one_liner": "GPU infrastructure, Persian LLMs, multimodal models and agents that work offline; full release was planned for March 2026.", "impact": "State-backed sovereign stack for a filtered, sanctioned network.", "metrics": [], "source": "https://www.iranintl.com/en/202503158253", "significance": 2, "verified": true, "note": "Iran International is an opposition-leaning outlet; release status in 2026 not checked.", "quality": "press"}, {"id": "ai-rank-2025", "date": "2025-08", "track": "ai", "level": null, "kind": "stat", "title": "Official: Iran's AI research rank moved 33 to 30 (Nature Index); Oxford AI readiness 91 of 188", "who": "Hossein Afshin (vice-presidency), via Tehran Times", "one_liner": "Ranking claims by an Iranian official; other sources give 13th to 17th by output volume.", "impact": "Volume and quality ranks differ by database and Iran's own official ranks are not comparable.", "metrics": [{"label": "AI readiness rank", "value": "91 of 188", "as_of": "2026-10-01", "source": "https://www.tehrantimes.com/news/516609/Iran-advances-in-AI-scientific-research-index-official"}], "source": "https://www.tehrantimes.com/news/516609/Iran-advances-in-AI-scientific-research-index-official", "significance": 2, "verified": true, "note": "Official statement, not an independent measurement. Government-pillar readiness score 26.54 was the lowest of three pillars.", "quality": "press"}], "lags": [], "diffusion": [], "eras": {"ai": [[1960, 1992, "First computers"], [1992, 2010, "The internet and early AI research"], [2010, 2020, "Persian NLP and research growth"], [2020, 2024, "Persian language models"], [2024, 2027, "National AI policy"]], "edu": [[1960, 1988, "Early computing in universities"], [1988, 2004, "Distance and online learning begin"], [2004, 2020, "Smart schools and e-learning"], [2020, 2022, "COVID-19 and SHAD"], [2022, 2027, "Generative AI and the first AI curriculum"]], "combined": [[1960, 1992, "First computers"], [1992, 2004, "The internet arrives"], [2004, 2020, "Smart schools, e-learning, Persian NLP"], [2020, 2024, "COVID-19, SHAD, Persian language models"], [2024, 2027, "National AI policy and AI in schools"]]}, "asof": "1 Oct 2026", "nav": [["ai", "Iran · AI"], ["edu", "Iran · Education"], ["combined", "Iran · Lab → classroom"]], "fa": {"events": {"ibm1620-nioc-1962": {"title": "نخستین رایانهٔ واقعی در ایران: IBM 1620 در شرکت ملی نفت ایران", "who": "شرکت ملی نفت ایران / IBM", "one_liner": "یک دستگاه IBM 1620 که در اوایل 1962 نصب شد، تولید نفت را پیگیری می‌کرد؛ دستگاه دوم و سوم در 1963 به آن پیوستند.", "impact": "آغاز رایانش در ایران؛ بیش از 100 دستگاه تا 1972 و حدود 600 دستگاه تا 1977، همگی وارداتی.", "metrics": {"0": {"label": "رایانه‌های نصب‌شده، 1972"}, "1": {"label": "رایانه‌های نصب‌شده، 1977"}}}, "lala-1984": {"title": "رایانه‌های بومی: مینی‌کامپیوتر M-1 (1980) و ریزرایانهٔ لالا (1984)", "who": "دانشکدهٔ برنامه‌نویسی رایانه؛ مؤسسهٔ پژوهش‌های ارتباطات", "one_liner": "ساخت مینی‌کامپیوتر و ریزرایانهٔ بومی پس از انقلاب.", "impact": "نشان‌دهندهٔ توان سخت‌افزاری بومی در مراحل نخست، پیش از وابستگی به واردات در دورهٔ تحریم‌ها.", "metrics": {}}, "ipm-internet-1993": {"title": "پژوهشگاه دانش‌های بنیادی (IPM) ایران را از طریق BITNET/EARN و از مسیر وین به اینترنت متصل می‌کند", "who": "پژوهشگاه دانش‌های بنیادی (IPM) (لاریجانی)، دانشگاه وین", "one_liner": "یک خط اختصاصی 9600 بود در ژانویهٔ 1993 به وین، IPM را نخستین گره ایرانی کرد؛ دامنهٔ .ir نیز توسط IPM اختصاص یافت.", "impact": "دروازهٔ ورود دانشگاهیان ایرانی؛ کاربران از حدود 0% (1995) به 85% (2024، بانک جهانی) رسیدند.", "metrics": {"0": {"label": "افراد استفاده‌کننده از اینترنت، 2000"}, "1": {"label": "افراد استفاده‌کننده از اینترنت، 2024"}}}, "csicc-1995": {"title": "نخستین کنفرانس رایانه‌ای انجمن رایانهٔ ایران (CSICC)، دانشگاه صنعتی شریف", "who": "انجمن رایانهٔ ایران", "one_liner": "کنفرانس ملی سالانهٔ رایانه از 1995 با محورهای هوش مصنوعی و سامانه‌های خبره و پردازش زبان فارسی.", "impact": "به محل اصلی ارائهٔ مقالات هوش مصنوعی و پردازش زبان طبیعی ایرانی در سطح ملی تبدیل شد (بیست‌ونهمین دوره در 2025).", "metrics": {}}, "robocup-iran-1998": {"title": "ورود تیم‌های دانشگاهی ایران به RoboCup", "who": "تیم‌های دانشگاه صنعتی شریف، امیرکبیر و آزاد قزوین", "one_liner": "تیم‌های ایرانی از 1998 در RoboCup شرکت می‌کنند؛ IranOpen در 2006 آغاز شد.", "impact": "IranOpen از حدود 100 تیم (2006) به حدود 350 تیم از 14 کشور (2011) رسید و مسیری برای تربیت دانشجویان رباتیک و هوش مصنوعی بود.", "metrics": {"0": {"label": "تیم‌های IranOpen 2006"}, "1": {"label": "تیم‌های IranOpen 2011"}}}, "hazm-2014": {"title": "Hazm: ابزار متن‌باز پردازش زبان طبیعی فارسی", "who": "صبحه / روشن", "one_liner": "هنجارسازی، واحدبندی (توکن‌سازی) و برچسب‌گذاری اجزای کلام برای زبان فارسی.", "impact": "ابزار پایهٔ عملاً استاندارد برای پیش‌پردازش متن فارسی در کارهای پردازش زبان طبیعی در ایران.", "metrics": {}}, "parsivar-2018": {"title": "Parsivar: A Language Processing Toolkit for Persian", "who": "محمدی و قاسمی‌نژاد و همکاران", "one_liner": "ابزار ارائه‌شده در LREC 2018 برای هنجارسازی، واحدبندی، ریشه‌یابی و تجزیهٔ نحوی زبان فارسی.", "impact": "دومین ابزار پرکاربرد زبان فارسی پس از Hazm.", "metrics": {}}, "parsbert-2020": {"title": "ParsBERT: Transformer-based Model for Persian Language Understanding", "who": "فراهانی و همکاران، هوشواره (Hooshvare)", "one_liner": "BERT تک‌زبانهٔ فارسی که بر روی 3.9 میلیون سند (1.3 میلیارد واژه) پیش‌آموزش دید؛ در تحلیل احساس، دسته‌بندی و شناسایی موجودیت‌های نام‌دار از mBERT بهتر عمل کرد.", "impact": "نخستین ترنسفورمر فارسی پرکاربرد؛ پایهٔ بیشتر کارهای بعدی پردازش زبان فارسی در ایران.", "metrics": {"0": {"label": "واژه‌های پیش‌آموزش"}}}, "dadmatools-2022": {"title": "DadmaTools: NLP toolkit for Persian", "who": "داده‌ماتک (Dadmatech) (دمو در NAACL 2022)", "one_liner": "ابزار عصبی برای واحدبندی، برچسب‌گذاری، تجزیهٔ نحوی و شناسایی موجودیت‌های نام‌دار در زبان فارسی.", "impact": "نشان می‌دهد زنجیرهٔ ابزارهای پردازش زبان فارسی از روش‌های قاعده‌محور به خطوط لولهٔ عصبی در حال گذار است.", "metrics": {}}, "chatgpt-block-2023": {"title": "ChatGPT در ایران در دسترس نیست: OpenAI به ایران خدمات نمی‌دهد و سرویس فیلتر است", "who": "OpenAI؛ فیلترینگ دولتی ایران", "one_liner": "ایران در فهرست کشورهای تحت پوشش OpenAI نیست و ابزارهای وب از طریق VPN مسیریابی می‌شوند.", "impact": "دانشجویان و دانش‌آموزان ایرانی با تأخیر و از طریق VPN و مدل‌های بومی با مدل‌های زبانی بزرگ پیشرو آشنا می‌شوند. تحریم و فیلترینگ یک محدودیت ساختاری است.", "metrics": {}}, "persianmind-2024": {"title": "PersianMind: cross-lingual Persian-English LLM", "who": "رستمی، سالمی، دوستی (دانشگاه صنعتی شریف)", "one_liner": "LLaMA2-7B با 10,000 توکن فارسی افزوده و حدود 2 میلیارد توکن فارسی برای آموزش؛ ادعای برابری با GPT-3.5-turbo در زبان فارسی.", "impact": "مدل زبانی بزرگ فارسی متن‌باز از یک آزمایشگاه دانشگاهی ایرانی.", "metrics": {}}, "national-ai-doc-2024": {"title": "سند ملی هوش مصنوعی در شورای عالی انقلاب فرهنگی تصویب شد", "who": "شورای عالی انقلاب فرهنگی (19 ژوئن 2024، 29 خرداد 1403 ش)", "one_liner": "14 سیاست و 11 هدف؛ هدف‌گذاری: قرارگرفتن در میان 10 کشور برتر هوش مصنوعی تا 2032؛ آموزش در فهرست بخش‌های اولویت‌دار آمده است.", "impact": "مبنای قانونی را برای به‌کارگیری هوش مصنوعی در وزارتخانه‌ها (از جمله آموزش‌وپرورش و علوم) فراهم می‌کند و تشکیل یک سازمان ملی هوش مصنوعی را الزامی می‌کند.", "metrics": {"0": {"label": "هدف"}}}, "naio-2024": {"title": "سازمان ملی هوش مصنوعی (NAIO) با حکم ریاست‌جمهوری تأسیس شد", "who": "نهاد ریاست‌جمهوری (10 ژوئیه 2024)", "one_liner": "نهادی مستقل و گزارش‌دهنده به رئیس‌جمهور برای راهبرد، داده و سخت‌افزار هوش مصنوعی.", "impact": "سیاست‌گذاری هوش مصنوعی را به یک متولی واحد، جدا از وزارت‌خانه‌های آموزش‌وپرورش و علوم، می‌سپارد.", "metrics": {}}, "matina-2025": {"title": "Matina: پیکرهٔ متنی فارسی با 73 میلیارد توکن", "who": "گروه پردازش زبان فارسی", "one_liner": "پیکرهٔ بزرگ پیش‌آموزش فارسی که در arXiv منتشر شد.", "impact": "داده‌های پیش‌آموزش فارسی در مقیاس مدل‌های زبانی بزرگ، به‌صورت آزاد در دسترس آزمایشگاه‌های ایرانی و خارجی.", "metrics": {}}, "national-ai-platform-2025": {"title": "پلتفرم ملی هوش مصنوعی (نمونهٔ اولیه) با همکاری دانشگاه صنعتی شریف رونمایی شد", "who": "معاون رئیس‌جمهور حسین افشین؛ دانشگاه صنعتی شریف؛ حدود 100 پژوهشگر", "one_liner": "زیرساخت GPU، مدل‌های زبانی بزرگ فارسی، مدل‌های چندوجهی و عامل‌هایی که به‌صورت آفلاین کار می‌کنند؛ انتشار کامل برای مارس 2026 برنامه‌ریزی شده بود.", "impact": "یک زنجیرهٔ فناوری حاکمیتی با پشتیبانی دولت برای شبکه‌ای فیلترشده و تحریم‌شده.", "metrics": {}}, "ai-rank-2025": {"title": "رسمی: رتبهٔ پژوهش هوش مصنوعی ایران از 33 به 30 رسید (Nature Index)؛ آمادگی هوش مصنوعی در رتبه‌بندی آکسفورد: 91 از 188", "who": "حسین افشین (معاونت علمی ریاست‌جمهوری)، به نقل از Tehran Times", "one_liner": "ادعاهای رتبه‌بندی از سوی یک مقام رسمی ایرانی؛ منابع دیگر رتبهٔ 13 تا 17 را بر مبنای حجم تولید گزارش می‌کنند.", "impact": "رتبه‌های حجم و کیفیت بسته به پایگاه داده متفاوت است و رتبه‌های رسمی خود ایران قابل مقایسه نیستند.", "metrics": {"0": {"label": "رتبهٔ آمادگی هوش مصنوعی"}}}, "openalex-iran-ai-2015": {"title": "سهم ایران از انتشارات جهانی هوش مصنوعی به نزدیک 0.9 درصد می‌رسد و سپس کاهش می‌یابد", "who": "OpenAlex (زیرحوزهٔ هوش مصنوعی)", "one_liner": "آثار هوش مصنوعی با وابستگی ایرانی از 1,523 (2010) به 2,751 (2015) و 4,267 (2025) رسید.", "impact": "تولید از 2010 تا 2025 معادل 2.8 برابر شد (جهان 2.5 برابر)، اما از 2015 فقط 1.6 برابر (جهان 2.2 برابر)؛ از این رو سهم ایران از 0.91 درصد (2015) به 0.65 درصد (2025) کاهش یافت.", "metrics": {"0": {"label": "آثار هوش مصنوعی ایران، 2010"}, "1": {"label": "آثار هوش مصنوعی ایران، 2015"}, "2": {"label": "آثار هوش مصنوعی ایران، 2020"}, "3": {"label": "آثار هوش مصنوعی ایران، 2025"}, "4": {"label": "آثار هوش مصنوعی جهان، 2025"}}}, "internet-2024": {"title": "افراد استفاده‌کننده از اینترنت در ایران به 85 درصد می‌رسند", "who": "بانک جهانی / ITU", "one_liner": "میزان استفاده از 0.9 درصد (2000) به 15.9 (2010)، 75.6 (2020) و 85.3 (2024) افزایش یافت.", "impact": "اتصال به اینترنت بالاست، اما دسترسی به ابزارهای هوش مصنوعی خارجی فیلتر است (به مورد ChatGPT مراجعه کنید).", "metrics": {"0": {"label": "2024"}}}}, "lags": {}, "diffusion": {}, "views": {"ai": ["رایانش و هوش مصنوعی در ایران", "از نخستین رایانه‌ی شرکت نفت (1962) تا مدل‌های زبانی فارسی و سند ملی هوش مصنوعی: چه رخ داد و چه چیزی را تغییر داد."], "edu": ["رایانه و هوش مصنوعی در آموزش ایران", "دانشگاه مجازی، مدارس هوشمند، شاد و نخستین درس‌های هوش مصنوعی، با تفکیک مدارس (K-12) و دانشگاه‌ها."], "combined": ["ایران: از آزمایشگاه تا کلاس درس", "یک فناوری چقدر طول می‌کشد تا به دانشجویان و دانش‌آموزان ایرانی برسد، بر پایه‌ی سابقه‌ی تاریخ‌دار خود کشور."]}, "eras": {"ai": [[1960, 1992, "نخستین رایانه‌ها"], [1992, 2010, "اینترنت و پژوهش‌های نخستین هوش مصنوعی"], [2010, 2020, "پردازش زبان طبیعی فارسی و رشد پژوهش"], [2020, 2024, "مدل‌های زبانی فارسی"], [2024, 2027, "سیاست‌گذاری ملی هوش مصنوعی"]], "edu": [[1960, 1988, "رایانش نخستین در دانشگاه‌ها"], [1988, 2004, "آغاز آموزش از راه دور و برخط"], [2004, 2020, "مدارس هوشمند و یادگیری الکترونیکی"], [2020, 2022, "کووید-19 و شاد"], [2022, 2027, "هوش مصنوعی مولد و نخستین برنامه‌ی درسی هوش مصنوعی"]], "combined": [[1960, 1992, "نخستین رایانه‌ها"], [1992, 2004, "ورود اینترنت"], [2004, 2020, "مدارس هوشمند، یادگیری الکترونیکی و پردازش زبان طبیعی فارسی"], [2020, 2024, "کووید-19، شاد و مدل‌های زبانی فارسی"], [2024, 2027, "سیاست ملی هوش مصنوعی و هوش مصنوعی در مدارس"]]}, "nav": [["ai", "ایران · هوش مصنوعی"], ["edu", "ایران · آموزش"], ["combined", "ایران · آزمایشگاه ← کلاس درس"]], "study": {"Survey": "پیمایش", "Survey (convenience sample)": "پیمایش (نمونه‌ی در دسترس)", "Survey of leaders": "پیمایش مدیران", "Evidence synthesis": "ترکیب شواهد", "Survey (student panel)": "پیمایش (پنل دانشجویی)", "Vendor usage data": "داده‌ی استفاده‌ی فروشنده", "Survey (RAND panel)": "پیمایش (پنل RAND)", "RCT (working paper)": "کارآزمایی تصادفی‌شده (RCT، مقاله‌ی کاری)", "Survey (purposive sample)": "پیمایش (نمونه‌ی هدفمند)", "Field experiment (RCT)": "آزمایش میدانی (RCT)", "RCT": "کارآزمایی تصادفی‌شده (RCT)", "Survey (self-selected institutions)": "پیمایش (مؤسسه‌های خودگزین)", "Experiment (peer-reviewed)": "آزمایش (داوری‌شده)", "Quasi-experiment (working paper)": "شبه‌آزمایش (مقاله‌ی کاری)", "Lab study (preprint, n=54)": "مطالعه‌ی آزمایشگاهی (پیش‌انتشار، n=54)", "Vendor report": "گزارش فروشنده", "Guidance document": "سند راهنما", "Survey (secondary summary)": "پیمایش (خلاصه‌ی دست دوم)", "Labour data (working paper)": "داده‌ی بازار کار (مقاله‌ی کاری)", "Vendor detector data": "داده‌ی آشکارساز فروشنده", "Correlational survey": "پیمایش همبستگی", "Corpus analysis": "تحلیل پیکره", "Corpus analysis (preprint)": "تحلیل پیکره (پیش‌انتشار)", "Expert panel": "پنل خبرگان", "Consultancy report": "گزارش مشاوره‌ای"}, "funding": {"Kortext-sponsored": "با حمایت Kortext", "vendor": "فروشنده", "sponsor-funded": "با بودجه‌ی حامی", "foundation-funded": "با بودجه‌ی بنیاد"}}};
+// i18n: on the thesis site /assets/i18n.js (loaded by the header) gives window.I18N; standalone pages fall back to English
+const I = window.I18N || (() => { const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+  const M = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" ");
+  return {lang: "en", fa: false, esc, tx: en => esc(en), txt: en => en,
+    date: d => { d = String(d); return d.length >= 7 ? M[+d.slice(5, 7) - 1] + " " + d.slice(0, 4) : d.slice(0, 4); }}; })();
+const t = (k, v) => { let s = window.I18N ? window.I18N.t(k) : (window.TL_EN[k] ?? k); return v ? s.replace(/\{(\w+)\}/g, (m, n) => n in v ? v[n] : m) : s; };
+const F = I.fa ? (D.fa || {}) : {}, FE = F.events || {};
+const fe = e => FE[e.id] || {};
+const LEVEL = {k12:[t("tl.lv.k12"),"--k12"], he:[t("tl.lv.he"),"--he"], both:[t("tl.lv.both"),"--both"]};
+const ERAS = {
+  ai:[[1943,1956,"Foundations"],[1956,1974,"Symbolic AI and early optimism"],[1974,1980,"First AI winter"],[1980,1987,"Expert systems"],
+      [1987,1993,"Second AI winter"],[1993,2012,"Statistical machine learning"],[2012,2017,"Deep learning"],
+      [2017,2022,"Transformers and foundation models"],[2022,2027,"Generative AI and agents"]],
+  edu:[[1920,1958,"Teaching machines"],[1958,1977,"Mainframe computer-assisted instruction"],[1977,1994,"Microcomputers, LOGO and intelligent tutors"],
+       [1994,2008,"The internet reaches the classroom"],[2008,2020,"Open content, MOOCs and adaptive learning"],
+       [2020,2022,"Pandemic remote learning"],[2022,2027,"Generative AI in the classroom"]]
+};
+ERAS.combined = ERAS.ai;
+if(D.eras) Object.assign(ERAS, D.eras);
+// era names in the page language: the Persian list must have the same spans, else the English name is kept
+const eraName = (view,a,b,n) => { const f=(F.eras?.[view]||(view==="combined"&&!D.eras?F.eras?.ai:null)||[]).find(x=>x[0]===a&&x[1]===b); return f?f[2]:n; };
+const ASOF = I.dmy ? I.dmy(D.asof || "30 Sep 2026") : (D.asof || "30 Sep 2026");
+const col = e => e.track==="ai" ? "var(--ai)" : `var(${(LEVEL[e.level]||LEVEL.both)[1]})`;
+const yr = e => +String(e.date).slice(0,4);
+const frac = d => { d=String(d); return +d.slice(0,4) + (d.length>=7 ? (+d.slice(5,7)-1)/12 : .5); };
+const esc = I.esc;
+const fmtDate = d => I.date(d);
+const $ = id => document.getElementById(id);
+const fmtE = e => fmtDate(e.date)+(e.until?"–"+e.until:"");
+const E = D.events;
+const TITLE = I.fa && F.views?.[D.view] ? F.views[D.view][0] : D.title, SUB = I.fa && F.views?.[D.view] ? F.views[D.view][1] : D.sub;
+const tag = (k, v) => { const x = t(k + v); return x === k + v ? v : x; };  // a translated tag, or the value itself
+
+// piecewise year scale: early decades compressed, the recent ones given room
+const KN = [[1920,0],[1990,.30],[2010,.58],[2027,1]];
+function xs(y){ for(let i=1;i<KN.length;i++){ const [a,pa]=KN[i-1],[b,pb]=KN[i]; if(y<=b) return pa+(pb-pa)*(Math.max(y,a)-a)/(b-a);} return 1; }
+
+// header
+document.title = TITLE;
+$("eyebrow").textContent = t("tl.eyebrow", {d: ASOF});
+$("title").textContent = TITLE; $("sub").textContent = SUB;
+const views=(I.fa&&F.nav)||D.nav||[["ai",t("tl.nav_ai")],["edu",t("tl.nav_edu")],["combined",t("tl.nav_comb")]];
+$("views").innerHTML = views.map(([v,l])=>`<a href="${v}-story.html" class="${v===D.view?"on":""}">${esc(l)}</a>`).join("")
+  + `<span class="sep"></span><a class="on" href="${D.view}-story.html">${esc(t("tl.story"))}</a><a href="${D.view}-slide.html">${esc(t("tl.slide"))}</a>`;
+const y0=Math.min(...E.map(yr)), y1=Math.max(...E.map(yr));
+const nm = E.reduce((n,e)=>n+(e.metrics||[]).length,0);
+$("stats").innerHTML = [[E.length,t("tl.st_events")],[`${y0}–${y1}`,t("tl.st_span")],[nm,t("tl.st_figs")],
+  [E.filter(e=>e.verified===false).length,t("tl.st_unv")]].map(([b,s])=>`<div><b>${b}</b><span>${esc(s)}</span></div>`).join("");
+
+// legend
+const leg = D.view==="ai" ? [[t("tl.leg_ai"),"--ai"]] : D.view==="edu" ? [LEVEL.k12,LEVEL.he,LEVEL.both] : [[t("tl.leg_ai"),"--ai"],LEVEL.k12,LEVEL.he,LEVEL.both];
+$("legend").innerHTML = leg.map(([l,c])=>`<span><i style="background:var(${c})"></i>${esc(l)}</span>`).join("") + `<span style="color:var(--faint)">${esc(t("tl.leg_tick"))}</span>`;
+
+// overview strip (an axis: always left to right)
+(function strip(){
+  const W=1180, H=120, svg=$("strip"); svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  let s="";
+  ERAS[D.view].forEach(([a,b,n],i)=>{ const x=xs(a)*W, w=(xs(b)-xs(a))*W, nn=eraName(D.view,a,b,n);
+    s+=`<rect x="${x}" y="8" width="${w}" height="74" fill="${i%2?"#141925":"#10141D"}"/>`;
+    if(w>60) s+=`<text x="${x+6}" y="22" fill="#5E6677" font-family="JetBrains Mono" font-size="9.5" letter-spacing="1">${esc((I.fa?nn:nn.toUpperCase()).slice(0,Math.floor(w/(I.fa?5.6:6.6))))}</text>`; });
+  for(let d=1920; d<=2020; d+=10){ const x=xs(d)*W; s+=`<line x1="${x}" x2="${x}" y1="82" y2="88" stroke="#3A4150"/><text x="${x}" y="104" text-anchor="middle" fill="#7D8596" font-family="JetBrains Mono" font-size="11">${d}</text>`; }
+  const rowY = e => D.view==="combined" ? (e.track==="ai"?36:62) : D.view==="edu" ? ({k12:36,both:50,he:64}[e.level]||50) : 50;
+  E.forEach(e=>{ const x=xs(frac(e.date))*W, h=e.significance===1?22:e.significance===3?7:12, y=rowY(e);
+    // each tick sits in a 6px-wide transparent hit area so thin detail ticks stay clickable
+    s+=`<g data-id="${e.id}" style="cursor:pointer"><title>${esc(fmtDate(e.date)+" — "+I.txt(e.title,fe(e).title))}</title><rect x="${x-3}" y="${y-h/2-2}" width="6" height="${h+4}" fill="transparent"/><line x1="${x}" x2="${x}" y1="${y-h/2}" y2="${y+h/2}" stroke="${col(e)}" stroke-width="${e.significance===1?3:e.significance===3?1:1.6}" stroke-opacity="${e.significance===3?.55:1}" stroke-linecap="round"/></g>`; });
+  svg.innerHTML=s;
+  svg.addEventListener("click",ev=>{ const g=ev.target.closest("[data-id]"); if(g) jump(g.dataset.id); });
+})();
+
+// lane heads
+if(D.view==="edu") $("lanehead").innerHTML=`<div style="color:var(--k12)">${esc(t("tl.lane_k12"))}</div><div></div><div style="color:var(--he)">${esc(t("tl.lane_he"))}</div>`;
+else if(D.view==="combined") $("lanehead").innerHTML=`<div style="color:var(--ai)">${esc(t("tl.lane_ai"))}</div><div></div><div style="color:var(--he)">${esc(t("tl.lane_edu"))}</div>`;
+else $("lanehead").remove();
+
+// cards
+function side(e,i){
+  if(D.view==="ai") return i%2?"R":"L";
+  if(D.view==="edu") return e.level==="k12"?"L":e.level==="he"?"R":"C";
+  return e.track==="ai"?"L":"R";
+}
+// only web sources are links; a local file or dataset path is never shown (build.py drops it and sets source_local)
+const isUrl = u => /^(https?:\/\/|10\.)/.test(String(u));
+const href = u => /^10\./.test(u) ? "https://doi.org/"+u : u;
+const studyFa = x => I.fa ? (F.study?.[x] || x) : x, fundFa = x => I.fa ? (F.funding?.[x] || x) : x;
+function card(e,i){
+  const f = fe(e), fm = f.metrics || {};
+  const lv = e.track==="edu" && LEVEL[e.level] ? `<span class="tag" style="color:${col(e)}">${esc(LEVEL[e.level][0])}</span>` : "";
+  const warn = e.verified===false ? `<span class="tag warn" title="${esc(I.txt(e.note,f.note)||t("tl.unv_t"))}">${esc(t("tl.unv"))}</span>` : "";
+  const ms = (e.metrics||[]).map((m,j)=>`<div class="m"><b>${I.val?I.val(m.value):esc(m.value)}</b><span>${m.label?I.tx(m.label,fm[j]?.label):""}</span>${m.source&&isUrl(m.source)?`<a href="${esc(href(m.source))}" target="_blank" rel="noopener">${esc(m.as_of?t("tl.asof",{d:m.as_of}):t("tl.source"))} ↗</a>`:m.source?`<a title="${esc(m.source)}">${esc(m.as_of?t("tl.asof",{d:m.as_of}):"")}</a>`:""}</div>`).join("");
+  const src = e.source&&isUrl(e.source)?`<a class="src" lang="en" dir="ltr" href="${esc(href(e.source)+(e.page&&/\.pdf($|\?)/i.test(e.source)?"#page="+e.page:""))}" target="_blank" rel="noopener">${esc(e.source)}${e.page?" · p."+e.page:""} ↗</a>`
+    : e.source_local ? `<span class="src">${esc(t("tl.src_local"))}</span>` : "";
+  return `<div class="row ${side(e,i)} s${e.significance||2}" style="--c:${col(e)}"><div class="dot"></div>
+   <article class="card" id="e-${esc(e.id)}" data-y="${yr(e)}">
+    <div class="meta"><span class="d">${fmtE(e)}</span><span class="tag">${esc(tag("tl.kind.",e.kind))}</span>${lv}${e.quality?`<span class="tag" title="${esc(t("tl.quality_t"))}">${esc(tag("tl.quality.",e.quality))}</span>`:""}${e.study?`<span class="tag" title="${esc(t("tl.study_t"))}">${esc(studyFa(e.study))}</span>`:""}${e.funding?`<span class="tag" title="${esc(t("tl.funding_t"))}">${esc(fundFa(e.funding))}</span>`:""}${warn}</div>
+    <h3>${I.tx(e.title,f.title)}</h3><div class="who">${I.tx(e.who,f.who)}</div>
+    <dl class="q"><dt>${esc(t("tl.said"))}</dt><dd>${I.tx(e.one_liner,f.one_liner)}</dd><dt>${esc(t("tl.caused"))}</dt><dd class="imp">${I.tx(e.impact,f.impact)}</dd></dl>
+    ${ms?`<div class="metrics">${ms}</div>`:""}
+    ${src}
+   </article></div>`;
+}
+(function timeline(){
+  let h=""; const eras=ERAS[D.view]; let i=0;
+  for(const [a,b,n] of eras){
+    const inEra=E.filter(e=>yr(e)>=a && yr(e)<b); if(!inEra.length) continue;
+    const key=inEra.some(e=>e.significance===1), sto=inEra.some(e=>(e.significance||2)<3);
+    h+=`<div class="era${key?"":" empty"}${sto?"":" nostory"}"><span>${a}–${Math.min(b,2026)}</span><em>${esc(eraName(D.view,a,b,n))}</em></div>`;
+    for(const e of inEra) h+=card(e,i++);
+  }
+  const before=E.filter(e=>yr(e)<eras[0][0]); // anything older than the first era
+  if(before.length) h=`<div class="era"><span>${esc(t("tl.before",{y:eras[0][0]}))}</span><em>${esc(t("tl.precursors"))}</em></div>`+before.map(e=>card(e,i++)).join("")+h;
+  $("tl").innerHTML=h;
+})();
+
+const lagTxt = y => y<0.05?t("tl.same_month"):y<1?t("tl.months",{n:Math.round(y*12)}):t("tl.years",{n:y});
+const cut = (s,n) => s.length>n ? s.slice(0,n-1)+"…" : s;
+const lagLabel = l => { const f=F.lags?.[l.from+"|"+l.to]?.label; return f ? cut(f,56) : l.label; };
+// combined extras: lag chart + diffusion curves
+if(D.view==="combined"){
+  const byId=Object.fromEntries(E.map(e=>[e.id,e]));
+  const L=[...D.lags].sort((a,b)=>frac(byId[a.from].date)-frac(byId[b.from].date));
+  const W=1124, rowH=58, H=L.length*rowH+50, a0=Math.min(...L.map(l=>yr(byId[l.from])))-3;
+  const X=y=>440+(y-a0)/(2027-a0)*(W-440-170);
+  const ti = e => I.txt(e.title, fe(e).title);
+  // Persian labels sit at the right end of their 420px column (anchor end), English at the left; the axis stays LTR
+  const LX = I.fa ? 420 : 0, LA = I.fa ? "end" : "start";
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(t("tl.lag_aria"))}">`;
+  for(let d=Math.ceil(a0/10)*10; d<=2020; d+=10) s+=`<line x1="${X(d)}" x2="${X(d)}" y1="6" y2="${H-28}" stroke="#1E2430"/><text x="${X(d)}" y="${H-8}" text-anchor="middle" fill="#7D8596" font-family="JetBrains Mono" font-size="11">${d}</text>`;
+  L.forEach((l,i)=>{ const A=byId[l.from],B=byId[l.to], y=26+i*rowH, xa=X(frac(A.date)), xb=X(frac(B.date));
+    s+=`<text x="${LX}" y="${y-2}" text-anchor="${LA}" fill="#E9ECF2" font-family="Inter" font-size="14" font-weight="600">${esc(lagLabel(l)||ti(A))}</text>
+      <text x="${LX}" y="${y+15}" text-anchor="${LA}" fill="#7D8596" font-family="JetBrains Mono" font-size="10.5">${yr(A)} ${esc(ti(A).slice(0,24))} ${I.fa?"←":"→"} ${yr(B)} ${esc(ti(B).slice(0,26))}</text>
+      <rect x="${xa}" y="${y}" width="${Math.max(xb-xa,3)}" height="9" rx="4.5" fill="url(#g)"/>
+      <circle cx="${xa}" cy="${y+4}" r="7" fill="var(--ai)"><title>${esc(fmtDate(A.date)+" — "+ti(A))}</title></circle>
+      <circle cx="${xb}" cy="${y+4}" r="7" fill="${col(B)}"><title>${esc(fmtDate(B.date)+" — "+ti(B))}</title></circle>
+      <text x="${Math.max(xa,xb)+14}" y="${y+10}" fill="#fff" font-family="Fraunces" font-size="19">${esc(lagTxt(l.years))}</text>`; });
+  s+=`<defs><linearGradient id="g"><stop offset="0" stop-color="#F2A93B"/><stop offset="1" stop-color="#3CC7B4"/></linearGradient></defs></svg>`;
+  let x=`<section class="sec lags"><h2>${esc(t("tl.lags_h"))}</h2><p class="lede">${esc(t("tl.lags_p"))}</p>${s}<p class="note">${esc(t("tl.lags_note"))}</p></section>`;
+  const DF = D.diffusion||[];
+  if(DF.length){
+    // colour = level (two shades each), dash = the series' rank within its level; labels sit at the line end, de-collided
+    const lvpal={k12:["#7C9CFF","#AFC0FF"],he:["#3CC7B4","#93E6D9"],both:["#C28BFF","#DDBBFF"]}, dashes=["","7 5","2 4","12 4 3 4"];
+    const seen={k12:0,he:0,both:0};
+    DF.forEach(s=>{ const lv=s.level||"both", n=seen[lv]++; s._c=lvpal[lv][n%2]; s._d=dashes[Math.floor(n/2)%dashes.length]; s._l=I.txt(s.label,F.diffusion?.[s.label]); });
+    function chart(series,lo,hi,step,aria,margin){
+      const W2=1124,H2=margin?440:400,x0=60,y0=20,pw=W2-x0-(margin?330:300),ph=H2-y0-44;
+      const PX=y=>x0+(y-lo)/(hi-lo)*pw, PY=v=>y0+ph-v/100*ph;
+      let g=`<svg viewBox="0 0 ${W2} ${H2}" role="img" aria-label="${esc(aria)}">`;
+      [0,25,50,75,100].forEach(v=>g+=`<line x1="${x0}" x2="${x0+pw}" y1="${PY(v)}" y2="${PY(v)}" stroke="#1E2430"/><text x="${x0-8}" y="${PY(v)+4}" text-anchor="end" fill="#7D8596" font-family="JetBrains Mono" font-size="11">${v}%</text>`);
+      for(let d=Math.ceil(lo/step)*step; d<=hi; d+=step) g+=`<line x1="${PX(d)}" x2="${PX(d)}" y1="${y0+ph}" y2="${y0+ph+5}" stroke="#3A4150"/><text x="${PX(d)}" y="${H2-14}" text-anchor="middle" fill="#7D8596" font-family="JetBrains Mono" font-size="11">${d}</text>`;
+      const labs=[];
+      series.forEach(s=>{ const pts=s.points.map(p=>[PX(p[0]),PY(p[1])]);
+        g+=`<polyline points="${pts.map(p=>p.join(",")).join(" ")}" fill="none" stroke="${s._c}" stroke-width="2.5" stroke-dasharray="${s._d}" stroke-linecap="round"/>`;
+        s.points.forEach((p,j)=>g+=`<circle cx="${pts[j][0]}" cy="${pts[j][1]}" r="4.5" fill="${s._c}"><title>${esc(t("tl.pt",{l:s._l,v:p[1],y:Math.floor(p[0])}))}${p[2]?" — "+esc(p[2]):""}${s.note?"\n"+esc(s.note):""}</title></circle>`);
+        const last=pts[pts.length-1]; labs.push({x:last[0],y:last[1],ty:last[1],s}); });
+      // de-collide end labels that share a column
+      labs.sort((a,b)=>a.x-b.x||a.y-b.y);
+      // margin=true: every label in one column right of the plot (busy zoom view); else per end-point column
+      const cols=[]; labs.forEach(l=>{ const c=margin?cols[0]:cols.find(c=>Math.abs(c[0].x-l.x)<140); c?c.push(l):cols.push([l]); });
+      cols.forEach(c=>{ c.sort((a,b)=>a.y-b.y); for(let i=1;i<c.length;i++) c[i].ty=Math.max(c[i].ty,c[i-1].ty+15);
+        const over=c[c.length-1].ty-(y0+ph+4); if(over>0) c.forEach(l=>l.ty-=over);
+        for(let i=c.length-2;i>=0;i--) c[i].ty=Math.min(c[i].ty,c[i+1].ty-15); });
+      labs.forEach(l=>{ const lx=margin?x0+pw+18:Math.max(...cols.find(c=>c.includes(l)).map(o=>o.x))+16;
+        g+=`<path d="M${l.x+5},${l.y} L${lx-4},${l.ty}" stroke="${l.s._c}" stroke-opacity=".5" fill="none"/><text x="${lx}" y="${l.ty+4}" fill="${l.s._c}" font-family="Inter" font-size="12.5">${esc(l.s._l)}</text>`; });
+      return g+`</svg>`;
+    }
+    const main=DF.filter(s=>!s.more), more=DF.filter(s=>s.more);
+    const ys=main.flatMap(s=>s.points.map(p=>p[0]));
+    const long=chart(main,Math.floor(Math.min(...ys))-1,2027,5,t("tl.diff_aria_long"));
+    const zoomSet=withMore=>(withMore?DF:main).filter(s=>s.points.every(p=>p[0]>=2022));
+    const zoom=withMore=>chart(zoomSet(withMore),2023,2026.5,1,t("tl.diff_aria_zoom"),true);
+    x+=`<section class="sec diff"><h2>${esc(t("tl.diff_h"))}</h2><p class="lede">${esc(t("tl.diff_p"))}</p>${long}
+      <h3 style="font:300 26px var(--display);margin:34px 0 6px">${esc(t("tl.zoom_h"))}</h3><p class="lede" style="margin-bottom:10px">${esc(t("tl.zoom_p"))}</p>
+      ${more.length?`<button class="chip" id="morecurves" aria-pressed="false" style="margin-bottom:8px">${esc(t("tl.more",{n:more.length}))}</button>`:""}<div id="zoom" data-reveal>${zoom(false)}</div>
+      <p class="note">${esc(t("tl.diff_note"))}</p></section>`;
+    setTimeout(()=>{ const b=$("morecurves"); if(b) b.onclick=()=>{ const on=b.getAttribute("aria-pressed")!=="true"; b.setAttribute("aria-pressed",on); b.classList.toggle("on",on); $("zoom").innerHTML=zoom(on); }; });
+  }
+  $("extras").innerHTML=x;
+}
+
+$("foot").innerHTML = t("tl.foot", {d: esc(ASOF)});
+
+// reveal + current-year indicator
+const io=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add("in"); } }),{rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll(".card").forEach(c=>io.observe(c));
+const yo=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting) $("yr").textContent=en.target.dataset.y; }),{rootMargin:"-45% 0px -50% 0px"});
+document.querySelectorAll(".card").forEach(c=>yo.observe(c));
+// how much to show: key (slide only) · story (significance 1–2, default) · all (incl. detail-level stats)
+const nDetail=E.filter(e=>e.significance===3).length;
+$("m-all").textContent = nDetail ? t("tl.mode_all_n",{n:nDetail}) : t("tl.mode_all");
+function mode(m){ document.body.classList.remove("key","story"); if(m!=="all") document.body.classList.add(m);
+  document.querySelectorAll("#modes .chip").forEach(b=>{ b.classList.toggle("on",b.dataset.m===m); b.setAttribute("aria-pressed",b.dataset.m===m); });
+  const shown=E.filter(e=>m==="all"||(e.significance||2)<=(m==="key"?1:2)).length;
+  $("mcount").textContent=t("tl.showing",{a:shown,b:E.length}); }
+document.querySelectorAll("#modes .chip").forEach(b=>b.onclick=()=>mode(b.dataset.m));
+mode("story");
+function jump(id){ const c=document.getElementById("e-"+id); if(!c) return;
+  if(!c.offsetParent) mode("all");
+  c.classList.add("in"); c.scrollIntoView({block:"center"}); c.animate([{outline:"2px solid #fff"},{outline:"2px solid transparent"}],{duration:1600}); }
+// deep link (#e-<id>, e.g. from the Challenges page): after load, so the browser's own anchor jump does not win
+if(location.hash.startsWith("#e-")) addEventListener("load",()=>setTimeout(()=>jump(decodeURIComponent(location.hash.slice(3))),60));
+addEventListener("hashchange",()=>{ if(location.hash.startsWith("#e-")) jump(decodeURIComponent(location.hash.slice(3))); });
+const help=$("help"); $("qbtn").onclick=()=>help.classList.toggle("on"); help.onclick=()=>help.classList.remove("on");
+addEventListener("keydown",e=>{ if(e.key==="?") help.classList.toggle("on"); if(e.key==="Escape") help.classList.remove("on"); });
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="title.home">Intelligent Educator — MSc thesis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:48px;align-items:center;padding:72px 0 40px}
+.hero h1{font-size:clamp(34px,4.4vw,58px)}
+html[lang="fa"] .hero h1{font-size:clamp(26px,3vw,40px)}
+.hero p{margin-top:22px;font-size:18px;color:var(--muted)}
+.mini{position:relative}
+.mini svg{width:100%;height:auto;display:block}
+.mini figcaption{margin-top:10px;font-size:14px;color:var(--muted)}
+.mini figcaption b{font:500 26px var(--display);color:var(--k12)}
+.explore{list-style:none;margin-top:20px}
+.explore li{border-top:1px solid var(--line)}
+.explore li:last-child{border-bottom:1px solid var(--line)}
+.explore a{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr) 200px;gap:24px;align-items:baseline;padding:22px 4px;text-decoration:none}
+.explore a:hover h3{color:var(--ai)}
+.explore .fact{font-family:var(--mono);font-size:13px;color:var(--faint);text-align:end}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.explore a{grid-template-columns:1fr}.explore .fact{text-align:start}}
+</style>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+html[lang="fa"]{--display:"Vazirmatn",Tahoma,sans-serif;--body:"Vazirmatn",Tahoma,sans-serif;--mono:"Vazirmatn",ui-monospace,Menlo,monospace}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr nav{display:flex;gap:4px;flex-wrap:nowrap;min-width:0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+.site-hdr nav a{position:relative;padding:8px 12px;border-radius:8px;font-size:14px;color:#98A0B0;text-decoration:none;white-space:nowrap}
+.site-hdr nav a:hover{color:#E9ECF2;background:#151A24}
+.site-hdr nav a[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav a[aria-current="page"]::after{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media (max-width:760px){.site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}.site-hdr nav a{padding:8px 7px;font-size:13px}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}.site-hdr nav{overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}.site-hdr nav a[aria-current="page"]::after{bottom:0}}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the glossary note on the thesis page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <nav aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-sec="home" data-i18n="nav.home">Home</a>
+    <a href="/thesis/timelines/index.html" data-sec="timelines" data-i18n="nav.timelines">Timelines</a>
+    <a href="/thesis/challenges.html" data-sec="challenges" data-i18n="nav.challenges">Challenges</a>
+    <a href="/thesis/iran-map.html" data-sec="iran-map" data-i18n="nav.iran_map">Iran education map</a>
+    <a href="/thesis/ml-courses.html" data-sec="ml-courses" data-i18n="nav.ml_courses">ML courses</a>
+    <a href="/thesis/datasets.html" data-sec="datasets" data-i18n="nav.datasets">Datasets</a>
+    <a href="/thesis/ecosystem.html" data-sec="ecosystem" data-i18n="nav.ecosystem">Who builds it</a>
+    <a href="/thesis/thesis.html" data-sec="thesis" data-i18n="nav.thesis">Thesis</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{const p=location.pathname, sec=p.includes("/thesis/timelines/")?"timelines":(p.split("/").pop().replace(".html","")||"index");
+  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ if(a.dataset.sec===(sec==="index"?"home":sec)) a.setAttribute("aria-current","page"); });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<a href="/thesis/thesis.html#glossary">${I.t("i18n.banner")}</a><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=0, src=null, done=false;
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<main>
+  <div class="hero">
+    <div>
+      <h1 data-i18n="home.h1">Can a tutor that knows how a course fits together teach machine learning better than one that only searches its text?</h1>
+      <p data-i18n="home.lede">An MSc thesis in Industrial Engineering (System Modeling &amp; Data Analysis) at Iran University of Science and Technology. It builds a knowledge graph of a machine-learning course, a tutor that answers by walking that graph (GraphRAG), and tests it with students against a plain chatbot and ordinary text retrieval.</p>
+    </div>
+    <figure class="mini" id="mini"><figcaption id="minicap"></figcaption></figure>
+  </div>
+
+  <section>
+    <h2 data-i18n="home.explore">Explore the evidence</h2>
+    <ul class="explore">
+      <li><a href="/thesis/timelines/index.html"><h3 data-i18n="nav.timelines">Timelines</h3><p class="muted" data-i18n="home.tl_p">How AI ideas reached classrooms, worldwide and in Iran, and how long each step took.</p><span class="fact" id="f-tl" data-i18n="home.tl_fact">dated, sourced events</span></a></li>
+      <li><a href="/thesis/challenges.html"><h3 data-i18n="nav.challenges">Challenges</h3><p class="muted" data-i18n="home.ch_p">What generative AI has done to universities and schools so far, claim by claim, with the evidence for and against and what each means for the tutor.</p><span class="fact" data-i18n="home.ch_fact">10 challenges, 4 claimed benefits</span></a></li>
+      <li><a href="/thesis/iran-map.html"><h3 data-i18n="nav.iran_map">Iran education map</h3><p class="muted" data-i18n="home.map_p">Students, teachers and university staff by province and year, with girls and boys, women and men shown apart.</p><span class="fact" id="f-map" data-i18n="home.map_fact">31 provinces</span></a></li>
+      <li><a href="/thesis/research-quality.html"><h3 data-i18n="rq.h1">How good are the journals? Iran vs the world</h3><p class="muted" data-i18n="home.rq_p">Iran's AI-in-education papers against the world's, by journal quartile (Q1–Q4), with the top journals on each side. Choose the topic and how much detail to show.</p><span class="fact" data-i18n="home.rq_fact">SJR Q1–Q4 since 2015</span></a></li>
+      <li><a href="/thesis/ml-courses.html"><h3 data-i18n="nav.ml_courses">ML courses</h3><p class="muted" data-i18n="home.ml_p">Which textbooks universities teach machine learning from, how we found out, and their course materials.</p><span class="fact" id="f-ml" data-i18n="home.ml_fact">43 universities</span></a></li>
+      <li><a href="/thesis/datasets.html"><h3 data-i18n="nav.datasets">Datasets</h3><p class="muted" data-i18n="home.ds_p">The question sets and graphs the tutor is tested on before any classroom: computer science and machine-learning Q&amp;A, big graphs of CS research, and how we build our own question bank.</p><span class="fact" data-i18n="home.ds_fact">38 datasets checked</span></a></li>
+      <li><a href="/thesis/ecosystem.html"><h3 data-i18n="nav.ecosystem">Who builds it</h3><p class="muted" data-i18n="home.eco_p">Who builds and funds AI for education: investment by country, AI products in universities and computer science, products sold to schools, LMS vendors and MOOCs, with Iran apart.</p><span class="fact" data-i18n="home.eco_fact">37 commitments, 53 products</span></a></li>
+      <li><a href="/thesis/thesis.html"><h3 data-i18n="nav.thesis">Thesis</h3><p class="muted" data-i18n="home.th_p">The research questions, hypotheses, system variants and how the student study runs.</p><span class="fact" data-i18n="home.th_fact">5 questions, 5 hypotheses</span></a></li>
+    </ul>
+  </section>
+</main>
+<footer class="site-foot" data-i18n="home.foot">Built locally from the project data. Every figure on these pages links back to its source.</footer>
+<script>
+const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json"]}};
+// a small live map on the home page once the Iran export exists
+(async()=>{
+  const cap=document.getElementById("minicap");
+  if(!D.data.iran_stats.includes("provinces.json")){cap.innerHTML=t("home.mini_static");return;}
+  try{
+    const [pv,k]=await Promise.all(["provinces","k12"].map(f=>fetch(`/thesis/data/iran_stats/${f}.json`).then(r=>r.json())));
+    window.__mini && window.__mini(pv,k);
+  }catch(e){cap.textContent=t("home.mini_err");}
+})();
+</script>
+<script src="/thesis/assets/mini-map.js"></script>
+</body>
+</html>

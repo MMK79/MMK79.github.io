@@ -1,0 +1,553 @@
+[
+ {
+  "id": "mit-ocw",
+  "name": "MIT OpenCourseWare (+ MIT Learn)",
+  "type": "university OCW",
+  "country": "US",
+  "founded": "2001 announced; site 2003",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "MIT Learn / AskTIM",
+    "launched": "2025-07-21",
+    "what": "AI recommendation assistant over 12,700+ MIT learning resources; summarises course structure"
+   },
+   {
+    "name": "AI assistant / AI tutor in select offerings",
+    "launched": "2025-07",
+    "what": "lecture Q&A, flashcards, summaries; tutor guides problem sets without giving answers (select biology courses); model/vendor not stated"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "courses",
+    "value": "2,500+",
+    "as_of": "2026 (about page)",
+    "basis": "claimed",
+    "source": "https://ocw.mit.edu/about/"
+   },
+   {
+    "metric": "lifetime visits (website + YouTube)",
+    "value": "500 million+",
+    "as_of": "2026 (about page)",
+    "basis": "claimed",
+    "source": "https://ocw.mit.edu/about/"
+   },
+   {
+    "metric": "MIT Learn catalogue resources",
+    "value": "12,700+",
+    "as_of": "2025-07-21",
+    "basis": "claimed",
+    "source": "https://news.mit.edu/2025/mit-learn-offers-whole-new-front-door-institute-0721"
+   },
+   {
+    "metric": "mirror sites",
+    "value": "440",
+    "as_of": "2025",
+    "basis": "claimed",
+    "source": "https://ocw.mit.edu/about/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "Not stated for AskTIM/AI tutor (unverified)",
+  "licence": "CC BY-NC-SA 4.0",
+  "sources": [
+   "https://ocw.mit.edu/about/",
+   "https://news.mit.edu/2025/mit-learn-offers-whole-new-front-door-institute-0721"
+  ],
+  "verified": true,
+  "note": "No usage numbers or learning-impact evidence published for the AI features. Course count: 500 at 2003 launch, 1,800+ by 2007 (about page)."
+ },
+ {
+  "id": "coursera",
+  "name": "Coursera (merged with Udemy 2026-05-11)",
+  "type": "MOOC platform / public company",
+  "country": "US",
+  "founded": "2012",
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "Coursera Coach",
+    "launched": "2024-06-05 (blog)",
+    "what": "in-course generative-AI tutor: concept explanation, practice, mastery-based guidance"
+   },
+   {
+    "name": "Coach Dialogues / Role Play / Course Builder / AI grading",
+    "launched": "2025",
+    "what": "instructor-embedded Coach; role-play practice with Coach as counterpart; AI-assisted content creation (vendor press release names Coach, Role Play, Course Builder; detail counts unverified)"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "registered learners",
+    "value": "205 million",
+    "as_of": "2026-03-31",
+    "basis": "measured",
+    "source": "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-First-Quarter-2026-Financial-Results/default.aspx"
+   },
+   {
+    "metric": "registered learners",
+    "value": "197 million",
+    "as_of": "2025-12-31",
+    "basis": "measured",
+    "source": "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx"
+   },
+   {
+    "metric": "registered learners",
+    "value": "168 million",
+    "as_of": "2024-12-31",
+    "basis": "measured",
+    "source": "same FY2025 release"
+   },
+   {
+    "metric": "combined Coursera+Udemy learners",
+    "value": "290 million+",
+    "as_of": "2026-05 (post-merger)",
+    "basis": "claimed",
+    "source": "https://www.axios.com/2026/05/11/coursera-udemy-ai-skills"
+   },
+   {
+    "metric": "Coach: users since launch",
+    "value": "1 million+",
+    "as_of": "2025 (reported via CEO, secondary source)",
+    "basis": "claimed",
+    "source": "secondary web summaries only; primary not located"
+   },
+   {
+    "metric": "GenAI course enrollments rate",
+    "value": "45 per minute (up from 25 in 2025)",
+    "as_of": "2026 Global Skills Report",
+    "basis": "claimed",
+    "source": "https://blog.coursera.org/global-skills-report-2026/"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Coursera internal Coach analysis",
+    "design": "vendor-reported users vs non-users comparison (design not published)",
+    "finding": "users completed 11.6% more course items per hour; 90% satisfaction (Coursera-reported, Nov 2025 secondary). Quiz pass +9.5% first attempt appears only in secondary summaries",
+    "independent": false,
+    "doi_or_url": "https://www.i-programmer.info/news/150-training-a-education/18299-acquire-new-skills-with-coursera-plus.html"
+   },
+   {
+    "study": "Coach peer-review/AI-feedback claim",
+    "design": "vendor claim",
+    "finding": "16.7% more course completions within a day of peer review; grading within 1 minute; ~45x more feedback - from search summary, NOT confirmed in the earnings release",
+    "independent": false,
+    "doi_or_url": "unverified"
+   }
+  ],
+  "business": [
+   {
+    "metric": "revenue FY2025",
+    "value": "$757.5 million (+9% YoY)",
+    "as_of": "2025",
+    "source": "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx"
+   },
+   {
+    "metric": "revenue Q1 2026",
+    "value": "$195.7 million (+9%); consumer $129.5M, enterprise $66.2M",
+    "as_of": "2026-Q1",
+    "source": "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-First-Quarter-2026-Financial-Results/default.aspx"
+   },
+   {
+    "metric": "Udemy all-stock deal",
+    "value": "$2.5 billion; 0.800 Coursera share per Udemy share; completed 2026-05-11",
+    "as_of": "2026-05",
+    "source": "https://www.axios.com/2026/05/11/coursera-udemy-ai-skills"
+   }
+  ],
+  "privacy_note": "Coach powered by third-party LLMs (Google Gemini reported in secondary source); data terms not reviewed (unverified)",
+  "sources": [
+   "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-First-Quarter-2026-Financial-Results/default.aspx",
+   "https://investor.coursera.com/news/news-details/2026/Coursera-Reports-Fourth-Quarter-and-Full-Year-2025-Financial-Results/default.aspx",
+   "https://blog.coursera.org/coursera-coach-leveraging-genai-to-empower-learners/"
+  ],
+  "verified": false,
+  "note": "Registered-learner and revenue figures verified from company releases; all AI-impact numbers are vendor claims and only partly traced to a primary document. Registered learners are cumulative sign-ups, not active users."
+ },
+ {
+  "id": "edx-2u",
+  "name": "edX (2U)",
+  "type": "MOOC platform",
+  "country": "US",
+  "founded": "2012 (Harvard + MIT, nonprofit); sold to 2U 2021",
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "edX Xpert",
+    "launched": "2023-05-12",
+    "what": "ChatGPT-API learning assistant: explains concepts, answers follow-ups, recommends modules, quizzes, summarises lectures, support"
+   },
+   {
+    "name": "edX plugin for ChatGPT",
+    "launched": "2023-05-12",
+    "what": "course discovery from within ChatGPT Plus"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "people connected (edX)",
+    "value": "76 million",
+    "as_of": "2023-05-12",
+    "basis": "claimed",
+    "source": "https://2u.com/newsroom/edx-debuts-two-ai-powered-learning-assistants-built-on-chatgpt/"
+   },
+   {
+    "metric": "courses in library",
+    "value": "4,200",
+    "as_of": "2023-05-12",
+    "basis": "claimed",
+    "source": "same"
+   },
+   {
+    "metric": "people connected (edX, later boilerplate)",
+    "value": "83 million+",
+    "as_of": "2024-25",
+    "basis": "claimed",
+    "source": "search snippet of 2U materials"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "2U Chapter 11 filing",
+    "value": "2024-07-25; debt cut by >50% to ~$459M; ~$110M new capital; emerged private in Sept 2024",
+    "as_of": "2024",
+    "source": "https://www.highereddive.com/news/2u-chapter-11-bankruptcy-restructuring/722358/"
+   },
+   {
+    "metric": "edX acquisition by 2U",
+    "value": "~$800 million (2021)",
+    "as_of": "2021",
+    "source": "https://www.highereddive.com/news/2u-chapter-11-bankruptcy-restructuring/722358/"
+   }
+  ],
+  "privacy_note": "not reviewed",
+  "sources": [
+   "https://2u.com/newsroom/edx-debuts-two-ai-powered-learning-assistants-built-on-chatgpt/",
+   "https://www.highereddive.com/news/2u-chapter-11-bankruptcy-restructuring/722358/"
+  ],
+  "verified": false,
+  "note": "No usage or impact data located for Xpert after launch; edX's trajectory is dominated by 2U's financial distress. Open edX (separate open-source LMS) is covered in stream C."
+ },
+ {
+  "id": "harvard-cs50",
+  "name": "Harvard CS50 (CS50x on edX; CS50.ai duck)",
+  "type": "university MOOC course",
+  "country": "US",
+  "founded": "CS50x 2012",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "CS50 Duck (cs50.ai)",
+    "launched": "2023 summer pilot; wide 2023-24",
+    "what": "GPT-based tutor with guardrails (no direct solutions), Ed forum bot, VS Code explainers"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "students/teachers who used the duck",
+    "value": "~201k-211k",
+    "as_of": "by 2024-11",
+    "basis": "claimed",
+    "source": "https://dl.acm.org/doi/10.1145/3641554.3701945"
+   },
+   {
+    "metric": "prompts to the duck",
+    "value": "~9.4-10 million",
+    "as_of": "by 2024-11",
+    "basis": "claimed",
+    "source": "https://cs.harvard.edu/malan/publications/fp0627-liu.pdf"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Liu et al. 2024, Teaching CS50 with AI (SIGCSE)",
+    "design": "descriptive deployment + student survey; no control group",
+    "finding": "75% used the tools frequently and 94% found them helpful (self-report); authors are the course team",
+    "independent": false,
+    "doi_or_url": "10.1145/3626252.3630938"
+   },
+   {
+    "study": "Liu et al. 2025, Improving AI in CS50",
+    "design": "iterative evaluation with human feedback on duck responses",
+    "finding": "reports usage logs and quality improvements; authors are the course team",
+    "independent": false,
+    "doi_or_url": "10.1145/3641554.3701945"
+   }
+  ],
+  "business": [],
+  "privacy_note": "Uses OpenAI models via API per course docs (unverified)",
+  "sources": [
+   "https://cs50.readthedocs.io/cs50.ai/",
+   "https://cs.harvard.edu/malan/publications/fp0627-liu.pdf"
+  ],
+  "verified": true,
+  "note": "Best-documented MOOC-scale AI tutor deployment; evidence is descriptive and developer-authored."
+ },
+ {
+  "id": "harvard-ps2",
+  "name": "Harvard Physical Sciences 2 AI tutor (PS2 Pal)",
+  "type": "university course RCT (not a MOOC)",
+  "country": "US",
+  "founded": "2023 study",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "PS2 Pal",
+    "launched": "Fall 2023",
+    "what": "custom GPT-4-based tutor with expert-written solutions, pedagogy-guided prompts"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "participants",
+    "value": "N=233 enrolled; 194 analysed",
+    "as_of": "Fall 2023",
+    "basis": "measured",
+    "source": "10.1038/s41598-025-97652-6"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Kestin, Miller et al. 2025, Scientific Reports",
+    "design": "crossover RCT, AI tutor at home vs in-class active learning, one semester",
+    "finding": "median learning gains more than double with AI tutor, in less time, higher engagement/motivation; single course, short term, tutor built by the study team",
+    "independent": false,
+    "doi_or_url": "10.1038/s41598-025-97652-6"
+   }
+  ],
+  "business": [],
+  "privacy_note": "n/a",
+  "sources": [
+   "https://www.nature.com/articles/s41598-025-97652-6"
+  ],
+  "verified": true,
+  "note": "Included because it is the strongest controlled evidence from an OCW/MOOC-adjacent elite university; the authors designed the tutor, so not independent of the intervention."
+ },
+ {
+  "id": "nptel-swayam",
+  "name": "NPTEL / SWAYAM (India)",
+  "type": "national MOOC platform / OCW",
+  "country": "IN",
+  "founded": "NPTEL 2003; SWAYAM 2017",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "AI course content (not an AI tutor)",
+    "launched": "2025",
+    "what": "Programming with Generative AI, Fundamentals of AI, 5 free AI courses on SWAYAM Plus (IIT Madras)"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "NPTEL cumulative enrolments",
+    "value": "2.5 crore (25 million)+",
+    "as_of": "2024-25",
+    "basis": "claimed",
+    "source": "https://www.iitm.ac.in/sites/default/files/Others/Annual%20Report%202024-25%20final%20upload.pdf (via search summary)"
+   },
+   {
+    "metric": "NPTEL Jul-Dec 2024 enrolments / exam registrants",
+    "value": "29 lakh / 9.2 lakh across 733 courses",
+    "as_of": "2024-H2",
+    "basis": "claimed",
+    "source": "https://news.careers360.com/iit-madras-awards-certificates-800-for-completing-over-3-nptel-courses-29-lakh-enrolled-so-far"
+   },
+   {
+    "metric": "NPTEL courses per semester",
+    "value": "869 (Jan-Apr 2025); 925 (Jul-Dec 2025)",
+    "as_of": "2025",
+    "basis": "claimed",
+    "source": "institutional course lists (loyolacollege.edu PDFs)"
+   },
+   {
+    "metric": "SWAYAM enrolments",
+    "value": "4.8 crore+ (48 million); 37 lakh certificates",
+    "as_of": "2025",
+    "basis": "claimed",
+    "source": "https://news.careers360.com/ugc-swayam-enrolment-crosses-4-crore-37-lakh-certificates-issued-in-interdisciplinary-courses"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "not applicable (no AI tutor found)",
+  "sources": [
+   "https://www.iitm.ac.in/sites/default/files/Others/Annual%20Report%202024-25%20final%20upload.pdf"
+  ],
+  "verified": false,
+  "note": "GAP: no production AI tutor or chatbot found for NPTEL/SWAYAM in searches; figures via press/search summaries, not read from the annual report PDF. Exam registration (~1/3 of enrolments) and certification is the engagement signal."
+ },
+ {
+  "id": "xuetangx",
+  "name": "XuetangX (Tsinghua; Rain Classroom)",
+  "type": "national MOOC platform",
+  "country": "CN",
+  "founded": "2013",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "Xiaomu AI learning assistant",
+    "launched": "c.2019",
+    "what": "AI study partner / virtual teacher built with Tsinghua CS; knowledge map from platform content"
+   },
+   {
+    "name": "Rain Classroom AI workbench with DeepSeek",
+    "launched": "2025 spring (reported on a university page)",
+    "what": "teacher-side AI course tooling; detail unverified"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "learners",
+    "value": "63 million+",
+    "as_of": "c.2022",
+    "basis": "claimed",
+    "source": "https://en.wikipedia.org/wiki/XuetangX (secondary)"
+   },
+   {
+    "metric": "course registrations",
+    "value": "228 million",
+    "as_of": "c.2022",
+    "basis": "claimed",
+    "source": "same"
+   },
+   {
+    "metric": "courses",
+    "value": "~6,000",
+    "as_of": "end-2022",
+    "basis": "claimed",
+    "source": "same"
+   },
+   {
+    "metric": "Rain Classroom users",
+    "value": "~3 million",
+    "as_of": "2018",
+    "basis": "claimed",
+    "source": "https://technode.com/2018/04/19/rain-classroom/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "not reviewed",
+  "sources": [
+   "https://www.prnewswire.com/news-releases/introducing-xiaomu-xuetangxs-new-ai-learning-assistant-300707707.html"
+  ],
+  "verified": false,
+  "note": "Scale figures are 2020-2022; no current figure or impact study located. Chinese-language primary sources not exhausted."
+ },
+ {
+  "id": "futurelearn",
+  "name": "FutureLearn (Global University Systems)",
+  "type": "MOOC platform",
+  "country": "UK",
+  "founded": "2012 (Open University)",
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "FLx",
+    "launched": "2025",
+    "what": "AI-powered learning experience platform for enterprise upskilling (secondary source; detail unverified)"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "registered learners",
+    "value": "22 million+",
+    "as_of": "2025-07",
+    "basis": "claimed",
+    "source": "https://en.wikipedia.org/wiki/FutureLearn (secondary)"
+   },
+   {
+    "metric": "partners",
+    "value": "250+",
+    "as_of": "2025-07",
+    "basis": "claimed",
+    "source": "same"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "acquired by Global University Systems",
+    "value": "2022-12",
+    "as_of": "2022",
+    "source": "https://thepienews.com/futurelearn-sold-to-gus/"
+   }
+  ],
+  "privacy_note": "not reviewed",
+  "sources": [
+   "https://thepienews.com/futurelearn-sold-to-gus/"
+  ],
+  "verified": false,
+  "note": "No learner-facing AI tutor found."
+ },
+ {
+  "id": "openlearn",
+  "name": "OpenLearn (The Open University)",
+  "type": "university OCW",
+  "country": "UK",
+  "founded": "2006",
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "AI courses/hub (content), Copilot 'AI fluency' courses",
+    "launched": "2024-25",
+    "what": "teaching about AI, with Microsoft; no AI tutor found"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "free courses/resources",
+    "value": "900+",
+    "as_of": "2026",
+    "basis": "claimed",
+    "source": "https://www.open.edu/openlearn/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "OU policy: Microsoft Copilot in protected mode, data stays in OU tenant (policy page)",
+  "sources": [
+   "https://about.open.ac.uk/policies-and-reports/policies-and-statements/generative-ai-learning-teaching-and-assessment-ou-0"
+  ],
+  "verified": false,
+  "note": "Open founding year and scale not confirmed from a primary source."
+ },
+ {
+  "id": "stanford-yale-open",
+  "name": "Stanford Online / Stanford Engineering Everywhere; Open Yale Courses",
+  "type": "university OCW",
+  "country": "US",
+  "founded": "SEE 2008; OYC 2007",
+  "segment": "he",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "OYC launch courses",
+    "value": "7",
+    "as_of": "2007-12",
+    "basis": "measured",
+    "source": "https://www.insidehighered.com/news/2007/12/12/open-courses-open-wider"
+   },
+   {
+    "metric": "SEE launch courses",
+    "value": "10 CS/EE courses",
+    "as_of": "2008-09",
+    "basis": "measured",
+    "source": "https://creativecommons.org/2008/09/17/stanford-engineering-tries-its-hand-at-ocw/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "n/a",
+  "licence": "SEE CC BY-NC-SA",
+  "sources": [
+   "https://oyc.yale.edu/"
+  ],
+  "verified": false,
+  "note": "Both are legacy archives; no AI features found. Stanford Online (2026: 30 years) now sells paid certificates; no AI tutor documented."
+ }
+]

@@ -1,0 +1,677 @@
+[
+ {
+  "id": "khan-academy",
+  "name": "Khan Academy (Khanmigo)",
+  "type": "non-profit EdTech",
+  "country": "US",
+  "founded": 2008,
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "Khanmigo (tutor + teacher assistant, GPT-4 based)",
+    "launched": "2023-03",
+    "what": "Socratic chat tutor that withholds direct answers; teacher tools for lesson plans, rubrics, quizzes"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "Khanmigo users, global",
+    "value": "~2 million by end 2024-25 school year (795 US districts, 770,000 US students)",
+    "as_of": "2025 (school-year end)",
+    "basis": "claimed",
+    "source": "secondary summaries of Khan Academy statements (aiforcause.org, ai-brainer.com); not re-checked on Khan Academy primary page"
+   },
+   {
+    "metric": "Pilot growth",
+    "value": "40,000 to ~700,000 K-12 users in 2024-25",
+    "as_of": "2025",
+    "basis": "claimed",
+    "source": "https://aiforcause.org/stories/khanmigo-ai-tutor"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Oreopoulos & Low (Univ. of Toronto), 18 Tennessee middle schools, low-achieving students, 2024-2026",
+    "design": "2-year RCT, Khan Academy + Khanmigo vs standard remediation (IXL, Zearn, DeltaMath)",
+    "finding": "Khan Academy improved math vs standard remediation but gains were modest and matched earlier Khan studies without AI; Khanmigo added no extra learning benefit; low take-up (about 15% active use) because it refuses direct answers",
+    "independent": true,
+    "doi_or_url": "https://hechingerreport.org/proof-points-khanmigo-math-ai-tutor/ (NBER draft, Aug 2026; NBER URL not located)"
+   },
+   {
+    "study": "Khan Academy 'Methodologies for Improving the Quality of AI Tutoring in K-12' (arXiv 2608.11259)",
+    "design": "industry deployment metrics and live experiments, no RCT",
+    "finding": "quality/engagement metrics; e.g. richer learner-record signals improve next-item correctness 6.1% (secondary report)",
+    "independent": false,
+    "doi_or_url": "arXiv:2608.11259"
+   }
+  ],
+  "business": [
+   {
+    "metric": "Pricing",
+    "value": "districts about $15 per student per year; families $44 per year; free for Title I via philanthropy",
+    "as_of": "2025-26",
+    "source": "https://aiforcause.org/stories/khanmigo-ai-tutor (secondary)"
+   }
+  ],
+  "privacy_note": "US K-12 deployment via district contracts; details not reviewed",
+  "sources": [
+   "https://aiforcause.org/stories/khanmigo-ai-tutor",
+   "https://hechingerreport.org/proof-points-khanmigo-math-ai-tutor/",
+   "https://www.efinstitute.org/2026/08/study-shows-low-student-use-of-ai-tutors-like-khanmigo/"
+  ],
+  "verified": false,
+  "note": "A claim in one secondary source of an 'RCT with Harvard and Stanford' showing significant gains was NOT corroborated; do not cite. The strongest independent evidence is the Toronto RCT, found via press (Hechinger), draft paper not read."
+ },
+ {
+  "id": "duolingo",
+  "name": "Duolingo (Super / Max)",
+  "type": "public company (NASDAQ: DUOL)",
+  "country": "US",
+  "founded": 2011,
+  "segment": "consumer",
+  "ai_features": [
+   {
+    "name": "Duolingo Max: Explain My Answer, Roleplay (GPT-4)",
+    "launched": "2023-03",
+    "what": "LLM explanations of right/wrong answers and open conversation practice"
+   },
+   {
+    "name": "Video Call (Lily)",
+    "launched": "2024-2025",
+    "what": "spoken conversation with an AI character; per Q2 2026 letter most new Super subscribers now get access"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "Daily active users",
+    "value": "58.7 million (+23% YoY)",
+    "as_of": "Q2 2026 (quarter to 2026-06-30)",
+    "basis": "measured",
+    "source": "https://www.sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm"
+   },
+   {
+    "metric": "Monthly active users",
+    "value": "140.6 million (+10% YoY)",
+    "as_of": "Q2 2026",
+    "basis": "measured",
+    "source": "same 8-K shareholder letter"
+   },
+   {
+    "metric": "Paid subscribers",
+    "value": "12.7 million (+17% YoY)",
+    "as_of": "2026-06-30",
+    "basis": "measured",
+    "source": "same 8-K shareholder letter"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Jiang et al. 2021/22, Foreign Language Annals, n=225 US adults, Spanish and French beginner courses",
+    "design": "cross-sectional proficiency testing (ACTFL) against 4-semester university students; commissioned/funded by Duolingo",
+    "finding": "learners reached Intermediate Low reading and Novice High listening, comparable to 4 university semesters (median 99-125 hours); pre-dates the LLM features",
+    "independent": false,
+    "doi_or_url": "10.1111/flan.12600"
+   },
+   {
+    "study": "Cambridge SSLA study comparing Duolingo, classroom, and classroom+Duolingo for beginner French",
+    "design": "peer-reviewed comparison",
+    "finding": "found via search, not read",
+    "independent": true,
+    "doi_or_url": "https://www.cambridge.org/core/journals/studies-in-second-language-acquisition/article/comparing-the-effectiveness-of-duolingo-classroom-instruction-and-classroom-duolingo-instruction-conditions-on-beginnerlevel-french-language-development/68C0E7E296669798089C84CDC7F3BB9E"
+   }
+  ],
+  "business": [
+   {
+    "metric": "Revenue",
+    "value": "$298.5M (+18% YoY)",
+    "as_of": "Q2 2026",
+    "source": "8-K"
+   },
+   {
+    "metric": "Total bookings",
+    "value": "$289.1M (+8% YoY)",
+    "as_of": "Q2 2026",
+    "source": "8-K"
+   },
+   {
+    "metric": "Net income",
+    "value": "$33.2M (11.1% margin); adj. EBITDA $77.3M (25.9%)",
+    "as_of": "Q2 2026",
+    "source": "8-K"
+   }
+  ],
+  "privacy_note": "consumer app, not reviewed",
+  "sources": [
+   "https://www.sec.gov/Archives/edgar/data/0001562088/000162828026053299/q2fy26duolingo6-30x26share.htm",
+   "https://onlinelibrary.wiley.com/doi/10.1111/flan.12600",
+   "https://www.classcentral.com/report/duolingo-q2-2026/"
+  ],
+  "verified": true,
+  "note": "Figures from the SEC 8-K. A secondary source (Class Central) reports a shift of focus from monetisation to user growth with a 100M DAU target by end 2028; the 8-K text fetched did not state it. No independent evidence on Max's AI features specifically was found. The Cambridge study's author and findings are unread (study entry is a pointer)."
+ },
+ {
+  "id": "carnegie-learning",
+  "name": "Carnegie Learning (MATHia, Cognitive Tutor)",
+  "type": "private company",
+  "country": "US",
+  "founded": 1998,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "MATHia",
+    "launched": "2011 (successor to Cognitive Tutor)",
+    "what": "cognitive-model intelligent tutoring system, step-level hints and mastery tracking; classic ITS, not an LLM"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "not verified",
+    "value": "company claims millions of students; no primary figure retrieved",
+    "as_of": "",
+    "basis": "claimed",
+    "source": "https://www.carnegielearning.com/company/"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "RAND / Pane et al., Cognitive Tutor Algebra I effectiveness trial, 147 schools, 7 states, 19,000+ students (2007-2010)",
+    "design": "cluster RCT (IES-funded)",
+    "finding": "no significant effect in year 1; effect about 0.20 SD in year 2 at high school (about 8 percentile points)",
+    "independent": true,
+    "doi_or_url": "https://www.rand.org/pubs/research_briefs/RB9746.html"
+   },
+   {
+    "study": "WWC review of Cognitive Tutor, Maui School District (569 students)",
+    "design": "RCT meeting WWC standards without reservations",
+    "finding": "indeterminate effects, no significant positive finding",
+    "independent": true,
+    "doi_or_url": "https://ies.ed.gov/ncee/WWC/Study/82114"
+   },
+   {
+    "study": "Evidence for ESSA (Johns Hopkins)",
+    "design": "evidence-tier rating",
+    "finding": "Carnegie Learning Math Solution (blended) ESSA Strong (Level 1); MATHia used alone Moderate (Level 2), per vendor press release, not re-checked on evidenceforessa.org",
+    "independent": true,
+    "doi_or_url": "https://www.biospace.com/carnegie-learning-given-level-1-strong-rating-by-johns-hopkins-university-s-evidence-for-essa-initiative"
+   }
+  ],
+  "business": [],
+  "privacy_note": "",
+  "sources": [
+   "https://www.rand.org/pubs/research_briefs/RB9746.html",
+   "https://ies.ed.gov/ncee/WWC/Study/82114"
+  ],
+  "verified": false,
+  "note": "The best-evidenced product in the set, and a mixed record: one large RCT with a delayed 0.20 SD effect, one WWC-rated RCT with null results. A good counter-example to 'AI tutors work' and a reference for effect-size expectations."
+ },
+ {
+  "id": "squirrel-ai",
+  "name": "Squirrel AI Learning",
+  "type": "private company",
+  "country": "China",
+  "founded": 2014,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "Adaptive learning system with knowledge-point graph",
+    "launched": "2015-2016",
+    "what": "fine-grained knowledge graph, per-student path adaptation, human teacher in loop in learning centres"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "students",
+    "value": "claimed millions; no primary figure verified",
+    "as_of": "",
+    "basis": "claimed",
+    "source": "https://www.technologyreview.com/2019/08/02/131198/china-squirrel-has-started-a-grand-experiment-in-ai-education-it-could-reshape-how-the/"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Wang, Christensen, Cui, et al. 2023, Interactive Learning Environments 31(2):793-803 (two studies: n=200 and n=102 eighth graders)",
+    "design": "randomised assignment, Squirrel AI vs expert-teacher large-group and small-group lessons; authors affiliated with Squirrel AI",
+    "finding": "g=0.54 and 0.73 in favour of Squirrel AI on a math test; only 3 days, different topics and formats, novelty effect",
+    "independent": false,
+    "doi_or_url": "10.1080/10494820.2020.1808794"
+   }
+  ],
+  "business": [],
+  "privacy_note": "",
+  "sources": [
+   "https://eric.ed.gov/?id=EJ1381588"
+  ],
+  "verified": false,
+  "note": "Co-authored by company staff; short duration. Treat as vendor-affiliated evidence."
+ },
+ {
+  "id": "chegg",
+  "name": "Chegg",
+  "type": "public company (NYSE: CHGG)",
+  "country": "US",
+  "founded": 2005,
+  "segment": "he",
+  "ai_features": [
+   {
+    "name": "Chegg Study with AI; pivot to 'employability platform'",
+    "launched": "2023-2026",
+    "what": "homework help displaced by general chatbots; now Chegg Study, Chegg Skills, Busuu"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "subscribers",
+    "value": "3.2 million, down 31% (early 2025)",
+    "as_of": "early 2025",
+    "basis": "claimed",
+    "source": "https://academicaitrends.com/blog/is-chegg-still-worth-it-2026/ (secondary)"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "Revenue",
+    "value": "$51.8M, down 50.7% YoY from $105M",
+    "as_of": "Q2 2026",
+    "source": "https://www.investing.com/news/company-news/chegg-q2-2026-slides-revenue-halves-as-employability-pivot-advances-93CH-4843020"
+   },
+   {
+    "metric": "Q1 2026 revenue",
+    "value": "$63.3M, down 48%",
+    "as_of": "Q1 2026",
+    "source": "https://www.stocktitan.net/sec-filings/CHGG/10-q-chegg-inc-quarterly-earnings-report-a76e084cb71a.html"
+   },
+   {
+    "metric": "Adjusted EBITDA",
+    "value": "$9.1M (17.4% margin); FCF +$6.4M",
+    "as_of": "Q2 2026",
+    "source": "Investing.com"
+   },
+   {
+    "metric": "Layoffs",
+    "value": "22% (May 2025), 45% (Oct 2025, 388 staff)",
+    "as_of": "2025",
+    "source": "https://www.highereddive.com/news/chegg-layoffs-strategic-alternatives-google-ai/804192/"
+   },
+   {
+    "metric": "Share price",
+    "value": "about $0.94 after Q2 2026 results",
+    "as_of": "Q2 2026",
+    "source": "Investing.com"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://www.highereddive.com/news/chegg-layoffs-strategic-alternatives-google-ai/804192/"
+  ],
+  "verified": false,
+  "note": "The clearest case of generative AI destroying an incumbent's revenue; reported by press from filings, 10-Q not read directly. Also cited by the vault's higher-ed note."
+ },
+ {
+  "id": "magicschool",
+  "name": "MagicSchool",
+  "type": "private startup",
+  "country": "US",
+  "founded": 2023,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "80+ teacher tools plus student rooms",
+    "launched": "2023",
+    "what": "lesson plans, IEP drafting, rubrics, parent comms, student tutor with guardrails"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "educator sign-ups",
+    "value": "6M+ (2025); roughly 8M across 160 countries (2026 secondary)",
+    "as_of": "2025-2026",
+    "basis": "claimed",
+    "source": "https://valueaddvc.com/pulse/magicschool-ai-edtech-63m-funding-2026"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "Funding",
+    "value": "$45M Series B led by Valor Equity (Jan 2025) after $15M Series A (2024); about $65M total",
+    "as_of": "2025-01",
+    "source": "https://www.thesaasnews.com/news/magicschool-raises-45m-series-b/"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://www.thesaasnews.com/news/magicschool-raises-45m-series-b/"
+  ],
+  "verified": false,
+  "note": "No independent learning-outcome evidence found; teacher time saving is self-reported."
+ },
+ {
+  "id": "brisk",
+  "name": "Brisk Teaching",
+  "type": "private startup",
+  "country": "US",
+  "founded": 2022,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "Browser extension for teacher AI tools; Boost student tool",
+    "launched": "2023-2025",
+    "what": "feedback, differentiation and lesson generation inside Google Docs/Classroom"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "educators",
+    "value": "1 million in 100+ countries",
+    "as_of": "2025-03",
+    "basis": "claimed",
+    "source": "https://www.prnewswire.com/news-releases/brisk-teaching-raises-15-million-to-reinvent-classroom-technology-for-the-ai-era-302412034.html"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "Series A",
+    "value": "$15M led by Bessemer",
+    "as_of": "2025-03",
+    "source": "PR Newswire (same)"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://www.govtech.com/biz/brisk-teaching-raises-15m-for-classroom-ai-technology"
+  ],
+  "verified": false,
+  "note": "vendor press only"
+ },
+ {
+  "id": "alpha-school",
+  "name": "Alpha School (2 Hour Learning)",
+  "type": "private school network",
+  "country": "US",
+  "founded": 2014,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "2 Hour Learning",
+    "launched": "",
+    "what": "AI-driven adaptive apps for core academics in about 2 hours; guides replace teachers; afternoons on projects"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "tuition",
+    "value": "$40,000-$75,000 per year at many campuses",
+    "as_of": "2026",
+    "basis": "claimed",
+    "source": "https://theeconomyofmeaning.com/2026/09/01/do-we-know-the-alpha-and-omega-of-alpha-school/"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Vendor MAP analyses ('2.6x faster growth', top 1-2% nationally)",
+    "design": "internal analysis, selected private-school students",
+    "finding": "cannot attribute to the model; selection bias",
+    "independent": false,
+    "doi_or_url": "https://theeconomyofmeaning.com/2026/09/01/do-we-know-the-alpha-and-omega-of-alpha-school/"
+   },
+   {
+    "study": "Unbound Academy (Arizona public charter using the model), first year 2025-26",
+    "design": "descriptive state results",
+    "finding": "10% math proficiency (target 60%) and 28% English (target 65%), below Arizona averages (as reported by a blog, unverified against state data)",
+    "independent": true,
+    "doi_or_url": "same"
+   }
+  ],
+  "business": [],
+  "privacy_note": "",
+  "sources": [
+   "https://theeconomyofmeaning.com/2026/09/01/do-we-know-the-alpha-and-omega-of-alpha-school/"
+  ],
+  "verified": false,
+  "note": "Marketing claims dominate; Pennsylvania Department of Education reportedly called the model untested (secondary). No peer-reviewed study found."
+ },
+ {
+  "id": "pearson",
+  "name": "Pearson",
+  "type": "public company (LSE: PSON)",
+  "country": "UK",
+  "founded": 1844,
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "AI study tools, Study Prep, AI Custom Assessment Tool",
+    "launched": "2024-2025",
+    "what": "AI-generated study aids inside courseware and Pearson+; teacher assessment builder"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "AI contract value",
+    "value": "'hundreds of millions in incremental revenue contracted up to 2030' for AI Custom Assessment Tool",
+    "as_of": "FY2025 (reported 2026-02-27)",
+    "basis": "claimed",
+    "source": "https://plc.pearson.com/sites/pearson-corp/files/annual-reports/pearson-2025-full-year-results-presentation.pdf (via search snippet)"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Pearson-reported results: up to 11% higher pass rates with Virtual Learning AI study tools; repeat use makes active reading 24x more likely",
+    "design": "company analysis, observational",
+    "finding": "correlational vendor claim",
+    "independent": false,
+    "doi_or_url": "https://plc.pearson.com/en-GB/news-and-insights/news/more-just-answers-new-pearson-research-shows-students-using-ai-deeper"
+   }
+  ],
+  "business": [
+   {
+    "metric": "Sales",
+    "value": "GBP 3,577M, underlying +4%; adjusted operating profit +6%",
+    "as_of": "FY2025",
+    "source": "https://plc.pearson.com/sites/pearson-corp/files/annual-reports/pearson-2025-full-year-results-27-february-2026.pdf"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://plc.pearson.com/sites/pearson-corp/files/annual-reports/pearson-2025-full-year-results-27-february-2026.pdf"
+  ],
+  "verified": false,
+  "note": "PDF not opened, figures from search summaries"
+ },
+ {
+  "id": "byjus",
+  "name": "Byju's (Think & Learn)",
+  "type": "private company in insolvency",
+  "country": "India",
+  "founded": 2011,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "adaptive video and test-prep app",
+    "launched": "",
+    "what": "not an AI-first case; a cautionary business story"
+   }
+  ],
+  "scale": [],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "Status",
+    "value": "Corporate insolvency resolution process ongoing at NCLT Bengaluru; Delaware court default judgment of about $1.07B against founder; peak valuation about $22B",
+    "as_of": "2026-06",
+    "source": "https://en.wikipedia.org/wiki/Byju%27s (plus legal press via search)"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Byju%27s"
+  ],
+  "verified": false,
+  "note": "Status from secondary sources."
+ },
+ {
+  "id": "gauth-photomath",
+  "name": "Gauth (ByteDance) and Photomath (Google)",
+  "type": "homework solvers",
+  "country": "China / Croatia-US",
+  "founded": 2018,
+  "segment": "consumer",
+  "ai_features": [
+   {
+    "name": "Photo-to-solution LLM homework solving",
+    "launched": "",
+    "what": "answers with step explanations; direct-answer tools, opposite design to Socratic tutors"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "Gauth users",
+    "value": "claimed 200 million worldwide (2024); a 2026 secondary source says 86 million MAU, unverified",
+    "as_of": "2024-2026",
+    "basis": "claimed",
+    "source": "https://www.implicator.ai/bytedances-homework-app-gauthmath-quietly-conquers-american-classrooms/"
+   },
+   {
+    "metric": "Photomath downloads",
+    "value": "100M+ on Google Play",
+    "as_of": "2024",
+    "basis": "measured",
+    "source": "https://www.androidauthority.com/photomath-ai-math-solver-3421552/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "Gauth shares an owner with TikTok (Forbes, Axios 2024)",
+  "sources": [
+   "https://www.forbes.com/sites/emilybaker-white/2024/04/03/gauth-bytedance-tiktok-homework-app/"
+  ],
+  "verified": false,
+  "note": "no learning evidence found"
+ },
+ {
+  "id": "third-space",
+  "name": "Third Space Learning (Skye)",
+  "type": "private company",
+  "country": "UK",
+  "founded": 2012,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "Skye voice AI maths tutor",
+    "launched": "2024-2025",
+    "what": "voice-driven adaptive tutor, 'I do, we do, you do'"
+   }
+  ],
+  "scale": [],
+  "evidence": [
+   {
+    "study": "Educate Ventures Research evaluation of Skye",
+    "design": "commissioned case study, design alignment review plus pupil data",
+    "finding": "reported accuracy 34% to 92% in-session; no controlled comparison seen",
+    "independent": false,
+    "doi_or_url": "https://thirdspacelearning.com/blog/educate-ventures-research-case-study-ai-tutoring/"
+   }
+  ],
+  "business": [],
+  "privacy_note": "",
+  "sources": [
+   "https://www.educateventures.com/high-impact-ai-maths-tutoring"
+  ],
+  "verified": false,
+  "note": "vendor-commissioned"
+ },
+ {
+  "id": "speak",
+  "name": "Speak",
+  "type": "private startup",
+  "country": "US / Korea",
+  "founded": 2016,
+  "segment": "consumer",
+  "ai_features": [
+   {
+    "name": "AI speaking tutor",
+    "launched": "",
+    "what": "voice conversation practice"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "downloads",
+    "value": "10M+ (2024); 15M+ (2026 secondary)",
+    "as_of": "2024-2026",
+    "basis": "claimed",
+    "source": "https://fundraiseinsider.com/blog/speak/"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "Series C",
+    "value": "$78M led by Accel at $1B valuation, OpenAI Startup Fund participating",
+    "as_of": "2024-12",
+    "source": "https://app.dealroom.co/news/note/ai-language-tutor-speak-reaches-1b-valuation"
+   }
+  ],
+  "privacy_note": "",
+  "sources": [
+   "https://fundraiseinsider.com/blog/speak/"
+  ],
+  "verified": false,
+  "note": ""
+ },
+ {
+  "id": "quizlet",
+  "name": "Quizlet (Q-Chat)",
+  "type": "private company",
+  "country": "US",
+  "founded": 2005,
+  "segment": "both",
+  "ai_features": [
+   {
+    "name": "Q-Chat (ChatGPT API)",
+    "launched": "2023-03",
+    "what": "AI tutor; per search results no longer available since June 2025"
+   }
+  ],
+  "scale": [],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "",
+  "sources": [
+   "https://www.prnewswire.com/news-releases/quizlet-launches-q-chat-ai-tutor-built-with-openai-api-301759014.html"
+  ],
+  "verified": false,
+  "note": "Q-Chat discontinuation from one search summary, to confirm"
+ },
+ {
+  "id": "century",
+  "name": "CENTURY Tech",
+  "type": "private company",
+  "country": "UK",
+  "founded": 2013,
+  "segment": "k12",
+  "ai_features": [
+   {
+    "name": "adaptive learning platform",
+    "launched": "",
+    "what": "personalised pathways"
+   }
+  ],
+  "scale": [],
+  "evidence": [
+   {
+    "study": "Nesta CareerTech Challenge evaluation",
+    "design": "programme evaluation",
+    "finding": "eligible learners completed more of the course and improved performance scores; non-experimental",
+    "independent": true,
+    "doi_or_url": "https://www.nesta.org.uk/feature/supporting-adults-who-are-vulnerable-workforce-change-three-case-studies/century-tech-harnessing-data-evaluation/"
+   }
+  ],
+  "business": [],
+  "privacy_note": "",
+  "sources": [],
+  "verified": false,
+  "note": "only a pointer; not read"
+ }
+]

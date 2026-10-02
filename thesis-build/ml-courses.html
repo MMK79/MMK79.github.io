@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title data-i18n="title.ml">ML courses — Intelligent Educator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+.lead{padding:56px 0 8px}
+.lead p{margin-top:14px;font-size:18px;color:var(--muted)}
+/* pipeline: a real sequence, so it is numbered */
+.steps{list-style:none;margin-top:22px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(0,1.6fr) 160px 90px;gap:16px;align-items:center;padding:12px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps .k{font:500 13px var(--mono);color:var(--faint)}
+.steps b{font-weight:600}
+.steps .w{color:var(--muted);font-size:14.5px}
+.steps .bar{height:10px;border-radius:5px;background:var(--he);opacity:.85}
+.steps .c{font:500 20px var(--display);text-align:end}
+.books{margin-top:18px}
+.book{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 70px;gap:14px;align-items:center;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
+.book:hover .t{color:var(--ai)}
+.book .t{font-size:15px}
+.book .t span{display:block;font-size:12.5px;color:var(--faint)}
+.book .b{height:12px;border-radius:6px;background:linear-gradient(var(--gdeg),var(--ai) var(--req),#6B5530 0)}
+.book .n{font:500 15px var(--mono);text-align:end}
+.book.open{background:var(--panel)}
+.uses{grid-column:1 / -1;font-size:13.5px;color:var(--muted);padding:6px 0 10px}
+.uses a{color:var(--text)}
+.legend{font-size:13px;color:var(--muted);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
+table{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px}
+th{font-weight:500;color:var(--faint);text-align:start;padding:8px 6px;border-bottom:1px solid var(--line)}
+td{padding:8px 6px;border-bottom:1px solid #1A2030;vertical-align:top}
+td.n{font-family:var(--mono);text-align:end;white-space:nowrap}
+th.n{text-align:end}
+.xscroll{overflow-x:auto}
+.filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.filters input[type=search]{font:14px var(--body);color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:min(240px,100%)}
+.filters select{max-width:100%}
+.count{font-size:13.5px;color:var(--faint)}
+.scroll{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:12px}
+.scroll table{margin-top:0}
+.scroll th{position:sticky;top:0;background:var(--bg)}
+.tag{font:12px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.qual li{margin-block:6px;margin-inline-start:18px;color:var(--muted);max-width:90ch}
+.qual b{color:var(--text);font-weight:600}
+@media (max-width:820px){.steps li{grid-template-columns:28px 1fr 70px}.steps li>div:nth-child(4){display:none}.steps .w,.steps .bar{display:none}.book{grid-template-columns:1fr 60px}.book .b{display:none}}
+</style>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+html[lang="fa"]{--display:"Vazirmatn",Tahoma,sans-serif;--body:"Vazirmatn",Tahoma,sans-serif;--mono:"Vazirmatn",ui-monospace,Menlo,monospace}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr nav{display:flex;gap:4px;flex-wrap:nowrap;min-width:0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+.site-hdr nav a{position:relative;padding:8px 12px;border-radius:8px;font-size:14px;color:#98A0B0;text-decoration:none;white-space:nowrap}
+.site-hdr nav a:hover{color:#E9ECF2;background:#151A24}
+.site-hdr nav a[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav a[aria-current="page"]::after{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media (max-width:760px){.site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}.site-hdr nav a{padding:8px 7px;font-size:13px}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}.site-hdr nav{overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}.site-hdr nav a[aria-current="page"]::after{bottom:0}}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the glossary note on the thesis page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <nav aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-sec="home" data-i18n="nav.home">Home</a>
+    <a href="/thesis/timelines/index.html" data-sec="timelines" data-i18n="nav.timelines">Timelines</a>
+    <a href="/thesis/challenges.html" data-sec="challenges" data-i18n="nav.challenges">Challenges</a>
+    <a href="/thesis/iran-map.html" data-sec="iran-map" data-i18n="nav.iran_map">Iran education map</a>
+    <a href="/thesis/ml-courses.html" data-sec="ml-courses" data-i18n="nav.ml_courses">ML courses</a>
+    <a href="/thesis/datasets.html" data-sec="datasets" data-i18n="nav.datasets">Datasets</a>
+    <a href="/thesis/ecosystem.html" data-sec="ecosystem" data-i18n="nav.ecosystem">Who builds it</a>
+    <a href="/thesis/thesis.html" data-sec="thesis" data-i18n="nav.thesis">Thesis</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{const p=location.pathname, sec=p.includes("/thesis/timelines/")?"timelines":(p.split("/").pop().replace(".html","")||"index");
+  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ if(a.dataset.sec===(sec==="index"?"home":sec)) a.setAttribute("aria-current","page"); });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<a href="/thesis/thesis.html#glossary">${I.t("i18n.banner")}</a><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=0, src=null, done=false;
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<main>
+  <div class="lead">
+    <h1 data-i18n="ml.h1">Which books do universities teach machine learning from?</h1>
+    <p id="answer"></p>
+  </div>
+
+  <section>
+    <h2 data-i18n="ml.how">How we found out</h2>
+    <p class="muted" data-i18n="ml.how_p">An automated crawl of university websites, then matching every reading list against a catalogue of 44 ML textbooks. Each step keeps only what the step before found.</p>
+    <ol class="steps" id="steps"></ol>
+  </section>
+
+  <section>
+    <h2 data-i18n="ml.ranked">The textbooks, ranked</h2>
+    <p class="muted" data-i18n="ml.ranked_p">Number of universities whose ML course pages mention each book. Click a book to see the courses.</p>
+    <div class="legend"><span><i style="background:var(--ai)"></i><span data-i18n="ml.leg_req">listed as the required textbook</span></span><span><i style="background:#6B5530"></i><span data-i18n="ml.leg_rec">recommended or mentioned</span></span></div>
+    <div class="books" id="books"></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="ml.by_country">By country</h2>
+    <div class="xscroll"><table id="countries"></table></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="ml.materials">Course materials</h2>
+    <p class="muted" id="mat-lede"></p>
+    <div class="filters">
+      <input id="q" type="search" placeholder="Search by university, course or file name" aria-label="Search materials" data-i18n-attr="placeholder:ml.q_ph;aria-label:ml.q_aria">
+      <select id="mt" aria-label="Type" data-i18n-attr="aria-label:ml.type"></select>
+      <select id="mu" aria-label="University" data-i18n-attr="aria-label:ml.th_uni"></select>
+      <label class="count"><input type="checkbox" id="dlonly" checked> <span data-i18n="ml.dlonly">downloaded only</span></label>
+      <span class="count live-count" id="mcount" aria-live="polite"></span>
+    </div>
+    <div class="scroll"><table id="mats"></table></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="ml.every">Every course found</h2>
+    <div class="filters"><input id="cq" type="search" placeholder="Filter courses" aria-label="Filter courses" data-i18n-attr="placeholder:ml.cq;aria-label:ml.cq"><span class="count live-count" id="ccount" aria-live="polite"></span></div>
+    <div class="scroll"><table id="courses"></table></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="ml.qual">What is measured and what is estimated</h2>
+    <ul class="qual" id="qual"></ul>
+  </section>
+</main>
+<footer class="site-foot" id="foot"></footer>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json"]}, "ml_fa": {"_banner": "ترجمه ماشینی — بازبینی نشده", "_about": "Persian text for /ml-courses.html: pipeline stages (by stage id), quality caveats (keyed by the English claim, so a changed claim falls back to English), the quality note, and country names. University, course, book and file names stay in English. Machine-drafted 2026-10-01, not reviewed.", "stages": {"universities": {"label": "دانشگاه‌های زیرمجموعه", "what": "فهرستی پیکربندی‌شده از دانشگاه‌ها (دامنه‌ها از فهرست Hipo university-domains)."}, "pages_fetched": {"label": "صفحه‌های واکشی‌شده", "what": "یک جست‌وجوی وب محدود به سایت هر دانشگاه صفحه‌های نامزد را می‌یابد؛ هر صفحه با رعایت ادب خزش (robots.txt، محدودیت نرخ، بدون ورود به حساب) واکشی و ذخیره می‌شود."}, "ml_course_pages": {"label": "صفحه‌های درس یادگیری ماشین", "what": "صفحه‌ای درس یادگیری ماشین به شمار می‌آید که عنوانش از یادگیری ماشین (یا یادگیری عمیق/آماری، بازشناسی الگو) نام ببرد و دست‌کم سه نشانه‌ی درس (سرفصل، جلسه، امتحان، نمره‌دهی...) داشته باشد."}, "offerings": {"label": "ارائه‌های درس / درس‌های متمایز", "what": "عنوان، کد، نیم‌سال، مقطع و مدرس از هر صفحه‌ی درس خوانده می‌شود؛ ارائه‌های یک درس در قالب یک درس متمایز ادغام می‌شوند."}, "references": {"label": "منابع استخراج‌شده", "what": "نام کتاب‌ها با سیاهه‌ای دست‌ساز از کتاب‌های درسی شناخته‌شده (عنوان، نویسنده، ISBN، پیوند) تطبیق داده می‌شود؛ سطرهای شبه‌ارجاعی بی‌تطبیق به‌عنوان بی‌تطبیق نگه داشته می‌شوند."}, "material_links": {"label": "پیوندهای مواد درسی", "what": "پیوندهای صفحه‌های درس به اسلاید، جزوه، ویدئو، تمرین، پاسخ‌نامه یا امتحان دسته‌بندی می‌شوند."}, "materials_downloaded": {"label": "مواد بارگیری‌شده", "what": "اسلایدها و جزوه‌های عمومی (فقط PDF/PPTX) با رعایت ادب خزش بارگیری می‌شوند: robots.txt، یک درخواست در ثانیه برای هر میزبان، 50 مگابایت برای هر فایل، بدون ورود به حساب؛ از میان پیوندهای متمایز واجد شرایط."}}, "note": "اقلام «اندازه‌گیری‌شده» نتیجه‌ی پرس‌وجو از پایگاه داده‌اند. اقلام «استنباطی» بررسی‌های موردی یک نفر (یک ارزیاب، بدون بررسی دوم) و برآوردهایی تقریبی‌اند.", "caveats": {"Book matches are about 97% precise.": {"claim": "دقت تطبیق کتاب‌ها حدود 97٪ است.", "detail": "از 40 سطر تطبیق‌یافته‌ی تصادفی، 39 سطر درست بود (یک ارزیاب). تنها خطا (عنوان درسی که کتاب Nielsen پنداشته شد) اکنون با علامت‌گذاری آن کتاب به‌عنوان «عام» مهار شده است."}, "About 6 of 138 offerings are not course pages.": {"claim": "حدود 6 مورد از 138 ارائه صفحه‌ی درس نیستند.", "detail": "صفحه‌های برنامه‌ی تحصیلی و راهنمای ماژول‌ها (TU Darmstadt، UiO) و یک مقاله‌ی پژوهشی. یک تغییرمسیر MOOC اکنون رد می‌شود."}, "Term, instructor and level are heuristic and weaker than titles and books.": {"claim": "نیم‌سال، مدرس و مقطع به‌صورت ابتکاری استخراج شده‌اند و از عنوان‌ها و کتاب‌ها ضعیف‌ترند.", "detail": "بنگرید به measured.offerings_with_term، offerings_with_instructor و courses_level_unknown. فیلد کد درس گاهی داده‌ی نامربوط دارد (شماره‌ی کلاس، کد پیمایش)."}, "Counts are cumulative over two decades, not current.": {"claim": "شمارش‌ها انباشته‌ی دو دهه‌اند، نه وضعیت کنونی.", "detail": "جست‌وجو ارائه‌های بایگانی‌شده را هم می‌یابد؛ بنگرید به measured.offerings_before_2015 / 2015_2020 / 2021_on / year_unknown. برای نمای کنونی بر اساس سال پالایش کنید."}, "Coverage is near complete for North America and falls off elsewhere.": {"claim": "پوشش برای آمریکای شمالی تقریباً کامل است و در جاهای دیگر کاهش می‌یابد.", "detail": "بیشتر مسئله‌ی کشف است: یک نمایه‌ی جست‌وجو صفحه‌های درس اندکی برای ایران، چین و ژاپن می‌یابد؛ محتوای Moodle/Canvas/Ed پشت ورود به حساب است و عمداً به آن دسترسی گرفته نمی‌شود؛ برخی سایت‌ها برنامه‌های JavaScript هستند."}, "Aalto's only 'course' is a false positive.": {"claim": "تنها «درس» Aalto مثبت کاذب است.", "detail": "این مورد یک مقاله‌ی پژوهشی درباره‌ی یک سرفصل است، پس فنلاند در عمل 0 از 2 است."}, "Unmatched citations are catalogue gaps, not errors.": {"claim": "ارجاع‌های بی‌تطبیق خلأهای سیاهه‌اند، نه خطا.", "detail": "این‌ها سطرهای شبه‌ارجاعی زیر سرعنوان کتاب درسی/منابع‌اند که در سیاهه تطبیقی ندارند (اطمینان 0.30)."}, "Catalogue ISBNs are verified, except one.": {"claim": "ISBNهای سیاهه، به‌جز یکی، تأیید شده‌اند.", "detail": "با Open Library بررسی شد؛ کتاب «Learning Theory from First Principles» نوشته‌ی Bach خطای 404 داد و تأیید نشده است."}, "Downloaded materials are only the public PDF/PPTX slides and notes linked from course pages.": {"claim": "مواد بارگیری‌شده فقط اسلایدها و جزوه‌های عمومی PDF/PPTX پیوندشده از صفحه‌های درس‌اند.", "detail": "ویدئو، تمرین، امتحان، پیوندهای HTML/Google-Drive و هر چیزی که پشت ورود به حساب باشد بارگیری نمی‌شود. خطاها به تفکیک دلیل در pipeline.json آمده‌اند."}}, "countries": {"United States": "ایالات متحده", "Germany": "آلمان", "Canada": "کانادا", "Iran": "ایران", "Hong Kong": "هنگ‌کنگ", "Netherlands": "هلند", "China": "چین", "Finland": "فنلاند", "Japan": "ژاپن", "Korea, Republic of": "کره‌ی جنوبی", "Norway": "نروژ", "United Kingdom": "بریتانیا", "Switzerland": "سوئیس", "France": "فرانسه", "Australia": "استرالیا", "Singapore": "سنگاپور", "India": "هند", "Italy": "ایتالیا", "Spain": "اسپانیا", "Sweden": "سوئد", "Denmark": "دانمارک"}}};</script>
+<script src="/thesis/assets/ml-courses.js"></script>
+</body>
+</html>

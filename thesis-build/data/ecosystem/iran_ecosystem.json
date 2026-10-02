@@ -1,0 +1,372 @@
+[
+ {
+  "id": "faradars",
+  "name": "Faradars (فرادرس)",
+  "type": "e-learning marketplace / MOOC",
+  "country": "IR",
+  "founded": "~2013-14 ('over a decade'; exact year not stated)",
+  "segment": "both",
+  "quality": "company",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "enrolled learners",
+    "value": "5.1 million+",
+    "as_of": "2026-10-01",
+    "basis": "claimed",
+    "source": "https://faradars.org/"
+   },
+   {
+    "metric": "course titles",
+    "value": "19,000+ (~35,000 hours)",
+    "as_of": "2026-10-01",
+    "basis": "claimed",
+    "source": "https://faradars.org/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "not found",
+  "sources": [
+   "https://faradars.org/"
+  ],
+  "verified": false,
+  "note": "Homepage fetched 2026-10-01 mentions no AI assistant/tutor feature; a search-engine summary alleging one was not supported. Sells AI courses, does not (as far as found) ship AI tutoring. Third-party figure 4.5M students/16,000 titles is older."
+ },
+ {
+  "id": "maktabkhooneh",
+  "name": "Maktabkhooneh (مکتب‌خونه)",
+  "type": "MOOC platform with university partners",
+  "country": "IR",
+  "founded": "2011 (per secondary listing)",
+  "segment": "he",
+  "quality": "secondary",
+  "ai_features": [],
+  "scale": [],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "reported revenue",
+    "value": "USD 7.5 million (aggregator, undated)",
+    "as_of": "unknown",
+    "basis": "estimated",
+    "source": "https://www.zoominfo.com/c/maktabkhooneh1/459235360"
+   }
+  ],
+  "privacy_note": "not found",
+  "sources": [
+   "https://maktabkhooneh.org/mag/artificial-intelligence-in-education/",
+   "https://www.zoominfo.com/c/maktabkhooneh1/459235360"
+  ],
+  "verified": false,
+  "note": "Its AI-in-education blog is generic and cites foreign market forecasts; no proprietary AI tutor or user count published there. Hosts Sharif/Tehran lecture courses (secondary). Revenue is an unverified aggregator figure."
+ },
+ {
+  "id": "shad",
+  "name": "Shad (شاد) - national school LMS",
+  "type": "government school LMS / virtual classroom",
+  "country": "IR",
+  "founded": "2020-04 (messaging-app version); standalone 2020-09",
+  "segment": "k12",
+  "quality": "secondary",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "users",
+    "value": "17 million+ (about 70% of Iranian students)",
+    "as_of": "Wikipedia, undated",
+    "basis": "estimated",
+    "source": "https://en.wikipedia.org/wiki/Shad_(software)"
+   },
+   {
+    "metric": "daily visits",
+    "value": "~800,000",
+    "as_of": "Wikipedia, undated",
+    "basis": "estimated",
+    "source": "https://en.wikipedia.org/wiki/Shad_(software)"
+   }
+  ],
+  "evidence": [
+   {
+    "study": "Reported criticism: low quality, did not compensate for in-person teaching; 13% of students lacked a device",
+    "design": "Wikipedia summary of press reports",
+    "finding": "access inequality and quality concerns",
+    "independent": false,
+    "doi_or_url": "https://en.wikipedia.org/wiki/Shad_(software)"
+   }
+  ],
+  "business": [],
+  "privacy_note": "State-run (Ministry of Education + Mobile Telecommunication Company of Iran); national, domestically hosted; no AI features documented in the source.",
+  "sources": [
+   "https://en.wikipedia.org/wiki/Shad_(software)"
+  ],
+  "verified": false,
+  "note": "Wikipedia only; primary figures not checked."
+ },
+ {
+  "id": "andarz",
+  "name": "Andarz (اندرز)",
+  "type": "AI tutoring startup (K-12)",
+  "country": "IR",
+  "founded": "not stated",
+  "segment": "k12",
+  "quality": "press",
+  "ai_features": [
+   {
+    "name": "Andi assistant",
+    "launched": "not stated",
+    "what": "answers subject questions by text/image/voice, step-by-step explanations; paired with human tutors; grades elementary to vocational"
+   }
+  ],
+  "scale": [],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "not found",
+  "sources": [
+   "https://www.rokna.net/%D8%A8%D8%AE%D8%B4-%D8%A2%D9%85%D9%88%D8%B2%D8%B4-100/1236459-%D8%A7%D9%86%D8%AF%D8%B1%D8%B2-%D8%AF%D8%B3%D8%AA%DB%8C%D8%A7%D8%B1-%D9%87%D9%88%D8%B4%D9%85%D9%86%D8%AF-%D8%AF%D8%A7%D9%86%D8%B4-%D8%A2%D9%85%D9%88%D8%B2%D8%A7%D9%86-%D8%A8%D8%B1%D8%A7%DB%8C-%DB%8C%D8%A7%D8%AF%DA%AF%DB%8C%D8%B1%DB%8C-%D8%A2%D8%B3%D8%A7%D9%86-%D8%AA%D8%B1-%D8%A8%D8%A7-%DA%A9%D9%85%DA%A9-%D9%87%D9%88%D8%B4-%D9%85%D8%B5%D9%86%D9%88%D8%B9%DB%8C"
+  ],
+  "verified": false,
+  "note": "Company Houshyand Andisheshan Ofog Danesh, CEO Amin Amini (Sharif IE graduate); claims Ministry of Education content credential no. 4120. Promotional press; no users, funding or evaluation found. Also mentioned in Sharq Daily and Hamshahri."
+ },
+ {
+  "id": "kanoon-ghalamchi",
+  "name": "Kanoon Ghalamchi (کانون قلم‌چی) - AI major-selection tool",
+  "type": "exam/test-prep institute; third-party AI tool",
+  "country": "IR",
+  "founded": "n/a",
+  "segment": "k12",
+  "quality": "company",
+  "ai_features": [
+   {
+    "name": "AI field-selection system for Konkur 1404 (experimental sciences)",
+    "launched": "1404 (2025)",
+    "what": "recommends majors/locations from real exam data; built with top rankers and the agency Digitalogy AI; discounted 90% for Kanoon students"
+   }
+  ],
+  "scale": [],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "not found",
+  "sources": [
+   "https://www.kanoon.ir/Article/386478"
+  ],
+  "verified": false,
+  "note": "Item on kanoon.ir is a promotion of a Digitalogy product; no evidence it is Kanoon's own AI tutor. A claim that Kanoon's student page is an 'intelligent assistant LMS' came from a search snippet only."
+ },
+ {
+  "id": "iran-digital-program",
+  "name": "Iran Digital / Ministry of Education AI literacy programme",
+  "type": "government programme (K-12)",
+  "country": "IR",
+  "founded": "2025-06 (launch); schools phase 2026-03",
+  "segment": "k12",
+  "quality": "press",
+  "ai_features": [
+   {
+    "name": "AI literacy courses on two platforms",
+    "launched": "2025-06 / 2026-03",
+    "what": "free AI training for students and teachers, tiered 200k -> 20k -> 2k -> festival of 1,000"
+   }
+  ],
+  "scale": [
+   {
+    "metric": "students targeted",
+    "value": "4 million",
+    "as_of": "2026-03-18",
+    "basis": "claimed",
+    "source": "https://www.tehrantimes.com/news/524786/Iran-Digital-empowering-200-000-students-in-AI-sector"
+   },
+   {
+    "metric": "students in first phase",
+    "value": "200,000",
+    "as_of": "2026-03-18",
+    "basis": "claimed",
+    "source": "https://www.tehrantimes.com/news/524786/Iran-Digital-empowering-200-000-students-in-AI-sector"
+   },
+   {
+    "metric": "teachers trained (Tehran, Mashhad)",
+    "value": "40,000",
+    "as_of": "2026-03-18",
+    "basis": "claimed",
+    "source": "https://www.tehrantimes.com/news/524786/Iran-Digital-empowering-200-000-students-in-AI-sector"
+   },
+   {
+    "metric": "enrolled across two platforms",
+    "value": "~4 million incl. teachers; 260-280k teachers trained",
+    "as_of": "1405 (2026), undated",
+    "basis": "claimed",
+    "source": "https://www.mehrnews.com/news/6931183/"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "state programme; no data terms found",
+  "sources": [
+   "https://www.tehrantimes.com/news/524786/Iran-Digital-empowering-200-000-students-in-AI-sector",
+   "https://www.zoomit.ir/iran-news/457885-learning-artificial-intelligence-to-school-students/"
+  ],
+  "verified": false,
+  "note": "Teaches about AI, not AI tutoring. Official-aligned press; figures are targets/announcements, no independent count. Counts vary across outlets (210k vs 260k vs 280k teachers)."
+ },
+ {
+  "id": "msrt-ai-plan",
+  "name": "MSRT national AI action plan (universities)",
+  "type": "policy",
+  "country": "IR",
+  "founded": "2025-12",
+  "segment": "he",
+  "quality": "press",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "planned national AI labs / fundamental models",
+    "value": "5 national labs (another report: 15 labs); at least 3 fundamental models",
+    "as_of": "2025-12",
+    "basis": "claimed",
+    "source": "https://www.tehrantimes.com/news/521216/Science-ministry-finalizes-AI-action-plan"
+   }
+  ],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "plans a secure research/education data-sharing platform",
+  "sources": [
+   "https://www.tehrantimes.com/news/521216/Science-ministry-finalizes-AI-action-plan",
+   "https://www.tehrantimes.com/news/527692/AI-education-to-expand-from-schools-to-universities"
+  ],
+  "verified": false,
+  "note": "Announced 3-5 Dec 2025 (outlets differ); delivery unverified."
+ },
+ {
+  "id": "univ-lms",
+  "name": "University LMS (Navid, Moodle-based systems)",
+  "type": "LMS",
+  "country": "IR",
+  "founded": "n/a",
+  "segment": "he",
+  "quality": "official",
+  "ai_features": [],
+  "scale": [],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "locally hosted",
+  "sources": [
+   "https://lms.iums.ac.ir/",
+   "https://its.iust.ac.ir/service/lms",
+   "https://lms3.ui.ac.ir/helpme",
+   "https://gsia.tums.ac.ir/fa/IT/page/19810/"
+  ],
+  "verified": false,
+  "note": "Navid is the medical-sciences national LMS (Virtual University of Medical Sciences, per search summary). IUST, Isfahan, Iran UMS run in-house LMS portals. No AI features found on the landing/help pages seen; contents of LMS not inspected."
+ },
+ {
+  "id": "edtech-market",
+  "name": "Iranian EdTech market (Tracxn)",
+  "type": "market aggregate",
+  "country": "IR",
+  "founded": "n/a",
+  "segment": "both",
+  "quality": "secondary",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "EdTech startups tracked",
+    "value": "220 (13 funded)",
+    "as_of": "2026-09-29",
+    "basis": "estimated",
+    "source": "https://tracxn.com/d/explore/edtech-startups-in-iran/__oFSYiYhO2KOwM1uImgvv76ejlM77zuFw3_lZ5HqzSpE"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "top investors",
+    "value": "Hamava, Dimond Accelerator, Bahman Capital, Smartup Ventures, Avatech Accelerator",
+    "as_of": "2026-09-29",
+    "basis": "estimated",
+    "source": "same"
+   }
+  ],
+  "privacy_note": "n/a",
+  "sources": [
+   "https://tracxn.com/d/explore/edtech-startups-in-iran/__oFSYiYhO2KOwM1uImgvv76ejlM77zuFw3_lZ5HqzSpE"
+  ],
+  "verified": false,
+  "note": "Notable AI example listed: LanGeek (AI English learning, 2020). Earlier snapshot said 158 companies/12 funded."
+ },
+ {
+  "id": "iran-ai-index",
+  "name": "Iran AI Index 1404 (Sharif)",
+  "type": "national AI report",
+  "country": "IR",
+  "founded": "2026-04",
+  "segment": "both",
+  "quality": "official",
+  "ai_features": [],
+  "scale": [
+   {
+    "metric": "AI investment 2015-2024",
+    "value": "~USD 82 million",
+    "as_of": "2026-04",
+    "basis": "estimated",
+    "source": "https://digiato.com/iran-technology-news/iran-ai-index-2025"
+   },
+   {
+    "metric": "GPU capacity",
+    "value": "~172 H100-equivalents",
+    "as_of": "2024",
+    "basis": "estimated",
+    "source": "same"
+   },
+   {
+    "metric": "business AI adoption",
+    "value": "27%",
+    "as_of": "2024",
+    "basis": "estimated",
+    "source": "same"
+   }
+  ],
+  "evidence": [],
+  "business": [
+   {
+    "metric": "AI VC 2024",
+    "value": "USD 6.6 million",
+    "as_of": "2024",
+    "basis": "estimated",
+    "source": "same"
+   }
+  ],
+  "privacy_note": "n/a",
+  "sources": [
+   "https://digiato.com/iran-technology-news/iran-ai-index-2025"
+  ],
+  "verified": false,
+  "note": "Published by Sharif AI Strategy and Transformation Center; read through Digiato's coverage, not the report."
+ },
+ {
+  "id": "persian-llms",
+  "name": "Local/Persian LLMs and access constraints",
+  "type": "infrastructure",
+  "country": "IR",
+  "founded": "2023-2025",
+  "segment": "both",
+  "quality": "peer-reviewed",
+  "ai_features": [
+   {
+    "name": "PersianMind, Dorna, Ava (Llama-based Persian models)",
+    "launched": "2024-2025",
+    "what": "open Persian-capable models used because OpenAI/Anthropic do not serve Iranian IPs"
+   }
+  ],
+  "scale": [],
+  "evidence": [],
+  "business": [],
+  "privacy_note": "OpenAI blocks Iran IPs (OFAC sanctions); the state also filters foreign AI. Users rely on VPNs (secondary sources).",
+  "sources": [
+   "https://arxiv.org/html/2401.06466v1",
+   "https://github.com/MohammadHeydari/Awesome-Persian-LLM",
+   "https://community.openai.com/t/access-to-chatgpt-from-iran-without-vpn-may-2025-is-access-restored/1250817"
+  ],
+  "verified": false,
+  "note": "Sanctions claims from VPN-vendor and forum pages (weak); PersianMind paper is peer-reviewable arXiv. No education deployment of these models found."
+ }
+]

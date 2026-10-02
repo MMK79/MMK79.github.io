@@ -1,0 +1,1490 @@
+[
+ {
+  "id": "mmlu-cs",
+  "name": "MMLU: machine_learning, college_computer_science, high_school_computer_science (+ computer_security, college_mathematics)",
+  "group": "qa_cs",
+  "contains": "4-option multiple-choice exam-style questions; the ML and CS subsets are the relevant slices.",
+  "size": "machine_learning 112 test (+11 val, 5 dev); college_computer_science 100 test; high_school_computer_science 100 test (HF datasets-server, 2026-10-02)",
+  "cs_ml_fit": 3,
+  "graph_structure": "no",
+  "licence": "MIT (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/cais/mmlu"
+  },
+  "paper": {
+   "title": "Measuring Massive Multitask Language Understanding",
+   "year": 2021,
+   "doi": "",
+   "arxiv": "2009.03300"
+  },
+  "use": "RAG eval: cheap sanity baseline for plain LLM vs RAG; too small and too generic to separate the four arms.",
+  "caveats": "Not tied to our course material, so retrieval cannot help much; widely contaminated in LLM training; 112 items gives a wide confidence interval (about +/-9 points at 50% accuracy).",
+  "evidence": "counts and licence verified via HF API 2026-10-02",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/cais/mmlu",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "theoremqa",
+  "name": "TheoremQA",
+  "group": "qa_cs",
+  "contains": "Theorem-driven STEM questions (math, physics, EE/CS, finance) that need a theorem to solve.",
+  "size": "800 questions (HF datasets-server, 2026-10-02)",
+  "cs_ml_fit": 2,
+  "graph_structure": "no",
+  "licence": "MIT (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/TIGER-Lab/TheoremQA"
+  },
+  "paper": {
+   "title": "TheoremQA: A Theorem-driven Question Answering dataset",
+   "year": 2023,
+   "doi": "",
+   "arxiv": "2305.12524"
+  },
+  "use": "Optional stress test for maths-heavy ML questions (plain LLM vs RAG).",
+  "caveats": "Mostly maths/physics; only an EE&CS slice (exact count not checked, unverified).",
+  "evidence": "count and licence verified; domain split not verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/TIGER-Lab/TheoremQA",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "ml-qa-collection",
+  "name": "Machine_Learning_QA_Collection (win-wang) and sibling HF ML question sets",
+  "group": "qa_cs",
+  "contains": "Community-collected ML question-answer pairs; seed question bank.",
+  "size": "12,358 rows (win-wang, HF datasets-server 2026-10-02); mjphayes/machine_learning_questions and prsdm/Machine-Learning-QA-dataset have no licence declared",
+  "cs_ml_fit": 4,
+  "graph_structure": "no",
+  "licence": "MIT for win-wang (HF card); the other two: no licence declared",
+  "access": {
+   "hf": "https://huggingface.co/datasets/win-wang/Machine_Learning_QA_Collection",
+   "hf2": "https://huggingface.co/datasets/mjphayes/machine_learning_questions",
+   "hf3": "https://huggingface.co/datasets/prsdm/Machine-Learning-QA-dataset"
+  },
+  "paper": null,
+  "use": "Seed/diversity source for our own question bank; quick open-domain ML QA for the plain-LLM vs RAG comparison.",
+  "caveats": "Provenance and answer quality unknown (no paper); likely LLM-written or scraped, so treat as unvalidated; no source passages, so faithfulness cannot be scored.",
+  "evidence": "size and licence verified; quality not assessed",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/win-wang/Machine_Learning_QA_Collection",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "hf2": {
+    "url": "https://huggingface.co/datasets/mjphayes/machine_learning_questions",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "hf3": {
+    "url": "https://huggingface.co/datasets/prsdm/Machine-Learning-QA-dataset",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "stackexchange",
+  "name": "Stack Exchange data dump: stats (CrossValidated), datascience, ai, cs, cstheory, stackoverflow-ML tags",
+  "group": "qa_cs",
+  "contains": "Real user questions with community-voted answers; per-site XML dumps with votes, accepted answers, tags, links between questions.",
+  "size": "Full dump about 91.6 GB for 2025-12-31 (archive.org item); per-site sizes not measured (unverified)",
+  "cs_ml_fit": 4,
+  "graph_structure": "weak (post links, tags)",
+  "licence": "CC BY-SA 4.0 per post (licence is embedded per entry; attribution + share-alike apply to derived data)",
+  "access": {
+   "archive_2025_12_31": "https://archive.org/details/stackexchange_20251231",
+   "archive_2025_09_30": "https://archive.org/details/stackexchange_20250930"
+  },
+  "paper": null,
+  "use": "Realistic student-style questions for open-domain ML QA; accepted answers as weak gold; tags give a topic taxonomy.",
+  "caveats": "Official archive.org upload was disabled in March 2025 and the current items are community uploads (search result, not independently checked); the 2025-06-30 dump had watermarking; answers can be wrong or outdated; share-alike licence propagates to our released benchmark.",
+  "evidence": "archive.org URLs status-checked; the size is from the item listing found by search",
+  "url_status": {
+   "archive_2025_12_31": {
+    "url": "https://archive.org/details/stackexchange_20251231",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "archive_2025_09_30": {
+    "url": "https://archive.org/details/stackexchange_20250930",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "qasper",
+  "name": "QASPER",
+  "group": "qa_cs",
+  "contains": "Information-seeking questions over full NLP research papers, with evidence spans and answer types (extractive, abstractive, yes/no, unanswerable).",
+  "size": "5,049 questions over 1,585 NLP papers (paper abstract; HF rows = 1,585 papers)",
+  "cs_ml_fit": 2,
+  "graph_structure": "no",
+  "licence": "CC BY 4.0 (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/allenai/qasper"
+  },
+  "paper": {
+   "title": "A Dataset of Information-Seeking Questions and Answers Anchored in Research Papers",
+   "year": 2021,
+   "doi": "",
+   "arxiv": "2105.03011"
+  },
+  "use": "Model for our evidence-linked QA format; RAG eval over papers rather than textbooks.",
+  "caveats": "NLP papers, not ML teaching content; research-paper questions are not student questions.",
+  "evidence": "paper abstract and HF card verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/allenai/qasper",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "85DK5NVH",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "sciqag",
+  "name": "SciQAG / SciQAG-24D",
+  "group": "qa_cs",
+  "contains": "LLM-generated research-level QA pairs from scientific papers, with an LLM evaluator and a 24-domain benchmark.",
+  "size": "188,042 QA pairs from 22,743 papers across 24 domains (paper abstract)",
+  "cs_ml_fit": 2,
+  "graph_structure": "no",
+  "licence": "not checked (unverified)",
+  "access": {
+   "arxiv": "https://arxiv.org/abs/2405.09939"
+  },
+  "paper": {
+   "title": "SciQAG: A Framework for Auto-Generated Science Question Answering Dataset with Fine-grained Evaluation",
+   "year": 2024,
+   "doi": "",
+   "arxiv": "2405.09939"
+  },
+  "use": "Method template for generating and filtering QA pairs from documents (generator plus evaluator).",
+  "caveats": "Domains are natural sciences, not CS/ML; synthetic.",
+  "evidence": "abstract only",
+  "url_status": {
+   "arxiv": {
+    "url": "https://arxiv.org/abs/2405.09939",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "researchqa",
+  "name": "ResearchQA",
+  "group": "qa_cs",
+  "contains": "Scholarly long-form queries distilled from survey articles, each with rubric items for answer evaluation.",
+  "size": "21K queries and 160K rubric items across 75 fields (paper abstract); CS slice not measured",
+  "cs_ml_fit": 3,
+  "graph_structure": "no",
+  "licence": "not checked (unverified)",
+  "access": {
+   "arxiv": "https://arxiv.org/abs/2509.00496"
+  },
+  "paper": {
+   "title": "ResearchQA: Evaluating Scholarly Question Answering at Scale Across 75 Fields with Survey-Mined Questions and Rubrics",
+   "year": 2025,
+   "doi": "10.1162/TACL.a.732",
+   "arxiv": "2509.00496"
+  },
+  "use": "Design precedent for rubric-based grading of long-form answers; possible CS survey questions.",
+  "caveats": "Research-level, not course level; rubric items include citing papers.",
+  "evidence": "abstract only; DOI taken from a search result",
+  "url_status": {
+   "arxiv": {
+    "url": "https://arxiv.org/abs/2509.00496",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "sciqa-orkg",
+  "name": "SciQA (ORKG)",
+  "group": "qa_cs",
+  "contains": "Questions over the ORKG scholarly knowledge graph with gold SPARQL: 100 hand-written complex questions plus 2,465 template-generated ones.",
+  "size": "2,565 questions (HF datasets-server 2026-10-02; paper: 100 + 2,465)",
+  "cs_ml_fit": 2,
+  "graph_structure": "yes (ORKG)",
+  "licence": "CC BY 4.0 (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/orkg/SciQA",
+   "paper": "https://www.nature.com/articles/s41598-023-33607-z"
+  },
+  "paper": {
+   "title": "The SciQA Scientific Question Answering Benchmark for Scholarly Knowledge",
+   "year": 2023,
+   "doi": "10.1038/s41598-023-33607-z",
+   "arxiv": ""
+  },
+  "use": "GraphRAG/KGQA eval of text-to-SPARQL over a scholarly KG; not for course tutoring.",
+  "caveats": "Questions are about papers, authors and benchmark results, not ML concepts; ORKG covers about 15K papers in the SciQA snapshot.",
+  "evidence": "size, licence verified; paper content from search result",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/orkg/SciQA",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper": {
+    "url": "https://www.nature.com/articles/s41598-023-33607-z",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "dblp-quad",
+  "name": "DBLP-QuAD",
+  "group": "qa_cs",
+  "contains": "Question-answer pairs over the DBLP KG with the SPARQL query that retrieves each answer.",
+  "size": "10,000 QA pairs (paper abstract)",
+  "cs_ml_fit": 2,
+  "graph_structure": "yes (DBLP RDF)",
+  "licence": "not checked (unverified); DBLP data itself is CC0",
+  "access": {
+   "arxiv": "https://arxiv.org/abs/2303.13351",
+   "dblp_sparql": "https://sparql.dblp.org/sparql"
+  },
+  "paper": {
+   "title": "DBLP-QuAD: A Question Answering Dataset over the DBLP Scholarly Knowledge Graph",
+   "year": 2023,
+   "doi": "",
+   "arxiv": "2303.13351"
+  },
+  "use": "KGQA eval over a CS bibliographic graph.",
+  "caveats": "Bibliographic questions (who wrote what, where), not conceptual ML questions.",
+  "evidence": "abstract only",
+  "url_status": {
+   "arxiv": {
+    "url": "https://arxiv.org/abs/2303.13351",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "dblp_sparql": {
+    "url": "https://sparql.dblp.org/sparql",
+    "http": "400",
+    "checked": "2026-10-02",
+    "note": "400 to a bare HEAD; a SPARQL COUNT query returned results (200) on 2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "cs1qa",
+  "name": "CS1QA",
+  "group": "qa_cs",
+  "contains": "Question-answer pairs from chat logs of an introductory Python course, each tied to student code.",
+  "size": "9,237 QA pairs + 17,698 unannotated chats (paper abstract)",
+  "cs_ml_fit": 3,
+  "graph_structure": "no",
+  "licence": "not checked (unverified)",
+  "access": {
+   "arxiv": "https://arxiv.org/abs/2210.14494"
+  },
+  "paper": {
+   "title": "CS1QA: A Dataset for Assisting Code-based Question Answering in an Introductory Programming Course",
+   "year": 2022,
+   "doi": "",
+   "arxiv": "2210.14494"
+  },
+  "use": "Precedent for real student questions in a CS course (code-based, not ML theory).",
+  "caveats": "Programming education, Python, not ML; licence and release status unknown.",
+  "evidence": "abstract only",
+  "url_status": {
+   "arxiv": {
+    "url": "https://arxiv.org/abs/2210.14494",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "tutorqa",
+  "name": "TutorQA (from Graphusion)",
+  "group": "qa_cs",
+  "contains": "Six graph-reasoning tutoring tasks (relation judgment, prerequisite prediction, path searching, subgraph completion, clustering, open ideas) over an NLP concept graph.",
+  "size": "1,200 QA pairs (HF datasets-server 2026-10-02)",
+  "cs_ml_fit": 3,
+  "graph_structure": "yes (concept graph)",
+  "licence": "MIT (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/li-lab/tutorqa"
+  },
+  "paper": {
+   "title": "Graphusion: A RAG Framework for Knowledge Graph Construction with a Global Perspective",
+   "year": 2024,
+   "doi": "",
+   "arxiv": "2410.17600"
+  },
+  "use": "GraphRAG eval on multi-hop over prerequisites; template for our multi-hop item types.",
+  "caveats": "NLP domain, not ML; shipped with a specific KG so retrieval is built for it.",
+  "evidence": "size and licence verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/li-lab/tutorqa",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "7WJS7F3Q",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "graphrag-bench-cs",
+  "name": "GraphRAG-Bench (Xiao et al.): college CS textbook QA",
+  "group": "benchmark_rag",
+  "contains": "Questions from 20 CS textbooks (fill-in-blank, multiple choice, multi-select, true/false, open-ended) with gold rationale; textbook corpus provided in markdown.",
+  "size": "1,018 questions (FB 105, MC 217, MS 111, OE 269, TF 316; counted from the downloaded jsonl 2026-10-02); corpus about 7M words in 20 textbooks. Level-1 topic labels include 'Machine learning' (60) + 'Machine Learning' (13) + 'Meaching learning' (8) = 81 ML-labelled items, plus 87 'Artificial intelligence introduction', 32 NLP, 44 vision",
+  "cs_ml_fit": 5,
+  "graph_structure": "corpus only (no shipped KG)",
+  "licence": "Academic research only; redistribution and modification prohibited (HF card text)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/Awesome-GraphRAG/GraphRAG-Bench",
+   "github": "https://github.com/jeremycp3/GraphRAG-Bench"
+  },
+  "paper": {
+   "title": "GraphRAG-Bench: Challenging Domain-Specific Reasoning for Evaluating Graph Retrieval-Augmented Generation",
+   "year": 2025,
+   "doi": "",
+   "arxiv": "2506.02404"
+  },
+  "use": "Primary external GraphRAG eval: shows whether our four arms behave as published on college CS text; ML slice (81) can be reported separately.",
+  "caveats": "Textbooks are anonymised (textbook1..20), so we cannot add the same books to our own course corpus; ML slice is small; licence forbids redistribution, so we cannot republish a derived version.",
+  "evidence": "question counts and topic labels computed by me from the jsonl; licence read from the HF card; ML is included (resolves the earlier 'check whether ML is included')",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/Awesome-GraphRAG/GraphRAG-Bench",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "github": {
+    "url": "https://github.com/jeremycp3/GraphRAG-Bench",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "XBIK3GVV",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "graphrag-bench-xiang",
+  "name": "GraphRAG-Bench (Xiang et al., ICLR 2026): Novel and Medical",
+  "group": "benchmark_rag",
+  "contains": "Four task levels (fact retrieval, complex reasoning, contextual summarisation, creative generation) over novel and medical corpora; evaluation code with faithfulness, context recall, coverage, ROUGE.",
+  "size": "HF repo: questions + corpus files for medical and novel; row count not established (datasets-server reports 4,072 rows on the older repo, not matched to a split)",
+  "cs_ml_fit": 1,
+  "graph_structure": "corpus + graph-building baselines",
+  "licence": "MIT (GitHub licence field, HF card shows none)",
+  "access": {
+   "github": "https://github.com/GraphRAG-Bench/GraphRAG-Benchmark",
+   "hf": "https://huggingface.co/datasets/GraphRAG-Bench/GraphRAG-Bench"
+  },
+  "paper": {
+   "title": "When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation",
+   "year": 2025,
+   "doi": "",
+   "arxiv": "2506.05690"
+  },
+  "use": "Method harness: reuse its evaluation scripts and task-level taxonomy; run LightRAG/HippoRAG2 baselines with its configs.",
+  "caveats": "Not CS or education; value is the harness and the task taxonomy.",
+  "evidence": "GitHub licence and HF file list verified; sizes not",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/GraphRAG-Bench/GraphRAG-Benchmark",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "hf": {
+    "url": "https://huggingface.co/datasets/GraphRAG-Bench/GraphRAG-Bench",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "E84RL9IN",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "multihop-rag",
+  "name": "MultiHop-RAG",
+  "group": "benchmark_rag",
+  "contains": "News-article corpus with multi-hop queries (inference, comparison, temporal, null) and evidence lists.",
+  "size": "2,556 queries + 609 documents (HF rows 3,165 = both configs; consistent with the paper, query count from memory, unverified)",
+  "cs_ml_fit": 1,
+  "graph_structure": "no",
+  "licence": "ODC-By (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/yixuantt/MultiHopRAG",
+   "github": "https://github.com/yixuantt/MultiHop-RAG"
+  },
+  "paper": {
+   "title": "MultiHop-RAG: Benchmarking Retrieval-Augmented Generation for Multi-Hop Queries",
+   "year": 2024,
+   "doi": "",
+   "arxiv": "2401.15391"
+  },
+  "use": "Generic multi-hop RAG sanity check and query-type taxonomy precedent.",
+  "caveats": "News, not CS.",
+  "evidence": "licence verified on HF; split sizes partially verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/yixuantt/MultiHopRAG",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "github": {
+    "url": "https://github.com/yixuantt/MultiHop-RAG",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "NBDKCNHP",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "hotpotqa",
+  "name": "HotpotQA",
+  "group": "benchmark_rag",
+  "contains": "Wikipedia multi-hop questions with supporting-fact annotations and comparison questions.",
+  "size": "about 113K questions (paper); not recounted",
+  "cs_ml_fit": 1,
+  "graph_structure": "no (hyperlinked Wikipedia)",
+  "licence": "CC BY-SA 4.0 (HF card); code Apache-2.0",
+  "access": {
+   "hf": "https://huggingface.co/datasets/hotpotqa/hotpot_qa",
+   "github": "https://github.com/hotpotqa/hotpot"
+  },
+  "paper": {
+   "title": "HotpotQA: A Dataset for Diverse, Explainable Multi-hop Question Answering",
+   "year": 2018,
+   "doi": "",
+   "arxiv": "1809.09600"
+  },
+  "use": "Standard multi-hop baseline; supporting-fact F1 is the metric precedent for citation correctness.",
+  "caveats": "Not CS; heavily used in training data.",
+  "evidence": "licence verified; size from paper",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/hotpotqa/hotpot_qa",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "github": {
+    "url": "https://github.com/hotpotqa/hotpot",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "2wiki",
+  "name": "2WikiMultiHopQA",
+  "group": "benchmark_rag",
+  "contains": "Multi-hop questions built from Wikipedia and Wikidata with reasoning-path evidence.",
+  "size": "about 192K questions (paper); not recounted",
+  "cs_ml_fit": 1,
+  "graph_structure": "yes (Wikidata triples as evidence)",
+  "licence": "Apache-2.0 (GitHub licence field)",
+  "access": {
+   "github": "https://github.com/Alab-NII/2wikimultihop",
+   "hf": "https://huggingface.co/datasets/framolfese/2WikiMultihopQA"
+  },
+  "paper": {
+   "title": "Constructing A Multi-hop QA Dataset for Comprehensive Evaluation of Reasoning Steps",
+   "year": 2020,
+   "doi": "",
+   "arxiv": "2011.01060"
+  },
+  "use": "Multi-hop with explicit reasoning paths; template for graph-path questions.",
+  "caveats": "Not CS.",
+  "evidence": "licence verified; size from paper",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/Alab-NII/2wikimultihop",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "hf": {
+    "url": "https://huggingface.co/datasets/framolfese/2WikiMultihopQA",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "musique",
+  "name": "MuSiQue",
+  "group": "benchmark_rag",
+  "contains": "2-4 hop questions composed from single-hop questions, with unanswerable contrast sets.",
+  "size": "about 25K answerable questions (paper); not recounted",
+  "cs_ml_fit": 1,
+  "graph_structure": "no",
+  "licence": "CC BY 4.0 (GitHub licence field)",
+  "access": {
+   "github": "https://github.com/StonyBrookNLP/musique",
+   "hf": "https://huggingface.co/datasets/bdsaglam/musique"
+  },
+  "paper": {
+   "title": "MuSiQue: Multihop Questions via Single-hop Question Composition",
+   "year": 2022,
+   "doi": "",
+   "arxiv": "2108.00573"
+  },
+  "use": "Harder multi-hop check that resists shortcuts.",
+  "caveats": "Not CS.",
+  "evidence": "licence verified; size from paper",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/StonyBrookNLP/musique",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "hf": {
+    "url": "https://huggingface.co/datasets/bdsaglam/musique",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "sciq",
+  "name": "SciQ",
+  "group": "qa_general",
+  "contains": "Crowd-sourced science exam questions (physics, chemistry, biology) with supporting passages.",
+  "size": "about 13.7K questions (original paper; not recounted)",
+  "cs_ml_fit": 1,
+  "graph_structure": "no",
+  "licence": "CC BY-NC 3.0 (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/allenai/sciq"
+  },
+  "paper": null,
+  "use": "Not used; listed so we do not mistake it for SciQA.",
+  "caveats": "Natural science, non-commercial licence.",
+  "evidence": "licence verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/allenai/sciq",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "arc",
+  "name": "ARC (AI2 Reasoning Challenge)",
+  "group": "qa_general",
+  "contains": "Grade-school science multiple-choice questions, Easy and Challenge sets, plus a 14M-sentence corpus.",
+  "size": "about 7.8K questions (paper; not recounted)",
+  "cs_ml_fit": 1,
+  "graph_structure": "no",
+  "licence": "CC BY-SA 4.0 (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/allenai/ai2_arc"
+  },
+  "paper": {
+   "title": "Think you have Solved Question Answering? Try ARC, the AI2 Reasoning Challenge",
+   "year": 2018,
+   "doi": "",
+   "arxiv": "1803.05457"
+  },
+  "use": "K-12 science, flagged as such; only a generic reasoning reference.",
+  "caveats": "Grade school (K-12), not CS.",
+  "evidence": "licence verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/allenai/ai2_arc",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "scienceqa",
+  "name": "ScienceQA",
+  "group": "qa_general",
+  "contains": "Multimodal K-12 science questions with lectures and explanations.",
+  "size": "about 21K questions (paper; not recounted)",
+  "cs_ml_fit": 1,
+  "graph_structure": "no",
+  "licence": "CC BY-SA 4.0 (HF card)",
+  "access": {
+   "hf": "https://huggingface.co/datasets/derek-thomas/ScienceQA"
+  },
+  "paper": {
+   "title": "Learn to Explain: Multimodal Reasoning via Thought Chains for Science Question Answering",
+   "year": 2022,
+   "doi": "",
+   "arxiv": "2209.09513"
+  },
+  "use": "K-12 reference only.",
+  "caveats": "K-12, multimodal, not CS.",
+  "evidence": "licence verified",
+  "url_status": {
+   "hf": {
+    "url": "https://huggingface.co/datasets/derek-thomas/ScienceQA",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "8KBDIB9Q",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "eduqg",
+  "name": "EduQG",
+  "group": "qa_general",
+  "contains": "Expert-written multiple-choice questions with distractors and sentence-level links to source documents; 903 with Bloom levels.",
+  "size": "3,397 samples; 903 with Bloom level (paper abstract)",
+  "cs_ml_fit": 2,
+  "graph_structure": "no",
+  "licence": "not checked (unverified)",
+  "access": {
+   "arxiv": "https://arxiv.org/abs/2210.06104"
+  },
+  "paper": {
+   "title": "EduQG: A Multi-format Multiple Choice Dataset for the Educational Domain",
+   "year": 2023,
+   "doi": "",
+   "arxiv": "2210.06104"
+  },
+  "use": "Design precedent: expert questions linked to source sentences, with Bloom labels.",
+  "caveats": "Mostly school and general education subjects (not verified), not CS; release terms unknown.",
+  "evidence": "abstract only",
+  "url_status": {
+   "arxiv": {
+    "url": "https://arxiv.org/abs/2210.06104",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "lecturebank",
+  "name": "LectureBank (+ LectureBankCD)",
+  "group": "graph_education",
+  "contains": "Lecture slides and notes from university courses in NLP, ML, AI, DL, IR with a topic taxonomy and expert-annotated concept prerequisite pairs.",
+  "size": "valid resource counts by batch: 1,020 / 308 / 3,564 / 3,136 / 1,321 / 397 (repo README, URL check May 2022); original paper: 1,352 files from 60 courses; 208 prerequisite-annotated topics (vault note); taxonomy 320 topics",
+  "cs_ml_fit": 4,
+  "graph_structure": "yes (prerequisite pairs)",
+  "licence": "no licence in repo (unclear; research use, ask authors)",
+  "access": {
+   "github": "https://github.com/Yale-LILY/LectureBank",
+   "paper": "https://arxiv.org/abs/1811.12181"
+  },
+  "paper": {
+   "title": "What Should I Learn First: Introducing LectureBank for NLP Education and Prerequisite Chain Learning",
+   "year": 2019,
+   "doi": "",
+   "arxiv": "1811.12181"
+  },
+  "use": "Prerequisite-graph check for the ML concepts we extract (edge precision/recall); corpus of ML lecture URLs.",
+  "caveats": "Links rot (many URLs dead since 2022); no explicit licence; NLP-heavy.",
+  "evidence": "README read; counts from README",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/Yale-LILY/LectureBank",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper": {
+    "url": "https://arxiv.org/abs/1811.12181",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "SJQEQRCU",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "mooccube",
+  "name": "MOOCCube / MOOCCubeX",
+  "group": "graph_education",
+  "contains": "MOOC course repository with concepts extracted from video captions, concept-course links, and prerequisite relations (computer science, mathematics, psychology: partly annotated).",
+  "size": "MOOCCubeX: 4,216 courses (README); concept.json 156M; problem.json 1.2G; user-problem 21G (README listing). MOOCCube (2020): CC0 repo",
+  "cs_ml_fit": 3,
+  "graph_structure": "yes (concept graph + prerequisites)",
+  "licence": "MOOCCube repo: CC0-1.0; MOOCCubeX repo: GPL-3.0 (GitHub licence field); data originates from XuetangX (research use)",
+  "access": {
+   "github_x": "https://github.com/THU-KEG/MOOCCubeX",
+   "github": "https://github.com/thukg/MOOCCube",
+   "paper_x": "https://lfs.aminer.cn/misc/moocdata/publications/mooccubex.pdf"
+  },
+  "paper": {
+   "title": "MOOCCubeX: A Large Knowledge-centered Repository for Adaptive Learning in MOOCs",
+   "year": 2021,
+   "doi": "10.1145/3459637.3482010",
+   "arxiv": ""
+  },
+  "use": "Secondary prerequisite source for CS concepts; student-behaviour data not needed. Download only the concept and prerequisites files, not the 21G logs.",
+  "caveats": "Mostly Chinese-language content; GPL on a data repo is legally unclear; concept granularity is caption-derived.",
+  "evidence": "README read; licences from GitHub API",
+  "url_status": {
+   "github_x": {
+    "url": "https://github.com/THU-KEG/MOOCCubeX",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "github": {
+    "url": "https://github.com/thukg/MOOCCube",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper_x": {
+    "url": "https://lfs.aminer.cn/misc/moocdata/publications/mooccubex.pdf",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "D7ED6F7C",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "cso",
+  "name": "Computer Science Ontology (CSO) + CSO Classifier",
+  "group": "graph_education",
+  "contains": "Hierarchical ontology of research topics in computer science (superTopicOf, relatedEquivalent, contributesTo) with a classifier that tags text with CSO topics.",
+  "size": "15K topics and over 166K relationships in CSO 3.5 (CSO homepage text; the vault notes say about 14K and about 26K, so the figure needs a recheck against the download)",
+  "cs_ml_fit": 4,
+  "graph_structure": "yes (ontology)",
+  "licence": "CC BY 4.0 (vault note; page did not show it explicitly in my fetch, unverified); classifier code Apache-2.0 (GitHub field)",
+  "access": {
+   "home": "https://cso.kmi.open.ac.uk/",
+   "downloads": "https://cso.kmi.open.ac.uk/downloads",
+   "classifier": "https://github.com/angelosalatino/cso-classifier"
+  },
+  "paper": {
+   "title": "The Computer Science Ontology: A Large-Scale Taxonomy of Research Areas",
+   "year": 2018,
+   "doi": "10.1007/978-3-030-00668-6_14",
+   "arxiv": ""
+  },
+  "use": "KG seed vocabulary and alignment target: map our extracted ML concepts to CSO topics (ML subtree).",
+  "caveats": "Research-area granularity (e.g. 'neural networks'), too coarse for lecture-level concepts like 'bias-variance tradeoff'.",
+  "evidence": "homepage fetched; topic count conflicts with earlier notes",
+  "url_status": {
+   "home": {
+    "url": "https://cso.kmi.open.ac.uk/",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "downloads": {
+    "url": "https://cso.kmi.open.ac.uk/downloads",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "classifier": {
+    "url": "https://github.com/angelosalatino/cso-classifier",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "XTGDTCKH",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "edukg",
+  "name": "EDUKG (Tsinghua)",
+  "group": "graph_education",
+  "contains": "K-12 heterogeneous educational knowledge graph across subjects.",
+  "size": "not re-measured",
+  "cs_ml_fit": 1,
+  "graph_structure": "yes",
+  "licence": "no licence in repo",
+  "access": {
+   "github": "https://github.com/THU-KEG/EDUKG"
+  },
+  "paper": null,
+  "use": "Flagged K-12; reference for educational KG schema only.",
+  "caveats": "K-12, Chinese.",
+  "evidence": "GitHub status checked only",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/THU-KEG/EDUKG",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "cskg",
+  "name": "CS-KG 2.0 (Open University, KMi)",
+  "group": "graph_scholarly",
+  "contains": "Knowledge graph of CS research entities (task, method, metric, material, other) and statements extracted from papers, with yearly frequencies and links to DBpedia and Wikidata. Successor of AI-KG.",
+  "size": "14.5M papers (2010-2022), 24.7M entities, 67.5M statements, 219 object properties (paper in PMC); Zenodo files: RDF 4.7 GB, CSV 4.1 GB, benchmark 49 MB (Zenodo API 2026-10-02)",
+  "cs_ml_fit": 5,
+  "graph_structure": "yes (RDF)",
+  "licence": "CC BY 4.0 (Zenodo and paper)",
+  "access": {
+   "home": "https://scholkg.kmi.open.ac.uk/",
+   "permanent": "http://w3id.org/cskg",
+   "sparql_page": "https://w3id.org/cskg/sparql",
+   "zenodo": "https://zenodo.org/records/14167681",
+   "paper": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12149285/"
+  },
+  "paper": {
+   "title": "CS-KG 2.0: A Large-scale Knowledge Graph of Computer Science",
+   "year": 2025,
+   "doi": "10.1038/s41597-025-05200-8",
+   "arxiv": ""
+  },
+  "use": "Best match to 'a very big graph of CS papers with an API': extract the ML slice (tasks/methods/metrics) as a concept backbone and cross-check our course KG.",
+  "caveats": "Entities were extracted by NLP from abstracts, so noisy; the SPARQL page loads but I could not run a programmatic query (the page redirects to a Yasgui UI), so the API is unverified; 4.7 GB download for the full RDF.",
+  "evidence": "paper and Zenodo metadata read; endpoint not queried successfully",
+  "url_status": {
+   "home": {
+    "url": "https://scholkg.kmi.open.ac.uk/",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "permanent": {
+    "url": "http://w3id.org/cskg",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "sparql_page": {
+    "url": "https://w3id.org/cskg/sparql",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "zenodo": {
+    "url": "https://zenodo.org/records/14167681",
+    "http": "403",
+    "checked": "2026-10-02",
+    "note": "403 to HEAD from curl; the Zenodo REST API record returned metadata on 2026-10-02"
+   },
+   "paper": {
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12149285/",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "5R7WVU5Z",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "aikg",
+  "name": "AI-KG",
+  "group": "graph_scholarly",
+  "contains": "Earlier KG of AI research (tasks, methods, metrics, materials) extracted from 333K AI papers in MAG.",
+  "size": "about 14M RDF triples, 1.2M reified statements, 820K entities, 27 relations, 333K papers (search results quoting the paper)",
+  "cs_ml_fit": 5,
+  "graph_structure": "yes (RDF)",
+  "licence": "CC BY 4.0 (scholkg site says both KGs share it)",
+  "access": {
+   "home": "https://scholkg.kmi.open.ac.uk/",
+   "paper": "https://link.springer.com/chapter/10.1007/978-3-030-62466-8_9"
+  },
+  "paper": {
+   "title": "AI-KG: An Automatically Generated Knowledge Graph of Artificial Intelligence",
+   "year": 2020,
+   "doi": "10.1007/978-3-030-62466-8_9",
+   "arxiv": ""
+  },
+  "use": "Smaller and AI-only; useful for a quick ML concept slice, superseded by CS-KG.",
+  "caveats": "Superseded by CS-KG per the site; sizes are second-hand.",
+  "evidence": "site fetched; sizes from search result",
+  "url_status": {
+   "home": {
+    "url": "https://scholkg.kmi.open.ac.uk/",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper": {
+    "url": "https://link.springer.com/chapter/10.1007/978-3-030-62466-8_9",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "N4X86NC5",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "orkg",
+  "name": "Open Research Knowledge Graph (ORKG)",
+  "group": "graph_scholarly",
+  "contains": "Community-curated graph of structured research contributions: papers, contributions, comparisons, problems, benchmarks; REST API, SPARQL triplestore, ORKG Ask search.",
+  "size": "68,574 papers, 102,188 contributions, 4,211 comparisons, 8,959 problems, 1,284,085 resources (ORKG statistics API, 2026-10-02)",
+  "cs_ml_fit": 3,
+  "graph_structure": "yes (RDF/Neo4j)",
+  "licence": "CC0 for data (stated on ORKG; not re-read here, unverified)",
+  "access": {
+   "api": "https://orkg.org/api/",
+   "triplestore": "https://orkg.org/triplestore",
+   "ask": "https://ask.orkg.org",
+   "benchmarks": "https://orkg.org/benchmarks"
+  },
+  "paper": {
+   "title": "Open Research Knowledge Graph: Next Generation Infrastructure for Semantic Scholarly Knowledge",
+   "year": 2019,
+   "doi": "10.1145/3360901.3364435",
+   "arxiv": ""
+  },
+  "use": "SciQA backbone; ORKG Ask and the benchmarks pages list ML tasks/results per paper.",
+  "caveats": "Not big (68K papers) and not CS-only; manual curation is uneven.",
+  "evidence": "statistics API queried 2026-10-02 (accept: application/json); licence unverified",
+  "url_status": {
+   "api": {
+    "url": "https://orkg.org/api/",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "triplestore": {
+    "url": "https://orkg.org/triplestore",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "ask": {
+    "url": "https://ask.orkg.org",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "benchmarks": {
+    "url": "https://orkg.org/benchmarks",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "openalex",
+  "name": "OpenAlex (and SemOpenAlex RDF)",
+  "group": "graph_scholarly",
+  "contains": "Open index of works, authors, venues, institutions, topics, citations; REST API; monthly snapshot on S3. SemOpenAlex republishes it as RDF with SPARQL.",
+  "size": "327,439,234 works total; 15,481,629 works with primary topic in field Computer Science (22,491,445 counting any topic); 4,419,338 primary in the Artificial Intelligence subfield (8,901,503 any topic) (OpenAlex API, 2026-10-02). SemOpenAlex: over 26 billion triples, 249M publications (paper), 1.7 TB TriG",
+  "cs_ml_fit": 4,
+  "graph_structure": "yes (citation graph)",
+  "licence": "CC0 (OpenAlex); CC0 (SemOpenAlex, per its abstract)",
+  "access": {
+   "api": "https://api.openalex.org/works",
+   "docs": "https://docs.openalex.org",
+   "semopenalex": "https://semopenalex.org",
+   "paper_sem": "https://arxiv.org/abs/2308.03671"
+  },
+  "paper": {
+   "title": "OpenAlex: A fully-open index of scholarly works, authors, venues, institutions, and concepts",
+   "year": 2022,
+   "doi": "",
+   "arxiv": "2205.01833"
+  },
+  "use": "Candidate for 'big + API + CS papers': filter field=Computer Science and AI subfield; use as citation/topic graph for corpus selection.",
+  "caveats": "Metadata and abstracts, not full text, and no concept-level knowledge; API key policy may apply at volume (not checked); snapshot is large.",
+  "evidence": "API counts queried 2026-10-02",
+  "url_status": {
+   "api": {
+    "url": "https://api.openalex.org/works",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "docs": {
+    "url": "https://docs.openalex.org",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "semopenalex": {
+    "url": "https://semopenalex.org",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper_sem": {
+    "url": "https://arxiv.org/abs/2308.03671",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "dblp",
+  "name": "DBLP",
+  "group": "graph_scholarly",
+  "contains": "Bibliography of computer science: publications, authors, venues; XML dump, RDF dump, public SPARQL endpoint, search API.",
+  "size": "8,788,770 resources of class dblp:Publication via the live SPARQL endpoint (2026-10-02); dblp.xml.gz header content-length 1,106,957,450 bytes",
+  "cs_ml_fit": 4,
+  "graph_structure": "yes (RDF)",
+  "licence": "CC0 (DBLP statement; not re-read here)",
+  "access": {
+   "sparql": "https://sparql.dblp.org/sparql",
+   "xml_dump": "https://dblp.org/xml/dblp.xml.gz",
+   "home": "https://dblp.org"
+  },
+  "paper": {
+   "title": "DBLP-QuAD: A Question Answering Dataset over the DBLP Scholarly Knowledge Graph",
+   "year": 2023,
+   "doi": "",
+   "arxiv": "2303.13351"
+  },
+  "use": "Venue-based selection of ML papers (ICML, NeurIPS, ICLR...) and bibliographic KG; paired with DBLP-QuAD.",
+  "caveats": "Bibliographic only, no abstracts or content; the web search API sits behind a bot challenge (curl blocked), the SPARQL endpoint worked.",
+  "evidence": "SPARQL count and header queried 2026-10-02",
+  "url_status": {
+   "sparql": {
+    "url": "https://sparql.dblp.org/sparql",
+    "http": "400",
+    "checked": "2026-10-02",
+    "note": "400 to a bare HEAD; a SPARQL COUNT query returned results (200) on 2026-10-02"
+   },
+   "xml_dump": {
+    "url": "https://dblp.org/xml/dblp.xml.gz",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "home": {
+    "url": "https://dblp.org",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "unarxive",
+  "name": "unarXive 2022",
+  "group": "graph_scholarly",
+  "contains": "All arXiv papers pre-processed as structured full text with in-text citations linked to OpenAlex and a citation graph.",
+  "size": "1.9M full-text papers, 63M references (28M linked to OpenAlex), 134M citation markers (README)",
+  "cs_ml_fit": 5,
+  "graph_structure": "yes (citation links)",
+  "licence": "MIT code; data on Zenodo, full set and a permissive subset (per-paper licences; check)",
+  "access": {
+   "github": "https://github.com/IllDepence/unarXive",
+   "zenodo_full": "https://doi.org/10.5281/zenodo.7752754",
+   "zenodo_permissive": "https://doi.org/10.5281/zenodo.7752615"
+  },
+  "paper": {
+   "title": "unarXive 2022: All arXiv Publications Pre-Processed for NLP, Including Structured Full-Text and Citation Network",
+   "year": 2023,
+   "doi": "10.1109/JCDL57899.2023.00020",
+   "arxiv": "2303.14957"
+  },
+  "use": "Full-text corpus of cs.LG/stat.ML papers (filter by arXiv category) for a research-paper GraphRAG; citation edges for free.",
+  "caveats": "No API (dump only); size in the tens of GB (not measured); arXiv licences vary, so use the permissive subset for redistribution.",
+  "evidence": "README read; download not attempted",
+  "url_status": {
+   "github": {
+    "url": "https://github.com/IllDepence/unarXive",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "zenodo_full": {
+    "url": "https://doi.org/10.5281/zenodo.7752754",
+    "http": "403",
+    "checked": "2026-10-02",
+    "note": "403 to HEAD from curl (not fetched)"
+   },
+   "zenodo_permissive": {
+    "url": "https://doi.org/10.5281/zenodo.7752615",
+    "http": "403",
+    "checked": "2026-10-02",
+    "note": "403 to HEAD from curl (not fetched)"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": "200"
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "s2",
+  "name": "Semantic Scholar Academic Graph + S2ORC (Datasets API)",
+  "group": "graph_scholarly",
+  "contains": "Papers, authors, citations with contexts and intents, abstracts, TLDRs, embeddings, and S2ORC full text; Graph API and bulk Datasets API.",
+  "size": "Release 2026-09-29 lists: abstracts, authors, citations, embeddings-specter_v1/v2, paper-ids, papers, publication-venues, s2orc, s2orc_v2, tldrs (Datasets API, no key needed for listing); about 200M+ papers (not measured)",
+  "cs_ml_fit": 4,
+  "graph_structure": "yes (citation graph)",
+  "licence": "ODC-By 1.0 for the dataset per S2 terms (unverified); S2ORC full text per source licence",
+  "access": {
+   "datasets": "https://api.semanticscholar.org/datasets/v1/release/latest",
+   "graph": "https://api.semanticscholar.org/graph/v1",
+   "docs": "https://api.semanticscholar.org/api-docs/"
+  },
+  "paper": {
+   "title": "S2ORC: The Semantic Scholar Open Research Corpus",
+   "year": 2020,
+   "doi": "",
+   "arxiv": "1911.02782"
+  },
+  "use": "Citation contexts and intents and full text for chosen ML venues; API with free key.",
+  "caveats": "Dataset download needs an API key (returned 'A valid API key is required'); anonymous Graph API search was rate-limited (HTTP 429).",
+  "evidence": "dataset release list fetched; file download and rate limits observed",
+  "url_status": {
+   "datasets": {
+    "url": "https://api.semanticscholar.org/datasets/v1/release/latest",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "graph": {
+    "url": "https://api.semanticscholar.org/graph/v1",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "docs": {
+    "url": "https://api.semanticscholar.org/api-docs/",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "oag",
+  "name": "Open Academic Graph (OAG v3.1) and OAG-Bench",
+  "group": "graph_scholarly",
+  "contains": "Linked MAG and AMiner academic graphs (papers, authors, venues, affiliations) plus a benchmark of 10 tasks including academic question answering.",
+  "size": "OAG v2: 166,192,182 MAG papers + 154,771,162 AMiner papers, 64,639,608 links; v3.1 papers up to Feb 2024 (search results); OAG-Bench: 10 tasks, 20 datasets (abstract)",
+  "cs_ml_fit": 3,
+  "graph_structure": "yes",
+  "licence": "not checked (unverified)",
+  "access": {
+   "download": "https://open.aminer.cn/open/article?id=65bf053091c938e5025a31e2",
+   "bench": "https://arxiv.org/abs/2402.15810"
+  },
+  "paper": {
+   "title": "OAG-Bench: A Human-Curated Benchmark for Academic Graph Mining",
+   "year": 2024,
+   "doi": "",
+   "arxiv": "2402.15810"
+  },
+  "use": "Alternative large graph, but MAG is discontinued (2021) and OpenAlex is its successor, so prefer OpenAlex.",
+  "caveats": "Access through AMiner site and licence unverified; stops at Feb 2024.",
+  "evidence": "only search results and abstract read",
+  "url_status": {
+   "download": {
+    "url": "https://open.aminer.cn/open/article?id=65bf053091c938e5025a31e2",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "bench": {
+    "url": "https://arxiv.org/abs/2402.15810",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": true,
+   "zkey": "G8JHYQ94",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "lpwc",
+  "name": "Linked Papers With Code (LPWC) and the Papers with Code archive",
+  "group": "graph_scholarly",
+  "contains": "RDF knowledge graph of ML papers linked to tasks, datasets, methods and evaluation results; the original Papers with Code JSON archive.",
+  "size": "LPWC: almost 400,000 ML publications (abstract). Papers with Code itself was sunset on 2025-07-24 and redirects to Hugging Face Trending Papers; last snapshot kept in the pwc-archive HF organisation",
+  "cs_ml_fit": 5,
+  "graph_structure": "yes (RDF)",
+  "licence": "LPWC: CC BY-SA 4.0 (abstract)",
+  "access": {
+   "lpwc": "https://linkedpaperswithcode.com",
+   "pwc_archive": "https://huggingface.co/pwc-archive",
+   "paper": "https://arxiv.org/abs/2310.20475"
+  },
+  "paper": {
+   "title": "Linked Papers With Code: The Latest in Machine Learning as an RDF Knowledge Graph",
+   "year": 2023,
+   "doi": "",
+   "arxiv": "2310.20475"
+  },
+  "use": "ML-specific graph of task-method-dataset-metric relations: seed KG for 'which method solves which task'. Check if LPWC is still being served.",
+  "caveats": "PwC is frozen at mid-2025, so no newer papers; LPWC freshness unverified.",
+  "evidence": "abstract and shutdown from search results; pwc-archive org queried on HF",
+  "url_status": {
+   "lpwc": {
+    "url": "https://linkedpaperswithcode.com",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "pwc_archive": {
+    "url": "https://huggingface.co/pwc-archive",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "paper": {
+    "url": "https://arxiv.org/abs/2310.20475",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": false,
+   "zkey": "",
+   "crossref": ""
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "wikidata",
+  "name": "Wikidata (with SPARQL)",
+  "group": "graph_scholarly",
+  "contains": "General KG with ML concepts, algorithms, people; SPARQL endpoint; Wikidata items linked from CS-KG and CSO.",
+  "size": "not measured",
+  "cs_ml_fit": 3,
+  "graph_structure": "yes",
+  "licence": "CC0",
+  "access": {
+   "sparql": "https://query.wikidata.org/",
+   "home": "https://www.wikidata.org"
+  },
+  "paper": null,
+  "use": "Entity linking and definitions for ML concepts.",
+  "caveats": "Coverage of fine-grained ML concepts is uneven.",
+  "evidence": "status check only",
+  "url_status": {
+   "sparql": {
+    "url": "https://query.wikidata.org/",
+    "http": "200",
+    "checked": "2026-10-02"
+   },
+   "home": {
+    "url": "https://www.wikidata.org",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "own-books",
+  "name": "Our corpus: ML textbooks adopted by universities",
+  "group": "own",
+  "contains": "Open or lawfully held ML textbooks chosen by adoption in the universities database: ESL (21 of 43 pilot universities), PRML (19), Murphy PML (16), Deep Learning (14), ISLR (11), Mitchell (10).",
+  "size": "Adoption counts from the vault's universities DB report (pilot subset of 43 universities, generated report)",
+  "cs_ml_fit": 5,
+  "graph_structure": "to build",
+  "licence": "Textbook copyright: can be used privately to generate questions; cannot be redistributed. Open-licensed: d2l.ai (CC BY-SA 4.0 per the vault note), A Course in ML (Daume).",
+  "access": {
+   "adoption_report": "local course-materials folder",
+   "d2l": "https://d2l.ai"
+  },
+  "paper": null,
+  "use": "Primary corpus for generated QA with page-level provenance.",
+  "caveats": "Release only questions and page references, not the text, unless the source is openly licensed.",
+  "evidence": "adoption table read from local report",
+  "url_status": {
+   "d2l": {
+    "url": "https://d2l.ai",
+    "http": "200",
+    "checked": "2026-10-02"
+   }
+  },
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "own-slides",
+  "name": "Our corpus: downloaded ML course slides",
+  "group": "own",
+  "contains": "University ML lecture slides and notes collected by the universities crawler.",
+  "size": "511 files, 462 PDF + 49 PPTX, 1.2 GB under local course-materials folder",
+  "cs_ml_fit": 5,
+  "graph_structure": "to build",
+  "licence": "Copyright of each university/instructor; research use only, no redistribution",
+  "access": {
+   "local": "local course-materials folder"
+  },
+  "paper": null,
+  "use": "Second corpus and a test of generalisation across instructors; slides pair naturally with a lecture-level concept graph.",
+  "caveats": "Slides carry little prose; question generation needs the textbook text too.",
+  "evidence": "local files counted",
+  "url_status": {},
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ },
+ {
+  "id": "own-bank",
+  "name": "ML-Course-QA (to be built): stratified question bank",
+  "group": "own",
+  "contains": "Stratified question bank with gold answers, source pages, question type, difficulty, prerequisite chain.",
+  "size": "target 300-500 validated items (matches the earlier thesis plan); stretch 800 candidates before validation",
+  "cs_ml_fit": 5,
+  "graph_structure": "yes (we add prerequisite labels)",
+  "licence": "Questions and rubric released CC BY 4.0 if sources permit; otherwise release IDs only",
+  "access": {},
+  "paper": null,
+  "use": "Main evaluation set for offline comparison of the four arms before the classroom study.",
+  "caveats": "Costs expert hours for validation; risk of leaking test items into prompts.",
+  "evidence": "plan, not yet built",
+  "url_status": {},
+  "zotero": {
+   "in_zotero": null
+  },
+  "checked": "2026-10-02"
+ }
+]

@@ -1,0 +1,1179 @@
+[
+ {
+  "id": "cs50-ai",
+  "name": "CS50.ai (CS50 Duck, Explain Highlighted Code, style50, Duck on Ed)",
+  "group": "A_cs50",
+  "kind": "research prototype in production",
+  "maker": "Harvard CS50 (Liu, Malan et al.)",
+  "used_where": [
+   {
+    "name": "CS50x, Harvard on campus (~500 students Fall 2023) and 10 other CS50 MOOCs",
+    "url": "https://cs50.harvard.edu/x/"
+   },
+   {
+    "name": "CS50 on edX",
+    "url": "https://www.edx.org/cs50"
+   }
+  ],
+  "ai_does": "GPT-4 (Azure) behind a unified backend: chat duck, explain highlighted code and style50 explanations in VS Code, auto-replies on the Ed forum (RAG over lecture captions, staff endorse/amend/delete); guardrails = system prompts that guide not answer, PII removal, prompt-injection guard, 10-hearts throttle",
+  "launch": "2023-06 (summer pilot, ~70 students)",
+  "scale": {
+   "value": ">50,000 unique users, >1.8M queries, peak 25,000 prompts/day, cost ~$1.90/student/month",
+   "as_of": "2023-12",
+   "basis": "measured by the developers (paper sec 5.3)"
+  },
+  "evidence": {
+   "summary": "Fall 2023 survey ~500 students: mid-term 47% 'very helpful' + 26% 'helpful'; end 73% responded, 53% 'loved' + 33% 'liked'. Duck-on-Ed accuracy reviewed by a staff member outside the dev team: 22/25 (88%) curricular, 30/39 (77%) administrative answers correct. No learning-outcome comparison.",
+   "link": "https://doi.org/10.1145/3626252.3630938",
+   "independent": "no (developers' own survey; one separate reviewer for accuracy)"
+  },
+  "student_price": "free (login at cs50.ai; throttled by hearts)",
+  "links": {
+   "product": "https://cs50.ai",
+   "paper": "https://doi.org/10.1145/3626252.3630938",
+   "paper2": "https://doi.org/10.1145/3641554.3701945",
+   "docs": "https://cs50.readthedocs.io/cs50.ai/",
+   "paper2_pdf": "https://cs.harvard.edu/malan/publications/fp0627-liu.pdf",
+   "repo": null
+  },
+  "notes": "No public source repo found for CS50.ai itself (github.com/cs50/cs50.ai, /duck, /ai50 all 404). 2025 follow-up read only via abstract/search snippet (not in Zotero full text): adds a model-evaluation backend that TAs review periodically, plus human-feedback loop. Reuse at other universities: none documented in the papers (unverified).",
+  "link_status": {
+   "https://cs50.ai": "200 ok",
+   "https://doi.org/10.1145/3626252.3630938": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://doi.org/10.1145/3641554.3701945": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://cs50.readthedocs.io/cs50.ai/": "200 ok",
+   "https://cs.harvard.edu/malan/publications/fp0627-liu.pdf": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "codehelp",
+  "name": "CodeHelp",
+  "group": "B_cs_research",
+  "kind": "open-source",
+  "maker": "Mark Liffiton, Illinois Wesleyan University (with Sheese, Savelka, Denny)",
+  "used_where": [
+   {
+    "name": "Illinois Wesleyan first-year computer and data science course, 52 students, 12 weeks",
+    "url": "https://doi.org/10.1145/3631802.3631830"
+   }
+  ],
+  "ai_does": "Q&A on code/errors without writing solution code (multi-stage prompt pipeline with guardrails); instructor-configurable; 'Focused Tutors'",
+  "launch": "2023 (paper Koli Calling 2023)",
+  "scale": {
+   "value": "52 students in the reported deployment",
+   "as_of": "2023",
+   "basis": "measured (paper)"
+  },
+  "evidence": {
+   "summary": "Deployment study: usage logs + perceptions; students value availability and error help; follow-up Sheese et al. 2024 on help-seeking patterns. No outcome comparison.",
+   "link": "https://doi.org/10.1145/3631802.3631830",
+   "independent": "no (tool authors)"
+  },
+  "student_price": "free for students; instructor supplies LLM API key, claimed ~$0.01 per Q&A query, ~$0.50/student/semester (vendor claim)",
+  "links": {
+   "product": "https://codehelp.app",
+   "paper": "https://doi.org/10.1145/3631802.3631830",
+   "repo": "https://github.com/liffiton/GenEd"
+  },
+  "notes": "CodeHelp is built on the open-source GenEd framework.",
+  "link_status": {
+   "https://codehelp.app": "200 ok",
+   "https://doi.org/10.1145/3631802.3631830": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://github.com/liffiton/GenEd": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "codeaid",
+  "name": "CodeAid",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "University of Toronto (Kazemitabaar, Grossman et al.)",
+  "used_where": [
+   {
+    "name": "University of Toronto programming (C) class",
+    "url": "https://doi.org/10.1145/3613904.3642773"
+   }
+  ],
+  "ai_does": "Answers conceptual questions, pseudo-code with line-by-line explanation, annotates incorrect code with fix suggestions; never reveals full code",
+  "launch": "2024 (CHI 2024)",
+  "scale": {
+   "value": "700 students, 12-week semester, ~8,000 usages analysed",
+   "as_of": "2024",
+   "basis": "measured (paper abstract)"
+  },
+  "evidence": {
+   "summary": "Thematic analysis of 8,000 usages, weekly surveys, 22 student interviews, 8 educator interviews; four design considerations. No outcome comparison.",
+   "link": "https://doi.org/10.1145/3613904.3642773",
+   "independent": "no"
+  },
+  "student_price": "not released as a public product (unverified)",
+  "links": {
+   "paper": "https://doi.org/10.1145/3613904.3642773",
+   "repo": null,
+   "product": null
+  },
+  "notes": "No GitHub repo located.",
+  "link_status": {
+   "https://doi.org/10.1145/3613904.3642773": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "iris-artemis",
+  "name": "Iris (inside Artemis)",
+  "group": "B_cs_research",
+  "kind": "open-source",
+  "maker": "TUM (Bassner, Frankford, Krusche)",
+  "used_where": [
+   {
+    "name": "TUM Artemis interactive-learning platform, large CS courses (>1,000 enrolled)",
+    "url": "https://artemis.tum.de"
+   }
+  ],
+  "ai_does": "Chat tutor with context (problem statement, student code, automated feedback); chain-of-thought prompts to GPT-3.5-Turbo; gives hints/counter-questions, not solutions",
+  "launch": "2024 (ITiCSE 2024)",
+  "scale": {
+   "value": "221 students sent >=10 messages in the evaluation survey base",
+   "as_of": "2024",
+   "basis": "measured (paper)"
+  },
+  "evidence": {
+   "summary": "Student survey: Iris understands queries, helpful; students feel confident without it in exams; seen as complement to human tutors. No learning-outcome comparison.",
+   "link": "https://doi.org/10.1145/3649217.3653543",
+   "independent": "no (platform authors)"
+  },
+  "student_price": "free inside Artemis; Artemis is open source",
+  "links": {
+   "product": "https://artemis.tum.de",
+   "paper": "https://doi.org/10.1145/3649217.3653543",
+   "repo": "https://github.com/ls1intum/Artemis",
+   "docs": "https://docs.artemis.tum.de/",
+   "repo2": "https://github.com/ls1intum/edutelligence"
+  },
+  "notes": "edutelligence repo is the successor AI-services repo (existence verified, contents not read).",
+  "link_status": {
+   "https://artemis.tum.de": "200 ok",
+   "https://doi.org/10.1145/3649217.3653543": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://github.com/ls1intum/Artemis": "200 ok",
+   "https://docs.artemis.tum.de/": "200 ok",
+   "https://github.com/ls1intum/edutelligence": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "codetutor",
+  "name": "CodeTutor",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "William & Mary (Lyu, Zhang et al.)",
+  "used_where": [
+   {
+    "name": "William & Mary introductory CS course",
+    "url": "https://doi.org/10.1145/3657604.3662036"
+   }
+  ],
+  "ai_does": "LLM chat assistant for syntax, debugging and task help in an intro course",
+  "launch": "2024 (L@S 2024)",
+  "scale": {
+   "value": "50 students, semester-long",
+   "as_of": "2024",
+   "basis": "measured (paper)"
+  },
+  "evidence": {
+   "summary": "Between-subjects semester study: CodeTutor group had statistically significant higher final scores than control; gains larger for students with no prior LLM-tool use; agreement with suggestions fell over the semester. One of few outcome-based tests.",
+   "link": "https://doi.org/10.1145/3657604.3662036",
+   "independent": "no (tool authors), but has a control group"
+  },
+  "student_price": "not public (unverified)",
+  "links": {
+   "paper": "https://doi.org/10.1145/3657604.3662036",
+   "repo": null,
+   "product": null
+  },
+  "notes": "",
+  "link_status": {
+   "https://doi.org/10.1145/3657604.3662036": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "stap-tutor",
+  "name": "StAP-tutor (next-step hints)",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Utrecht University (Roest, Keuning, Jeuring)",
+  "used_where": [
+   {
+    "name": "Utrecht introductory programming (experiment with students)",
+    "url": "https://doi.org/10.1145/3636243.3636259"
+   }
+  ],
+  "ai_does": "LLM next-step hints within a programming tutor",
+  "launch": "2024 (ACE 2024)",
+  "scale": {
+   "value": "small experiment (n not extracted)",
+   "as_of": "2024",
+   "basis": "measured (paper)"
+  },
+  "evidence": {
+   "summary": "Experiment + expert assessment: hints mostly one specific personalised next step, but can mislead and lack detail near the end of an assignment.",
+   "link": "https://doi.org/10.1145/3636243.3636259",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3636243.3636259",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Listed in Prather as the 'hint' example; Table 8: hints positive in only 4/8 studies.",
+  "link_status": {
+   "https://doi.org/10.1145/3636243.3636259": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "workedgen",
+  "name": "WorkedGen (LLM worked examples)",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "University of Auckland (Jury, Denny et al.)",
+  "used_where": [
+   {
+    "name": "Auckland introductory programming course",
+    "url": "https://doi.org/10.1145/3636243.3636252"
+   }
+  ],
+  "ai_does": "Generates interactive worked examples with explanations",
+  "launch": "2024 (ACE 2024)",
+  "scale": {
+   "value": "not extracted",
+   "as_of": "2024",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Evaluation in an intro course (details not read; paper not in Zotero).",
+   "link": "https://doi.org/10.1145/3636243.3636252",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3636243.3636252",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Paper to import (lit-ecosystem-f).",
+  "link_status": {
+   "https://doi.org/10.1145/3636243.3636252": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "promptly",
+  "name": "Promptly (Prompt Problems)",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Auckland / ACU / UCD / Toronto (Denny, Prather, Becker et al.)",
+  "used_where": [
+   {
+    "name": "one CS1 and one CS2 course",
+    "url": "https://doi.org/10.1145/3626252.3630909"
+   }
+  ],
+  "ai_does": "Hosts 'Prompt Problems': student writes a prompt, an LLM generates code, tests check it; teaches prompting",
+  "launch": "2024 (SIGCSE 2024)",
+  "scale": {
+   "value": "two courses (n in paper)",
+   "as_of": "2024",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Students enthusiastic; engages computational thinking. Perception study only.",
+   "link": "https://doi.org/10.1145/3626252.3630909",
+   "independent": "no"
+  },
+  "student_price": "not stated (unverified)",
+  "links": {
+   "paper": "https://doi.org/10.1145/3626252.3630909",
+   "repo": null,
+   "product": null
+  },
+  "notes": "",
+  "link_status": {
+   "https://doi.org/10.1145/3626252.3630909": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "gpteach",
+  "name": "GPTeach",
+  "group": "B_cs_research",
+  "kind": "open-source",
+  "maker": "Stanford (Markel, Piech et al.)",
+  "used_where": [
+   {
+    "name": "TA training at Stanford (teacher-training use, not student-facing)",
+    "url": "https://doi.org/10.1145/3573051.3593393"
+   }
+  ],
+  "ai_does": "GPT-simulated students so novice TAs can practise teaching",
+  "launch": "2023 (L@S 2023)",
+  "scale": {
+   "value": "small user study",
+   "as_of": "2023",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Small study; teacher-training purpose.",
+   "link": "https://doi.org/10.1145/3573051.3593393",
+   "independent": "no"
+  },
+  "student_price": "free (open code)",
+  "links": {
+   "paper": "https://doi.org/10.1145/3573051.3593393",
+   "repo": "https://github.com/juliamarkel/GPTeach",
+   "product": null
+  },
+  "notes": "Two other unrelated GitHub repos share the name GPTeach; this one is the paper's first author (inferred from owner name, unverified).",
+  "link_status": {
+   "https://doi.org/10.1145/3573051.3593393": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://github.com/juliamarkel/GPTeach": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "tutor-kai",
+  "name": "Tutor Kai",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Siegen University / Nuremberg Tech (Jacobs, Kempf, Kiesler)",
+  "used_where": [
+   {
+    "name": "Python programming tasks, 11 undergraduates (eye-tracking study)",
+    "url": "https://arxiv.org/abs/2506.20433"
+   }
+  ],
+  "ai_does": "Web app with code editor, compiler feedback and GenAI feedback on Python tasks",
+  "launch": "2024-2025",
+  "scale": {
+   "value": "11 participants in the eye-tracking study",
+   "as_of": "2025",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Eye-tracking, think-aloud: novices spend twice the fixation time on GenAI feedback and struggle to understand it; experienced students use it better.",
+   "link": "https://doi.org/10.1145/3754508.3754512",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://arxiv.org/abs/2506.20433",
+   "paper_doi": "https://doi.org/10.1145/3754508.3754512",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Prather lists Tutor Kai [52]; the 2025 UKICER paper is the one located.",
+  "link_status": {
+   "https://arxiv.org/abs/2506.20433": "200 ok",
+   "https://doi.org/10.1145/3754508.3754512": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "kogi",
+  "name": "KOGI",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Kuramitsu et al., Japan",
+  "used_where": [
+   {
+    "name": "Algorithm and data-science courses (Jupyter)",
+    "url": "https://doi.org/10.1145/3622780.3623648"
+   }
+  ],
+  "ai_does": "ChatGPT integrated into Jupyter: explains errors and code, modifies code",
+  "launch": "2023",
+  "scale": {
+   "value": "not extracted",
+   "as_of": "2023",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Deployment report (details not read).",
+   "link": "https://doi.org/10.1145/3622780.3623648",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3622780.3623648",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Paper to import.",
+  "link_status": {
+   "https://doi.org/10.1145/3622780.3623648": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "netlogo-chat",
+  "name": "NetLogo Chat",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Northwestern (Jacobsen/Wilensky group, per CHI paper)",
+  "used_where": [
+   {
+    "name": "novice and expert NetLogo users",
+    "url": "https://doi.org/10.1145/3613904.3642377"
+   }
+  ],
+  "ai_does": "LLM companion inside NetLogo for agent-based modelling",
+  "launch": "2024 (CHI 2024)",
+  "scale": {
+   "value": "user study",
+   "as_of": "2024",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Experience study of novices and experts.",
+   "link": "https://doi.org/10.1145/3613904.3642377",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3613904.3642377",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Authorship/affiliation not verified in this run.",
+  "link_status": {
+   "https://doi.org/10.1145/3613904.3642377": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "gilt",
+  "name": "Gilt",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Nam et al. (CMU)",
+  "used_where": [
+   {
+    "name": "user study with programmers",
+    "url": "https://doi.org/10.1145/3597503.3639187"
+   }
+  ],
+  "ai_does": "IDE plugin that explains selected code in context",
+  "launch": "2024 (ICSE 2024)",
+  "scale": {
+   "value": "user study",
+   "as_of": "2024",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Controlled study: helps comprehension tasks.",
+   "link": "https://doi.org/10.1145/3597503.3639187",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3597503.3639187",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Already in Zotero. Affiliation from memory (unverified).",
+  "link_status": {
+   "https://doi.org/10.1145/3597503.3639187": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "codetailor",
+  "name": "CodeTailor",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Hou et al. (L@S 2024)",
+  "used_where": [
+   {
+    "name": "Parsons-problem support study",
+    "url": "https://doi.org/10.1145/3657604.3662032"
+   }
+  ],
+  "ai_does": "Personalised Parsons puzzles from the student's own incorrect code",
+  "launch": "2024",
+  "scale": {
+   "value": "study",
+   "as_of": "2024",
+   "basis": "measured"
+  },
+  "evidence": {
+   "summary": "Study of engagement while learning to program.",
+   "link": "https://doi.org/10.1145/3657604.3662032",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3657604.3662032",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Paper to import.",
+  "link_status": {
+   "https://doi.org/10.1145/3657604.3662032": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "courseassist",
+  "name": "CourseAssist",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "UC San Diego (Feng, Liu, Ghosal)",
+  "used_where": [
+   {
+    "name": "UCSD CS courses",
+    "url": "https://doi.org/10.1145/3649409.3691094"
+   }
+  ],
+  "ai_does": "RAG course tutor tuned to be pedagogically appropriate",
+  "launch": "2024",
+  "scale": {
+   "value": "n/a",
+   "as_of": "2024",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Not in Prather list; found in Zotero.",
+   "link": "https://doi.org/10.1145/3649409.3691094",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1145/3649409.3691094",
+   "repo": null,
+   "product": null
+  },
+  "notes": "Affiliation from memory (unverified).",
+  "link_status": {
+   "https://doi.org/10.1145/3649409.3691094": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "jill-watson",
+  "name": "Jill Watson (ChatGPT version)",
+  "group": "B_cs_research",
+  "kind": "research prototype",
+  "maker": "Georgia Tech Design Intelligence Lab",
+  "used_where": [
+   {
+    "name": "Georgia Tech online CS courses",
+    "url": "https://doi.org/10.1007/978-3-031-64302-6_23"
+   }
+  ],
+  "ai_does": "Virtual teaching assistant answering course questions",
+  "launch": "2024 (this version)",
+  "scale": {
+   "value": "n/a",
+   "as_of": "2024",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Paper in Zotero; evaluation not re-read.",
+   "link": "https://doi.org/10.1007/978-3-031-64302-6_23",
+   "independent": "no"
+  },
+  "student_price": "not public",
+  "links": {
+   "paper": "https://doi.org/10.1007/978-3-031-64302-6_23",
+   "repo": null,
+   "product": null
+  },
+  "notes": "",
+  "link_status": {
+   "https://doi.org/10.1007/978-3-031-64302-6_23": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "copilot",
+  "name": "GitHub Copilot (Student plan / Pro for verified educators)",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "GitHub (Microsoft)",
+  "used_where": [
+   {
+    "name": "any verified student/teacher via GitHub Education",
+    "url": "https://education.github.com/"
+   }
+  ],
+  "ai_does": "Code completion, chat and agent in IDEs; Prather classes it 'task-specific, not education-focused'",
+  "launch": "2021 (Education benefit announced Dec 2024 for Pro)",
+  "scale": {
+   "value": "n/a",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Prather Table 7: only 4 studies used task-specific tools (3 positive of 4 incl. guidance cells). No RCT located in this run.",
+   "link": "https://doi.org/10.1145/3689187.3709614",
+   "independent": "yes (SLR)"
+  },
+  "student_price": "free for verified students and teachers; docs say student access moved to a 'Copilot Student' plan with less than Pro (search snippet, unverified)",
+  "links": {
+   "product": "https://github.com/features/copilot",
+   "program": "https://education.github.com/pack",
+   "docs": "https://docs.github.com/en/copilot/how-tos/manage-your-account/get-free-access-to-copilot-pro"
+  },
+  "notes": "Terms reevaluated monthly (from GitHub community Q&A in search results).",
+  "link_status": {
+   "https://github.com/features/copilot": "200 ok",
+   "https://education.github.com/pack": "200 ok",
+   "https://docs.github.com/en/copilot/how-tos/manage-your-account/get-free-access-to-copilot-pro": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "codio-coach",
+  "name": "Codio Coach",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "Codio (built on Anthropic Claude per vendor)",
+  "used_where": [
+   {
+    "name": "UTeach CS, University of Texas at Austin (Codio customer)",
+    "url": "https://cs.uteach.utexas.edu/codio"
+   }
+  ],
+  "ai_does": "Summarises assignment text, explains error messages, gives Socratic hints",
+  "launch": "2024-04",
+  "scale": {
+   "value": "not disclosed",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Vendor study: +12% mean and +15% median grade on assignments with Coach on; TechRadar article questions the claim; ASEE paper by the vendor.",
+   "link": "https://www.codio.com/research/impact-of-codio-coach",
+   "independent": "no (vendor)"
+  },
+  "student_price": "through institution/course licence (unverified price)",
+  "links": {
+   "product": "https://www.codio.com/programming",
+   "study": "https://www.codio.com/research/impact-of-codio-coach",
+   "paper": "https://doi.org/10.18260/1-2--56896",
+   "press": "https://trainingindustry.com/press-release/it-and-technical-training/codio-announces-the-launch-of-coach-and-ai-powered-learning-assistant/",
+   "critique": "https://www.techradar.com/pro/this-ai-tool-claims-to-boost-student-grades-by-15-using-a-2400-year-old-technique-but-i-am-not-convinced"
+  },
+  "notes": "Codio also lists UC Berkeley, Florida, George Mason as users (search summary, unverified).",
+  "link_status": {
+   "https://www.codio.com/programming": "200 ok",
+   "https://www.codio.com/research/impact-of-codio-coach": "200 ok",
+   "https://doi.org/10.18260/1-2--56896": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl",
+   "https://trainingindustry.com/press-release/it-and-technical-training/codio-announces-the-launch-of-coach-and-ai-powered-learning-assistant/": "200 ok",
+   "https://www.techradar.com/pro/this-ai-tool-claims-to-boost-student-grades-by-15-using-a-2400-year-old-technique-but-i-am-not-convinced": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "zybooks-ai",
+  "name": "zyBooks AI (zyLabs AI Hints, Generate with AI, Student Behavior Insights)",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "Wiley (zyBooks)",
+  "used_where": [
+   {
+    "name": "Arizona State University AI-tutor pilot (Fulton Schools)",
+    "url": "https://www.zybooks.com/wiley-and-asu-partner-to-pilot-ai-powered-tutor-for-computer-science-students/"
+   }
+  ],
+  "ai_does": "AI hints in coding labs (instructor can disable), AI lab authoring, flags pasted AI answers",
+  "launch": "2025-08 (fall 2025 term)",
+  "scale": {
+   "value": "not disclosed",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Vendor announcement only; no study found.",
+   "link": "https://www.edtechinnovationhub.com/news/wiley-uses-ai-to-enhance-zybooks-stem-college-courseware-for-students-and-instructors",
+   "independent": "no"
+  },
+  "student_price": "no extra charge for zyBooks users (Wiley press release); zyBooks itself is paid per student",
+  "links": {
+   "product": "https://www.zybooks.com/ai/",
+   "press": "https://newsroom.wiley.com/press-releases/press-release-details/2025/Wiley-Creates-New-AI-Tools-to-Enhance-College-Learning--Instruction/default.aspx",
+   "coverage": "https://www.edtechinnovationhub.com/news/wiley-uses-ai-to-enhance-zybooks-stem-college-courseware-for-students-and-instructors"
+  },
+  "notes": "",
+  "link_status": {
+   "https://www.zybooks.com/ai/": "200 ok",
+   "https://newsroom.wiley.com/press-releases/press-release-details/2025/Wiley-Creates-New-AI-Tools-to-Enhance-College-Learning--Instruction/default.aspx": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
+   "https://www.edtechinnovationhub.com/news/wiley-uses-ai-to-enhance-zybooks-stem-college-courseware-for-students-and-instructors": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "gradescope",
+  "name": "Gradescope (AI-assisted grading and answer groups)",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "Turnitin",
+  "used_where": [
+   {
+    "name": "institutional licences (named universities not verified here)",
+    "url": "https://www.turnitin.com/products/gradescope/"
+   }
+  ],
+  "ai_does": "Clusters similar short answers (incl. handwritten) so one grade applies to a group; instructor reviews; fixed-template PDF assignments only",
+  "launch": "AI-assisted grading 2024-2025 (date unverified)",
+  "scale": {
+   "value": "n/a",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Vendor claim 'cut grading time in half'; no independent study found.",
+   "link": "https://guides.gradescope.com/hc/en-us/articles/24838908062093-AI-assisted-grading-and-answer-groups",
+   "independent": "no"
+  },
+  "student_price": "institution pays (Institutional licence needed for AI features)",
+  "links": {
+   "product": "https://www.turnitin.com/products/gradescope/",
+   "docs": "https://guides.gradescope.com/hc/en-us/articles/24838908062093-AI-assisted-grading-and-answer-groups"
+  },
+  "notes": "Instructor-facing, not tutor.",
+  "link_status": {
+   "https://www.turnitin.com/products/gradescope/": "200 ok",
+   "https://guides.gradescope.com/hc/en-us/articles/24838908062093-AI-assisted-grading-and-answer-groups": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "boot-dev",
+  "name": "Boot.dev (Boots)",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "Boot.dev",
+  "used_where": [
+   {
+    "name": "self-paced learners (no university deployment found)",
+    "url": "https://www.boot.dev/"
+   }
+  ],
+  "ai_does": "Socratic AI tutor 'Boots' (a wizard bear) in each lesson; explains code, does not give answers",
+  "launch": "2023 (blog post; date unverified)",
+  "scale": {
+   "value": "not disclosed",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "None found.",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "paid subscription for full access (unverified)",
+  "links": {
+   "product": "https://www.boot.dev/",
+   "blog": "https://blog.boot.dev/news/introducing-boots-ai-code-explainer/"
+  },
+  "notes": "Not a higher-education product; included as the CS-learning comparator.",
+  "link_status": {
+   "https://www.boot.dev/": "200 ok",
+   "https://blog.boot.dev/news/introducing-boots-ai-code-explainer/": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "jetbrains-academy",
+  "name": "JetBrains Academy plugin AI features",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "JetBrains",
+  "used_where": [
+   {
+    "name": "learners in Python/Kotlin courses inside the IDE",
+    "url": "https://www.jetbrains.com/academy/"
+   }
+  ],
+  "ai_does": "AI hints in the IDE for Python and Kotlin learners; machine translation and theory lookup",
+  "launch": "2025-04",
+  "scale": {
+   "value": "not disclosed",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "None found.",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "free JetBrains student licence pack exists (blog 2025-08-12 listed in search; not fetched)",
+  "links": {
+   "product": "https://www.jetbrains.com/academy/",
+   "blog": "https://blog.jetbrains.com/education/2025/04/03/jetbrains-academy-plugin-2025-3-ai-features/"
+  },
+  "notes": "",
+  "link_status": {
+   "https://www.jetbrains.com/academy/": "200 ok",
+   "https://blog.jetbrains.com/education/2025/04/03/jetbrains-academy-plugin-2025-3-ai-features/": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "cursor-students",
+  "name": "Cursor (student offer)",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "Anysphere",
+  "used_where": [
+   {
+    "name": "students (verification page)",
+    "url": "https://cursor.com/students"
+   }
+  ],
+  "ai_does": "AI code editor / agent",
+  "launch": "n/a",
+  "scale": {
+   "value": "n/a",
+   "as_of": "2026-10",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "None.",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "student page exists; terms not read",
+  "links": {
+   "product": "https://cursor.com/students"
+  },
+  "notes": "Page resolves; contents not read.",
+  "link_status": {
+   "https://cursor.com/students": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "replit-codecademy-codegrade-packback-pearson",
+  "name": "Not catalogued (homepages only; AI features not read): Replit, Codecademy, CodeGrade, Packback, Pearson higher ed",
+  "group": "C_commercial_cs",
+  "kind": "commercial",
+  "maker": "various",
+  "used_where": [],
+  "ai_does": "not read",
+  "launch": "n/a",
+  "scale": {
+   "value": "n/a",
+   "as_of": "",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "not read",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "n/a",
+  "links": {
+   "replit": "https://replit.com/",
+   "codecademy": "https://www.codecademy.com/",
+   "codegrade": "https://www.codegrade.com/",
+   "packback": "https://packback.co/",
+   "pearson": "https://www.pearson.com/en-us/higher-education.html"
+  },
+  "notes": "Honest gap: these are named in the brief but their AI products were not researched in this pass.",
+  "link_status": {
+   "https://replit.com/": "200 ok",
+   "https://www.codecademy.com/": "200 ok",
+   "https://www.codegrade.com/": "200 ok",
+   "https://packback.co/": "200 ok",
+   "https://www.pearson.com/en-us/higher-education.html": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "chatgpt-edu",
+  "name": "ChatGPT Edu + study mode",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "OpenAI",
+  "used_where": [
+   {
+    "name": "California State University system (claimed: ~460k students; contract $16.9M for 18 months per AAUP)",
+    "url": "https://www.aaup.org/issue/spring-2026/cal-states-war-working-class-education"
+   }
+  ],
+  "ai_does": "Campus-licensed ChatGPT; study mode guides step by step instead of answering",
+  "launch": "Edu 2024; study mode 2025-07-29",
+  "scale": {
+   "value": "CSU rollout to students July 2025",
+   "as_of": "2025-07",
+   "basis": "claimed (press/AAUP)"
+  },
+  "evidence": {
+   "summary": "No independent outcome study found in this pass.",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "free to students at licensed campuses; study mode also on Free/Plus/Pro",
+  "links": {
+   "product": "https://openai.com/chatgpt/education/",
+   "study_mode": "https://openai.com/index/chatgpt-study-mode/",
+   "coverage": "https://techcrunch.com/2025/07/29/openai-launches-study-mode-in-chatgpt"
+  },
+  "notes": "The 460k figure is from memory of the Feb 2025 CSU announcement; not re-verified.",
+  "link_status": {
+   "https://openai.com/chatgpt/education/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
+   "https://openai.com/index/chatgpt-study-mode/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
+   "https://techcrunch.com/2025/07/29/openai-launches-study-mode-in-chatgpt": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "claude-edu",
+  "name": "Claude for Education (learning mode)",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "Anthropic",
+  "used_where": [
+   {
+    "name": "Northeastern University (claimed 50,000 students/faculty/staff, 13 campuses), LSE, Champlain College",
+    "url": "https://www.anthropic.com/news/introducing-claude-for-education"
+   }
+  ],
+  "ai_does": "Socratic learning mode, Canvas LTI integration, Claude Code access for CS",
+  "launch": "2025-04",
+  "scale": {
+   "value": "Northeastern 50,000 users",
+   "as_of": "2025-04",
+   "basis": "claimed (vendor/press)"
+  },
+  "evidence": {
+   "summary": "None independent found.",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "via university licence",
+  "links": {
+   "product": "https://www.anthropic.com/education",
+   "launch": "https://www.anthropic.com/news/introducing-claude-for-education"
+  },
+  "notes": "Same engine as Codio Coach.",
+  "link_status": {
+   "https://www.anthropic.com/education": "200 ok",
+   "https://www.anthropic.com/news/introducing-claude-for-education": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "gemini-edu",
+  "name": "Gemini for Education / Guided Learning / LearnLM",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "Google",
+  "used_where": [
+   {
+    "name": "claimed >100 US public universities in Google AI for Education Accelerator",
+    "url": "https://blog.google/products-and-platforms/products/gemini/google-ai-pro-students-learning/"
+   }
+  ],
+  "ai_does": "Guided Learning mode on LearnLM-tuned Gemini 2.5; NotebookLM",
+  "launch": "2025-08",
+  "scale": {
+   "value": ">100 universities",
+   "as_of": "2025-08",
+   "basis": "claimed (press summary)"
+  },
+  "evidence": {
+   "summary": "Google's own pedagogy benchmarks only.",
+   "link": null,
+   "independent": "no"
+  },
+  "student_price": "free Google AI Pro for 12 months for eligible students in several countries (2025 offer)",
+  "links": {
+   "product": "https://gemini.google/students/",
+   "blog": "https://blog.google/products-and-platforms/products/gemini/google-ai-pro-students-learning/",
+   "notebooklm": "https://notebooklm.google/",
+   "notebooklm_blog": "https://blog.google/technology/google-labs/notebooklm-student-features/"
+  },
+  "notes": "",
+  "link_status": {
+   "https://gemini.google/students/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
+   "https://blog.google/products-and-platforms/products/gemini/google-ai-pro-students-learning/": "200 ok",
+   "https://notebooklm.google/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
+   "https://blog.google/technology/google-labs/notebooklm-student-features/": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "ms-copilot-edu",
+  "name": "Microsoft Copilot for education",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "Microsoft",
+  "used_where": [],
+  "ai_does": "Copilot in Microsoft 365 / Teams for Education; Khan Academy content integrated",
+  "launch": "n/a",
+  "scale": {
+   "value": "n/a",
+   "as_of": "",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "not read",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "not read",
+  "links": {
+   "product": "https://www.microsoft.com/en-us/education/products/copilot"
+  },
+  "notes": "Page resolves; contents not read.",
+  "link_status": {
+   "https://www.microsoft.com/en-us/education/products/copilot": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "khanmigo",
+  "name": "Khanmigo",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "Khan Academy (OpenAI / Microsoft Azure)",
+  "used_where": [
+   {
+    "name": "K-12 mostly; offers coding help (JS, HTML, Python, SQL)",
+    "url": "https://www.khanmigo.ai/learners"
+   }
+  ],
+  "ai_does": "Tutor; free for US teachers since 2024-05-21",
+  "launch": "2023",
+  "scale": {
+   "value": "see ecosystem note",
+   "as_of": "",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Toronto RCT (Oreopoulos & Low): Khanmigo adds nothing beyond Khan Academy (see the Ecosystem note; read via press).",
+   "link": null,
+   "independent": "yes"
+  },
+  "student_price": "paid for learners; free teachers (US)",
+  "links": {
+   "product": "https://www.khanmigo.ai/learners",
+   "blog": "https://blog.khanacademy.org/khanmigo-for-teachers-is-free-for-all-us-teachers-thanks-to-support-from-microsoft/"
+  },
+  "notes": "K-12 product; included as comparator.",
+  "link_status": {
+   "https://www.khanmigo.ai/learners": "200 ok",
+   "https://blog.khanacademy.org/khanmigo-for-teachers-is-free-for-all-us-teachers-thanks-to-support-from-microsoft/": "200 ok"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "coursera-coach",
+  "name": "Coursera Coach",
+  "group": "D_general_he",
+  "kind": "commercial",
+  "maker": "Coursera",
+  "used_where": [
+   {
+    "name": "Coursera courses incl. university partners",
+    "url": "https://www.coursera.org/"
+   }
+  ],
+  "ai_does": "In-course Q&A, summaries, practice, career guidance",
+  "launch": "announced 2023; expanded 2024-09",
+  "scale": {
+   "value": ">1M learners supported; +9.5% first-attempt quiz pass; +11.6% lessons/hour",
+   "as_of": "2025",
+   "basis": "claimed (vendor via search summary)"
+  },
+  "evidence": {
+   "summary": "Vendor metrics only.",
+   "link": null,
+   "independent": "no"
+  },
+  "student_price": "included with Coursera access",
+  "links": {
+   "product": "https://www.coursera.org/",
+   "announcement": "https://blog.coursera.org/announcing-ai-powered-capabilities-enabling-educators-to-use-coursera-coach-to-deliver-interactive-personalized-instruction"
+  },
+  "notes": "Coach landing page /coursera-coach returned 404; homepage linked instead.",
+  "link_status": {
+   "https://www.coursera.org/": "200 ok",
+   "https://blog.coursera.org/announcing-ai-powered-capabilities-enabling-educators-to-use-coursera-coach-to-deliver-interactive-personalized-instruction": "400 to curl (returned by web search; unverified)"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "turnitin-ai",
+  "name": "Turnitin AI writing detection",
+  "group": "E_integrity",
+  "kind": "commercial",
+  "maker": "Turnitin",
+  "used_where": [
+   {
+    "name": "Vanderbilt disabled it (Aug 2023)",
+    "url": "https://www.vanderbilt.edu/brightspace/2023/08/16/guidance-on-ai-detection-and-why-were-disabling-turnitins-ai-detector/"
+   }
+  ],
+  "ai_does": "Classifier flags AI-written text in submissions",
+  "launch": "2023-04",
+  "scale": {
+   "value": "n/a",
+   "as_of": "",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "Vendor: <1% document-level false positives (only for docs scoring >=20% AI). Vanderbilt: 1% of 75,000 papers = ~750 wrongful flags. Liang et al. 2023: GPT detectors biased against non-native writers.",
+   "link": "https://doi.org/10.1016/j.patter.2023.100779",
+   "independent": "yes (Vanderbilt, Liang et al.)"
+  },
+  "student_price": "institution pays",
+  "links": {
+   "product": "https://www.turnitin.com/solutions/topics/ai-writing/",
+   "vanderbilt": "https://www.vanderbilt.edu/brightspace/2023/08/16/guidance-on-ai-detection-and-why-were-disabling-turnitins-ai-detector/",
+   "paper": "https://doi.org/10.1016/j.patter.2023.100779"
+  },
+  "notes": "",
+  "link_status": {
+   "https://www.turnitin.com/solutions/topics/ai-writing/": "200 ok",
+   "https://www.vanderbilt.edu/brightspace/2023/08/16/guidance-on-ai-detection-and-why-were-disabling-turnitins-ai-detector/": "200 ok",
+   "https://doi.org/10.1016/j.patter.2023.100779": "doi.org handle resolves (responseCode 1); publisher page returns 403 to curl"
+  },
+  "checked": "2026-10-01"
+ },
+ {
+  "id": "gptzero",
+  "name": "GPTZero",
+  "group": "E_integrity",
+  "kind": "commercial",
+  "maker": "GPTZero",
+  "used_where": [],
+  "ai_does": "AI-text detector",
+  "launch": "n/a",
+  "scale": {
+   "value": "n/a",
+   "as_of": "",
+   "basis": "n/a"
+  },
+  "evidence": {
+   "summary": "not read",
+   "link": null,
+   "independent": "n/a"
+  },
+  "student_price": "n/a",
+  "links": {
+   "product": "https://gptzero.me/"
+  },
+  "notes": "Homepage resolves only.",
+  "link_status": {
+   "https://gptzero.me/": "200 ok"
+  },
+  "checked": "2026-10-01"
+ }
+]

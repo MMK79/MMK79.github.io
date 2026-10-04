@@ -1,0 +1,202 @@
+{
+ "as_of": "2026-10-04",
+ "source": {
+  "name": "Vals AI (independent, single harness)",
+  "mmlu_pro": "https://www.vals.ai/benchmarks/mmlu_pro",
+  "gpqa": "https://www.vals.ai/benchmarks/gpqa"
+ },
+ "note": "Vault: Notes/Model Benchmarks - CS-ML QA and Text-to-Graph.md. Re-check each row on the source page before citing.",
+ "models": [
+  {
+   "model": "gpt-5-nano",
+   "mmlu_pro": 76.07,
+   "gpqa": 63.38,
+   "price": [
+    0.05,
+    0.4
+   ]
+  },
+  {
+   "model": "claude-haiku-4-5",
+   "mmlu_pro": 78.72,
+   "gpqa": null,
+   "price": [
+    1.0,
+    5.0
+   ],
+   "caveat": "thinking variant"
+  },
+  {
+   "model": "qwen3-235b",
+   "mmlu_pro": 81.25,
+   "gpqa": null,
+   "price": [
+    0.7,
+    2.8
+   ]
+  },
+  {
+   "model": "gpt-5-mini",
+   "mmlu_pro": 82.23,
+   "gpqa": 80.3,
+   "price": [
+    0.25,
+    2.0
+   ]
+  },
+  {
+   "model": "gemini-2.5-flash",
+   "mmlu_pro": 83.69,
+   "gpqa": null,
+   "price": [
+    0.3,
+    2.5
+   ],
+   "caveat": "preview 9/25, non-thinking"
+  },
+  {
+   "model": "gemini-2.5-pro",
+   "mmlu_pro": 84.06,
+   "gpqa": null,
+   "price": [
+    1.25,
+    10.0
+   ],
+   "caveat": "Exp row"
+  },
+  {
+   "model": "qwen3-max",
+   "mmlu_pro": 84.36,
+   "gpqa": 79.55,
+   "price": [
+    1.2,
+    6.0
+   ]
+  },
+  {
+   "model": "kimi-k2.5",
+   "mmlu_pro": 85.91,
+   "gpqa": 84.09,
+   "price": [
+    0.6,
+    3.0
+   ],
+   "caveat": "thinking"
+  },
+  {
+   "model": "deepseek-v4.1-flash",
+   "mmlu_pro": 86.21,
+   "gpqa": 89.9,
+   "price": [
+    0.15,
+    0.6
+   ],
+   "caveat": "nearest row: DeepSeek V4 Flash 0731"
+  },
+  {
+   "model": "gpt-5.1",
+   "mmlu_pro": 86.38,
+   "gpqa": 86.62,
+   "price": [
+    1.25,
+    10.0
+   ]
+  },
+  {
+   "model": "claude-sonnet-4-6",
+   "mmlu_pro": 87.34,
+   "gpqa": null,
+   "price": [
+    3.0,
+    15.0
+   ]
+  },
+  {
+   "model": "gemini-3-flash",
+   "mmlu_pro": 88.59,
+   "gpqa": null,
+   "price": [
+    0.5,
+    3.0
+   ],
+   "caveat": "12/25 row"
+  },
+  {
+   "model": "grok-4.6",
+   "mmlu_pro": 89.4,
+   "gpqa": 94.7,
+   "price": [
+    2.0,
+    6.0
+   ]
+  }
+ ],
+ "roles": [
+  {
+   "role": "Graph extraction (bulk)",
+   "pick": "gpt-5-mini; pilot vs deepseek-v4.1-flash and gemini-2.5-flash",
+   "why": "No extraction benchmark has numbers for any of them, so the ~200 gold triples decide; deepseek is cheaper and higher on MMLU-Pro."
+  },
+  {
+   "role": "Answer model (same for every arm)",
+   "pick": "gpt-5-mini; spot-check gpt-5.1",
+   "why": "4 MMLU-Pro points below gpt-5.1 at a fifth of the price. Persian quality is unevidenced for GPT-5; the Persian pilot compares it with gemini-3-flash and claude-haiku."
+  },
+  {
+   "role": "Judge (other model family)",
+   "pick": "claude-haiku-4-5; claude-sonnet-4-6 once tier 1",
+   "why": "Must differ from the answerer. No judge-agreement benchmark collected, so it is calibrated on ~50 human-labelled answers."
+  },
+  {
+   "role": "Question writing / filtering",
+   "pick": "deepseek-v4.1-flash / gemini-2.5-flash",
+   "why": "Chosen for family diversity against the answerer and judge, not for a benchmark win."
+  },
+  {
+   "role": "Figure descriptions",
+   "pick": "qwen3-vl-flash",
+   "why": "Cheapest vision model; ablation only."
+  }
+ ],
+ "qa_benchmarks": [
+  "MMLU-Pro (computer science subset)",
+  "GPQA Diamond",
+  "SuperGPQA, MMLU-Redux, HLE, LiveBench",
+  "SciBench, TheoremQA",
+  "SciQA (ORKG)",
+  "RAGBench, CRAG, FRAMES, MultiHop-RAG",
+  "GraphRAG-Bench (1,018 college CS textbook questions)",
+  "Persian: Khayyam/PersianMMLU, ParsiNLU, PerCoR, PerHalluEval, MELAC"
+ ],
+ "graph_benchmarks": [
+  "SciERC (scientific entities and relations; closest domain)",
+  "SciREX, DocRED / Re-DocRED",
+  "WebNLG, REBEL, Wiki-NRE",
+  "Text2KGBench (+ LettrIA refinement)",
+  "KGGen MINE",
+  "JSONSchemaBench, BFCL (structured output)"
+ ],
+ "graph_evidence": [
+  {
+   "finding": "GPT-4 F1 9.1 vs fine-tuned 53.2 on SciERC",
+   "source": "Zhu et al. 2023 (arXiv 2305.13168)",
+   "caveat": "20-sample subset, exact match, 2023 models"
+  },
+  {
+   "finding": "Exact-match scoring understates LLM extractors; human evaluation puts few-shot GPT-3 near supervised SOTA",
+   "source": "Wadhwa et al., ACL 2023",
+   "caveat": "secondary read"
+  },
+  {
+   "finding": "Concept-prerequisite extraction: GPT-4o-mini + RAG F1 71.9, LLaMA 3 + RAG 70.2, PREREQ 59.7",
+   "source": "MAKE 2025, doi 10.3390/make7030103",
+   "caveat": "from a search snippet; check the paper"
+  },
+  {
+   "finding": "No 2025-26 score found for Claude, Gemini, Qwen or DeepSeek on SciERC or Text2KGBench",
+   "source": "search, 2026-10-04",
+   "caveat": "a gap, not evidence of equality"
+  }
+ ],
+ "finding": "Public benchmarks shortlist and tier the models: the mid-priced candidates sit within about 13 MMLU-Pro points. No public benchmark covers course-level ML questions in English and Persian, or extracting teaching relations (prerequisite-of, part-of, example-of), so the pilot (50 questions, ~200 gold graph facts) makes the final choice."
+}

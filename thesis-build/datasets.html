@@ -36,6 +36,15 @@ td .sub{display:block;font-size:12.5px;color:var(--faint);margin-top:3px}
 .tax li{border:1px solid var(--line);border-radius:10px;padding:12px 14px}
 .tax b{display:block;font-weight:600;margin-bottom:4px}
 .tax span{color:var(--muted);font-size:14px}
+.bm{margin-top:14px;max-width:880px}
+.bm svg{width:100%;height:auto;display:block}
+.bm text{font:12px var(--mono);fill:var(--muted)}
+.bm .lbl{fill:var(--text)}
+.keyrow{font-size:13.5px;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}
+.keyrow i{display:inline-block;width:12px;height:10px;border-radius:3px;margin-inline-end:6px}
+.ev{list-style:none;margin-top:10px}
+.ev li{border-top:1px solid var(--line);padding:9px 0}
+.ev li span{display:block;font-size:12.5px;color:var(--faint)}
 </style>
 </head>
 <body>
@@ -236,6 +245,23 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <p class="note-box" data-i18n="ds.own_note">Questions written from a graph path favour GraphRAG and questions written from one passage favour vector search, so we write them both ways and report each route separately. A quarter of the items are double-checked by a second person, and 20% are set aside before any approach is run.</p>
   </section>
 
+  <section id="models">
+    <h2 data-i18n="bm.h">Which model, and why</h2>
+    <p class="note-box" id="bm-finding"></p>
+    <h3 data-i18n="bm.scores_h" style="margin-top:22px">Public scores of the candidate models</h3>
+    <p class="muted" data-i18n-html="bm.scores_p">MMLU-Pro (broad knowledge, includes a computer-science part) and GPQA Diamond (graduate science), both from <a href="https://www.vals.ai/benchmarks/mmlu_pro" target="_blank" rel="noopener">Vals AI</a>, an independent evaluator using one harness for every model. Hover a bar for notes on the exact model version. Missing GPQA bars mean no score was found.</p>
+    <div class="keyrow"><span><i style="background:var(--he)"></i>MMLU-Pro</span><span><i style="background:var(--k12)"></i>GPQA Diamond</span><span data-i18n="bm.price_key">right column: AvalAI price, USD per 1M tokens in / out</span></div>
+    <figure class="bm" id="bm-chart" dir="ltr"></figure>
+    <h3 data-i18n="bm.roles_h" style="margin-top:26px">The pick for each job in the thesis</h3>
+    <div class="xscroll"><table id="bm-roles"></table></div>
+    <h3 data-i18n="bm.graph_h" style="margin-top:26px">What is known about turning text into a graph</h3>
+    <ul class="ev" id="bm-graph"></ul>
+    <div class="two-col" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:24px;margin-top:18px">
+      <div><h3 data-i18n="bm.qa_list">Benchmarks for question answering</h3><ul class="ev" id="bm-qa"></ul></div>
+      <div><h3 data-i18n="bm.kg_list">Benchmarks for building graphs from text</h3><ul class="ev" id="bm-kg"></ul></div>
+    </div>
+  </section>
+
   <section>
     <h2 data-i18n="ds.all_h">Every dataset we checked</h2>
     <div class="filters">
@@ -248,7 +274,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   </section>
 </main>
 <footer class="site-foot" data-i18n="ds.foot">Data: the vault note Thesis - Evaluation Datasets (2026-10-02). Sizes were counted or read from the source on that date; links were checked by script (†: the site blocks automated checks).</footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json"]}};</script>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json"]}};</script>
 <script src="/thesis/assets/datasets.js"></script>
 </body>
 </html>

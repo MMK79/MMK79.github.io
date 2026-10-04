@@ -9,18 +9,21 @@
 - Embedded images (`![[x.png]]`) are copied from wherever they live in the vault.
 - Excalidraw: `![[Drawing]]` / `![[Drawing.excalidraw]]` becomes the SVG the Excalidraw plugin auto-exports
   (`Drawing.svg` or `Drawing.excalidraw.svg`); turn on *Auto-export SVG* in the plugin. The raw `.excalidraw.md` is never published.
+- Jupyter notebooks linked from a published note (`[[x.ipynb]]` or `![[x.ipynb]]`) are rendered to a page
+  `notebooks/x.md` (nbconvert, outputs and plots included) next to a download of the `.ipynb`; the link is rewritten to the page.
 - A note that looks like it holds a secret (API key, password, token) is refused, and the sync stops.
-Stdlib only.
+Stdlib only, plus `uvx --from nbconvert` for notebooks.
 """
-import pathlib, re, shutil, sys
+import os, pathlib, re, shutil, subprocess, sys, tempfile
 
-VAULT = pathlib.Path.home() / "Documents/Obsidian Vaults/Personal"
+VAULT = pathlib.Path(os.environ.get("VAULT", pathlib.Path.home() / "Documents/Obsidian Vaults/Personal"))
 HERE = pathlib.Path(__file__).resolve().parent.parent
 CONTENT = HERE / "content"
 KEEP = {"index.md"}  # content/ files owned by this repo, never deleted by a sync
 SKIP_DIRS = {".obsidian", ".git", ".trash", "Templates", "Clippings", "_review", ".cache", ".provenance", "Job", "Daily"}
 SECRET = re.compile(r"(?i)(api[_-]?key|secret|password|passphrase|token)\s*[:=]\s*\S{6,}|sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY")
 EMBED = re.compile(r"!\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]")
+NBLINK = re.compile(r"!?\[\[([^\]|#]+\.ipynb)(\|[^\]]*)?\]\]")
 
 
 def frontmatter(text):
@@ -50,6 +53,24 @@ def excalidraw_svg(name, index):
         if hit:
             return hit
     return None
+
+
+def notebook(src, out_dir):
+    """Render one notebook to out_dir/<stem>.md (+ <stem>_files/ images) and copy the .ipynb beside it."""
+    with tempfile.TemporaryDirectory() as tmp:
+        shutil.copy2(src, tmp)
+        subprocess.run(["uvx", "--from", "nbconvert", "jupyter-nbconvert", "--to", "markdown", src.name], cwd=tmp, check=True, capture_output=True)
+        md = pathlib.Path(tmp, src.stem + ".md").read_text(encoding="utf-8")
+        if SECRET.search(md):
+            sys.exit(f"refusing to publish notebook that looks like it contains secrets: {src}")
+        out_dir.mkdir(parents=True, exist_ok=True)
+        files = pathlib.Path(tmp, src.stem + "_files")
+        if files.exists():
+            shutil.copytree(files, out_dir / files.name, dirs_exist_ok=True)
+        dl = re.sub(r"[^a-z0-9.]+", "-", src.name.lower())  # the file name Quartz would slug it to anyway
+        shutil.copy2(src, out_dir / dl)
+        head = f'---\ntitle: "{src.stem}"\npublish: true\ntags: [notebook]\n---\n\n> [!info] Jupyter notebook, rendered with its saved outputs. [Download {src.name}](./{dl})\n\n'
+        (out_dir / (src.stem + ".md")).write_text(head + md, encoding="utf-8")
 
 
 def sync(dry=False):
@@ -83,6 +104,13 @@ def sync(dry=False):
                     shutil.copy2(svg, CONTENT / "attachments" / svg.name); return f"![[{svg.name}]]"
                 missing.append(f"{p.name}: {target} (no exported SVG; turn on Excalidraw auto-export)"); return m.group(0)
             return m.group(0)  # a note embed: Quartz resolves it if that note is published too
+        def nb(m):
+            hit = find(m.group(1).strip(), index)
+            if not hit:
+                missing.append(f"{p.name}: {m.group(1)}"); return m.group(0)
+            notebook(hit, CONTENT / "notebooks")
+            return f"[[notebooks/{hit.stem}{m.group(2) or '|' + hit.stem}]]"
+        text = NBLINK.sub(nb, text)
         (CONTENT / p.name).write_text(EMBED.sub(swap, text), encoding="utf-8")
     print(f"synced {len(notes)} notes into content/")
     for x in missing:
@@ -96,6 +124,7 @@ def test():
     assert SECRET.search("OPENAI_API_KEY=sk-abcdefghijklmnop1234") and SECRET.search("password: hunter2hunter2")
     assert not SECRET.search("we compared passwords policies in general")
     assert EMBED.findall("a ![[Drawing.excalidraw|600]] b ![[img.png]] c ![[Note#Section]]") == ["Drawing.excalidraw", "img.png", "Note"]
+    assert [m.group(1) for m in NBLINK.finditer("see [[Lab 1.ipynb]] and ![[x.ipynb|run]] not [[x.py]]")] == ["Lab 1.ipynb", "x.ipynb"]
     print("ok")
 
 

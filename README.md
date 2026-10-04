@@ -10,6 +10,10 @@ Built with [Quartz](https://quartz.jzhao.xyz) v5, deployed to GitHub Pages by `.
    (it refuses notes that look like they contain secrets). Quartz's explicit-publish plugin is a second guard.
 3. Commit and push; GitHub Actions builds and deploys.
 
+Jupyter notebooks: link one from a published note (`[[My Lab.ipynb]]`). The sync renders it with its saved outputs
+(text, tables, plots, math) to `notebooks/my-lab`, adds a download of the `.ipynb`, and rewrites the link. Run the notebook
+before syncing; nothing is executed. Needs `uvx` (nbconvert is fetched on first use).
+
 ## The thesis website (/thesis/)
 In `Thesis-coding-projects/thesis-site`, run `make publish`. It exports the built site for the `/thesis` sub-path into `thesis-build/`
 here (downloaded course materials are never included) and also refreshes the local Docker copy. Commit `thesis-build/` and push.

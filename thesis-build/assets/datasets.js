@@ -73,4 +73,14 @@ if ((D.data.datasets || []).includes("benchmarks.json")) {
   $("bm-qa").innerHTML = B.qa_benchmarks.map(bl).join("");
   $("bm-kg").innerHTML = B.graph_benchmarks.map(bl).join("");
 } else { $("models").hidden = true; }
+
+// public lecture videos (course_videos.json, vault note "Course Videos as Tutor Data - Inventory and Pipeline")
+if ((D.data.datasets || []).includes("course_videos.json")) {
+  const V = await fetch("/thesis/data/course_videos.json").then(r => r.json());
+  const a = (u, k) => /^https?:\/\//.test(u || "") ? `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(k)}</a>` : "";
+  $("cv").innerHTML = `<tr><th>${tt("cv.th_course")}</th><th>${tt("cv.th_size")}</th><th>${tt("cv.th_caps")}</th><th>${tt("cv.th_fit")}</th><th>${tt("ds.th_links")}</th></tr>` +
+    V.map(x => `<tr><td><b lang="en" dir="ltr">${esc(x.course)}</b>${sub([x.university, x.year].filter(Boolean).join(", "))}${sub(x.title)}</td>
+      <td lang="en" dir="ltr">${x.lectures != null ? esc(x.lectures) + " / " + esc(x.hours) + " h" : "–"}</td><td>${en(x.captions)}</td><td>${en(x.syllabus_overlap)}</td>
+      <td class="links">${a(x.playlist_url, "playlist")}${a(x.official_url, "course page")}${a(x.slides_url, "slides")}</td></tr>`).join("");
+} else { $("videos").hidden = true; }
 })();

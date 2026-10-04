@@ -74,13 +74,36 @@ if ((D.data.datasets || []).includes("benchmarks.json")) {
   $("bm-kg").innerHTML = B.graph_benchmarks.map(bl).join("");
 } else { $("models").hidden = true; }
 
-// public lecture videos (course_videos.json, vault note "Course Videos as Tutor Data - Inventory and Pipeline")
-if ((D.data.datasets || []).includes("course_videos.json")) {
+// lecture videos + course platforms (course_videos.json, course_platforms.json; vault notes
+// "Course Videos as Tutor Data - Inventory and Pipeline", "Course Platforms - Free vs Paywalled ML Courses")
+const has = f => (D.data.datasets || []).includes(f);
+if (has("course_videos.json")) {
   const V = await fetch("/thesis/data/course_videos.json").then(r => r.json());
+  const P = has("course_platforms.json") ? await fetch("/thesis/data/course_platforms.json").then(r => r.json()) : [];
   const a = (u, k) => /^https?:\/\//.test(u || "") ? `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(k)}</a>` : "";
-  $("cv").innerHTML = `<tr><th>${tt("cv.th_course")}</th><th>${tt("cv.th_size")}</th><th>${tt("cv.th_caps")}</th><th>${tt("cv.th_fit")}</th><th>${tt("ds.th_links")}</th></tr>` +
-    V.map(x => `<tr><td><b lang="en" dir="ltr">${esc(x.course)}</b>${sub([x.university, x.year].filter(Boolean).join(", "))}${sub(x.title)}</td>
-      <td lang="en" dir="ltr">${x.lectures != null ? esc(x.lectures) + " / " + esc(x.hours) + " h" : "–"}</td><td>${en(x.captions)}</td><td>${en(x.syllabus_overlap)}</td>
-      <td class="links">${a(x.playlist_url, "playlist")}${a(x.official_url, "course page")}${a(x.slides_url, "slides")}</td></tr>`).join("");
+  const lang = s => /^fa/.test(s || "") ? "fa" : /^en/.test(s || "") ? "en" : "other";
+  const R = [
+    ...V.map(x => ({name: x.course, by: [x.university, x.year].filter(Boolean).join(", "), kind: x.kind || "university", country: x.country || "?", lang: lang(x.language),
+      access: x.access, h: typeof x.hours === "number" && x.playlist_url ? x.hours : 0,
+      size: x.lectures != null ? `${x.lectures} / ${x.hours} h` : "–", caps: x.captions, fit: x.syllabus_overlap || "", high: /^high/.test(x.syllabus_overlap || ""),
+      links: a(x.playlist_url, "playlist") + a(x.official_url, "course page") + a(x.slides_url, "slides")})),
+    ...P.map(x => ({name: x.course, by: x.platform + (x.provider && x.provider !== x.platform ? ", " + x.provider : ""), kind: x.kind, country: x.country || "?", lang: lang(x.language),
+      access: x.access, h: 0, size: x.hours || "–", caps: x.captions, fit: [x.level, x.price].filter(Boolean).join(" · "), high: false,
+      links: a(x.url, "course") + a(x.terms_url, "terms")})),
+  ];
+  const opts = (id, key, label) => { const vs = [...new Set(R.map(r => r[key]))].sort();
+    $(id).innerHTML = `<option value="">${tt(label)}</option>` + vs.map(v => `<option value="${esc(v)}">${key === "kind" || key === "access" || key === "lang" ? tt("cv." + key + "." + v) : esc(v)}</option>`).join(""); };
+  opts("cv-kind", "kind", "cv.f_kind"); opts("cv-access", "access", "cv.f_access"); opts("cv-lang", "lang", "cv.f_lang"); opts("cv-country", "country", "cv.f_country");
+  $("cv").innerHTML = `<tr><th>${tt("cv.th_course")}</th><th>${tt("cv.f_access")}</th><th>${tt("cv.th_size")}</th><th>${tt("cv.th_caps")}</th><th>${tt("cv.th_fit")}</th><th>${tt("ds.th_links")}</th></tr>` +
+    R.map((r, i) => `<tr data-i="${i}"><td><b lang="en" dir="ltr">${esc(r.name)}</b>${sub(r.by)}<span class="sub">${tt("cv.kind." + r.kind)} · ${esc(r.country)}</span></td>
+      <td><span class="acc ${esc(r.access)}">${tt("cv.access." + r.access)}</span></td><td lang="en" dir="ltr">${esc(r.size)}</td><td>${en(r.caps)}</td><td>${en(r.fit)}</td><td class="links">${r.links}</td></tr>`).join("");
+  const trs = [...$("cv").querySelectorAll("tr[data-i]")].map(tr => ({tr, r: R[tr.dataset.i], text: tr.textContent.toLowerCase()}));
+  const cvdraw = () => { const f = {kind: $("cv-kind").value, access: $("cv-access").value, lang: $("cv-lang").value, country: $("cv-country").value},
+      q = $("cv-q").value.trim().toLowerCase(), hi = $("cv-fit").checked; let n = 0, h = 0;
+    for (const {tr, r, text} of trs) { const s = Object.entries(f).every(([k, v]) => !v || r[k] === v) && (!hi || r.high) && (!q || text.includes(q));
+      tr.hidden = !s; if (s) { n++; h += r.h; } }
+    $("cv-count").textContent = t("cv.count", {a: n, b: trs.length, h: Math.round(h).toLocaleString()}); };
+  for (const id of ["cv-kind", "cv-access", "cv-lang", "cv-country", "cv-q", "cv-fit"]) $(id).oninput = cvdraw;
+  cvdraw();
 } else { $("videos").hidden = true; }
 })();

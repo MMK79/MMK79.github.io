@@ -22,3 +22,11 @@
     }
   }
 }
+
+// The default theme sets --secondary/--tertiary as hsl(calc(...)); Mermaid cannot parse that and renders nothing.
+// Same accent colours, written as plain hex (hsl(258 88% 66%) and its hover variant).
+:root:root:root,
+:root:root:root[saved-theme="dark"] {
+  --secondary: #8a5cf5;
+  --tertiary: #a68af9;
+}

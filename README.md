@@ -10,6 +10,10 @@ Built with [Quartz](https://quartz.jzhao.xyz) v5, deployed to GitHub Pages by `.
    (it refuses notes that look like they contain secrets). Quartz's explicit-publish plugin is a second guard.
 3. Commit and push; GitHub Actions builds and deploys.
 
+Canvas, Excalidraw, Mermaid: link a canvas from a published note (`[[Thesis Map.canvas]]`) and it gets a pan/zoom page under
+`canvases/` (cards for unpublished notes are reduced to their title); embed a drawing with `![[Sketch.excalidraw]]` (needs the
+Excalidraw plugin's auto-export SVG); write ```mermaid blocks as usual.
+
 Jupyter notebooks: link one from a published note (`[[My Lab.ipynb]]`). The sync renders it with its saved outputs
 (text, tables, plots, math) to `notebooks/my-lab`, adds a download of the `.ipynb`, and rewrites the link. Run the notebook
 before syncing; nothing is executed. Needs `uvx` (nbconvert is fetched on first use).

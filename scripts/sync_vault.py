@@ -13,10 +13,13 @@
   anything else → notes/ (sections are listed A–Z).
 - Jupyter notebooks linked from a published note (`[[x.ipynb]]` or `![[x.ipynb]]`) are rendered to a page
   `notebooks/x.md` (nbconvert, outputs and plots included) next to a download of the `.ipynb`; the link is rewritten to the page.
+- Obsidian canvases linked from a published note (`[[Map.canvas]]`) are copied to `canvases/` and rendered by Quartz's
+  canvas page (pan/zoom). Card links to published notes are re-pointed; cards for unpublished notes become plain titles.
+- Mermaid code blocks render natively (Quartz `mermaid: true`).
 - A note that looks like it holds a secret (API key, password, token) is refused, and the sync stops.
 Stdlib only, plus `uvx --from nbconvert` for notebooks.
 """
-import os, pathlib, re, shutil, subprocess, sys, tempfile
+import json, os, pathlib, re, shutil, subprocess, sys, tempfile
 
 VAULT = pathlib.Path(os.environ.get("VAULT", pathlib.Path.home() / "Documents/Obsidian Vaults/Personal"))
 HERE = pathlib.Path(__file__).resolve().parent.parent
@@ -25,6 +28,7 @@ KEEP = {"index.md"}  # content/ files owned by this repo, never deleted by a syn
 SKIP_DIRS = {".obsidian", ".git", ".trash", "Templates", "Clippings", "_review", ".cache", ".provenance", "Job", "Daily"}
 SECRET = re.compile(r"(?i)(api[_-]?key|secret|password|passphrase|token)\s*[:=]\s*\S{6,}|sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY")
 EMBED = re.compile(r"!\[\[([^\]|#]+)(?:#[^\]|]*)?(?:\|[^\]]*)?\]\]")
+CANVASLINK = re.compile(r"!?\[\[([^\]|#]+\.canvas)(\|[^\]]*)?\]\]")
 NBLINK = re.compile(r"!?\[\[([^\]|#]+\.ipynb)(\|[^\]]*)?\]\]")
 
 
@@ -68,6 +72,25 @@ def section(text):
     return "research" if re.search(r"\[\[Research\]\]", fm) else "notes"
 
 
+def canvas(src, out_dir, where):
+    """Copy a .canvas, pointing file cards at published pages (`where`: note file name -> content path) and
+    turning cards for anything unpublished into plain text, so nothing private leaks through a canvas."""
+    data = json.loads(src.read_text(encoding="utf-8"))
+    for node in data.get("nodes", []):
+        if node.get("type") == "file":
+            name = pathlib.Path(node.get("file", "")).name
+            if name in where:
+                node["file"] = where[name]
+            elif name.lower().endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp")):
+                node.update(type="text", text=f"*(image: {pathlib.Path(name).stem})*"); node.pop("file", None)
+            else:
+                node.update(type="text", text=f"**{pathlib.Path(name).stem}**"); node.pop("file", None)
+        if node.get("type") == "text" and SECRET.search(node.get("text", "")):
+            sys.exit(f"refusing to publish canvas that looks like it contains secrets: {src}")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / src.name).write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def notebook(src, out_dir):
     """Render one notebook to out_dir/<stem>.md (+ <stem>_files/ images) and copy the .ipynb beside it."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -101,6 +124,9 @@ def sync(dry=False):
             old.unlink()
     (CONTENT / "attachments").mkdir(parents=True, exist_ok=True)
     missing = []
+    where = {}  # note file name -> path under content/, for canvas cards
+    for p in notes:
+        where[p.name] = f"{section(p.read_text(encoding='utf-8'))}/{p.name}"
     for p in notes:
         text = p.read_text(encoding="utf-8")
         def swap(m):
@@ -113,8 +139,10 @@ def sync(dry=False):
                 missing.append(f"{p.name}: {target}"); return m.group(0)
             if low.endswith((".excalidraw", ".excalidraw.md")) or find(target + ".excalidraw.md", index) or find(target + ".md", index) and find(target + ".md", index).name.endswith(".excalidraw.md"):
                 svg = excalidraw_svg(target, index)
-                if svg:
-                    shutil.copy2(svg, CONTENT / "attachments" / svg.name); return f"![[{svg.name}]]"
+                if svg:  # renamed (Quartz skips ".excalidraw" embeds) and put beside the note (SVG embeds resolve relative to it)
+                    out = svg.name.replace(".excalidraw.svg", "-excalidraw.svg")
+                    (CONTENT / section(text)).mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(svg, CONTENT / section(text) / out); return f"![[{out}]]"
                 missing.append(f"{p.name}: {target} (no exported SVG; turn on Excalidraw auto-export)"); return m.group(0)
             return m.group(0)  # a note embed: Quartz resolves it if that note is published too
         def nb(m):
@@ -124,6 +152,13 @@ def sync(dry=False):
             notebook(hit, CONTENT / "notebooks")
             return f"[[notebooks/{hit.stem}{m.group(2) or '|' + hit.stem}]]"
         text = NBLINK.sub(nb, text)
+        def cv(m):
+            hit = find(m.group(1).strip(), index)
+            if not hit:
+                missing.append(f"{p.name}: {m.group(1)}"); return m.group(0)
+            canvas(hit, CONTENT / "canvases", where)
+            return f"[[canvases/{hit.name}{m.group(2) or '|' + hit.stem}]]"
+        text = CANVASLINK.sub(cv, text)
         dest = CONTENT / section(text) / p.name
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_text(EMBED.sub(swap, text), encoding="utf-8")

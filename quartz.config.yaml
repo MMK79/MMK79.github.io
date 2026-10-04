@@ -80,8 +80,8 @@ plugins:
     enabled: true
     order: 50
     layout:
-      position: right
-      priority: 30
+      position: left
+      priority: 60
   - source: "@quartz-community/crawl-links"
     enabled: true
     options:
@@ -158,11 +158,14 @@ plugins:
     enabled: true
   - source: "@quartz-community/explorer"
     enabled: true
+    options:  # docs-style sidebar (Virgilio-like): sections from sync_vault.py, always open
+      folderDefaultState: open
+      useSavedState: false
     layout:
       position: left
       priority: 50
   - source: "@quartz-community/graph"
-    enabled: true
+    enabled: false  # docs-style layout (Virgilio-like): no right column
     layout:
       position: right
       priority: 10
@@ -175,7 +178,7 @@ plugins:
       groupOptions:
         grow: true
   - source: "@quartz-community/backlinks"
-    enabled: true
+    enabled: false  # docs-style layout: no right column
     layout:
       position: right
       priority: 50
@@ -229,8 +232,8 @@ plugins:
     enabled: true
     options:
       links:
-        GitHub: https://github.com/jackyzha0/quartz
-        Discord Community: https://discord.gg/cRFFHYye7t
+        GitHub: https://github.com/MMK79
+        Thesis website: https://mmk79.github.io/thesis/
     layout:
       position: footer
       priority: 50

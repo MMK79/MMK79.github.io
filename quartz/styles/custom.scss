@@ -1,3 +1,24 @@
 @use "./variables.scss" as *;
 
 // put your custom CSS here!
+
+// Docs-style layout (like the old Virgilio site): sidebar + one reading column, no right panel.
+@media all and ($desktop) {
+  .page > #quartz-body {
+    grid-template-columns: #{$sidePanelWidth} minmax(0, 1fr);
+    grid-template-areas:
+      "grid-sidebar-left grid-header"
+      "grid-sidebar-left grid-center"
+      "grid-sidebar-left grid-footer";
+    & .sidebar.right {
+      display: none;
+    }
+    & .center,
+    & footer,
+    & .page-header {
+      max-width: 860px;
+      width: 100%;
+      margin-inline: auto;
+    }
+  }
+}

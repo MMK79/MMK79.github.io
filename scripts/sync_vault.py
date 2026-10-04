@@ -9,6 +9,8 @@
 - Embedded images (`![[x.png]]`) are copied from wherever they live in the vault.
 - Excalidraw: `![[Drawing]]` / `![[Drawing.excalidraw]]` becomes the SVG the Excalidraw plugin auto-exports
   (`Drawing.svg` or `Drawing.excalidraw.svg`); turn on *Auto-export SVG* in the plugin. The raw `.excalidraw.md` is never published.
+- Each note goes into a sidebar section by its frontmatter: `[[Research]]` category → research/, a `course:` → courses/<course>/,
+  anything else → notes/ (sections are listed A–Z).
 - Jupyter notebooks linked from a published note (`[[x.ipynb]]` or `![[x.ipynb]]`) are rendered to a page
   `notebooks/x.md` (nbconvert, outputs and plots included) next to a download of the `.ipynb`; the link is rewritten to the page.
 - A note that looks like it holds a secret (API key, password, token) is refused, and the sync stops.
@@ -53,6 +55,17 @@ def excalidraw_svg(name, index):
         if hit:
             return hit
     return None
+
+
+SECTIONS = {"research": "Research", "notebooks": "Notebooks", "courses": "Courses", "notes": "Notes"}
+
+
+def section(text):
+    fm = frontmatter(text)
+    course = re.search(r'(?m)^course:\s*"?\[\[([^\]|]+)', fm)
+    if course:
+        return f"courses/{course.group(1).strip()}"
+    return "research" if re.search(r"\[\[Research\]\]", fm) else "notes"
 
 
 def notebook(src, out_dir):
@@ -111,7 +124,16 @@ def sync(dry=False):
             notebook(hit, CONTENT / "notebooks")
             return f"[[notebooks/{hit.stem}{m.group(2) or '|' + hit.stem}]]"
         text = NBLINK.sub(nb, text)
-        (CONTENT / p.name).write_text(EMBED.sub(swap, text), encoding="utf-8")
+        dest = CONTENT / section(text) / p.name
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(EMBED.sub(swap, text), encoding="utf-8")
+    for d in CONTENT.rglob("*"):  # section titles for the sidebar; a course folder keeps its course name
+        if d.is_dir() and not (d / "index.md").exists() and any(d.rglob("*.md")):
+            title = SECTIONS.get(d.name, d.name)
+            (d / "index.md").write_text(f'---\ntitle: "{title}"\npublish: true\n---\n', encoding="utf-8")
+    for d in sorted((p for p in CONTENT.rglob("*") if p.is_dir()), reverse=True):  # drop folders emptied by this sync
+        if not any(d.iterdir()):
+            d.rmdir()
     print(f"synced {len(notes)} notes into content/")
     for x in missing:
         print("  missing:", x)
@@ -124,6 +146,8 @@ def test():
     assert SECRET.search("OPENAI_API_KEY=sk-abcdefghijklmnop1234") and SECRET.search("password: hunter2hunter2")
     assert not SECRET.search("we compared passwords policies in general")
     assert EMBED.findall("a ![[Drawing.excalidraw|600]] b ![[img.png]] c ![[Note#Section]]") == ["Drawing.excalidraw", "img.png", "Note"]
+    assert section('---\ncategories:\n  - "[[Research]]"\n---\n') == "research"
+    assert section('---\ncourse: "[[Deep Learning]]"\n---\n') == "courses/Deep Learning" and section("---\ntype: note\n---\n") == "notes"
     assert [m.group(1) for m in NBLINK.finditer("see [[Lab 1.ipynb]] and ![[x.ipynb|run]] not [[x.py]]")] == ["Lab 1.ipynb", "x.ipynb"]
     print("ok")
 

@@ -14,7 +14,8 @@
    "price": [
     0.05,
     0.4
-   ]
+   ],
+   "url": "https://platform.openai.com/docs/models/gpt-5-nano"
   },
   {
    "model": "claude-haiku-4-5",
@@ -24,7 +25,8 @@
     1.0,
     5.0
    ],
-   "caveat": "thinking variant"
+   "caveat": "thinking variant",
+   "url": "https://www.anthropic.com/claude/haiku"
   },
   {
    "model": "qwen3-235b",
@@ -33,7 +35,8 @@
    "price": [
     0.7,
     2.8
-   ]
+   ],
+   "url": "https://huggingface.co/Qwen/Qwen3-235B-A22B"
   },
   {
    "model": "gpt-5-mini",
@@ -42,7 +45,8 @@
    "price": [
     0.25,
     2.0
-   ]
+   ],
+   "url": "https://platform.openai.com/docs/models/gpt-5-mini"
   },
   {
    "model": "gemini-2.5-flash",
@@ -52,7 +56,8 @@
     0.3,
     2.5
    ],
-   "caveat": "preview 9/25, non-thinking"
+   "caveat": "preview 9/25, non-thinking",
+   "url": "https://deepmind.google/models/gemini/flash/"
   },
   {
    "model": "gemini-2.5-pro",
@@ -62,7 +67,8 @@
     1.25,
     10.0
    ],
-   "caveat": "Exp row"
+   "caveat": "Exp row",
+   "url": "https://deepmind.google/models/gemini/pro/"
   },
   {
    "model": "qwen3-max",
@@ -71,7 +77,8 @@
    "price": [
     1.2,
     6.0
-   ]
+   ],
+   "url": "https://www.alibabacloud.com/help/en/model-studio/models"
   },
   {
    "model": "kimi-k2.5",
@@ -81,7 +88,8 @@
     0.6,
     3.0
    ],
-   "caveat": "thinking"
+   "caveat": "thinking",
+   "url": "https://huggingface.co/moonshotai/Kimi-K2.5"
   },
   {
    "model": "deepseek-v4.1-flash",
@@ -91,7 +99,8 @@
     0.15,
     0.6
    ],
-   "caveat": "nearest row: DeepSeek V4 Flash 0731"
+   "caveat": "nearest row: DeepSeek V4 Flash 0731",
+   "url": "https://api-docs.deepseek.com/"
   },
   {
    "model": "gpt-5.1",
@@ -100,7 +109,8 @@
    "price": [
     1.25,
     10.0
-   ]
+   ],
+   "url": "https://platform.openai.com/docs/models/gpt-5.1"
   },
   {
    "model": "claude-sonnet-4-6",
@@ -109,7 +119,8 @@
    "price": [
     3.0,
     15.0
-   ]
+   ],
+   "url": "https://www.anthropic.com/claude/sonnet"
   },
   {
    "model": "gemini-3-flash",
@@ -119,7 +130,8 @@
     0.5,
     3.0
    ],
-   "caveat": "12/25 row"
+   "caveat": "12/25 row",
+   "url": "https://deepmind.google/models/gemini/flash/"
   },
   {
    "model": "grok-4.6",
@@ -128,7 +140,8 @@
    "price": [
     2.0,
     6.0
-   ]
+   ],
+   "url": "https://docs.x.ai/docs/models"
   }
  ],
  "roles": [
@@ -159,38 +172,225 @@
   }
  ],
  "qa_benchmarks": [
-  "MMLU-Pro (computer science subset)",
-  "GPQA Diamond",
-  "SuperGPQA, MMLU-Redux, HLE, LiveBench",
-  "SciBench, TheoremQA",
-  "SciQA (ORKG)",
-  "RAGBench, CRAG, FRAMES, MultiHop-RAG",
-  "GraphRAG-Bench (1,018 college CS textbook questions)",
-  "Persian: Khayyam/PersianMMLU, ParsiNLU, PerCoR, PerHalluEval, MELAC"
+  {
+   "name": "MMLU-Pro (computer science subset)",
+   "links": [
+    [
+     "paper",
+     "https://arxiv.org/abs/2406.01574"
+    ],
+    [
+     "Vals scores",
+     "https://www.vals.ai/benchmarks/mmlu_pro"
+    ]
+   ]
+  },
+  {
+   "name": "GPQA Diamond",
+   "links": [
+    [
+     "paper",
+     "https://arxiv.org/abs/2311.12022"
+    ],
+    [
+     "Vals scores",
+     "https://www.vals.ai/benchmarks/gpqa"
+    ]
+   ]
+  },
+  {
+   "name": "SuperGPQA, MMLU-Redux, HLE, LiveBench",
+   "links": [
+    [
+     "SuperGPQA",
+     "https://arxiv.org/abs/2502.14739"
+    ],
+    [
+     "MMLU-Redux",
+     "https://arxiv.org/abs/2406.04127"
+    ],
+    [
+     "HLE",
+     "https://arxiv.org/abs/2501.14249"
+    ],
+    [
+     "LiveBench",
+     "https://arxiv.org/abs/2406.19314"
+    ]
+   ]
+  },
+  {
+   "name": "SciBench, TheoremQA",
+   "links": [
+    [
+     "SciBench",
+     "https://arxiv.org/abs/2307.10635"
+    ],
+    [
+     "TheoremQA",
+     "https://arxiv.org/abs/2305.12524"
+    ]
+   ]
+  },
+  {
+   "name": "SciQA (ORKG)",
+   "links": [
+    [
+     "benchmark",
+     "https://orkg.org/about/18/SciQA_Benchmark"
+    ]
+   ]
+  },
+  {
+   "name": "RAGBench, CRAG, FRAMES, MultiHop-RAG",
+   "links": [
+    [
+     "RAGBench",
+     "https://arxiv.org/abs/2407.11005"
+    ],
+    [
+     "CRAG",
+     "https://arxiv.org/abs/2406.04744"
+    ],
+    [
+     "FRAMES",
+     "https://arxiv.org/abs/2409.12941"
+    ],
+    [
+     "MultiHop-RAG",
+     "https://arxiv.org/abs/2401.15391"
+    ]
+   ]
+  },
+  {
+   "name": "GraphRAG-Bench (1,018 college CS textbook questions)",
+   "links": [
+    [
+     "paper",
+     "https://arxiv.org/abs/2506.02404"
+    ],
+    [
+     "dataset",
+     "https://huggingface.co/datasets/Awesome-GraphRAG/GraphRAG-Bench"
+    ]
+   ]
+  },
+  {
+   "name": "Persian: Khayyam/PersianMMLU, ParsiNLU, PerCoR, PerHalluEval, MELAC",
+   "links": [
+    [
+     "Khayyam",
+     "https://arxiv.org/abs/2404.06644"
+    ],
+    [
+     "ParsiNLU",
+     "https://arxiv.org/abs/2012.06154"
+    ],
+    [
+     "PerCoR",
+     "https://arxiv.org/abs/2510.22616"
+    ],
+    [
+     "PerHalluEval",
+     "https://arxiv.org/abs/2509.21104"
+    ],
+    [
+     "MELAC",
+     "https://arxiv.org/abs/2508.00673"
+    ]
+   ]
+  }
  ],
  "graph_benchmarks": [
-  "SciERC (scientific entities and relations; closest domain)",
-  "SciREX, DocRED / Re-DocRED",
-  "WebNLG, REBEL, Wiki-NRE",
-  "Text2KGBench (+ LettrIA refinement)",
-  "KGGen MINE",
-  "JSONSchemaBench, BFCL (structured output)"
+  {
+   "name": "SciERC (scientific entities and relations; closest domain)",
+   "links": [
+    [
+     "paper",
+     "https://arxiv.org/abs/1808.09602"
+    ]
+   ]
+  },
+  {
+   "name": "SciREX, DocRED / Re-DocRED",
+   "links": [
+    [
+     "SciREX",
+     "https://arxiv.org/abs/2005.00512"
+    ],
+    [
+     "DocRED",
+     "https://arxiv.org/abs/1906.06127"
+    ],
+    [
+     "Re-DocRED",
+     "https://arxiv.org/abs/2205.12696"
+    ]
+   ]
+  },
+  {
+   "name": "WebNLG, REBEL, Wiki-NRE",
+   "links": [
+    [
+     "WebNLG",
+     "https://aclanthology.org/W17-3518/"
+    ],
+    [
+     "REBEL",
+     "https://aclanthology.org/2021.findings-emnlp.204/"
+    ]
+   ]
+  },
+  {
+   "name": "Text2KGBench (+ LettrIA refinement)",
+   "links": [
+    [
+     "Text2KGBench",
+     "https://arxiv.org/abs/2308.02357"
+    ]
+   ]
+  },
+  {
+   "name": "KGGen MINE",
+   "links": [
+    [
+     "paper",
+     "https://arxiv.org/abs/2502.09956"
+    ]
+   ]
+  },
+  {
+   "name": "JSONSchemaBench, BFCL (structured output)",
+   "links": [
+    [
+     "JSONSchemaBench",
+     "https://arxiv.org/abs/2501.10868"
+    ],
+    [
+     "BFCL",
+     "https://gorilla.cs.berkeley.edu/leaderboard.html"
+    ]
+   ]
+  }
  ],
  "graph_evidence": [
   {
    "finding": "GPT-4 F1 9.1 vs fine-tuned 53.2 on SciERC",
    "source": "Zhu et al. 2023 (arXiv 2305.13168)",
-   "caveat": "20-sample subset, exact match, 2023 models"
+   "caveat": "20-sample subset, exact match, 2023 models",
+   "url": "https://arxiv.org/abs/2305.13168"
   },
   {
    "finding": "Exact-match scoring understates LLM extractors; human evaluation puts few-shot GPT-3 near supervised SOTA",
    "source": "Wadhwa et al., ACL 2023",
-   "caveat": "secondary read"
+   "caveat": "secondary read",
+   "url": "https://aclanthology.org/2023.acl-long.868/"
   },
   {
    "finding": "Concept-prerequisite extraction: GPT-4o-mini + RAG F1 71.9, LLaMA 3 + RAG 70.2, PREREQ 59.7",
    "source": "MAKE 2025, doi 10.3390/make7030103",
-   "caveat": "from a search snippet; check the paper"
+   "caveat": "from a search snippet; check the paper",
+   "url": "https://doi.org/10.3390/make7030103"
   },
   {
    "finding": "No 2025-26 score found for Claude, Gemini, Qwen or DeepSeek on SciERC or Text2KGBench",

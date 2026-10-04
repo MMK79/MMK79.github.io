@@ -55,20 +55,22 @@ draw();
 if ((D.data.datasets || []).includes("benchmarks.json")) {
   const B = await fetch("/thesis/data/benchmarks.json").then(r => r.json());
   $("bm-finding").innerHTML = `${en(B.finding)} <span class="faint">${tt("bm.asof", {d: B.as_of})}</span>`;
+  const ext = (u, label) => `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(label)}</a>`;
   const M = B.models, W = 860, rh = 30, top = 10, left = 190, right = 120, H = top + M.length * rh + 26;
   const x = v => left + (W - left - right) * (v - 60) / 40;  // axis 60–100
   $("bm-chart").innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${tt("bm.scores_h")}">` +
     [60, 70, 80, 90, 100].map(v => `<line x1="${x(v)}" x2="${x(v)}" y1="${top}" y2="${H - 22}" stroke="#242B38"/><text x="${x(v)}" y="${H - 6}" text-anchor="middle">${v}</text>`).join("") +
     M.map((m, i) => { const y = top + i * rh;
-      return `<text class="lbl" x="${left - 10}" y="${y + 17}" text-anchor="end">${esc(m.model)}</text>
+      return `<a href="${esc(m.url || "")}" target="_blank" rel="noopener"><text class="lbl" x="${left - 10}" y="${y + 17}" text-anchor="end">${esc(m.model)}</text></a>
         <rect x="${x(60)}" y="${y + 4}" width="${x(m.mmlu_pro) - x(60)}" height="10" rx="3" fill="var(--he)"><title>MMLU-Pro ${m.mmlu_pro}${m.caveat ? " (" + esc(m.caveat) + ")" : ""}</title></rect>
         ${m.gpqa != null ? `<rect x="${x(60)}" y="${y + 15}" width="${x(m.gpqa) - x(60)}" height="8" rx="3" fill="var(--k12)"><title>GPQA Diamond ${m.gpqa}</title></rect>` : ""}
         <text x="${x(m.mmlu_pro) + 6}" y="${y + 13}">${m.mmlu_pro}</text>
         <text x="${W - right + 10}" y="${y + 17}">$${m.price[0]} / $${m.price[1]}</text>`; }).join("") + `</svg>`;
   $("bm-roles").innerHTML = `<tr><th>${tt("bm.th_role")}</th><th>${tt("bm.th_pick")}</th><th>${tt("bm.th_why")}</th></tr>` +
-    B.roles.map(r => `<tr><td><b lang="en" dir="ltr">${esc(r.role)}</b></td><td lang="en" dir="ltr">${esc(r.pick)}</td><td>${en(r.why)}</td></tr>`).join("");
-  $("bm-graph").innerHTML = B.graph_evidence.map(e => `<li>${en(e.finding)}<span lang="en" dir="ltr">${esc(e.source)} · ${esc(e.caveat)}</span></li>`).join("");
-  $("bm-qa").innerHTML = B.qa_benchmarks.map(b => `<li>${en(b)}</li>`).join("");
-  $("bm-kg").innerHTML = B.graph_benchmarks.map(b => `<li>${en(b)}</li>`).join("");
+    B.roles.map(r => `<tr><td><b lang="en" dir="ltr">${esc(r.role)}</b></td><td lang="en" dir="ltr">${esc(r.pick).replace(/[a-z0-9][a-z0-9.-]*[a-z0-9]/g, w => { const m = M.find(m => m.model === w); return m ? ext(m.url, w) : w; })}</td><td>${en(r.why)}</td></tr>`).join("");
+  $("bm-graph").innerHTML = B.graph_evidence.map(e => `<li>${en(e.finding)}<span lang="en" dir="ltr">${e.url ? ext(e.url, e.source) : esc(e.source)} · ${esc(e.caveat)}</span></li>`).join("");
+  const bl = b => typeof b === "string" ? `<li>${en(b)}</li>` : `<li>${en(b.name)}<span class="links">${b.links.map(([k, u]) => ext(u, k)).join("")}</span></li>`;
+  $("bm-qa").innerHTML = B.qa_benchmarks.map(bl).join("");
+  $("bm-kg").innerHTML = B.graph_benchmarks.map(bl).join("");
 } else { $("models").hidden = true; }
 })();

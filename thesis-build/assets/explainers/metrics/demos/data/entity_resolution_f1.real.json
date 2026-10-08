@@ -1,0 +1,635 @@
+{
+ "label": "OUR HAND LABELS, a demo, not a benchmark. Pairs were chosen by the author (merged pairs plus near-duplicates seen in the graph), not sampled at random; recall is relative to this list, not to the whole graph.",
+ "source": "Presentations/_real-examples/graph/graph.json (662 nodes) and data/corpus.json",
+ "pairs": [
+  {
+   "a": "decision tree",
+   "b": "decision trees",
+   "node_a": "n008",
+   "node_b": "n008",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "plural",
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p128",
+    "text": "In general, decision graphs infer models with fewer leaves than decision trees."
+   }
+  },
+  {
+   "a": "training set",
+   "b": "training sets",
+   "node_a": "n005",
+   "node_b": "n005",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "plural",
+   "ev_a": {
+    "passage": "p035",
+    "text": "It may be possible to reconstruct details of individual training instances from an overfitted machine learning model's training set."
+   },
+   "ev_b": {
+    "passage": "p048",
+    "text": "This is because model-free approaches to inference require impractically large training sets if they are to avoid high variance."
+   }
+  },
+  {
+   "a": "random forests",
+   "b": "random forest",
+   "node_a": "n013",
+   "node_b": "n013",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "plural",
+   "ev_a": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "ev_b": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   }
+  },
+  {
+   "a": "lasso",
+   "b": "least absolute shrinkage and selection operator",
+   "node_a": "n002",
+   "node_b": "n002",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "abbreviation rule: p005 says \"lasso (least absolute shrinkage and selection operator...)\"",
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization in order "
+   },
+   "ev_b": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization in order "
+   }
+  },
+  {
+   "a": "PCR",
+   "b": "principal component regression",
+   "node_a": "n018",
+   "node_b": "n018",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "abbreviation stated in the passage",
+   "ev_a": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   }
+  },
+  {
+   "a": "ordinary least squares",
+   "b": "OLS",
+   "node_a": "n043",
+   "node_b": "n043",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "abbreviation stated in the passage",
+   "ev_a": {
+    "passage": "p003",
+    "text": "In the ordinary least squares solution of  [formula] the problem of a near-singular moment matrix [formula] is alleviated by adding positive elements to the diagonals, thereby decreasing its condition number."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Multivariate analogues of ordinary least squares (OLS) and generalized least squares (GLS) have been developed."
+   }
+  },
+  {
+   "a": "SVM",
+   "b": "SVMs",
+   "node_a": "n020",
+   "node_b": "n020",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "plural",
+   "ev_a": {
+    "passage": "p018",
+    "text": "Because SVM is easily parallelizable, the code can be faster than Glmnet on modern hardware."
+   },
+   "ev_b": {
+    "passage": "p115",
+    "text": "SVMs belong to a family of generalized linear classifiers and can be interpreted as an extension of the perceptron."
+   }
+  },
+  {
+   "a": "regression",
+   "b": "regressions",
+   "node_a": "n019",
+   "node_b": "n019",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "plural",
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   }
+  },
+  {
+   "a": "partial least squares",
+   "b": "PLS",
+   "node_a": "n093",
+   "node_b": "n093",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "abbreviation stated in the passage",
+   "ev_a": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "ev_b": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   }
+  },
+  {
+   "a": "principal component analysis",
+   "b": "PCA",
+   "node_a": "n098",
+   "node_b": "n098",
+   "pack_merged": true,
+   "gold": 1,
+   "why": "abbreviation stated in the passage",
+   "ev_a": {
+    "passage": "p018",
+    "text": "SpaSM, a Matlab implementation of sparse regression, classification and principal component analysis, including elastic net regularized regression."
+   },
+   "ev_b": {
+    "passage": "p079",
+    "text": "In statistics, principal component regression (PCR) is a regression analysis technique that is based on principal component analysis (PCA)."
+   }
+  },
+  {
+   "a": "SVM",
+   "b": "support vector machines",
+   "node_a": "n020",
+   "node_b": "n047",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p109 defines \"support vector machine (SVM)\". The abbreviation rule refused: two nodes reported \"SVM\", so it was ambiguous.",
+   "ev_a": {
+    "passage": "p018",
+    "text": "Because SVM is easily parallelizable, the code can be faster than Glmnet on modern hardware."
+   },
+   "ev_b": {
+    "passage": "p109",
+    "text": "In machine learning, a support vector machine (SVM) or support vector network is a supervised max-margin model with associated learning algorithms that analyze data for classification and regression analysis."
+   }
+  },
+  {
+   "a": "Tikhonov regularization",
+   "b": "ridge regression",
+   "node_a": "n015",
+   "node_b": "n014",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p001: \"Ridge regression (also known as Tikhonov regularization ...)\"",
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   }
+  },
+  {
+   "a": "Tikhonov regularization",
+   "b": "Tikhonov–Phillips regularization",
+   "node_a": "n015",
+   "node_b": "n605",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p004: \"Some authors use the term Tikhonov-Phillips regularization.\"",
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p004",
+    "text": "Some authors use the term Tikhonov–Phillips regularization."
+   }
+  },
+  {
+   "a": "bias–variance tradeoff",
+   "b": "bias–variance trade-off",
+   "node_a": "n029",
+   "node_b": "n148",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "hyphen only; the key keeps the hyphen as a space but \"tradeoff\" is one word",
+   "ev_a": {
+    "passage": "p002",
+    "text": "In general, the method provides improved efficiency in parameter estimation problems in exchange for a tolerable amount of bias (see bias–variance tradeoff)."
+   },
+   "ev_b": {
+    "passage": "p047",
+    "text": "Convergence diagnostics can be used to control bias via burn-in removal, but due to a limited computational budget, a bias–variance trade-off arises, leading to a wide range of approaches, in which a controlled bias is accepted, i"
+   }
+  },
+  {
+   "a": "chi-square distribution",
+   "b": "chi-squared distribution",
+   "node_a": "n166",
+   "node_b": "n167",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "spelling variant",
+   "ev_a": {
+    "passage": "p106",
+    "text": "In the case of a single predictor model, one simply compares the deviance of the predictor model with that of the null model on a chi-square distribution with a single degree of freedom."
+   },
+   "ev_b": {
+    "passage": "p105",
+    "text": "The reason for this choice is that not only is the deviance a good measure of the goodness of fit, it is also approximately chi-squared distributed, with the approximation improving as the number of data points (K) increases, beco"
+   }
+  },
+  {
+   "a": "dimension reduction",
+   "b": "dimensionality reduction",
+   "node_a": "n219",
+   "node_b": "n220",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "synonyms in these passages",
+   "ev_a": {
+    "passage": "p080",
+    "text": "In addition, by usually regressing on only a subset of all the principal components, PCR can result in dimension reduction through substantially lowering the effective number of parameters characterizing the underlying model."
+   },
+   "ev_b": {
+    "passage": "p044",
+    "text": "Dimensionality reduction and feature selection can decrease variance by simplifying models."
+   }
+  },
+  {
+   "a": "mean squared error",
+   "b": "MSE",
+   "node_a": "n398",
+   "node_b": "n423",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p050 uses \"MSE\" for the mean squared error; the passage did not state the abbreviation, so the rule had no hook",
+   "ev_a": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "ev_b": {
+    "passage": "p050",
+    "text": "The MSE for given estimated parameter values a and β on the training set (xi, yi) 1 ≤ i ≤ n is defined as: [formula] If the model is correctly specified, it can be shown under mild assumptions that the expected value of the MSE fo"
+   }
+  },
+  {
+   "a": "Hoerl",
+   "b": "Arthur E. Hoerl",
+   "node_a": "n296",
+   "node_b": "n129",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "same statistician (p002 \"Hoerl and Kennard\", p004 \"Arthur E. Hoerl\")",
+   "ev_a": {
+    "passage": "p002",
+    "text": "The theory was first introduced by Hoerl and Kennard in 1970 in their Technometrics papers \"Ridge regressions: biased estimation of nonorthogonal problems\" and \"Ridge regressions: applications in nonorthogonal problems\"."
+   },
+   "ev_b": {
+    "passage": "p004",
+    "text": "Tikhonov regularization was invented independently in many different contexts."
+   }
+  },
+  {
+   "a": "Vapnik",
+   "b": "Vladimir N. Vapnik",
+   "node_a": "n631",
+   "node_b": "n636",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p109 vs p112: the same person",
+   "ev_a": {
+    "passage": "p109",
+    "text": "Developed at AT&T Bell Laboratories, SVMs are one of the most studied models, being based on statistical learning frameworks of VC theory proposed by Vapnik (1982, 1995) and Chervonenkis (1974)."
+   },
+   "ev_b": {
+    "passage": "p112",
+    "text": "The original SVM algorithm was invented by Vladimir N."
+   }
+  },
+  {
+   "a": "random forests",
+   "b": "random decision forests",
+   "node_a": "n013",
+   "node_b": "n523",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p129: \"Random forests or random decision forests\"",
+   "ev_a": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "ev_b": {
+    "passage": "p130",
+    "text": "The general method of random decision forests was first proposed by Salzberg and Heath in 1993, with a method that used a randomized decision tree algorithm to create multiple trees and then combine them using majority voting."
+   }
+  },
+  {
+   "a": "regression analysis",
+   "b": "regression analyses",
+   "node_a": "n104",
+   "node_b": "n532",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "plural written \"analyses\": the key rule only strips a final s",
+   "ev_a": {
+    "passage": "p099",
+    "text": "In regression analysis, logistic regression (or logit regression) estimates the parameters of a logistic model (the coefficients in the linear or non linear combinations)."
+   },
+   "ev_b": {
+    "passage": "p065",
+    "text": "For this reason, randomized controlled trials are often able to generate more compelling evidence of causal relationships than can be obtained using regression analyses of observational data."
+   }
+  },
+  {
+   "a": "training data set",
+   "b": "training dataset",
+   "node_a": "n612",
+   "node_b": "n613",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "spacing only",
+   "ev_a": {
+    "passage": "p039",
+    "text": "In general, as the number of tunable parameters in a model increases, it becomes more flexible, and can better fit a training data set."
+   },
+   "ev_b": {
+    "passage": "p033",
+    "text": "If the new, more complicated function is selected instead of the simple function, and if there was not a large enough gain in training data fit to offset the complexity increase, then the new complex function \"overfits\" the data a"
+   }
+  },
+  {
+   "a": "L1 regularization",
+   "b": "L2 regularization",
+   "node_a": "n083",
+   "node_b": "n346",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "different penalties (L1 sums absolute values, L2 squares)",
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization in order "
+   },
+   "ev_b": {
+    "passage": "p021",
+    "text": "Techniques like early stopping, L1 and L2 regularization, and dropout are designed to prevent overfitting and underfitting, thereby enhancing the model's ability to adapt to and perform well with new data, thus improving model gen"
+   }
+  },
+  {
+   "a": "independent variables",
+   "b": "dependent variable",
+   "node_a": "n078",
+   "node_b": "n058",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "opposite roles",
+   "ev_a": {
+    "passage": "p099",
+    "text": "In statistics, a logistic model (or logit model) is a statistical model that models the log-odds of an event as a linear combination of one or more independent variables."
+   },
+   "ev_b": {
+    "passage": "p099",
+    "text": "In statistics, a logistic model (or logit model) is a statistical model that models the log-odds of an event as a linear combination of one or more independent variables."
+   }
+  },
+  {
+   "a": "generalized linear models",
+   "b": "general linear model",
+   "node_a": "n073",
+   "node_b": "n262",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "p066: the general linear model has a vector response; a generalized model has a link function. Names differ by two letters, concepts differ",
+   "ev_a": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasing their b"
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "The general linear model considers the situation when the response variable is not a scalar (for each observation) but a vector, yi."
+   }
+  },
+  {
+   "a": "perfect collinearity",
+   "b": "imperfect collinearity",
+   "node_a": "n491",
+   "node_b": "n306",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "opposite cases",
+   "ev_a": {
+    "passage": "p070",
+    "text": "Perfect collinearity is typically caused by including redundant variables in a regression."
+   },
+   "ev_b": {
+    "passage": "p072",
+    "text": "In addition to causing numerical problems, imperfect collinearity makes precise estimation of variables difficult."
+   }
+  },
+  {
+   "a": "local minimum",
+   "b": "global minimum",
+   "node_a": "n086",
+   "node_b": "n271",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "different points",
+   "ev_a": {
+    "passage": "p092",
+    "text": "Using this method, they would eventually find their way down the mountain or possibly get stuck in some hole (i.e., local minimum or saddle point), like a mountain lake."
+   },
+   "ev_b": {
+    "passage": "p091",
+    "text": "People are stuck in the mountains and are trying to get down (i.e., trying to find the global minimum)."
+   }
+  },
+  {
+   "a": "gradient descent",
+   "b": "gradient ascent",
+   "node_a": "n009",
+   "node_b": "n274",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "opposite directions",
+   "ev_a": {
+    "passage": "p089",
+    "text": "Gradient descent is a method for unconstrained mathematical optimization."
+   },
+   "ev_b": {
+    "passage": "p089",
+    "text": "Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function; the procedure is then known as gradient ascent."
+   }
+  },
+  {
+   "a": "simple linear regression",
+   "b": "multiple linear regression",
+   "node_a": "n045",
+   "node_b": "n090",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "one predictor versus several",
+   "ev_a": {
+    "passage": "p059",
+    "text": "A linear model with exactly one explanatory variable is a simple linear regression; a model with two or more explanatory variables is a multiple linear regression."
+   },
+   "ev_b": {
+    "passage": "p059",
+    "text": "A linear model with exactly one explanatory variable is a simple linear regression; a model with two or more explanatory variables is a multiple linear regression."
+   }
+  },
+  {
+   "a": "linear regression",
+   "b": "logistic regression",
+   "node_a": "n010",
+   "node_b": "n023",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "different models",
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p099",
+    "text": "In regression analysis, logistic regression (or logit regression) estimates the parameters of a logistic model (the coefficients in the linear or non linear combinations)."
+   }
+  },
+  {
+   "a": "L1 norm",
+   "b": "L2 norm",
+   "node_a": "n344",
+   "node_b": "n345",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "different norms",
+   "ev_a": {
+    "passage": "p028",
+    "text": "This is equivalent to learning the matrix === Sparse regularizer on columns === [formula] This regularizer defines an L2 norm on each column and an L1 norm over all columns."
+   },
+   "ev_b": {
+    "passage": "p028",
+    "text": "This is equivalent to learning the matrix === Sparse regularizer on columns === [formula] This regularizer defines an L2 norm on each column and an L1 norm over all columns."
+   }
+  },
+  {
+   "a": "lasso",
+   "b": "group lasso",
+   "node_a": "n002",
+   "node_b": "n075",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "a variant, not the same method",
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization in order "
+   },
+   "ev_b": {
+    "passage": "p009",
+    "text": "Group lasso allows groups of related covariates to be selected as a single unit, which can be useful in settings where it does not make sense to include some covariates without others."
+   }
+  },
+  {
+   "a": "L-estimators",
+   "b": "M-estimators",
+   "node_a": "n342",
+   "node_b": "n386",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "different families of estimators",
+   "ev_a": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "ev_b": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   }
+  },
+  {
+   "a": "k-fold cross-validation",
+   "b": "k*l-fold cross validation",
+   "node_a": "n327",
+   "node_b": "n338",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "k*l-fold is nested (two loops), a different procedure",
+   "ev_a": {
+    "passage": "p051",
+    "text": "==== k-fold cross-validation ==== [formula] In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples, often referred to as \"folds\"."
+   },
+   "ev_b": {
+    "passage": "p054",
+    "text": "Similar to the k*l-fold cross validation, the training set is used for model fitting and the validation set is used for model evaluation for each of the hyperparameter sets."
+   }
+  },
+  {
+   "a": "linear regression",
+   "b": "LinearRegression",
+   "node_a": "n010",
+   "node_b": "n375",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "a class in a software library (p018) versus the statistical method; arguable, we label them different",
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p018",
+    "text": "The method is available as a parameter of the more general LinearRegression class."
+   }
+  },
+  {
+   "a": "regression",
+   "b": "linear regression",
+   "node_a": "n019",
+   "node_b": "n010",
+   "pack_merged": false,
+   "gold": 0,
+   "why": "general task versus one model",
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   }
+  },
+  {
+   "a": "perfect collinearity",
+   "b": "perfect multicollinearity",
+   "node_a": "n491",
+   "node_b": "n492",
+   "pack_merged": false,
+   "gold": 1,
+   "why": "p069 uses \"multicollinearity or collinearity\" as one term (arguable)",
+   "ev_a": {
+    "passage": "p070",
+    "text": "Perfect collinearity is typically caused by including redundant variables in a regression."
+   },
+   "ev_b": {
+    "passage": "p069",
+    "text": "Perfect multicollinearity refers to a situation where the predictive variables have an exact linear relationship."
+   }
+  }
+ ]
+}

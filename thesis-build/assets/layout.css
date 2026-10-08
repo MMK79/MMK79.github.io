@@ -1,0 +1,65 @@
+/* Shared page layout (opt-in): vertical page, normal reading width, never any sideways scrolling.
+   Contract and behaviour: see the header comment of layout.js. Scoped to .hx / .hx-bar / [data-hx-*].
+   Tokens come from site.css (--bg --panel --panel2 --line --text --muted --faint --ai). */
+
+.hx{max-width:1180px;margin:0 auto;padding:0 28px;min-width:0}
+.hx *{min-width:0}
+.hx p,.hx li,.hx td,.hx th,.hx h1,.hx h2,.hx h3{overflow-wrap:anywhere}
+
+/* ---- toolbar (reset only): built by layout.js, placed just before .hx ---- */
+.hx-bar{display:flex;justify-content:flex-end;max-width:1180px;margin:0 auto;padding:8px 28px 0;color:var(--muted);font-size:13.5px}
+.hx-live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---- sections: controls, collapse, drag ---- */
+.hx-sec-head{display:flex;align-items:flex-start;gap:10px;justify-content:space-between}
+.hx-sec-head > :first-child{min-width:0;flex:1}
+.hx-sec-ctl{display:flex;gap:2px;flex:none;margin-top:4px;border:1px solid var(--line);border-radius:8px;padding:2px;background:var(--panel)}
+.hx-sec-ctl button{font:500 13px/1 var(--body);color:var(--muted);background:none;border:0;border-radius:6px;min-width:28px;height:28px;cursor:pointer}
+.hx-sec-ctl button:hover{color:var(--text);background:var(--panel2)}
+.hx-sec-ctl button:focus-visible{outline:2px solid var(--ai);outline-offset:1px}
+.hx-sec-ctl button[aria-disabled=true]{opacity:.35;cursor:default}
+.hx-sec-ctl .hx-drag{cursor:grab}
+section.hx-collapsed > :not(.hx-sec-head){display:none!important}
+section.hx-dragging{opacity:.45}
+section.hx-over{outline:2px dashed var(--ai);outline-offset:4px}
+
+/* ---- tables: always the container width, text wraps, no sideways scroll ---- */
+.hx-ttools{display:flex;gap:10px;align-items:flex-start;margin:6px 0}
+.hx-cols summary{display:inline-block;list-style:none;cursor:pointer;font:500 13px var(--body);color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 10px}
+.hx-cols summary::-webkit-details-marker{display:none}
+.hx-cols summary:hover,.hx-cols[open] summary{color:var(--text);border-color:#3A4352}
+.hx-cols summary:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+.hx-cols .hx-colbox{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--panel);font-size:13.5px}
+.hx-cols label{display:flex;gap:6px;align-items:center;cursor:pointer}
+.hx-cols input{accent-color:var(--ai)}
+.hx-twrap{max-width:100%;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.hx-twrap table{border-collapse:collapse;width:100%;font-size:14px}
+.hx-twrap th,.hx-twrap td{padding:8px 12px;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}
+.hx-twrap th{color:var(--muted);font-weight:500;background:var(--panel)}
+.hx-twrap tr:last-child td{border-bottom:0}
+.hx-twrap .hx-sort{all:unset;box-sizing:border-box;display:inline-flex;gap:6px;align-items:center;cursor:pointer;color:inherit;font:inherit;border-radius:4px;text-align:start}
+.hx-twrap .hx-sort:hover{color:var(--text)}
+.hx-twrap .hx-sort:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+.hx-twrap .hx-arrow{font-size:10px;opacity:.35}
+.hx-twrap th[aria-sort=ascending] .hx-arrow::before{content:"▲"}
+.hx-twrap th[aria-sort=descending] .hx-arrow::before{content:"▼"}
+.hx-twrap th[aria-sort=none] .hx-arrow::before{content:"↕"}
+.hx-twrap th[aria-sort=ascending] .hx-arrow,.hx-twrap th[aria-sort=descending] .hx-arrow{opacity:1;color:var(--ai)}
+.hx-twrap .hx-hidecol{display:none!important}
+
+/* ---- phones and narrow windows: smaller gutters, drag handle off, tables become stacked cards ---- */
+@media (max-width:720px){
+  .hx{padding-inline:16px}
+  .hx-bar{padding-inline:16px}
+  .hx-sec-ctl .hx-drag{display:none}
+  .hx-twrap{border:0;border-radius:0;overflow:visible}
+  .hx-twrap table,.hx-twrap tbody{display:block}
+  .hx-twrap thead{display:block;margin-bottom:8px}
+  .hx-twrap thead tr{display:flex;flex-wrap:wrap;gap:6px}
+  .hx-twrap thead th{display:block;border:1px solid var(--line);border-radius:8px;padding:4px 10px;font-size:13px}
+  .hx-twrap tbody tr{display:block;border:1px solid var(--line);border-radius:10px;margin-bottom:10px;padding:4px 0;background:var(--panel)}
+  .hx-twrap tbody td{display:grid;grid-template-columns:minmax(80px,34%) 1fr;gap:10px;border-bottom:0;padding:5px 12px}
+  .hx-twrap tbody td::before{content:attr(data-label);color:var(--muted);font-weight:500}
+}
+@media print{.hx-bar,.hx-sec-ctl,.hx-ttools{display:none}}
+@media (prefers-reduced-motion:reduce){.hx,.hx *{scroll-behavior:auto!important;transition:none!important}}

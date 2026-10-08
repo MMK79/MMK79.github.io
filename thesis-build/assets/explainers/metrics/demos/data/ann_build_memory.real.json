@@ -1,0 +1,129 @@
+{
+ "note": "Real hnswlib 0.8.0 builds on this Mac, single thread, cosine. Build seconds are wall time under heavy load/swap (load average ~20): noisy, so the 138-vector build is repeated and min/median/max are kept. index_file_bytes = size of idx.save_index() = vectors + level-0 links + upper-level links + labels (what hnswlib keeps in RAM, serialized). Script: ann_build_memory.build.py.",
+ "hnswlib": "0.8.0",
+ "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+ "small": [
+  {
+   "build": {
+    "name": "standard",
+    "M": 16,
+    "ef_construction": 200
+   },
+   "n": 138,
+   "d": 384,
+   "reps": 25,
+   "seconds": [
+    0.0166,
+    0.0224,
+    0.0227,
+    0.0517,
+    0.0299,
+    0.1462,
+    0.0444,
+    0.085,
+    0.0585,
+    0.0415,
+    0.1114,
+    0.024,
+    0.026,
+    0.0631,
+    0.022,
+    0.0242,
+    0.0233,
+    0.0211,
+    0.0216,
+    0.0364,
+    0.0354,
+    0.0168,
+    0.0795,
+    0.0311,
+    0.0412
+   ],
+   "median": 0.0311,
+   "min": 0.0166,
+   "max": 0.1462,
+   "index_file_bytes": 232480,
+   "bytes_per_vector": 1684.6
+  },
+  {
+   "build": {
+    "name": "weak",
+    "M": 4,
+    "ef_construction": 16
+   },
+   "n": 138,
+   "d": 384,
+   "reps": 25,
+   "seconds": [
+    0.0093,
+    0.0414,
+    0.0089,
+    0.0098,
+    0.0076,
+    0.0106,
+    0.0207,
+    0.0459,
+    0.0236,
+    0.0102,
+    0.0122,
+    0.028,
+    0.0108,
+    0.009,
+    0.0176,
+    0.011,
+    0.0092,
+    0.0199,
+    0.0252,
+    0.0166,
+    0.0151,
+    0.0105,
+    0.0125,
+    0.0531,
+    0.0114
+   ],
+   "median": 0.0122,
+   "min": 0.0076,
+   "max": 0.0531,
+   "index_file_bytes": 219548,
+   "bytes_per_vector": 1590.9
+  }
+ ],
+ "large": [
+  {
+   "build": {
+    "name": "standard",
+    "M": 16,
+    "ef_construction": 200
+   },
+   "n": 20000,
+   "d": 384,
+   "reps": 1,
+   "seconds": [
+    104.6847
+   ],
+   "median": 104.6847,
+   "min": 104.6847,
+   "max": 104.6847,
+   "index_file_bytes": 33693732,
+   "bytes_per_vector": 1684.7
+  },
+  {
+   "build": {
+    "name": "weak",
+    "M": 4,
+    "ef_construction": 16
+   },
+   "n": 20000,
+   "d": 384,
+   "reps": 1,
+   "seconds": [
+    12.4798
+   ],
+   "median": 12.4798,
+   "min": 12.4798,
+   "max": 12.4798,
+   "index_file_bytes": 31816276,
+   "bytes_per_vector": 1590.8
+  }
+ ]
+}

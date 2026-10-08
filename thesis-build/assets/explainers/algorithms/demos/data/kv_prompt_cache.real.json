@@ -1,0 +1,825 @@
+{
+ "tokenizer": "BERT wordpiece (cross-encoder/ms-marco-MiniLM-L-6-v2), NOT Anthropic's or OpenAI's tokenizer: counts are indicative",
+ "system_prompt": "You are a careful assistant. Answer the question using only the passages below. Quote the passage id you used. If the passages do not contain the answer, say you do not know.",
+ "system_tokens": 37,
+ "passages": {
+  "p001": {
+   "tokens": 108,
+   "words": 77
+  },
+  "p002": {
+   "tokens": 159,
+   "words": 108
+  },
+  "p003": {
+   "tokens": 130,
+   "words": 87
+  },
+  "p004": {
+   "tokens": 135,
+   "words": 88
+  },
+  "p005": {
+   "tokens": 105,
+   "words": 79
+  },
+  "p006": {
+   "tokens": 99,
+   "words": 70
+  },
+  "p007": {
+   "tokens": 119,
+   "words": 97
+  },
+  "p008": {
+   "tokens": 106,
+   "words": 72
+  },
+  "p009": {
+   "tokens": 95,
+   "words": 75
+  },
+  "p010": {
+   "tokens": 99,
+   "words": 77
+  },
+  "p011": {
+   "tokens": 105,
+   "words": 79
+  },
+  "p012": {
+   "tokens": 92,
+   "words": 73
+  },
+  "p013": {
+   "tokens": 106,
+   "words": 78
+  },
+  "p014": {
+   "tokens": 95,
+   "words": 75
+  },
+  "p015": {
+   "tokens": 106,
+   "words": 82
+  },
+  "p016": {
+   "tokens": 102,
+   "words": 80
+  },
+  "p017": {
+   "tokens": 104,
+   "words": 83
+  },
+  "p018": {
+   "tokens": 110,
+   "words": 80
+  },
+  "p019": {
+   "tokens": 114,
+   "words": 87
+  },
+  "p020": {
+   "tokens": 94,
+   "words": 75
+  },
+  "p021": {
+   "tokens": 127,
+   "words": 95
+  },
+  "p022": {
+   "tokens": 109,
+   "words": 88
+  },
+  "p023": {
+   "tokens": 114,
+   "words": 86
+  },
+  "p024": {
+   "tokens": 94,
+   "words": 74
+  },
+  "p025": {
+   "tokens": 88,
+   "words": 70
+  },
+  "p026": {
+   "tokens": 92,
+   "words": 77
+  },
+  "p027": {
+   "tokens": 110,
+   "words": 81
+  },
+  "p028": {
+   "tokens": 100,
+   "words": 72
+  },
+  "p029": {
+   "tokens": 86,
+   "words": 75
+  },
+  "p030": {
+   "tokens": 87,
+   "words": 72
+  },
+  "p031": {
+   "tokens": 108,
+   "words": 73
+  },
+  "p032": {
+   "tokens": 106,
+   "words": 87
+  },
+  "p033": {
+   "tokens": 90,
+   "words": 75
+  },
+  "p034": {
+   "tokens": 115,
+   "words": 99
+  },
+  "p035": {
+   "tokens": 105,
+   "words": 79
+  },
+  "p036": {
+   "tokens": 90,
+   "words": 77
+  },
+  "p037": {
+   "tokens": 97,
+   "words": 80
+  },
+  "p038": {
+   "tokens": 130,
+   "words": 102
+  },
+  "p039": {
+   "tokens": 89,
+   "words": 73
+  },
+  "p040": {
+   "tokens": 113,
+   "words": 90
+  },
+  "p041": {
+   "tokens": 110,
+   "words": 84
+  },
+  "p042": {
+   "tokens": 84,
+   "words": 75
+  },
+  "p043": {
+   "tokens": 85,
+   "words": 72
+  },
+  "p044": {
+   "tokens": 118,
+   "words": 97
+  },
+  "p045": {
+   "tokens": 129,
+   "words": 94
+  },
+  "p046": {
+   "tokens": 101,
+   "words": 75
+  },
+  "p047": {
+   "tokens": 100,
+   "words": 75
+  },
+  "p048": {
+   "tokens": 89,
+   "words": 70
+  },
+  "p049": {
+   "tokens": 99,
+   "words": 80
+  },
+  "p050": {
+   "tokens": 102,
+   "words": 83
+  },
+  "p051": {
+   "tokens": 119,
+   "words": 74
+  },
+  "p052": {
+   "tokens": 109,
+   "words": 83
+  },
+  "p053": {
+   "tokens": 87,
+   "words": 76
+  },
+  "p054": {
+   "tokens": 97,
+   "words": 83
+  },
+  "p055": {
+   "tokens": 124,
+   "words": 96
+  },
+  "p056": {
+   "tokens": 112,
+   "words": 93
+  },
+  "p057": {
+   "tokens": 90,
+   "words": 72
+  },
+  "p058": {
+   "tokens": 95,
+   "words": 76
+  },
+  "p059": {
+   "tokens": 101,
+   "words": 78
+  },
+  "p060": {
+   "tokens": 128,
+   "words": 104
+  },
+  "p061": {
+   "tokens": 108,
+   "words": 87
+  },
+  "p062": {
+   "tokens": 105,
+   "words": 86
+  },
+  "p063": {
+   "tokens": 88,
+   "words": 73
+  },
+  "p064": {
+   "tokens": 109,
+   "words": 77
+  },
+  "p065": {
+   "tokens": 98,
+   "words": 84
+  },
+  "p066": {
+   "tokens": 115,
+   "words": 81
+  },
+  "p067": {
+   "tokens": 125,
+   "words": 100
+  },
+  "p068": {
+   "tokens": 110,
+   "words": 89
+  },
+  "p069": {
+   "tokens": 107,
+   "words": 77
+  },
+  "p070": {
+   "tokens": 96,
+   "words": 72
+  },
+  "p071": {
+   "tokens": 110,
+   "words": 87
+  },
+  "p072": {
+   "tokens": 93,
+   "words": 81
+  },
+  "p073": {
+   "tokens": 105,
+   "words": 89
+  },
+  "p074": {
+   "tokens": 114,
+   "words": 79
+  },
+  "p075": {
+   "tokens": 169,
+   "words": 119
+  },
+  "p076": {
+   "tokens": 145,
+   "words": 94
+  },
+  "p077": {
+   "tokens": 110,
+   "words": 82
+  },
+  "p078": {
+   "tokens": 100,
+   "words": 80
+  },
+  "p079": {
+   "tokens": 130,
+   "words": 95
+  },
+  "p080": {
+   "tokens": 110,
+   "words": 88
+  },
+  "p081": {
+   "tokens": 109,
+   "words": 80
+  },
+  "p082": {
+   "tokens": 125,
+   "words": 88
+  },
+  "p083": {
+   "tokens": 110,
+   "words": 76
+  },
+  "p084": {
+   "tokens": 128,
+   "words": 97
+  },
+  "p085": {
+   "tokens": 98,
+   "words": 75
+  },
+  "p086": {
+   "tokens": 83,
+   "words": 71
+  },
+  "p087": {
+   "tokens": 113,
+   "words": 84
+  },
+  "p088": {
+   "tokens": 139,
+   "words": 106
+  },
+  "p089": {
+   "tokens": 103,
+   "words": 79
+  },
+  "p090": {
+   "tokens": 97,
+   "words": 80
+  },
+  "p091": {
+   "tokens": 92,
+   "words": 75
+  },
+  "p092": {
+   "tokens": 94,
+   "words": 78
+  },
+  "p093": {
+   "tokens": 103,
+   "words": 81
+  },
+  "p094": {
+   "tokens": 92,
+   "words": 74
+  },
+  "p095": {
+   "tokens": 92,
+   "words": 78
+  },
+  "p096": {
+   "tokens": 143,
+   "words": 115
+  },
+  "p097": {
+   "tokens": 91,
+   "words": 79
+  },
+  "p098": {
+   "tokens": 102,
+   "words": 86
+  },
+  "p099": {
+   "tokens": 133,
+   "words": 102
+  },
+  "p100": {
+   "tokens": 116,
+   "words": 87
+  },
+  "p101": {
+   "tokens": 84,
+   "words": 70
+  },
+  "p102": {
+   "tokens": 136,
+   "words": 104
+  },
+  "p103": {
+   "tokens": 105,
+   "words": 71
+  },
+  "p104": {
+   "tokens": 103,
+   "words": 77
+  },
+  "p105": {
+   "tokens": 124,
+   "words": 109
+  },
+  "p106": {
+   "tokens": 122,
+   "words": 95
+  },
+  "p107": {
+   "tokens": 148,
+   "words": 117
+  },
+  "p108": {
+   "tokens": 118,
+   "words": 75
+  },
+  "p109": {
+   "tokens": 139,
+   "words": 105
+  },
+  "p110": {
+   "tokens": 116,
+   "words": 88
+  },
+  "p111": {
+   "tokens": 84,
+   "words": 70
+  },
+  "p112": {
+   "tokens": 150,
+   "words": 102
+  },
+  "p113": {
+   "tokens": 87,
+   "words": 71
+  },
+  "p114": {
+   "tokens": 89,
+   "words": 73
+  },
+  "p115": {
+   "tokens": 92,
+   "words": 72
+  },
+  "p116": {
+   "tokens": 110,
+   "words": 74
+  },
+  "p117": {
+   "tokens": 118,
+   "words": 84
+  },
+  "p118": {
+   "tokens": 154,
+   "words": 84
+  },
+  "p119": {
+   "tokens": 86,
+   "words": 76
+  },
+  "p120": {
+   "tokens": 119,
+   "words": 105
+  },
+  "p121": {
+   "tokens": 100,
+   "words": 75
+  },
+  "p122": {
+   "tokens": 114,
+   "words": 87
+  },
+  "p123": {
+   "tokens": 92,
+   "words": 75
+  },
+  "p124": {
+   "tokens": 111,
+   "words": 100
+  },
+  "p125": {
+   "tokens": 110,
+   "words": 83
+  },
+  "p126": {
+   "tokens": 94,
+   "words": 75
+  },
+  "p127": {
+   "tokens": 103,
+   "words": 78
+  },
+  "p128": {
+   "tokens": 122,
+   "words": 94
+  },
+  "p129": {
+   "tokens": 81,
+   "words": 71
+  },
+  "p130": {
+   "tokens": 93,
+   "words": 82
+  },
+  "p131": {
+   "tokens": 92,
+   "words": 75
+  },
+  "p132": {
+   "tokens": 98,
+   "words": 72
+  },
+  "p133": {
+   "tokens": 121,
+   "words": 94
+  },
+  "p134": {
+   "tokens": 118,
+   "words": 80
+  },
+  "p135": {
+   "tokens": 136,
+   "words": 108
+  },
+  "p136": {
+   "tokens": 94,
+   "words": 73
+  },
+  "p137": {
+   "tokens": 109,
+   "words": 83
+  },
+  "p138": {
+   "tokens": 109,
+   "words": 91
+  }
+ },
+ "questions": [
+  {
+   "id": "q01",
+   "tokens": 11,
+   "top5": [
+    "p002",
+    "p004",
+    "p001",
+    "p068",
+    "p006"
+   ]
+  },
+  {
+   "id": "q02",
+   "tokens": 9,
+   "top5": [
+    "p005",
+    "p006",
+    "p013",
+    "p011",
+    "p012"
+   ]
+  },
+  {
+   "id": "q03",
+   "tokens": 17,
+   "top5": [
+    "p016",
+    "p015",
+    "p024",
+    "p017",
+    "p026"
+   ]
+  },
+  {
+   "id": "q04",
+   "tokens": 12,
+   "top5": [
+    "p051",
+    "p049",
+    "p054",
+    "p053",
+    "p056"
+   ]
+  },
+  {
+   "id": "q05",
+   "tokens": 16,
+   "top5": [
+    "p114",
+    "p112",
+    "p109",
+    "p115",
+    "p113"
+   ]
+  },
+  {
+   "id": "q06",
+   "tokens": 14,
+   "top5": [
+    "p093",
+    "p098",
+    "p096",
+    "p089",
+    "p095"
+   ]
+  },
+  {
+   "id": "q07",
+   "tokens": 14,
+   "top5": [
+    "p129",
+    "p134",
+    "p121",
+    "p119",
+    "p137"
+   ]
+  },
+  {
+   "id": "q08",
+   "tokens": 15,
+   "top5": [
+    "p069",
+    "p070",
+    "p072",
+    "p075",
+    "p074"
+   ]
+  },
+  {
+   "id": "q09",
+   "tokens": 35,
+   "top5": [
+    "p006",
+    "p005",
+    "p074",
+    "p013",
+    "p001"
+   ]
+  },
+  {
+   "id": "q10",
+   "tokens": 37,
+   "top5": [
+    "p068",
+    "p006",
+    "p002",
+    "p047",
+    "p075"
+   ]
+  },
+  {
+   "id": "q11",
+   "tokens": 26,
+   "top5": [
+    "p016",
+    "p015",
+    "p004",
+    "p001",
+    "p003"
+   ]
+  },
+  {
+   "id": "q12",
+   "tokens": 20,
+   "top5": [
+    "p129",
+    "p121",
+    "p134",
+    "p130",
+    "p131"
+   ]
+  },
+  {
+   "id": "q13",
+   "tokens": 24,
+   "top5": [
+    "p013",
+    "p005",
+    "p014",
+    "p012",
+    "p015"
+   ]
+  },
+  {
+   "id": "q14",
+   "tokens": 21,
+   "top5": [
+    "p118",
+    "p109",
+    "p115",
+    "p112",
+    "p088"
+   ]
+  },
+  {
+   "id": "q15",
+   "tokens": 22,
+   "top5": [
+    "p082",
+    "p079",
+    "p002",
+    "p001",
+    "p087"
+   ]
+  },
+  {
+   "id": "q16",
+   "tokens": 30,
+   "top5": [
+    "p127",
+    "p131",
+    "p128",
+    "p031",
+    "p120"
+   ]
+  },
+  {
+   "id": "q17",
+   "tokens": 16,
+   "top5": [
+    "p082",
+    "p079",
+    "p002",
+    "p087",
+    "p001"
+   ]
+  },
+  {
+   "id": "q18",
+   "tokens": 19,
+   "top5": [
+    "p015",
+    "p016",
+    "p011",
+    "p009",
+    "p010"
+   ]
+  },
+  {
+   "id": "q19",
+   "tokens": 15,
+   "top5": [
+    "p107",
+    "p099",
+    "p059",
+    "p098",
+    "p103"
+   ]
+  },
+  {
+   "id": "q20",
+   "tokens": 15,
+   "top5": [
+    "p052",
+    "p051",
+    "p054",
+    "p049",
+    "p056"
+   ]
+  },
+  {
+   "id": "q21",
+   "tokens": 23,
+   "top5": [
+    "p013",
+    "p019",
+    "p014",
+    "p001",
+    "p005"
+   ]
+  },
+  {
+   "id": "q22",
+   "tokens": 12,
+   "top5": [
+    "p038",
+    "p050",
+    "p044",
+    "p045",
+    "p016"
+   ]
+  },
+  {
+   "id": "q23",
+   "tokens": 19,
+   "top5": [
+    "p118",
+    "p109",
+    "p115",
+    "p112",
+    "p137"
+   ]
+  },
+  {
+   "id": "q24",
+   "tokens": 13,
+   "top5": [
+    "p013",
+    "p012",
+    "p005",
+    "p014",
+    "p006"
+   ]
+  }
+ ]
+}

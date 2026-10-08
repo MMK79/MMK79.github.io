@@ -1,0 +1,760 @@
+[
+ {
+  "name": "Gerard Salton",
+  "affiliation": "Cornell University (1927-1995)",
+  "why": "SMART system, vector space model, TF-IDF weighting; founder of modern IR.",
+  "track": "ir",
+  "papers": [
+   "salton-vsm-1975"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Gerard_Salton",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Karen Spärck Jones",
+  "affiliation": "University of Cambridge (1935-2007)",
+  "why": "Invented IDF; led a long line of probabilistic IR and NLP work.",
+  "track": "ir",
+  "papers": [
+   "sparck-jones-idf-1972",
+   "robertson-sj-1976"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Karen_Sp%C3%A4rck_Jones",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Stephen Robertson",
+  "affiliation": "City University London; Microsoft Research Cambridge",
+  "why": "Probabilistic relevance framework and BM25 (Okapi).",
+  "track": "ir",
+  "papers": [
+   "bm25-1994",
+   "bm25-survey-2009",
+   "robertson-sj-1976"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Stephen_Robertson_(computer_scientist)",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Ellen Voorhees",
+  "affiliation": "NIST",
+  "why": "Ran TREC; started the TREC QA track (1999).",
+  "track": "qa",
+  "papers": [
+   "trec8-qa-1999"
+  ],
+  "link": "https://www.nist.gov/people/ellen-m-voorhees",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "David Ferrucci",
+  "affiliation": "IBM Research (Watson lead); later Bridgewater, Elemental Cognition",
+  "why": "Led IBM Watson / DeepQA to win Jeopardy! in 2011.",
+  "track": "qa",
+  "papers": [
+   "watson-2010"
+  ],
+  "link": "https://en.wikipedia.org/wiki/David_Ferrucci",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Douglas Lenat",
+  "affiliation": "Cycorp (1950-2023)",
+  "why": "Started Cyc in 1984, the longest-running hand-built common-sense knowledge base.",
+  "track": "kb",
+  "papers": [
+   "cyc-1995"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Douglas_Lenat",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "George A. Miller",
+  "affiliation": "Princeton University (1920-2012)",
+  "why": "Created WordNet.",
+  "track": "kb",
+  "papers": [
+   "wordnet-1995"
+  ],
+  "link": "https://en.wikipedia.org/wiki/George_Armitage_Miller",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Tim Berners-Lee",
+  "affiliation": "MIT CSAIL; Oxford; W3C",
+  "why": "Semantic Web vision; RDF, linked data.",
+  "track": "kb",
+  "papers": [
+   "semweb-2001",
+   "rdf-1999"
+  ],
+  "link": "https://www.w3.org/People/Berners-Lee/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "James Hendler",
+  "affiliation": "Rensselaer Polytechnic Institute",
+  "why": "Co-author of 'The Semantic Web'; semantic-web and KG pioneer.",
+  "track": "kb",
+  "papers": [
+   "semweb-2001"
+  ],
+  "link": "https://www.cs.rpi.edu/~hendler/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Tom Gruber",
+  "affiliation": "Siri co-founder (former Apple)",
+  "why": "Definition of an ontology for AI (1993).",
+  "track": "kb",
+  "papers": [
+   "gruber-1993"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Tom_Gruber",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Sören Auer",
+  "affiliation": "TIB Hannover; Leibniz University Hannover",
+  "why": "Co-creator of DBpedia (2007).",
+  "track": "kb",
+  "papers": [
+   "dbpedia-2007"
+  ],
+  "link": "https://tib.eu/auer",
+  "link_kind": "homepage (TIB staff page, ORCID-declared; page behind a bot check, not read)",
+  "link_verified": true,
+  "affiliation_note": "link is the 'Professional homepage' on his ORCID record and redirects to the TIB staff page 'staff/soeren-auer'; current role not read from the page (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Sören+Auer+author",
+    "now": "https://tib.eu/auer",
+    "checked": "2026-10-07",
+    "evidence": "https://pub.orcid.org/v3.0/0000-0002-0698-2864/researcher-urls ; https://vivo.tib.eu/fis/display/n0000-0002-0698-2864 (opened)",
+    "was_kind": "scholar search (homepage not verified)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Christian Bizer",
+  "affiliation": "University of Mannheim; FU Berlin (at the time)",
+  "why": "Co-creator of DBpedia; Linked Open Data cloud.",
+  "track": "kb",
+  "papers": [
+   "dbpedia-2007"
+  ],
+  "link": "https://www.uni-mannheim.de/dws/people/professors/prof-dr-christian-bizer/",
+  "link_kind": "homepage (university page)",
+  "link_verified": true,
+  "affiliation_note": "University of Mannheim professor page opened; FU Berlin role 'at the time' not re-checked (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Christian+Bizer+author",
+    "now": "https://www.uni-mannheim.de/dws/people/professors/prof-dr-christian-bizer/",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07; ORCID 0000-0003-2367-0237 shown on page",
+    "was_kind": "scholar search (homepage not verified)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Fabian Suchanek",
+  "affiliation": "Télécom Paris / IP Paris",
+  "why": "First author of YAGO (2007).",
+  "track": "kb",
+  "papers": [
+   "yago-2007"
+  ],
+  "link": "https://suchanek.name/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Gerhard Weikum",
+  "affiliation": "Max Planck Institute for Informatics",
+  "why": "YAGO and large-scale knowledge harvesting.",
+  "track": "kb",
+  "papers": [
+   "yago-2007"
+  ],
+  "link": "https://www.mpi-inf.mpg.de/~weikum/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Amit Singhal",
+  "affiliation": "Google (2000-2016)",
+  "why": "Led Google Search; announced the Knowledge Graph ('things, not strings') on 2012-05-16.",
+  "track": "kb",
+  "papers": [
+   "gkg-2012"
+  ],
+  "link": "https://en.wikipedia.org/wiki/Amit_Singhal",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Denny Vrandečić",
+  "affiliation": "Wikimedia Foundation (ex-Google)",
+  "why": "Founded Wikidata (2012).",
+  "track": "kb",
+  "papers": [
+   "wikidata-2014"
+  ],
+  "link": "http://simia.net",
+  "link_kind": "personal blog/homepage (read via Wayback capture 2026-01-06; live host unreachable from here)",
+  "link_verified": true,
+  "affiliation_note": "blog written by him in first person; current employer not read, so 'Wikimedia Foundation (ex-Google)' stays unverified (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Denny+Vrandečić+author",
+    "now": "http://simia.net",
+    "checked": "2026-10-07",
+    "evidence": "https://web.archive.org/web/20260106110653/http://simia.net/wiki/Main_Page ; Wikidata Q18618629 P856",
+    "was_kind": "scholar search (homepage not verified)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Aidan Hogan",
+  "affiliation": "Universidad de Chile; IMFD",
+  "why": "Lead author of the standard Knowledge Graphs survey.",
+  "track": "kb",
+  "papers": [
+   "hogan-kg-2021"
+  ],
+  "link": "https://aidanhogan.com/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Antoine Bordes",
+  "affiliation": "Facebook AI Research (ex); Helsing (unverified)",
+  "why": "TransE; large-scale simple QA; memory networks; DrQA co-author.",
+  "track": "qa",
+  "papers": [
+   "transe-2013",
+   "memnet-2014",
+   "drqa-2017"
+  ],
+  "link": "https://scholar.google.com/scholar?q=Antoine+Bordes+author",
+  "link_kind": "scholar search (homepage not verified)",
+  "link_verified": false,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified",
+  "link_note": "searched 2026-10-07: no personal homepage found; Wikidata/ORCID lists none or a dead link (Bordes: research.fb.com redirect; Lewis: mikelewis.co.uk is an unrelated accountancy; Izacard: only an empty GitHub account); scholar search link kept"
+ },
+ {
+  "name": "Jason Weston",
+  "affiliation": "Meta FAIR; NYU",
+  "why": "Memory Networks (2014); retrieval-based dialogue; DrQA co-author.",
+  "track": "neural-retrieval",
+  "papers": [
+   "memnet-2014",
+   "retrieve-refine-2018",
+   "drqa-2017"
+  ],
+  "link": "http://www.thespermwhale.com/jaseweston/",
+  "link_kind": "personal homepage",
+  "link_verified": true,
+  "affiliation_note": "affiliation matches the page (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Jason+Weston+author",
+    "now": "http://www.thespermwhale.com/jaseweston/",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'Senior Director & Research Scientist at FAIR @ Meta, and Visiting Research Professor at NYU'",
+    "was_kind": "scholar search (homepage not verified)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Danqi Chen",
+  "affiliation": "Princeton University",
+  "why": "DrQA (2017), co-author of DPR (2020); leads Princeton NLP work on retrieval and QA.",
+  "track": "qa",
+  "papers": [
+   "drqa-2017",
+   "dpr-2020"
+  ],
+  "link": "https://www.cs.princeton.edu/~danqic/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Kelvin Guu",
+  "affiliation": "Google DeepMind (ex Google Research)",
+  "why": "First author of REALM, the first retrieval-augmented language model pre-training.",
+  "track": "rag",
+  "papers": [
+   "realm-2020"
+  ],
+  "link": "https://kelvinguu.com/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Patrick Lewis",
+  "affiliation": "Cohere (ex Meta FAIR, UCL)",
+  "why": "First author of the RAG paper (2020), coined the term.",
+  "track": "rag",
+  "papers": [
+   "rag-2020",
+   "dpr-2020"
+  ],
+  "link": "https://www.patricklewis.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Sebastian Riedel",
+  "affiliation": "Google DeepMind; UCL (Meta FAIR earlier, unverified)",
+  "why": "Senior author of RAG (2020).",
+  "track": "rag",
+  "papers": [
+   "rag-2020"
+  ],
+  "link": "http://www.riedelcastro.org/",
+  "link_kind": "personal homepage",
+  "link_verified": true,
+  "affiliation_note": "homepage says DeepMind and UCL; 'ex Meta FAIR' not on the page (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Sebastian+Riedel+author",
+    "now": "http://www.riedelcastro.org/",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'currently a Researcher at DeepMind ... also a Professor at University College London'; ORCID researcher-url",
+    "was_kind": "scholar search (homepage not verified)"
+   },
+   {
+    "field": "affiliation",
+    "was": "UCL; Google DeepMind (ex Meta FAIR)",
+    "now": "Google DeepMind; UCL (Meta FAIR earlier, unverified)",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'currently a Researcher at DeepMind ... also a Professor at University College London'; ORCID researcher-url"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Douwe Kiela",
+  "affiliation": "Contextual AI; Stanford (adjunct)",
+  "why": "Senior author of RAG (2020); founded Contextual AI (enterprise RAG).",
+  "track": "rag",
+  "papers": [
+   "rag-2020"
+  ],
+  "link": "https://douwekiela.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Wen-tau Yih",
+  "affiliation": "Meta FAIR",
+  "why": "Co-author of DPR and RAG.",
+  "track": "neural-retrieval",
+  "papers": [
+   "dpr-2020",
+   "rag-2020"
+  ],
+  "link": "https://scottyih.org/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Gautier Izacard",
+  "affiliation": "Meta AI (at the time)",
+  "why": "Fusion-in-Decoder, Contriever, Atlas.",
+  "track": "rag",
+  "papers": [
+   "fid-2020",
+   "contriever-2021",
+   "atlas-2022"
+  ],
+  "link": "https://scholar.google.com/scholar?q=Gautier+Izacard+author",
+  "link_kind": "scholar search (homepage not verified)",
+  "link_verified": false,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified",
+  "link_note": "searched 2026-10-07: no personal homepage found; Wikidata/ORCID lists none or a dead link (Bordes: research.fb.com redirect; Lewis: mikelewis.co.uk is an unrelated accountancy; Izacard: only an empty GitHub account); scholar search link kept"
+ },
+ {
+  "name": "Omar Khattab",
+  "affiliation": "MIT EECS (from 2025); Databricks",
+  "why": "ColBERT, DSPy: late-interaction retrieval and LM programming.",
+  "track": "neural-retrieval",
+  "papers": [
+   "colbert-2020"
+  ],
+  "link": "https://omarkhattab.com/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Matei Zaharia",
+  "affiliation": "UC Berkeley; Databricks",
+  "why": "ColBERT co-author; Spark creator; compound AI systems.",
+  "track": "neural-retrieval",
+  "papers": [
+   "colbert-2020"
+  ],
+  "link": "https://www2.eecs.berkeley.edu/Faculty/Homepages/matei.html",
+  "link_kind": "faculty homepage (UC Berkeley EECS)",
+  "link_verified": true,
+  "affiliation_note": "Berkeley EECS page confirms Associate Professor; Databricks role unverified from a primary page (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://scholar.google.com/scholar?q=Matei+Zaharia+author",
+    "now": "https://www2.eecs.berkeley.edu/Faculty/Homepages/matei.html",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'Associate Professor'; Databricks co-founder role from search result, not opened",
+    "was_kind": "scholar search (homepage not verified)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Akari Asai",
+  "affiliation": "Ai2; University of Washington; CMU (incoming, unverified)",
+  "why": "Self-RAG; retrieval-based LMs.",
+  "track": "rag",
+  "papers": [
+   "selfrag-2023"
+  ],
+  "link": "https://akariasai.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Hannaneh Hajishirzi",
+  "affiliation": "University of Washington; Ai2",
+  "why": "Senior author of Self-RAG; open retrieval-augmented LMs. Iranian-born researcher.",
+  "track": "rag",
+  "papers": [
+   "selfrag-2023"
+  ],
+  "link": "https://homes.cs.washington.edu/~hannaneh/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Jimmy Lin",
+  "affiliation": "University of Waterloo",
+  "why": "Pyserini, anserini: reproducible IR; HyDE co-author.",
+  "track": "neural-retrieval",
+  "papers": [
+   "hyde-2022"
+  ],
+  "link": "https://cs.uwaterloo.ca/~jimmylin/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Mike Lewis",
+  "affiliation": "Meta FAIR",
+  "why": "Co-author of kNN-LM and RAG.",
+  "track": "rag",
+  "papers": [
+   "knnlm-2019",
+   "rag-2020"
+  ],
+  "link": "https://scholar.google.com/scholar?q=Mike+Lewis+author",
+  "link_kind": "scholar search (homepage not verified)",
+  "link_verified": false,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified",
+  "link_note": "searched 2026-10-07: no personal homepage found; Wikidata/ORCID lists none or a dead link (Bordes: research.fb.com redirect; Lewis: mikelewis.co.uk is an unrelated accountancy; Izacard: only an empty GitHub account); scholar search link kept"
+ },
+ {
+  "name": "Harrison Chase",
+  "affiliation": "LangChain (co-founder)",
+  "why": "Created LangChain (Oct 2022).",
+  "track": "rag",
+  "papers": [
+   "langchain-2022"
+  ],
+  "link": "https://github.com/hwchase17",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Jerry Liu",
+  "affiliation": "LlamaIndex (co-founder)",
+  "why": "Created GPT Index / LlamaIndex (Nov 2022).",
+  "track": "rag",
+  "papers": [
+   "llamaindex-2022"
+  ],
+  "link": "https://github.com/jerryjliu",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Yunfan Gao",
+  "affiliation": "Tongji University (unverified)",
+  "why": "First author of the most cited RAG survey (Dec 2023).",
+  "track": "rag",
+  "papers": [
+   "gao-survey-2023"
+  ],
+  "link": "https://scholar.google.com/scholar?q=Retrieval-Augmented+Generation+for+Large+Language+Models%3A+A+Survey",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Michihiro Yasunaga",
+  "affiliation": "Stanford (PhD); now industry (unverified)",
+  "why": "QA-GNN, GreaseLM; co-author of HippoRAG.",
+  "track": "kg-lm",
+  "papers": [
+   "qagnn-2021",
+   "greaselm-2022",
+   "hipporag-2024"
+  ],
+  "link": "https://michiyasunaga.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Jure Leskovec",
+  "affiliation": "Stanford University",
+  "why": "Senior author of QA-GNN and GreaseLM; graph learning leader.",
+  "track": "kg-lm",
+  "papers": [
+   "qagnn-2021",
+   "greaselm-2022"
+  ],
+  "link": "https://cs.stanford.edu/~jure/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Shirui Pan",
+  "affiliation": "Griffith University",
+  "why": "Lead of 'Unifying LLMs and KGs' roadmap; senior author of RoG.",
+  "track": "kg-lm",
+  "papers": [
+   "pan-ulk-2023",
+   "rog-2023"
+  ],
+  "link": "https://shiruipan.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Jian Guo / Jian Sun (IDEA Research)",
+  "affiliation": "IDEA Research; Tsinghua; Microsoft Research Asia",
+  "why": "Think-on-Graph authors (Sun et al.); exact first-author homepage not verified.",
+  "track": "kg-lm",
+  "papers": [
+   "tog-2023"
+  ],
+  "link": "https://arxiv.org/abs/2307.07697",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Darren Edge",
+  "affiliation": "Microsoft Research (Cambridge, UK)",
+  "why": "First author of Microsoft GraphRAG (2024).",
+  "track": "graphrag",
+  "papers": [
+   "graphrag-edge-2024"
+  ],
+  "link": "https://www.microsoft.com/en-us/research/people/daedge/",
+  "link_kind": "institutional page (opened)",
+  "link_verified": true,
+  "affiliation_note": "MSR page opened; affiliation Microsoft Research confirmed (location Cambridge UK not shown) (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://www.microsoft.com/en-us/research/people/daedge/",
+    "now": "https://www.microsoft.com/en-us/research/people/daedge/",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'Senior Director in Microsoft Research Catalyst Lab'",
+    "was_kind": "institutional page (bot-blocked, not opened)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Jonathan Larson",
+  "affiliation": "Microsoft Research",
+  "why": "Leads the GraphRAG project; last author of the paper.",
+  "track": "graphrag",
+  "papers": [
+   "graphrag-edge-2024",
+   "msft-blog-2024"
+  ],
+  "link": "https://www.microsoft.com/en-us/research/people/jolarso/",
+  "link_kind": "institutional page (opened)",
+  "link_verified": true,
+  "affiliation_note": "MSR page opened; affiliation confirmed (checked 2026-10-07)",
+  "superseded": [
+   {
+    "field": "link",
+    "was": "https://www.microsoft.com/en-us/research/people/jolarso/",
+    "now": "https://www.microsoft.com/en-us/research/people/jolarso/",
+    "checked": "2026-10-07",
+    "evidence": "opened 2026-10-07: 'Senior Principal Data Architect at Microsoft Research, Special Projects'; leads GraphRAG team work",
+    "was_kind": "institutional page (bot-blocked, not opened)"
+   }
+  ],
+  "link_checked": "2026-10-07"
+ },
+ {
+  "name": "Xiaoxin He / Bryan Hooi / Xavier Bresson",
+  "affiliation": "National University of Singapore",
+  "why": "G-Retriever (2024), RAG on textual graphs.",
+  "track": "graphrag",
+  "papers": [
+   "gretriever-2024"
+  ],
+  "link": "https://xiaoxinhe.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Yu Su",
+  "affiliation": "Ohio State University",
+  "why": "Senior author of HippoRAG 1 and 2.",
+  "track": "graphrag",
+  "papers": [
+   "hipporag-2024",
+   "hipporag2-2025"
+  ],
+  "link": "https://ysu1989.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Bernal Jiménez Gutiérrez",
+  "affiliation": "Ohio State University",
+  "why": "First author of HippoRAG 1 and 2.",
+  "track": "graphrag",
+  "papers": [
+   "hipporag-2024",
+   "hipporag2-2025"
+  ],
+  "link": "https://bernaljg.github.io/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Chao Huang",
+  "affiliation": "University of Hong Kong (Data Intelligence Lab)",
+  "why": "Senior author of LightRAG and MiniRAG.",
+  "track": "graphrag",
+  "papers": [
+   "lightrag-2024",
+   "minirag-2025"
+  ],
+  "link": "https://sites.google.com/view/chaoh",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Boci Peng",
+  "affiliation": "Peking University",
+  "why": "First author of the first GraphRAG survey (2024).",
+  "track": "graphrag",
+  "papers": [
+   "peng-survey-2024"
+  ],
+  "link": "https://github.com/pengboci",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Siliang Tang",
+  "affiliation": "Zhejiang University",
+  "why": "Senior author of the first GraphRAG survey (Peng et al.).",
+  "track": "graphrag",
+  "papers": [
+   "peng-survey-2024"
+  ],
+  "link": "https://person.zju.edu.cn/en/siliang",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Haoyu Han / Jiliang Tang",
+  "affiliation": "Michigan State University",
+  "why": "Authors of the second GraphRAG survey and RAG vs GraphRAG study.",
+  "track": "graphrag",
+  "papers": [
+   "han-survey-2024",
+   "rag-vs-graphrag-2025"
+  ],
+  "link": "https://cse.msu.edu/~tangjili/",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ },
+ {
+  "name": "Qinggang Zhang / Xiao Huang",
+  "affiliation": "Hong Kong Polytechnic University",
+  "why": "Authors of the third GraphRAG survey (customised LLMs).",
+  "track": "graphrag",
+  "papers": [
+   "zhang-survey-2025"
+  ],
+  "link": "https://scholar.google.com/scholar?q=A+Survey+of+Graph+Retrieval-Augmented+Generation+for+Customized+LLMs",
+  "link_kind": "homepage/wiki",
+  "link_verified": true,
+  "affiliation_note": "affiliation at the time of the paper or current role per the vault's Pioneers note (2026-10-02); current roles unverified"
+ }
+]

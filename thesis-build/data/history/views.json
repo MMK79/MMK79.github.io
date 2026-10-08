@@ -1,0 +1,46 @@
+{
+ "title": "History of RAG and GraphRAG",
+ "eras": [
+  {
+   "id": "Roots",
+   "from": "1957",
+   "to": "2012",
+   "label": "Roots: retrieval, QA and knowledge bases"
+  },
+  {
+   "id": "Neural retrieval",
+   "from": "2013",
+   "to": "2022",
+   "label": "Neural retrieval and the first RAG (2013-2022)"
+  },
+  {
+   "id": "LLM era",
+   "from": "2022-10",
+   "to": "2026",
+   "label": "The LLM era (Oct 2022 onward)"
+  },
+  {
+   "id": "KG + LMs",
+   "from": "2018",
+   "to": "2023",
+   "label": "Knowledge graphs meet language models (before 'GraphRAG')"
+  },
+  {
+   "id": "GraphRAG",
+   "from": "2024-02",
+   "to": "2026",
+   "label": "GraphRAG proper (Feb 2024 onward)"
+  }
+ ],
+ "tracks": {
+  "ir": "Information retrieval",
+  "qa": "Question answering",
+  "kb": "Knowledge bases and graphs",
+  "neural-retrieval": "Neural retrieval",
+  "rag": "RAG",
+  "kg-lm": "KG + language models",
+  "graphrag": "GraphRAG",
+  "evaluation": "Evaluation and benchmarks"
+ },
+ "note": "Eras overlap on purpose: KG+LMs runs in parallel with neural retrieval and the LLM era."
+}

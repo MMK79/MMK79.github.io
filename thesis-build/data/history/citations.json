@@ -1,0 +1,4502 @@
+{
+ "retrieved": "2026-10-08",
+ "source": "Semantic Scholar citationCount (arXiv and published versions merged); OpenAlex cited_by_count as fallback and cross-check",
+ "rule": "used = Semantic Scholar count when S2 resolved the event (title and year checked), else the OpenAlex count (larger of arXiv and published records), else null. split_flag when the two differ by more than 3x.",
+ "totals": {
+  "events_considered": 103,
+  "matched": 103,
+  "unmatched": 0,
+  "from_s2": 95,
+  "from_openalex": 8,
+  "split_flagged": 50,
+  "s2_rejected": 4,
+  "sum_citations": 667145,
+  "uncertain": 21
+ },
+ "by_era": {
+  "Roots": {
+   "events": 28,
+   "citations": 134298
+  },
+  "Neural retrieval": {
+   "events": 19,
+   "citations": 466570
+  },
+  "KG + LMs": {
+   "events": 16,
+   "citations": 14154
+  },
+  "LLM era": {
+   "events": 19,
+   "citations": 45476
+  },
+  "GraphRAG": {
+   "events": 21,
+   "citations": 6647
+  }
+ },
+ "top20": [
+  {
+   "rank": 1,
+   "id": "transformer-2017",
+   "title": "Attention Is All You Need",
+   "citations": 195656,
+   "source": "s2"
+  },
+  {
+   "rank": 2,
+   "id": "bert-2018",
+   "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+   "citations": 122184,
+   "source": "s2"
+  },
+  {
+   "rank": 3,
+   "id": "gpt3-2020",
+   "title": "Language Models are Few-Shot Learners (GPT-3)",
+   "citations": 64323,
+   "source": "s2"
+  },
+  {
+   "rank": 4,
+   "id": "w2v-2013",
+   "title": "Efficient Estimation of Word Representations in Vector Space (word2vec)",
+   "citations": 35211,
+   "source": "s2"
+  },
+  {
+   "rank": 5,
+   "id": "rag-2020",
+   "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+   "citations": 19210,
+   "source": "s2"
+  },
+  {
+   "rank": 6,
+   "id": "wordnet-1995",
+   "title": "WordNet: a lexical database for English",
+   "citations": 17781,
+   "source": "s2"
+  },
+  {
+   "rank": 7,
+   "id": "gruber-1993",
+   "title": "A translation approach to portable ontology specifications",
+   "citations": 14321,
+   "source": "s2"
+  },
+  {
+   "rank": 8,
+   "id": "lsa-1990",
+   "title": "Indexing by latent semantic analysis",
+   "citations": 12898,
+   "source": "openalex"
+  },
+  {
+   "rank": 9,
+   "id": "react-2022",
+   "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+   "citations": 12201,
+   "source": "s2"
+  },
+  {
+   "rank": 10,
+   "id": "squad-2016",
+   "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+   "citations": 9871,
+   "source": "s2"
+  },
+  {
+   "rank": 11,
+   "id": "salton-vsm-1975",
+   "title": "A vector space model for automatic indexing",
+   "citations": 8454,
+   "source": "s2"
+  },
+  {
+   "rank": 12,
+   "id": "dpr-2020",
+   "title": "Dense Passage Retrieval for Open-Domain Question Answering (DPR)",
+   "citations": 7224,
+   "source": "s2"
+  },
+  {
+   "rank": 13,
+   "id": "bm25-survey-2009",
+   "title": "The Probabilistic Relevance Framework: BM25 and Beyond",
+   "citations": 6471,
+   "source": "s2"
+  },
+  {
+   "rank": 14,
+   "id": "toolformer-2023",
+   "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+   "citations": 6000,
+   "source": "s2"
+  },
+  {
+   "rank": 15,
+   "id": "freebase-2008",
+   "title": "Freebase: a collaboratively created graph database for structuring human knowledge",
+   "citations": 5976,
+   "source": "s2"
+  },
+  {
+   "rank": 16,
+   "id": "dbpedia-2007",
+   "title": "DBpedia: A Nucleus for a Web of Open Data",
+   "citations": 5796,
+   "source": "s2"
+  },
+  {
+   "rank": 17,
+   "id": "lost-middle-2023",
+   "title": "Lost in the Middle: How Language Models Use Long Contexts",
+   "citations": 5374,
+   "source": "s2"
+  },
+  {
+   "rank": 18,
+   "id": "nq-2019",
+   "title": "Natural Questions: A Benchmark for Question Answering Research",
+   "citations": 5284,
+   "source": "s2"
+  },
+  {
+   "rank": 19,
+   "id": "transe-2013",
+   "title": "Translating Embeddings for Modeling Multi-relational Data",
+   "citations": 5124,
+   "source": "openalex"
+  },
+  {
+   "rank": 20,
+   "id": "yago-2007",
+   "title": "YAGO: a core of semantic knowledge",
+   "citations": 4755,
+   "source": "s2"
+  }
+ ],
+ "s2_rejected": [
+  {
+   "event": "baseball-1961",
+   "id": "DOI:10.1145/1460690.1460714",
+   "s2_title": "Baseball: an automatic question-answerer",
+   "s2_year": 1899,
+   "event_title": "BASEBALL: an automatic question-answerer",
+   "event_year": 1961
+  },
+  {
+   "event": "sparck-jones-idf-1972",
+   "id": "DOI:10.1108/eb026526",
+   "s2_title": "A statistical interpretation of term specificity and its application in retrieval",
+   "s2_year": 2021,
+   "event_title": "A statistical interpretation of term specificity and its application in retrieval",
+   "event_year": 1972
+  },
+  {
+   "event": "bm25-1994",
+   "id": "DOI:10.6028/nist.sp.500-225",
+   "s2_title": "Overview of the Third Text REtrieval Conference (TREC-3)",
+   "s2_year": 1995,
+   "event_title": "Okapi at TREC-3",
+   "event_year": 1994
+  },
+  {
+   "event": "e2e-memnet-2015",
+   "id": "ARXIV:1503.08895",
+   "s2_title": "Weakly Supervised Memory Networks",
+   "s2_year": 2015,
+   "event_title": "End-To-End Memory Networks",
+   "event_year": 2015
+  }
+ ],
+ "uncertain": [
+  {
+   "event": "baseball-1961",
+   "work": {
+    "id": "W2181157858",
+    "doi": "https://doi.org/10.1109/afips.1961.20",
+    "title": "Baseball, an Automatic Question-Answerer",
+    "year": 1899,
+    "cited_by_count": 101,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "sparck-jones-idf-1972",
+   "work": {
+    "id": "W3090556797",
+    "doi": "https://doi.org/10.1108/00220410410560573",
+    "title": "A statistical interpretation of term specificity and its application in retrieval",
+    "year": 2004,
+    "cited_by_count": 508,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "sparck-jones-idf-1972",
+   "work": {
+    "id": "W4285487794",
+    "doi": "https://doi.org/10.7551/mitpress/12274.003.0037",
+    "title": "A Statistical Interpretation of Term Specificity and Its Application in Retrieval (1972)",
+    "year": 2021,
+    "cited_by_count": 63,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "robertson-sj-1976",
+   "work": {
+    "id": "W2174678383",
+    "doi": null,
+    "title": "Relevance weighting of search terms",
+    "year": 1988,
+    "cited_by_count": 79,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "semweb-2001",
+   "work": {
+    "id": "W2163040665",
+    "doi": "https://doi.org/10.1109/mis.2006.62",
+    "title": "The Semantic Web Revisited",
+    "year": 2006,
+    "cited_by_count": 1820,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "e2e-memnet-2015",
+   "work": {
+    "id": "W3039803353",
+    "doi": "https://doi.org/10.1007/978-3-030-52246-9_20",
+    "title": "End-to-End Memory Networks: A Survey",
+    "year": 2020,
+    "cited_by_count": 7,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "e2e-memnet-2015",
+   "work": {
+    "id": "W2473965551",
+    "doi": "https://doi.org/10.21437/interspeech.2016-312",
+    "title": "End-to-End Memory Networks with Knowledge Carryover for Multi-Turn Spoken Language Understanding",
+    "year": 2016,
+    "cited_by_count": 158,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "transformer-2017",
+   "work": {
+    "id": "W2626778328",
+    "doi": "https://doi.org/10.65215/2q58a426",
+    "title": "Attention Is All You Need",
+    "year": 2025,
+    "cited_by_count": 26832,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "transformer-2017",
+   "work": {
+    "id": "W3163652268",
+    "doi": "https://doi.org/10.1109/icassp39728.2021.9413901",
+    "title": "Attention Is All You Need In Speech Separation",
+    "year": 2021,
+    "cited_by_count": 645,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "transformer-2017",
+   "work": {
+    "id": "W4390678101",
+    "doi": "https://doi.org/10.1093/bib/bbad467",
+    "title": "Attention is all you need: utilizing attention in AI-enabled drug discovery",
+    "year": 2023,
+    "cited_by_count": 378,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "transformer-2017",
+   "work": {
+    "id": "W4415754031",
+    "doi": "https://doi.org/10.1201/9781003561460-19",
+    "title": "Attention Is All You Need",
+    "year": 2025,
+    "cited_by_count": 6,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "transformer-2017",
+   "work": {
+    "id": "W7124707810",
+    "doi": "https://doi.org/10.5281/zenodo.18289746",
+    "title": "Attention is all you need",
+    "year": 2026,
+    "cited_by_count": 0,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "lama-2019",
+   "work": {
+    "id": "W3146844750",
+    "doi": "https://doi.org/10.18653/v1/2021.eacl-main.153",
+    "title": "Language Models as Knowledge Bases: On Entity Representations, Storage Capacity, and Paraphrased Queries",
+    "year": 2021,
+    "cited_by_count": 79,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "lama-2019",
+   "work": {
+    "id": "W4387356107",
+    "doi": "https://doi.org/10.48550/arxiv.2310.01960",
+    "title": "Language Models as Knowledge Bases for Visual Word Sense Disambiguation",
+    "year": 2023,
+    "cited_by_count": 2,
+    "arxiv_like": true
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "kepler-2019",
+   "work": {
+    "id": "W3151929433",
+    "doi": "https://doi.org/10.1162/tacl_a_00360",
+    "title": "KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation",
+    "year": 2021,
+    "cited_by_count": 634,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "hogan-kg-2021",
+   "work": {
+    "id": "W4285194159",
+    "doi": "https://doi.org/10.1007/978-3-031-01918-0",
+    "title": "Knowledge Graphs",
+    "year": 2022,
+    "cited_by_count": 118,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "hogan-kg-2021",
+   "work": {
+    "id": "W4362579589",
+    "doi": "https://doi.org/10.1007/s10462-023-10465-9",
+    "title": "Knowledge Graphs: Opportunities and Challenges",
+    "year": 2023,
+    "cited_by_count": 692,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "gpt3-2020",
+   "work": {
+    "id": "W7165154520",
+    "doi": "https://doi.org/10.65525/svup.9788199778009.2026.224-230",
+    "title": "Language Models are Few-Shot Learners",
+    "year": 2026,
+    "cited_by_count": 2,
+    "arxiv_like": false
+   },
+   "reason": "title ok, year off by >1"
+  },
+  {
+   "event": "gpt3-2020",
+   "work": {
+    "id": "W4322716276",
+    "doi": "https://doi.org/10.48550/arxiv.2302.12692",
+    "title": "Language Models are Few-shot Learners for Prognostic Prediction",
+    "year": 2023,
+    "cited_by_count": 9,
+    "arxiv_like": true
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "flare-2023",
+   "work": {
+    "id": "W7152435185",
+    "doi": "https://doi.org/10.1145/3774904.3792926",
+    "title": "Active Retrieval-Augmented Generation with Conflict-Fused Uncertainty Quantification",
+    "year": 2026,
+    "cited_by_count": 1,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  },
+  {
+   "event": "crag-2024",
+   "work": {
+    "id": "W7204987016",
+    "doi": "https://doi.org/10.21203/rs.3.rs-10574280/v1",
+    "title": "Corrective Retrieval-Augmented Generation Adaptation in Closed Domains for Development of Intelligent Human Resource Management Systems",
+    "year": 2026,
+    "cited_by_count": 0,
+    "arxiv_like": false
+   },
+   "reason": "near title only"
+  }
+ ],
+ "events": {
+  "luhn-1957": {
+   "title": "A statistical approach to mechanized encoding and searching of literary information",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1191,
+    "paperId": "076077a5771747ad7355120f1ba64cfd603141c6",
+    "id": "DOI:10.1147/rd.14.0309",
+    "title": "A Statistical Approach to Mechanized Encoding and Searching of Literary Information",
+    "year": 1957,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1104,
+    "arxiv_count": null,
+    "published_count": 1104,
+    "version": "published",
+    "works": [
+     {
+      "id": "W1985697096",
+      "doi": "https://doi.org/10.1147/rd.14.0309",
+      "title": "A Statistical Approach to Mechanized Encoding and Searching of Literary Information",
+      "year": 1957,
+      "cited_by_count": 1104,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1191,
+   "used_source": "s2"
+  },
+  "baseball-1961": {
+   "title": "BASEBALL: an automatic question-answerer",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 386,
+    "arxiv_count": null,
+    "published_count": 386,
+    "version": "published",
+    "works": [
+     {
+      "id": "W1979263599",
+      "doi": "https://doi.org/10.1145/1460690.1460714",
+      "title": "Baseball",
+      "year": 1961,
+      "cited_by_count": 386,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 386,
+   "used_source": "openalex"
+  },
+  "sparck-jones-idf-1972": {
+   "title": "A statistical interpretation of term specificity and its application in retrieval",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 4572,
+    "arxiv_count": null,
+    "published_count": 4572,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2144211451",
+      "doi": "https://doi.org/10.1108/eb026526",
+      "title": "A STATISTICAL INTERPRETATION OF TERM SPECIFICITY AND ITS APPLICATION IN RETRIEVAL",
+      "year": 1972,
+      "cited_by_count": 4572,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 4572,
+   "used_source": "openalex"
+  },
+  "salton-vsm-1975": {
+   "title": "A vector space model for automatic indexing",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 8454,
+    "paperId": "d5f169880e30e1f76827d72f862555d00b01bed9",
+    "id": "DOI:10.1145/361219.361220",
+    "title": "A vector space model for automatic indexing",
+    "year": 1975,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 7560,
+    "arxiv_count": null,
+    "published_count": 7560,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2165612380",
+      "doi": "https://doi.org/10.1145/361219.361220",
+      "title": "A vector space model for automatic indexing",
+      "year": 1975,
+      "cited_by_count": 7560,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 8454,
+   "used_source": "s2"
+  },
+  "robertson-sj-1976": {
+   "title": "Relevance weighting of search terms",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2522,
+    "paperId": "f6e3e57567e9803718623ec088cd7fea65cfbc9d",
+    "id": "DOI:10.1002/asi.4630270302",
+    "title": "Relevance weighting of search terms",
+    "year": 1976,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2094,
+    "arxiv_count": null,
+    "published_count": 2094,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2043909051",
+      "doi": "https://doi.org/10.1002/asi.4630270302",
+      "title": "Relevance weighting of search terms",
+      "year": 1976,
+      "cited_by_count": 2094,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2522,
+   "used_source": "s2"
+  },
+  "lsa-1990": {
+   "title": "Indexing by latent semantic analysis",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 12898,
+    "arxiv_count": null,
+    "published_count": 12898,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2147152072",
+      "doi": "https://doi.org/10.1002/(sici)1097-4571(199009)41:6<391::aid-asi1>3.0.co;2-9",
+      "title": "Indexing by latent semantic analysis",
+      "year": 1990,
+      "cited_by_count": 12898,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 12898,
+   "used_source": "openalex"
+  },
+  "gruber-1993": {
+   "title": "A translation approach to portable ontology specifications",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 14321,
+    "paperId": "5120f65919f77859a974fcc1ad08f72b2918b8ec",
+    "id": "DOI:10.1006/knac.1993.1008",
+    "title": "A translation approach to portable ontology specifications",
+    "year": 1993,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 12803,
+    "arxiv_count": null,
+    "published_count": 12803,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2137079713",
+      "doi": "https://doi.org/10.1006/knac.1993.1008",
+      "title": "A translation approach to portable ontology specifications",
+      "year": 1993,
+      "cited_by_count": 12803,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 14321,
+   "used_source": "s2"
+  },
+  "bm25-1994": {
+   "title": "Okapi at TREC-3",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 381,
+    "arxiv_count": null,
+    "published_count": 381,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2887107689",
+      "doi": "https://doi.org/10.6028/nist.sp.500-225",
+      "title": "Overview of the third text Retrieval conference (TREC-3)",
+      "year": 1995,
+      "cited_by_count": 381,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "proceedings_doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 381,
+   "used_source": "openalex"
+  },
+  "cyc-1995": {
+   "title": "CYC: a large-scale investment in knowledge infrastructure",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2431,
+    "paperId": "b1e7bf85c7caf1306fa27802218a8e2cdc8f4268",
+    "id": "DOI:10.1145/219717.219745",
+    "title": "CYC: a large-scale investment in knowledge infrastructure",
+    "year": 1995,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1966,
+    "arxiv_count": null,
+    "published_count": 1966,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2107658650",
+      "doi": "https://doi.org/10.1145/219717.219745",
+      "title": "CYC",
+      "year": 1995,
+      "cited_by_count": 1966,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2431,
+   "used_source": "s2"
+  },
+  "wordnet-1995": {
+   "title": "WordNet: a lexical database for English",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 17781,
+    "paperId": "68c03788224000794d5491ab459be0b2a2c38677",
+    "id": "DOI:10.1145/219717.219748",
+    "title": "WordNet: A Lexical Database for English",
+    "year": 1995,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 14304,
+    "arxiv_count": null,
+    "published_count": 14304,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2081580037",
+      "doi": "https://doi.org/10.1145/219717.219748",
+      "title": "WordNet",
+      "year": 1995,
+      "cited_by_count": 14304,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 17781,
+   "used_source": "s2"
+  },
+  "semweb-2001": {
+   "title": "The Semantic Web",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1856,
+    "paperId": "3e713c24b17e960b5b6667ab046edfc614614832",
+    "id": "DOI:10.1038/scientificamerican0501-34",
+    "title": "The Semantic Web: A new form of Web content that is meaningful to computers will unleash a revolutio",
+    "year": 2001,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 8685,
+    "arxiv_count": null,
+    "published_count": 8685,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4239696231",
+      "doi": "https://doi.org/10.1038/scientificamerican0501-34",
+      "title": "The Semantic Web",
+      "year": 2001,
+      "cited_by_count": 8685,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1856,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex counts more than 3x Semantic Scholar for this paper"
+  },
+  "askmsr-2002": {
+   "title": "An analysis of the AskMSR question-answering system",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 315,
+    "arxiv_count": null,
+    "published_count": 315,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2115758952",
+      "doi": "https://doi.org/10.3115/1118693.1118726",
+      "title": "An analysis of the AskMSR question-answering system",
+      "year": 2002,
+      "cited_by_count": 315,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 315,
+   "used_source": "openalex"
+  },
+  "yago-2007": {
+   "title": "YAGO: a core of semantic knowledge",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 4755,
+    "paperId": "697357d0c554840685247b320377ecfe943016d3",
+    "id": "DOI:10.1145/1242572.1242667",
+    "title": "YAGO: A Core of Semantic Knowledge Unifying WordNet and Wikipedia",
+    "year": 2007,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 3987,
+    "arxiv_count": null,
+    "published_count": 3987,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2022166150",
+      "doi": "https://doi.org/10.1145/1242572.1242667",
+      "title": "Yago",
+      "year": 2007,
+      "cited_by_count": 3987,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 4755,
+   "used_source": "s2"
+  },
+  "dbpedia-2007": {
+   "title": "DBpedia: A Nucleus for a Web of Open Data",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 5796,
+    "paperId": "2b2c30dfd3968c5d9418bb2c14b2382d3ccc64b2",
+    "id": "DOI:10.1007/978-3-540-76298-0_52",
+    "title": "DBpedia: A Nucleus for a Web of Open Data",
+    "year": 2007,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 4822,
+    "arxiv_count": null,
+    "published_count": 4822,
+    "version": "published",
+    "works": [
+     {
+      "id": "W102708294",
+      "doi": "https://doi.org/10.1007/978-3-540-76298-0_52",
+      "title": "DBpedia: A Nucleus for a Web of Open Data",
+      "year": 2007,
+      "cited_by_count": 4822,
+      "arxiv_like": false
+     },
+     {
+      "id": "W3215086795",
+      "doi": null,
+      "title": "DBpedia: A Nucleus for a Web of Open Data",
+      "year": 2007,
+      "cited_by_count": 0,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 5796,
+   "used_source": "s2"
+  },
+  "freebase-2008": {
+   "title": "Freebase: a collaboratively created graph database for structuring human knowledge",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 5976,
+    "paperId": "1976c9eeccc7115d18a04f1e7fb5145db6b96002",
+    "id": "DOI:10.1145/1376616.1376746",
+    "title": "Freebase: a collaboratively created graph database for structuring human knowledge",
+    "year": 2008,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 5054,
+    "arxiv_count": null,
+    "published_count": 5054,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2094728533",
+      "doi": "https://doi.org/10.1145/1376616.1376746",
+      "title": "Freebase",
+      "year": 2008,
+      "cited_by_count": 5054,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 5976,
+   "used_source": "s2"
+  },
+  "bm25-survey-2009": {
+   "title": "The Probabilistic Relevance Framework: BM25 and Beyond",
+   "era": "Roots",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 6471,
+    "paperId": "47ced790a563344efae66588b5fb7fe6cca29ed3",
+    "id": "DOI:10.1561/1500000019",
+    "title": "The Probabilistic Relevance Framework: BM25 and Beyond",
+    "year": 2009,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 3236,
+    "arxiv_count": null,
+    "published_count": 3236,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4252076394",
+      "doi": "https://doi.org/10.1561/1500000019",
+      "title": "The Probabilistic Relevance Framework: BM25 and Beyond",
+      "year": 2009,
+      "cited_by_count": 3236,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 6471,
+   "used_source": "s2"
+  },
+  "watson-2010": {
+   "title": "Building Watson: An overview of the DeepQA project",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1599,
+    "paperId": "3ff2862a8121cc823a8eb72f3e0a97bbf25c82ec",
+    "id": "DOI:10.1609/aimag.v31i3.2303",
+    "title": "Building Watson: An Overview of the DeepQA Project",
+    "year": 2010,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1526,
+    "arxiv_count": null,
+    "published_count": 1526,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2171278097",
+      "doi": "https://doi.org/10.1609/aimag.v31i3.2303",
+      "title": "Building Watson: An Overview of the DeepQA Project",
+      "year": 2010,
+      "cited_by_count": 1526,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1599,
+   "used_source": "s2"
+  },
+  "nell-2010": {
+   "title": "Toward an Architecture for Never-Ending Language Learning",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2270,
+    "paperId": "ddf0f2226cc837750eb1eb57c43d8192ef0fc2b3",
+    "id": "DOI:10.1609/aaai.v24i1.7519",
+    "title": "Toward an Architecture for Never-Ending Language Learning",
+    "year": 2010,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2005,
+    "arxiv_count": null,
+    "published_count": 2005,
+    "version": "published",
+    "works": [
+     {
+      "id": "W1512387364",
+      "doi": "https://doi.org/10.1609/aaai.v24i1.7519",
+      "title": "Toward an Architecture for Never-Ending Language Learning",
+      "year": 2010,
+      "cited_by_count": 2005,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2270,
+   "used_source": "s2"
+  },
+  "w2v-2013": {
+   "title": "Efficient Estimation of Word Representations in Vector Space (word2vec)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 35211,
+    "paperId": "f6b51c8753a871dc94ff32152c00c01e94f90f09",
+    "id": "ARXIV:1301.3781",
+    "title": "Efficient Estimation of Word Representations in Vector Space",
+    "year": 2013,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 25829,
+    "arxiv_count": 25829,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W1614298861",
+      "doi": "https://doi.org/10.48550/arxiv.1301.3781",
+      "title": "Efficient Estimation of Word Representations in Vector Space",
+      "year": 2013,
+      "cited_by_count": 25829,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 35211,
+   "used_source": "s2"
+  },
+  "dssm-2013": {
+   "title": "Learning deep structured semantic models for web search using clickthrough data",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2322,
+    "paperId": "fdb813d8b927bdd21ae1858cafa6c34b66a36268",
+    "id": "DOI:10.1145/2505515.2505665",
+    "title": "Learning deep structured semantic models for web search using clickthrough data",
+    "year": 2013,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2109,
+    "arxiv_count": null,
+    "published_count": 2109,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2136189984",
+      "doi": "https://doi.org/10.1145/2505515.2505665",
+      "title": "Learning deep structured semantic models for web search using clickthrough data",
+      "year": 2013,
+      "cited_by_count": 2109,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2322,
+   "used_source": "s2"
+  },
+  "webq-2013": {
+   "title": "Semantic Parsing on Freebase from Question-Answer Pairs",
+   "era": "Roots",
+   "kind": "dataset",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 1615,
+    "arxiv_count": null,
+    "published_count": 1615,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2252136820",
+      "doi": "https://doi.org/10.18653/v1/d13-1160",
+      "title": "Semantic Parsing on Freebase from Question-Answer Pairs",
+      "year": 2013,
+      "cited_by_count": 1615,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1615,
+   "used_source": "openalex"
+  },
+  "transe-2013": {
+   "title": "Translating Embeddings for Modeling Multi-relational Data",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 5124,
+    "arxiv_count": null,
+    "published_count": 5124,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2127795553",
+      "doi": null,
+      "title": "Translating Embeddings for Modeling Multi-relational Data",
+      "year": 2013,
+      "cited_by_count": 5124,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 5124,
+   "used_source": "openalex"
+  },
+  "wikidata-2014": {
+   "title": "Wikidata: a free collaborative knowledgebase",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2839,
+    "paperId": "dab7e605237ad4f4fe56dcba2861b8f0a57112be",
+    "id": "DOI:10.1145/2629489",
+    "title": "Wikidata",
+    "year": 2014,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 3438,
+    "arxiv_count": null,
+    "published_count": 3438,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2080133951",
+      "doi": "https://doi.org/10.1145/2629489",
+      "title": "Wikidata",
+      "year": 2014,
+      "cited_by_count": 3438,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2839,
+   "used_source": "s2"
+  },
+  "memnet-2014": {
+   "title": "Memory Networks",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1906,
+    "paperId": "71ae756c75ac89e2d731c9c79649562b5768ff39",
+    "id": "ARXIV:1410.3916",
+    "title": "Memory Networks",
+    "year": 2014,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 16,
+    "arxiv_count": 16,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4394655428",
+      "doi": "https://doi.org/10.48550/arxiv.1410.3916",
+      "title": "Memory Networks",
+      "year": 2014,
+      "cited_by_count": 16,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1906,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "e2e-memnet-2015": {
+   "title": "End-To-End Memory Networks",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": null,
+   "openalex": {
+    "count": 665,
+    "arxiv_count": 665,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W1793121960",
+      "doi": "https://doi.org/10.48550/arxiv.1503.08895",
+      "title": "End-To-End Memory Networks",
+      "year": 2015,
+      "cited_by_count": 665,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 665,
+   "used_source": "openalex"
+  },
+  "squad-2016": {
+   "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+   "era": "Roots",
+   "kind": "dataset",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 9871,
+    "paperId": "05dd7254b632376973f3a1b4d39485da17814df5",
+    "id": "ARXIV:1606.05250",
+    "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+    "year": 2016,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 806,
+    "arxiv_count": 806,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W2427527485",
+      "doi": "https://doi.org/10.48550/arxiv.1606.05250",
+      "title": "SQuAD: 100,000+ Questions for Machine Comprehension of Text",
+      "year": 2016,
+      "cited_by_count": 806,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 9871,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "msmarco-2016": {
+   "title": "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset",
+   "era": "Roots",
+   "kind": "dataset",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 3682,
+    "paperId": "dd95f96e3322dcaee9b1e3f7871ecc3ebcd51bfe",
+    "id": "ARXIV:1611.09268",
+    "title": "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset",
+    "year": 2016,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 439,
+    "arxiv_count": null,
+    "published_count": 439,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2558203065",
+      "doi": null,
+      "title": "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset.",
+      "year": 2016,
+      "cited_by_count": 439,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 3682,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "drqa-2017": {
+   "title": "Reading Wikipedia to Answer Open-Domain Questions (DrQA)",
+   "era": "Roots",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2266,
+    "paperId": "104715e1097b7ebee436058bfd9f45540f269845",
+    "id": "ARXIV:1704.00051",
+    "title": "Reading Wikipedia to Answer Open-Domain Questions",
+    "year": 2017,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1464,
+    "arxiv_count": 88,
+    "published_count": 1464,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2604368306",
+      "doi": "https://doi.org/10.48550/arxiv.1704.00051",
+      "title": "Reading Wikipedia to Answer Open-Domain Questions",
+      "year": 2017,
+      "cited_by_count": 88,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2962985038",
+      "doi": "https://doi.org/10.18653/v1/p17-1171",
+      "title": "Reading Wikipedia to Answer Open-Domain Questions",
+      "year": 2017,
+      "cited_by_count": 1464,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2266,
+   "used_source": "s2"
+  },
+  "triviaqa-2017": {
+   "title": "TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension",
+   "era": "Roots",
+   "kind": "dataset",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 4382,
+    "paperId": "f010affab57b5fcf1cd6be23df79d8ec98c7289c",
+    "id": "ARXIV:1705.03551",
+    "title": "TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension",
+    "year": 2017,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1701,
+    "arxiv_count": null,
+    "published_count": 1701,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2612431505",
+      "doi": "https://doi.org/10.18653/v1/p17-1147",
+      "title": "TriviaQA: A Large Scale Distantly Supervised Challenge Dataset for Reading Comprehension",
+      "year": 2017,
+      "cited_by_count": 1701,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 4382,
+   "used_source": "s2"
+  },
+  "transformer-2017": {
+   "title": "Attention Is All You Need",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 195656,
+    "paperId": "204e3073870fae3d05bcbc2f6a8e263d9b72e776",
+    "id": "ARXIV:1706.03762",
+    "title": "Attention is All you Need",
+    "year": 2017,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": null,
+   "used": 195656,
+   "used_source": "s2"
+  },
+  "retrieve-refine-2018": {
+   "title": "Retrieve and Refine: Improved Sequence Generation Models For Dialogue",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 211,
+    "paperId": "e941e9a078a1fdbaba1d72af19a0b9800c6625d8",
+    "id": "ARXIV:1808.04776",
+    "title": "Retrieve and Refine: Improved Sequence Generation Models For Dialogue",
+    "year": 2018,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 174,
+    "arxiv_count": 17,
+    "published_count": 174,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2950179609",
+      "doi": "https://doi.org/10.48550/arxiv.1808.04776",
+      "title": "Retrieve and Refine: Improved Sequence Generation Models For Dialogue",
+      "year": 2018,
+      "cited_by_count": 17,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2885421725",
+      "doi": "https://doi.org/10.18653/v1/w18-5713",
+      "title": "Retrieve and Refine: Improved Sequence Generation Models For Dialogue",
+      "year": 2018,
+      "cited_by_count": 174,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 211,
+   "used_source": "s2"
+  },
+  "graftnet-2018": {
+   "title": "Open Domain Question Answering Using Early Fusion of Knowledge Bases and Text (GRAFT-Net)",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 540,
+    "paperId": "8d17543c20f23b6a40bec9334d50e9c15a08c1c4",
+    "id": "ARXIV:1809.00782",
+    "title": "Open Domain Question Answering Using Early Fusion of Knowledge Bases and Text",
+    "year": 2018,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 469,
+    "arxiv_count": 11,
+    "published_count": 469,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2953105367",
+      "doi": "https://doi.org/10.48550/arxiv.1809.00782",
+      "title": "Open Domain Question Answering Using Early Fusion of Knowledge Bases and Text",
+      "year": 2018,
+      "cited_by_count": 11,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2890961898",
+      "doi": "https://doi.org/10.18653/v1/d18-1455",
+      "title": "Open Domain Question Answering Using Early Fusion of Knowledge Bases and Text",
+      "year": 2018,
+      "cited_by_count": 469,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 540,
+   "used_source": "s2"
+  },
+  "bert-2018": {
+   "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 122184,
+    "paperId": "df2b0e26d0599ce3e70df8a9da02e51594e0e992",
+    "id": "ARXIV:1810.04805",
+    "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 34045,
+    "arxiv_count": null,
+    "published_count": 34045,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2963341956",
+      "doi": "https://doi.org/10.18653/v1/n19-1423",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+      "year": 2019,
+      "cited_by_count": 34045,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 122184,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "nq-2019": {
+   "title": "Natural Questions: A Benchmark for Question Answering Research",
+   "era": "Roots",
+   "kind": "dataset",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 5284,
+    "paperId": "17dbd7b72029181327732e4d11b52a08ed4630d0",
+    "id": "DOI:10.1162/tacl_a_00276",
+    "title": "Natural Questions: A Benchmark for Question Answering Research",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2119,
+    "arxiv_count": null,
+    "published_count": 2119,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2912924812",
+      "doi": "https://doi.org/10.1162/tacl_a_00276",
+      "title": "Natural Questions: A Benchmark for Question Answering Research",
+      "year": 2019,
+      "cited_by_count": 2119,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 5284,
+   "used_source": "s2"
+  },
+  "ernie-baidu-2019": {
+   "title": "ERNIE: Enhanced Representation through Knowledge Integration",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1045,
+    "paperId": "031e4e43aaffd7a479738dcea69a2d5be7957aa3",
+    "id": "ARXIV:1904.09223",
+    "title": "ERNIE: Enhanced Representation through Knowledge Integration",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 764,
+    "arxiv_count": 764,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W2938830017",
+      "doi": "https://doi.org/10.48550/arxiv.1904.09223",
+      "title": "ERNIE: Enhanced Representation through Knowledge Integration",
+      "year": 2019,
+      "cited_by_count": 764,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1045,
+   "used_source": "s2"
+  },
+  "ernie-thu-2019": {
+   "title": "ERNIE: Enhanced Language Representation with Informative Entities",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1600,
+    "paperId": "5f994dc8cae24ca9d1ed629e517fcc652660ddde",
+    "id": "ARXIV:1905.07129",
+    "title": "ERNIE: Enhanced Language Representation with Informative Entities",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1446,
+    "arxiv_count": 136,
+    "published_count": 1446,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2946345909",
+      "doi": "https://doi.org/10.48550/arxiv.1905.07129",
+      "title": "ERNIE: Enhanced Language Representation with Informative Entities",
+      "year": 2019,
+      "cited_by_count": 136,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2953356739",
+      "doi": "https://doi.org/10.18653/v1/p19-1139",
+      "title": "ERNIE: Enhanced Language Representation with Informative Entities",
+      "year": 2019,
+      "cited_by_count": 1446,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1600,
+   "used_source": "s2"
+  },
+  "kglm-2019": {
+   "title": "Barack's Wife Hillary: Using Knowledge-Graphs for Fact-Aware Language Modeling",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 203,
+    "paperId": "96901acc92d68350443774596fa2b38bc522a0ce",
+    "id": "ARXIV:1906.07241",
+    "title": "Barack’s Wife Hillary: Using Knowledge Graphs for Fact-Aware Language Modeling",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 0,
+    "arxiv_count": 0,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W2952922300",
+      "doi": "https://doi.org/10.48550/arxiv.1906.07241",
+      "title": "Barack's Wife Hillary: Using Knowledge-Graphs for Fact-Aware Language Modeling",
+      "year": 2019,
+      "cited_by_count": 0,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 203,
+   "used_source": "s2"
+  },
+  "orqa-2019": {
+   "title": "Latent Retrieval for Weakly Supervised Open Domain Question Answering (ORQA)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1209,
+    "paperId": "a81874b4a651a740fffbfc47ef96515e8c7f782f",
+    "id": "ARXIV:1906.00300",
+    "title": "Latent Retrieval for Weakly Supervised Open Domain Question Answering",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 786,
+    "arxiv_count": null,
+    "published_count": 786,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2947497897",
+      "doi": "https://doi.org/10.18653/v1/p19-1612",
+      "title": "Latent Retrieval for Weakly Supervised Open Domain Question Answering",
+      "year": 2019,
+      "cited_by_count": 786,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1209,
+   "used_source": "s2"
+  },
+  "kagnet-2019": {
+   "title": "KagNet: Knowledge-Aware Graph Networks for Commonsense Reasoning",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 535,
+    "paperId": "710d183174844da5b7f392667f3cc25d2b098dde",
+    "id": "ARXIV:1909.02151",
+    "title": "KagNet: Knowledge-Aware Graph Networks for Commonsense Reasoning",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 483,
+    "arxiv_count": 32,
+    "published_count": 483,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2971986145",
+      "doi": "https://doi.org/10.48550/arxiv.1909.02151",
+      "title": "KagNet: Knowledge-Aware Graph Networks for Commonsense Reasoning",
+      "year": 2019,
+      "cited_by_count": 32,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2983995706",
+      "doi": "https://doi.org/10.18653/v1/d19-1282",
+      "title": "KagNet: Knowledge-Aware Graph Networks for Commonsense Reasoning",
+      "year": 2019,
+      "cited_by_count": 483,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 535,
+   "used_source": "s2"
+  },
+  "kbert-2019": {
+   "title": "K-BERT: Enabling Language Representation with Knowledge Graph",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 960,
+    "paperId": "06a73ad09664435f8b3cd90293f4e05a047cf375",
+    "id": "ARXIV:1909.07606",
+    "title": "K-BERT: Enabling Language Representation with Knowledge Graph",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 797,
+    "arxiv_count": 84,
+    "published_count": 797,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2973840669",
+      "doi": "https://doi.org/10.48550/arxiv.1909.07606",
+      "title": "K-BERT: Enabling Language Representation with Knowledge Graph",
+      "year": 2019,
+      "cited_by_count": 84,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2998385486",
+      "doi": "https://doi.org/10.1609/aaai.v34i03.5681",
+      "title": "K-BERT: Enabling Language Representation with Knowledge Graph",
+      "year": 2020,
+      "cited_by_count": 797,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 960,
+   "used_source": "s2"
+  },
+  "knowbert-2019": {
+   "title": "Knowledge Enhanced Contextual Word Representations (KnowBERT)",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 744,
+    "paperId": "bfeb827d06c1a3583b5cc6d25241203a81f6af09",
+    "id": "ARXIV:1909.04164",
+    "title": "Knowledge Enhanced Contextual Word Representations",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 692,
+    "arxiv_count": 12,
+    "published_count": 692,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2972969579",
+      "doi": "https://doi.org/10.48550/arxiv.1909.04164",
+      "title": "Knowledge Enhanced Contextual Word Representations",
+      "year": 2019,
+      "cited_by_count": 12,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2970986510",
+      "doi": "https://doi.org/10.18653/v1/d19-1005",
+      "title": "Knowledge Enhanced Contextual Word Representations",
+      "year": 2019,
+      "cited_by_count": 692,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 744,
+   "used_source": "s2"
+  },
+  "lama-2019": {
+   "title": "Language Models as Knowledge Bases?",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 3343,
+    "paperId": "d0086b86103a620a86bc918746df0aa642e2a8a3",
+    "id": "ARXIV:1909.01066",
+    "title": "Language Models as Knowledge Bases?",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1816,
+    "arxiv_count": 108,
+    "published_count": 1816,
+    "version": "published",
+    "works": [
+     {
+      "id": "W2971869958",
+      "doi": "https://doi.org/10.48550/arxiv.1909.01066",
+      "title": "Language Models as Knowledge Bases?",
+      "year": 2019,
+      "cited_by_count": 108,
+      "arxiv_like": true
+     },
+     {
+      "id": "W2970476646",
+      "doi": "https://doi.org/10.18653/v1/d19-1250",
+      "title": "Language Models as Knowledge Bases?",
+      "year": 2019,
+      "cited_by_count": 1816,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 3343,
+   "used_source": "s2"
+  },
+  "kepler-2019": {
+   "title": "KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 881,
+    "paperId": "56cafbac34f2bb3f6a9828cd228ff281b810d6bb",
+    "id": "ARXIV:1911.06136",
+    "title": "KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 80,
+    "arxiv_count": 80,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W2983102021",
+      "doi": "https://doi.org/10.48550/arxiv.1911.06136",
+      "title": "KEPLER: A Unified Model for Knowledge Embedding and Pre-trained Language Representation",
+      "year": 2019,
+      "cited_by_count": 80,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 881,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "knnlm-2019": {
+   "title": "Generalization through Memorization: Nearest Neighbor Language Models (kNN-LM)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1163,
+    "paperId": "7be8c119dbe065c52125ee7716601751f3116844",
+    "id": "ARXIV:1911.00172",
+    "title": "Generalization through Memorization: Nearest Neighbor Language Models",
+    "year": 2019,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 53,
+    "arxiv_count": 53,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W2988841832",
+      "doi": "https://doi.org/10.48550/arxiv.1911.00172",
+      "title": "Generalization through Memorization: Nearest Neighbor Language Models",
+      "year": 2019,
+      "cited_by_count": 53,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1163,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "realm-2020": {
+   "title": "REALM: Retrieval-Augmented Language Model Pre-Training",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 3484,
+    "paperId": "832fff14d2ed50eb7969c4c4b976c35776548f56",
+    "id": "ARXIV:2002.08909",
+    "title": "REALM: Retrieval-Augmented Language Model Pre-Training",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 514,
+    "arxiv_count": 514,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W3007672467",
+      "doi": "https://doi.org/10.48550/arxiv.2002.08909",
+      "title": "REALM: Retrieval-Augmented Language Model Pre-Training",
+      "year": 2020,
+      "cited_by_count": 514,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 3484,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "hogan-kg-2021": {
+   "title": "Knowledge Graphs",
+   "era": "Roots",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2938,
+    "paperId": "4f00435f66a3dee7d5965fe8696c56f67021f1cc",
+    "id": "ARXIV:2003.02320",
+    "title": "Knowledge Graphs",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1879,
+    "arxiv_count": null,
+    "published_count": 1879,
+    "version": "published",
+    "works": [
+     {
+      "id": "W3010336026",
+      "doi": "https://doi.org/10.1145/3447772",
+      "title": "Knowledge Graphs",
+      "year": 2021,
+      "cited_by_count": 1879,
+      "arxiv_like": false
+     },
+     {
+      "id": "W4252064021",
+      "doi": "https://doi.org/10.1007/978-3-030-37439-6",
+      "title": "Knowledge Graphs",
+      "year": 2020,
+      "cited_by_count": 200,
+      "arxiv_like": false
+     },
+     {
+      "id": "W3164656968",
+      "doi": "https://doi.org/10.1145/3418294",
+      "title": "Knowledge graphs",
+      "year": 2021,
+      "cited_by_count": 172,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "doi",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2938,
+   "used_source": "s2"
+  },
+  "colbert-2020": {
+   "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2616,
+    "paperId": "60b8ad6177230ad5402af409a6edb5af441baeb4",
+    "id": "ARXIV:2004.12832",
+    "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 190,
+    "arxiv_count": 190,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W3034439313",
+      "doi": "https://doi.org/10.48550/arxiv.2004.12832",
+      "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
+      "year": 2020,
+      "cited_by_count": 190,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2616,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "dpr-2020": {
+   "title": "Dense Passage Retrieval for Open-Domain Question Answering (DPR)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 7224,
+    "paperId": "b26f2037f769d5ffc5f7bdcec2de8da28ec14bee",
+    "id": "ARXIV:2004.04906",
+    "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 3399,
+    "arxiv_count": null,
+    "published_count": 3399,
+    "version": "published",
+    "works": [
+     {
+      "id": "W3015883388",
+      "doi": "https://doi.org/10.18653/v1/2020.emnlp-main.550",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "year": 2020,
+      "cited_by_count": 3399,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 7224,
+   "used_source": "s2"
+  },
+  "gpt3-2020": {
+   "title": "Language Models are Few-Shot Learners (GPT-3)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 64323,
+    "paperId": "90abbc2cf38462b954ae1b772fac9532e2ccd8b0",
+    "id": "ARXIV:2005.14165",
+    "title": "Language Models are Few-Shot Learners",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2963,
+    "arxiv_count": 2963,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W3030163527",
+      "doi": "https://doi.org/10.48550/arxiv.2005.14165",
+      "title": "Language Models are Few-Shot Learners",
+      "year": 2020,
+      "cited_by_count": 2963,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 64323,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "rag-2020": {
+   "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 19210,
+    "paperId": "659bf9ce7175e1ec266ff54359e2bd76e0b7ff31",
+    "id": "ARXIV:2005.11401",
+    "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 3076,
+    "arxiv_count": 3076,
+    "published_count": 18,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W3027879771",
+      "doi": "https://doi.org/10.48550/arxiv.2005.11401",
+      "title": "Affordance-Compiled Intelligence: Observable-Only Cognitive Impedance Matching for No-Meta LLM-Integrated Systems",
+      "year": 2020,
+      "cited_by_count": 3076,
+      "arxiv_like": true
+     },
+     {
+      "id": "W3098425262",
+      "doi": null,
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks",
+      "year": 2020,
+      "cited_by_count": 18,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 19210,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "fid-2020": {
+   "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering (FiD)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2135,
+    "paperId": "ea8c46e193d5121e440daf96edfd15a47151c293",
+    "id": "ARXIV:2007.01282",
+    "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+    "year": 2020,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1025,
+    "arxiv_count": null,
+    "published_count": 1025,
+    "version": "published",
+    "works": [
+     {
+      "id": "W3039017601",
+      "doi": "https://doi.org/10.18653/v1/2021.eacl-main.74",
+      "title": "Leveraging Passage Retrieval with Generative Models for Open Domain Question Answering",
+      "year": 2021,
+      "cited_by_count": 1025,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2135,
+   "used_source": "s2"
+  },
+  "beir-2021": {
+   "title": "BEIR: A Heterogeneous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+   "era": "Neural retrieval",
+   "kind": "benchmark",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2115,
+    "paperId": "807600ef43073cd9c59d4208ee710e90cf14efa8",
+    "id": "ARXIV:2104.08663",
+    "title": "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+    "year": 2021,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 28,
+    "arxiv_count": 28,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W3153833878",
+      "doi": "https://doi.org/10.48550/arxiv.2104.08663",
+      "title": "BEIR: A Heterogenous Benchmark for Zero-shot Evaluation of Information Retrieval Models",
+      "year": 2021,
+      "cited_by_count": 28,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2115,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "qagnn-2021": {
+   "title": "QA-GNN: Reasoning with Language Models and Knowledge Graphs for Question Answering",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 910,
+    "paperId": "3950df97ea527009a32569cb7016bc3df1383dca",
+    "id": "ARXIV:2104.06378",
+    "title": "QA-GNN: Reasoning with Language Models and Knowledge Graphs for Question Answering",
+    "year": 2021,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 530,
+    "arxiv_count": 49,
+    "published_count": 530,
+    "version": "published",
+    "works": [
+     {
+      "id": "W3152801999",
+      "doi": "https://doi.org/10.48550/arxiv.2104.06378",
+      "title": "QA-GNN: Reasoning with Language Models and Knowledge Graphs for Question Answering",
+      "year": 2021,
+      "cited_by_count": 49,
+      "arxiv_like": true
+     },
+     {
+      "id": "W3172335055",
+      "doi": "https://doi.org/10.18653/v1/2021.naacl-main.45",
+      "title": "QA-GNN: Reasoning with Language Models and Knowledge Graphs for Question Answering",
+      "year": 2021,
+      "cited_by_count": 530,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 910,
+   "used_source": "s2"
+  },
+  "contriever-2021": {
+   "title": "Unsupervised Dense Information Retrieval with Contrastive Learning (Contriever)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1760,
+    "paperId": "4f4a409f701f7552d45c46a5b0fea69dca6f8e84",
+    "id": "ARXIV:2112.09118",
+    "title": "Unsupervised Dense Information Retrieval with Contrastive Learning",
+    "year": 2021,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 151,
+    "arxiv_count": 151,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4320813768",
+      "doi": "https://doi.org/10.48550/arxiv.2112.09118",
+      "title": "Unsupervised Dense Information Retrieval with Contrastive Learning",
+      "year": 2021,
+      "cited_by_count": 151,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1760,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "retro-2021": {
+   "title": "Improving language models by retrieving from trillions of tokens (RETRO)",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1957,
+    "paperId": "002c256d30d6be4b23d365a8de8ae0e67e4c9641",
+    "id": "ARXIV:2112.04426",
+    "title": "Improving language models by retrieving from trillions of tokens",
+    "year": 2021,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 299,
+    "arxiv_count": 299,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4226082499",
+      "doi": "https://doi.org/10.48550/arxiv.2112.04426",
+      "title": "Improving language models by retrieving from trillions of tokens",
+      "year": 2021,
+      "cited_by_count": 299,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1957,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "webgpt-2021": {
+   "title": "WebGPT: Browser-assisted question-answering with human feedback",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2117,
+    "paperId": "2f3efe44083af91cef562c1a3451eee2f8601d22",
+    "id": "ARXIV:2112.09332",
+    "title": "WebGPT: Browser-assisted question-answering with human feedback",
+    "year": 2021,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 33,
+    "arxiv_count": 33,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4226227340",
+      "doi": "https://doi.org/10.48550/arxiv.2112.09332",
+      "title": "WebGPT: Browser-assisted question-answering with human feedback",
+      "year": 2021,
+      "cited_by_count": 33,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 2117,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "greaselm-2022": {
+   "title": "GreaseLM: Graph REASoning Enhanced Language Models for Question Answering",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 318,
+    "paperId": "4ab41d9780f1d1ac34d39fa7e527e73652507fcc",
+    "id": "ARXIV:2201.08860",
+    "title": "GreaseLM: Graph REASoning Enhanced Language Models for Question Answering",
+    "year": 2022,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 47,
+    "arxiv_count": 47,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4226281578",
+      "doi": "https://doi.org/10.48550/arxiv.2201.08860",
+      "title": "GreaseLM: Graph REASoning Enhanced Language Models for Question Answering",
+      "year": 2022,
+      "cited_by_count": 47,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 318,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "atlas-2022": {
+   "title": "Atlas: Few-shot Learning with Retrieval Augmented Language Models",
+   "era": "Neural retrieval",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1424,
+    "paperId": "916be31cbf847faa65cad0549e153f0c25b9f424",
+    "id": "ARXIV:2208.03299",
+    "title": "Few-shot Learning with Retrieval Augmented Language Models",
+    "year": 2022,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 200,
+    "arxiv_count": 200,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4301243929",
+      "doi": "https://doi.org/10.48550/arxiv.2208.03299",
+      "title": "Atlas: Few-shot Learning with Retrieval Augmented Language Models",
+      "year": 2022,
+      "cited_by_count": 200,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1424,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "react-2022": {
+   "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 12201,
+    "paperId": "99832586d55f540f603637e458a292406a0ed75d",
+    "id": "ARXIV:2210.03629",
+    "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+    "year": 2022,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 587,
+    "arxiv_count": 587,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4304195432",
+      "doi": "https://doi.org/10.48550/arxiv.2210.03629",
+      "title": "Distributing Accountability, Not Capability: Phase Separation and the LLM Workflow Quadrant in Autonomous AI Agent Architectures",
+      "year": 2022,
+      "cited_by_count": 587,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 12201,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "hyde-2022": {
+   "title": "Precise Zero-Shot Dense Retrieval without Relevance Labels (HyDE)",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 968,
+    "paperId": "5c32c653735b43a0a8923ca65ac191bd4bf15311",
+    "id": "ARXIV:2212.10496",
+    "title": "Precise Zero-Shot Dense Retrieval without Relevance Labels",
+    "year": 2022,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 322,
+    "arxiv_count": 21,
+    "published_count": 322,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4312091824",
+      "doi": "https://doi.org/10.48550/arxiv.2212.10496",
+      "title": "Precise Zero-Shot Dense Retrieval without Relevance Labels",
+      "year": 2022,
+      "cited_by_count": 21,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4385565351",
+      "doi": "https://doi.org/10.18653/v1/2023.acl-long.99",
+      "title": "Precise Zero-Shot Dense Retrieval without Relevance Labels",
+      "year": 2023,
+      "cited_by_count": 322,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 968,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "ircot-2022": {
+   "title": "Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions (IRCoT)",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1384,
+    "paperId": "f208ea909fa7f54fea82def9a92fd81dfc758c39",
+    "id": "ARXIV:2212.10509",
+    "title": "Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions",
+    "year": 2022,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 303,
+    "arxiv_count": 18,
+    "published_count": 303,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4312091845",
+      "doi": "https://doi.org/10.48550/arxiv.2212.10509",
+      "title": "Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions",
+      "year": 2022,
+      "cited_by_count": 18,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4385571271",
+      "doi": "https://doi.org/10.18653/v1/2023.acl-long.557",
+      "title": "Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions",
+      "year": 2023,
+      "cited_by_count": 303,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1384,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "ic-ralm-2023": {
+   "title": "In-Context Retrieval-Augmented Language Models",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1159,
+    "paperId": "465471bb5bf1a945549d6291c2d23367966b4957",
+    "id": "ARXIV:2302.00083",
+    "title": "In-Context Retrieval-Augmented Language Models",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 417,
+    "arxiv_count": 12,
+    "published_count": 417,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4319048572",
+      "doi": "https://doi.org/10.48550/arxiv.2302.00083",
+      "title": "In-Context Retrieval-Augmented Language Models",
+      "year": 2023,
+      "cited_by_count": 12,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4388778348",
+      "doi": "https://doi.org/10.1162/tacl_a_00605",
+      "title": "In-Context Retrieval-Augmented Language Models",
+      "year": 2023,
+      "cited_by_count": 417,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1159,
+   "used_source": "s2"
+  },
+  "replug-2023": {
+   "title": "REPLUG: Retrieval-Augmented Black-Box Language Models",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1133,
+    "paperId": "07b14c24833400b79978b0a5f084803337e30a15",
+    "id": "ARXIV:2301.12652",
+    "title": "REPLUG: Retrieval-Augmented Black-Box Language Models",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 189,
+    "arxiv_count": 66,
+    "published_count": 189,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4318719006",
+      "doi": "https://doi.org/10.48550/arxiv.2301.12652",
+      "title": "REPLUG: Retrieval-Augmented Black-Box Language Models",
+      "year": 2023,
+      "cited_by_count": 66,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4401042773",
+      "doi": "https://doi.org/10.18653/v1/2024.naacl-long.463",
+      "title": "REPLUG: Retrieval-Augmented Black-Box Language Models",
+      "year": 2024,
+      "cited_by_count": 189,
+      "arxiv_like": false
+     },
+     {
+      "id": "W7202010475",
+      "doi": null,
+      "title": "REPLUG: Retrieval-Augmented Black-Box Language Models",
+      "year": 2024,
+      "cited_by_count": 0,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1133,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "toolformer-2023": {
+   "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 6000,
+    "paperId": "53d128ea815bcc0526856eb5a9c42cc977cb36a7",
+    "id": "ARXIV:2302.04761",
+    "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 543,
+    "arxiv_count": 404,
+    "published_count": 543,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4320165837",
+      "doi": "https://doi.org/10.48550/arxiv.2302.04761",
+      "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+      "year": 2023,
+      "cited_by_count": 404,
+      "arxiv_like": true
+     },
+     {
+      "id": "W7133214447",
+      "doi": "https://doi.org/10.52202/075280-2997",
+      "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
+      "year": 2023,
+      "cited_by_count": 543,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 6000,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "flare-2023": {
+   "title": "Active Retrieval Augmented Generation (FLARE)",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 895,
+    "paperId": "88884b8806262a4095036041e3567d450dba39f7",
+    "id": "ARXIV:2305.06983",
+    "title": "Active Retrieval Augmented Generation",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 459,
+    "arxiv_count": 18,
+    "published_count": 459,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4376312546",
+      "doi": "https://doi.org/10.48550/arxiv.2305.06983",
+      "title": "Active Retrieval Augmented Generation",
+      "year": 2023,
+      "cited_by_count": 18,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4389519118",
+      "doi": "https://doi.org/10.18653/v1/2023.emnlp-main.495",
+      "title": "Active Retrieval Augmented Generation",
+      "year": 2023,
+      "cited_by_count": 459,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 895,
+   "used_source": "s2"
+  },
+  "kgqa-baek-2023": {
+   "title": "Knowledge-Augmented Language Model Prompting for Zero-Shot Knowledge Graph Question Answering",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 198,
+    "paperId": "678cfca72b7de72b005f71207bc8a522ea9ac62c",
+    "id": "ARXIV:2306.04136",
+    "title": "Knowledge-Augmented Language Model Prompting for Zero-Shot Knowledge Graph Question Answering",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 112,
+    "arxiv_count": 12,
+    "published_count": 112,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4379933424",
+      "doi": "https://doi.org/10.48550/arxiv.2306.04136",
+      "title": "Knowledge-Augmented Language Model Prompting for Zero-Shot Knowledge Graph Question Answering",
+      "year": 2023,
+      "cited_by_count": 12,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4385572149",
+      "doi": "https://doi.org/10.18653/v1/2023.nlrse-1.7",
+      "title": "Knowledge-Augmented Language Model Prompting for Zero-Shot Knowledge Graph Question Answering",
+      "year": 2023,
+      "cited_by_count": 112,
+      "arxiv_like": false
+     },
+     {
+      "id": "W4385734218",
+      "doi": "https://doi.org/10.18653/v1/2023.matching-1.7",
+      "title": "Knowledge-Augmented Language Model Prompting for Zero-Shot Knowledge Graph Question Answering",
+      "year": 2023,
+      "cited_by_count": 49,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 198,
+   "used_source": "s2"
+  },
+  "pan-ulk-2023": {
+   "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
+   "era": "KG + LMs",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1820,
+    "paperId": "9e8b7b0d4c628c12b6a65ab56ac5f33a35eff2e6",
+    "id": "ARXIV:2306.08302",
+    "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1228,
+    "arxiv_count": 100,
+    "published_count": 1228,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4380993239",
+      "doi": "https://doi.org/10.48550/arxiv.2306.08302",
+      "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
+      "year": 2023,
+      "cited_by_count": 100,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4390692489",
+      "doi": "https://doi.org/10.1109/tkde.2024.3352100",
+      "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
+      "year": 2024,
+      "cited_by_count": 1228,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1820,
+   "used_source": "s2"
+  },
+  "lost-middle-2023": {
+   "title": "Lost in the Middle: How Language Models Use Long Contexts",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 5374,
+    "paperId": "1733eb7792f7a43dd21f51f4d1017a1bffd217b5",
+    "id": "ARXIV:2307.03172",
+    "title": "Lost in the Middle: How Language Models Use Long Contexts",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1381,
+    "arxiv_count": 65,
+    "published_count": 1381,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4383605243",
+      "doi": "https://doi.org/10.48550/arxiv.2307.03172",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "year": 2023,
+      "cited_by_count": 65,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4391876619",
+      "doi": "https://doi.org/10.1162/tacl_a_00638",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "year": 2024,
+      "cited_by_count": 1381,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 5374,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "tog-2023": {
+   "title": "Think-on-Graph: Deep and Responsible Reasoning of Large Language Model on Knowledge Graph",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 343,
+    "paperId": "c7184f9a914dbfbad59faa5aeaf9ba7019dfcf74",
+    "id": "ARXIV:2307.07697",
+    "title": "Think-on-Graph: Deep and Responsible Reasoning of Large Language Model on Knowledge Graph",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 53,
+    "arxiv_count": 53,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W7094459024",
+      "doi": "https://doi.org/10.48550/arxiv.2307.07697",
+      "title": "Think-on-Graph: Deep and Responsible Reasoning of Large Language Model on Knowledge Graph",
+      "year": 2023,
+      "cited_by_count": 53,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 343,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "ragas-2023": {
+   "title": "RAGAS: Automated Evaluation of Retrieval Augmented Generation",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1127,
+    "paperId": "f5e9e5bbe22f0263be1f1ce88c66978a2b927772",
+    "id": "ARXIV:2309.15217",
+    "title": "RAGAs: Automated Evaluation of Retrieval Augmented Generation",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 515,
+    "arxiv_count": 78,
+    "published_count": 515,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4387156782",
+      "doi": "https://doi.org/10.48550/arxiv.2309.15217",
+      "title": "Design and Evaluation of a Retrieval-Augmented Generation Architecture for OWASP Security Data",
+      "year": 2023,
+      "cited_by_count": 78,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4411630045",
+      "doi": "https://doi.org/10.18653/v1/2024.eacl-demo.16",
+      "title": "RAGAs: Automated Evaluation of Retrieval Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 515,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1127,
+   "used_source": "s2"
+  },
+  "longctx-2023": {
+   "title": "Retrieval meets Long Context Large Language Models",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 152,
+    "paperId": "2b35b946a8ad64e018c24b283bc1c6c65d36fb67",
+    "id": "ARXIV:2310.03025",
+    "title": "Retrieval meets Long Context Large Language Models",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 15,
+    "arxiv_count": 15,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4387390366",
+      "doi": "https://doi.org/10.48550/arxiv.2310.03025",
+      "title": "Retrieval meets Long Context Large Language Models",
+      "year": 2023,
+      "cited_by_count": 15,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 152,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "rog-2023": {
+   "title": "Reasoning on Graphs: Faithful and Interpretable Large Language Model Reasoning (RoG)",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 577,
+    "paperId": "b47e96762351b2dbf7e863ece4640df6194bcc0c",
+    "id": "ARXIV:2310.01061",
+    "title": "Reasoning on Graphs: Faithful and Interpretable Large Language Model Reasoning",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 40,
+    "arxiv_count": 40,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4387322659",
+      "doi": "https://doi.org/10.48550/arxiv.2310.01061",
+      "title": "Reasoning on Graphs: Faithful and Interpretable Large Language Model Reasoning",
+      "year": 2023,
+      "cited_by_count": 40,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 577,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "selfrag-2023": {
+   "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2783,
+    "paperId": "ddbd8fe782ac98e9c64dd98710687a962195dd9b",
+    "id": "ARXIV:2310.11511",
+    "title": "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": null,
+   "used": 2783,
+   "used_source": "s2"
+  },
+  "kgrag-soman-2023": {
+   "title": "Biomedical knowledge graph-optimized prompt generation for large language models (KG-RAG)",
+   "era": "KG + LMs",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 137,
+    "paperId": "eaf2f0ed4281699f52f3c03ee4a2ee411fa0aa6e",
+    "id": "ARXIV:2311.17330",
+    "title": "Biomedical knowledge graph-optimized prompt generation for large language models",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 135,
+    "arxiv_count": 6,
+    "published_count": 135,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4389217417",
+      "doi": "https://doi.org/10.48550/arxiv.2311.17330",
+      "title": "Biomedical knowledge graph-optimized prompt generation for large language models",
+      "year": 2023,
+      "cited_by_count": 6,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4402567773",
+      "doi": "https://doi.org/10.1093/bioinformatics/btae560",
+      "title": "Biomedical knowledge graph-optimized prompt generation for large language models",
+      "year": 2024,
+      "cited_by_count": 135,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 137,
+   "used_source": "s2"
+  },
+  "gao-survey-2023": {
+   "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+   "era": "LLM era",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 4233,
+    "paperId": "46f9f7b8f88f72e12cbdb21e3311f995eb6e65c5",
+    "id": "ARXIV:2312.10997",
+    "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+    "year": 2023,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 748,
+    "arxiv_count": 748,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4389984066",
+      "doi": "https://doi.org/10.48550/arxiv.2312.10997",
+      "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
+      "year": 2023,
+      "cited_by_count": 748,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 4233,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "crag-2024": {
+   "title": "Corrective Retrieval Augmented Generation (CRAG)",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 319,
+    "paperId": "5bbc2b5aa6c63c6a2cfccf095d6020b063ad47ac",
+    "id": "ARXIV:2401.15884",
+    "title": "Corrective Retrieval Augmented Generation",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 121,
+    "arxiv_count": 31,
+    "published_count": 121,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4391418506",
+      "doi": "https://doi.org/10.48550/arxiv.2401.15884",
+      "title": "Corrective Retrieval Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 31,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4410705984",
+      "doi": "https://doi.org/10.2139/ssrn.5267341",
+      "title": "Corrective Retrieval Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 121,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 319,
+   "used_source": "s2"
+  },
+  "raptor-2024": {
+   "title": "RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 772,
+    "paperId": "1d40f07569482d24e3335ffb31394d4bf1567e6f",
+    "id": "ARXIV:2401.18059",
+    "title": "RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 29,
+    "arxiv_count": 29,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4391463108",
+      "doi": "https://doi.org/10.48550/arxiv.2401.18059",
+      "title": "RAPTOR: Recursive Abstractive Processing for Tree-Organized Retrieval",
+      "year": 2024,
+      "cited_by_count": 29,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 772,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "gretriever-2024": {
+   "title": "G-Retriever: Retrieval-Augmented Generation for Textual Graph Understanding and Question Answering",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 385,
+    "paperId": "a41d4a3b005c8ec4f821e6ee96672d930ca9596c",
+    "id": "ARXIV:2402.07630",
+    "title": "G-Retriever: Retrieval-Augmented Generation for Textual Graph Understanding and Question Answering",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 75,
+    "arxiv_count": 22,
+    "published_count": 75,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4391799277",
+      "doi": "https://doi.org/10.48550/arxiv.2402.07630",
+      "title": "G-Retriever: Retrieval-Augmented Generation for Textual Graph Understanding and Question Answering",
+      "year": 2024,
+      "cited_by_count": 22,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4415800738",
+      "doi": "https://doi.org/10.52202/079017-4224",
+      "title": "G-Retriever: Retrieval-Augmented Generation for Textual Graph Understanding and Question Answering",
+      "year": 2024,
+      "cited_by_count": 75,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 385,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "adaptive-rag-2024": {
+   "title": "Adaptive-RAG: Learning to Adapt Retrieval-Augmented LLMs through Question Complexity",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 722,
+    "paperId": "e5e8c6ac537e0f5b5db14170bc232d6f9e641bbc",
+    "id": "ARXIV:2403.14403",
+    "title": "Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 11,
+    "arxiv_count": 11,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4393119012",
+      "doi": "https://doi.org/10.48550/arxiv.2403.14403",
+      "title": "Adaptive-RAG: Learning to Adapt Retrieval-Augmented Large Language Models through Question Complexity",
+      "year": 2024,
+      "cited_by_count": 11,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 722,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "gemini15-2024": {
+   "title": "Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 4051,
+    "paperId": "c811bedbe8f4c21d0cba9f9175f7c2eb203284a7",
+    "id": "ARXIV:2403.05530",
+    "title": "Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 296,
+    "arxiv_count": 296,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4392679398",
+      "doi": "https://doi.org/10.48550/arxiv.2403.05530",
+      "title": "Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context",
+      "year": 2024,
+      "cited_by_count": 296,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 4051,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "graphrag-edge-2024": {
+   "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 2291,
+    "paperId": "c1799bf28d1ae93e1631be5b59196ee1e568f538",
+    "id": "ARXIV:2404.16130",
+    "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": null,
+   "used": 2291,
+   "used_source": "s2"
+  },
+  "gnnrag-2024": {
+   "title": "GNN-RAG: Graph Neural Retrieval for Large Language Model Reasoning",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 191,
+    "paperId": "336605fc899aab6c5b375d1129bf656d246b9013",
+    "id": "ARXIV:2405.20139",
+    "title": "GNN-RAG: Graph Neural Retrieval for Large Language Model Reasoning",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 16,
+    "arxiv_count": 16,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4399253046",
+      "doi": "https://doi.org/10.48550/arxiv.2405.20139",
+      "title": "GNN-RAG: Graph Neural Retrieval for Large Language Model Reasoning",
+      "year": 2024,
+      "cited_by_count": 16,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 191,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "grag-2024": {
+   "title": "GRAG: Graph Retrieval-Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 173,
+    "paperId": "a82a1be7639301ea47ebcb346f6119065b68b3d0",
+    "id": "ARXIV:2405.16506",
+    "title": "GRAG: Graph Retrieval-Augmented Generation",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 77,
+    "arxiv_count": 10,
+    "published_count": 77,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4399115692",
+      "doi": "https://doi.org/10.48550/arxiv.2405.16506",
+      "title": "GRAG: Graph Retrieval-Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 10,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4411120544",
+      "doi": "https://doi.org/10.18653/v1/2025.findings-naacl.232",
+      "title": "GRAG: Graph Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 77,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 173,
+   "used_source": "s2"
+  },
+  "hipporag-2024": {
+   "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 395,
+    "paperId": "4308208fac24626e0c927ee728038aadc4e87266",
+    "id": "ARXIV:2405.14831",
+    "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 107,
+    "arxiv_count": 21,
+    "published_count": 107,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4398886972",
+      "doi": "https://doi.org/10.48550/arxiv.2405.14831",
+      "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models",
+      "year": 2024,
+      "cited_by_count": 21,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4415797504",
+      "doi": "https://doi.org/10.52202/079017-1902",
+      "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models",
+      "year": 2024,
+      "cited_by_count": 107,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 395,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "selfroute-2024": {
+   "title": "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 193,
+    "paperId": "ccb5afb760a73f5507e31995397f80960db7842d",
+    "id": "ARXIV:2407.16833",
+    "title": "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 47,
+    "arxiv_count": 2,
+    "published_count": 47,
+    "version": "published",
+    "works": [
+     {
+      "id": "W6948396718",
+      "doi": "https://doi.org/10.48550/arxiv.2407.16833",
+      "title": "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach",
+      "year": 2024,
+      "cited_by_count": 2,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4404783788",
+      "doi": "https://doi.org/10.18653/v1/2024.emnlp-industry.66",
+      "title": "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach",
+      "year": 2024,
+      "cited_by_count": 47,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 193,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "hybridrag-2024": {
+   "title": "HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 237,
+    "paperId": "9af8bccf3e42996cbb198a6ceccafa2a084689f6",
+    "id": "ARXIV:2408.04948",
+    "title": "HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 128,
+    "arxiv_count": 3,
+    "published_count": 128,
+    "version": "published",
+    "works": [
+     {
+      "id": "W6910897907",
+      "doi": "https://doi.org/10.48550/arxiv.2408.04948",
+      "title": "HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction",
+      "year": 2024,
+      "cited_by_count": 3,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4404351611",
+      "doi": "https://doi.org/10.1145/3677052.3698671",
+      "title": "HybridRAG: Integrating Knowledge Graphs and Vector Retrieval Augmented Generation for Efficient Information Extraction",
+      "year": 2024,
+      "cited_by_count": 128,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 237,
+   "used_source": "s2"
+  },
+  "peng-survey-2024": {
+   "title": "Graph Retrieval-Augmented Generation: A Survey",
+   "era": "GraphRAG",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 639,
+    "paperId": "9ab45aa875b56335303398e84a59a3756cd9d530",
+    "id": "ARXIV:2408.08921",
+    "title": "Graph Retrieval-Augmented Generation: A Survey",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 149,
+    "arxiv_count": 27,
+    "published_count": 149,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4403589311",
+      "doi": "https://doi.org/10.48550/arxiv.2408.08921",
+      "title": "Graph Retrieval-Augmented Generation: A Survey",
+      "year": 2024,
+      "cited_by_count": 27,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4416379250",
+      "doi": "https://doi.org/10.1145/3777378",
+      "title": "Graph Retrieval-Augmented Generation: A Survey",
+      "year": 2025,
+      "cited_by_count": 149,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 639,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "kag-2024": {
+   "title": "KAG: Boosting LLMs in Professional Domains via Knowledge Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 140,
+    "paperId": "0113964c1dc23c494b5ff6d9cba0ccff927d4a03",
+    "id": "ARXIV:2409.13731",
+    "title": "KAG: Boosting LLMs in Professional Domains via Knowledge Augmented Generation",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 51,
+    "arxiv_count": 5,
+    "published_count": 51,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4403795280",
+      "doi": "https://doi.org/10.48550/arxiv.2409.13731",
+      "title": "KAG: Boosting LLMs in Professional Domains via Knowledge Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 5,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4410636953",
+      "doi": "https://doi.org/10.1145/3701716.3715240",
+      "title": "KAG: Boosting LLMs in Professional Domains via Knowledge Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 51,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 140,
+   "used_source": "s2"
+  },
+  "lightrag-2024": {
+   "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 527,
+    "paperId": "1ea143c34b9bc359780f79ba4d68dee68bcc1129",
+    "id": "ARXIV:2410.05779",
+    "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 157,
+    "arxiv_count": 28,
+    "published_count": 157,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4403347014",
+      "doi": "https://doi.org/10.48550/arxiv.2410.05779",
+      "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 28,
+      "arxiv_like": true
+     },
+     {
+      "id": "W4416034797",
+      "doi": "https://doi.org/10.18653/v1/2025.findings-emnlp.568",
+      "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 157,
+      "arxiv_like": false
+     },
+     {
+      "id": "W7106788045",
+      "doi": "https://doi.org/10.48448/wkvp-ww90",
+      "title": "LightRAG: Simple and Fast Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 0,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 527,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "subgraphrag-2024": {
+   "title": "Simple Is Effective: The Roles of Graphs and Large Language Models in Knowledge-Graph-Based Retrieval-Augmented Generation (SubgraphRAG)",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 119,
+    "paperId": "16b459de55727171aff6ea674535bea499e58261",
+    "id": "ARXIV:2410.20724",
+    "title": "Simple is Effective: The Roles of Graphs and Large Language Models in Knowledge-Graph-Based Retrieval-Augmented Generation",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 5,
+    "arxiv_count": 5,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4404399468",
+      "doi": "https://doi.org/10.48550/arxiv.2410.20724",
+      "title": "Simple Is Effective: The Roles of Graphs and Large Language Models in Knowledge-Graph-Based Retrieval-Augmented Generation",
+      "year": 2024,
+      "cited_by_count": 5,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 119,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "han-survey-2024": {
+   "title": "Retrieval-Augmented Generation with Graphs (GraphRAG)",
+   "era": "GraphRAG",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 290,
+    "paperId": "12fb0a058ad69f85a2b59cf7a52a29cbb01d8a0b",
+    "id": "ARXIV:2501.00309",
+    "title": "Retrieval-Augmented Generation with Graphs (GraphRAG)",
+    "year": 2024,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 30,
+    "arxiv_count": 30,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4406031095",
+      "doi": "https://doi.org/10.48550/arxiv.2501.00309",
+      "title": "Retrieval-Augmented Generation with Graphs (GraphRAG)",
+      "year": 2024,
+      "cited_by_count": 30,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 290,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "agentic-rag-2025": {
+   "title": "Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG",
+   "era": "LLM era",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 437,
+    "paperId": "ba7952e7c4fb891c36980ca19f94251257da6eb7",
+    "id": "ARXIV:2501.09136",
+    "title": "Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 34,
+    "arxiv_count": 34,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4406542750",
+      "doi": "https://doi.org/10.48550/arxiv.2501.09136",
+      "title": "Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG",
+      "year": 2025,
+      "cited_by_count": 34,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 437,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "graphiti-2025": {
+   "title": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 402,
+    "paperId": "12407be490a4e4633da7f25a93af000be573a288",
+    "id": "ARXIV:2501.13956",
+    "title": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 7,
+    "arxiv_count": 7,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4406840428",
+      "doi": "https://doi.org/10.48550/arxiv.2501.13956",
+      "title": "Zep: A Temporal Knowledge Graph Architecture for Agent Memory",
+      "year": 2025,
+      "cited_by_count": 7,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 402,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "minirag-2025": {
+   "title": "MiniRAG: Towards Extremely Simple Retrieval-Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 39,
+    "paperId": "9042e7927165a355b28caf15708db1d06625678e",
+    "id": "ARXIV:2501.06713",
+    "title": "MiniRAG: Towards Extremely Simple Retrieval-Augmented Generation",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2,
+    "arxiv_count": 2,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W6929235096",
+      "doi": "https://doi.org/10.48550/arxiv.2501.06713",
+      "title": "MiniRAG: Towards Extremely Simple Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 2,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 39,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "zhang-survey-2025": {
+   "title": "A Survey of Graph Retrieval-Augmented Generation for Customized Large Language Models",
+   "era": "GraphRAG",
+   "kind": "survey",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 157,
+    "paperId": "908d45b0d2b88ba72ee501c368eb618d29d61ce0",
+    "id": "ARXIV:2501.13958",
+    "title": "A Survey of Graph Retrieval-Augmented Generation for Customized Large Language Models",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 14,
+    "arxiv_count": 14,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4406840433",
+      "doi": "https://doi.org/10.48550/arxiv.2501.13958",
+      "title": "A Survey of Graph Retrieval-Augmented Generation for Customized Large Language Models",
+      "year": 2025,
+      "cited_by_count": 14,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 157,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "gfmrag-2025": {
+   "title": "GFM-RAG: Graph Foundation Model for Retrieval Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 55,
+    "paperId": "b5d553aa0fc8e53c060014d399b2a2cde052dcf4",
+    "id": "ARXIV:2502.01113",
+    "title": "GFM-RAG: Graph Foundation Model for Retrieval Augmented Generation",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 8,
+    "arxiv_count": null,
+    "published_count": 8,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4407129024",
+      "doi": "https://doi.org/10.52202/085713-1222",
+      "title": "GFM-RAG: Graph Foundation Model for Retrieval Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 8,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 55,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "hipporag2-2025": {
+   "title": "From RAG to Memory: Non-Parametric Continual Learning for Large Language Models (HippoRAG 2)",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 261,
+    "paperId": "b79b3a401119bc610b6e2db738aeee531b40aaf0",
+    "id": "ARXIV:2502.14802",
+    "title": "From RAG to Memory: Non-Parametric Continual Learning for Large Language Models",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2,
+    "arxiv_count": 2,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4407831980",
+      "doi": "https://doi.org/10.48550/arxiv.2502.14802",
+      "title": "From RAG to Memory: Non-Parametric Continual Learning for Large Language Models",
+      "year": 2025,
+      "cited_by_count": 2,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 261,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "pathrag-2025": {
+   "title": "PathRAG: Pruning Graph-based Retrieval Augmented Generation with Relational Paths",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 96,
+    "paperId": "00e92a3b206b7acb75ddb6dfc5fdaa80190cec78",
+    "id": "ARXIV:2502.14902",
+    "title": "PathRAG: Pruning Graph-based Retrieval Augmented Generation with Relational Paths",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 11,
+    "arxiv_count": 2,
+    "published_count": 11,
+    "version": "published",
+    "works": [
+     {
+      "id": "W6948434932",
+      "doi": "https://doi.org/10.48550/arxiv.2502.14902",
+      "title": "PathRAG: Pruning Graph-based Retrieval Augmented Generation with Relational Paths",
+      "year": 2025,
+      "cited_by_count": 2,
+      "arxiv_like": true
+     },
+     {
+      "id": "W7138333265",
+      "doi": "https://doi.org/10.1609/aaai.v40i36.40268",
+      "title": "PathRAG: Pruning Graph-based Retrieval Augmented Generation with Relational Paths",
+      "year": 2026,
+      "cited_by_count": 11,
+      "arxiv_like": false
+     },
+     {
+      "id": "W7128736636",
+      "doi": "https://doi.org/10.48448/29y2-av09",
+      "title": "PathRAG: Pruning Graph-based Retrieval Augmented Generation with Relational Paths",
+      "year": 2026,
+      "cited_by_count": 0,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "arxiv",
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 96,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "rag-vs-graphrag-2025": {
+   "title": "RAG vs. GraphRAG: A Systematic Evaluation and Key Insights",
+   "era": "GraphRAG",
+   "kind": "benchmark",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 102,
+    "paperId": "1a454582d3b3aaa6c6cd5b2be075958d13423f78",
+    "id": "ARXIV:2502.11371",
+    "title": "RAG vs. GraphRAG: A Systematic Evaluation and Key Insights",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 9,
+    "arxiv_count": null,
+    "published_count": 9,
+    "version": "published",
+    "works": [
+     {
+      "id": "W4407697889",
+      "doi": "https://doi.org/10.1145/3770855.3817575",
+      "title": "RAG vs. GraphRAG: A Systematic Evaluation and Key Insights",
+      "year": 2026,
+      "cited_by_count": 9,
+      "arxiv_like": false
+     }
+    ],
+    "matched_by": [
+     "title"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 102,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "searchr1-2025": {
+   "title": "Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning",
+   "era": "LLM era",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 1573,
+    "paperId": "1fcaafeb72142fe3d1a5d698a072d69778d244b0",
+    "id": "ARXIV:2503.09516",
+    "title": "Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 12,
+    "arxiv_count": 12,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4417422257",
+      "doi": "https://doi.org/10.48550/arxiv.2503.09516",
+      "title": "Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning",
+      "year": 2025,
+      "cited_by_count": 12,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 1573,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "graphragbench-xiang-2025": {
+   "title": "When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "benchmark",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 57,
+    "paperId": "40de5fd0c5b9d1fdc890b4b100845b716b676759",
+    "id": "ARXIV:2506.05690",
+    "title": "When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 4,
+    "arxiv_count": 4,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4417097190",
+      "doi": "https://doi.org/10.48550/arxiv.2506.05690",
+      "title": "When to use Graphs in RAG: A Comprehensive Analysis for Graph Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 4,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 57,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "graphragbench-xiao-2025": {
+   "title": "GraphRAG-Bench: Challenging Domain-Specific Reasoning for Evaluating Graph Retrieval-Augmented Generation",
+   "era": "GraphRAG",
+   "kind": "benchmark",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 33,
+    "paperId": "9cf732974468fc887a84c53568fa109cb19939e4",
+    "id": "ARXIV:2506.02404",
+    "title": "GraphRAG-Bench: Challenging Domain-Specific Reasoning for Evaluating Graph Retrieval-Augmented Generation",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 2,
+    "arxiv_count": 2,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W4417307696",
+      "doi": "https://doi.org/10.48550/arxiv.2506.02404",
+      "title": "GraphRAG-Bench: Challenging Domain-Specific Reasoning for Evaluating Graph Retrieval-Augmented Generation",
+      "year": 2025,
+      "cited_by_count": 2,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 33,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  },
+  "graphr1-2025": {
+   "title": "Graph-R1: Towards Agentic GraphRAG Framework via End-to-end Reinforcement Learning",
+   "era": "GraphRAG",
+   "kind": "paper",
+   "retrieved": "2026-10-08",
+   "s2": {
+    "count": 58,
+    "paperId": "7b62efdd9115c1657c321830ce72e42623c5c92d",
+    "id": "ARXIV:2507.21892",
+    "title": "Graph-R1: Towards Agentic GraphRAG Framework via End-to-end Reinforcement Learning",
+    "year": 2025,
+    "source": "Semantic Scholar citationCount"
+   },
+   "openalex": {
+    "count": 1,
+    "arxiv_count": 1,
+    "published_count": null,
+    "version": "arxiv",
+    "works": [
+     {
+      "id": "W6948183003",
+      "doi": "https://doi.org/10.48550/arxiv.2507.21892",
+      "title": "Graph-R1: Towards Agentic GraphRAG Framework via End-to-end Reinforcement Learning",
+      "year": 2025,
+      "cited_by_count": 1,
+      "arxiv_like": true
+     }
+    ],
+    "matched_by": [
+     "arxiv"
+    ],
+    "source": "OpenAlex cited_by_count"
+   },
+   "used": 58,
+   "used_source": "s2",
+   "split_flag": true,
+   "split_note": "OpenAlex splits this paper across records"
+  }
+ }
+}

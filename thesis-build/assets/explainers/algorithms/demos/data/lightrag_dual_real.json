@@ -1,0 +1,3625 @@
+{
+"note": "Assembled by build script from the real-example pack; NOT a LightRAG run. See header of lightrag_dual_real.build.py.",
+"model": "sentence-transformers/all-MiniLM-L6-v2",
+"n_passages": 138,
+"reports": [
+{
+"id": "c01",
+"title": "Regularization Techniques for Model Generalization",
+"size": 50,
+"passages": [
+"p001",
+"p002",
+"p005",
+"p011",
+"p019",
+"p020",
+"p021",
+"p022",
+"p025",
+"p027",
+"p028",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p039",
+"p040",
+"p041",
+"p043",
+"p044",
+"p122",
+"p127",
+"p129"
+],
+"n_members": 50
+},
+{
+"id": "c02",
+"title": "Regularized Regression Techniques for Multicollinearity",
+"size": 50,
+"passages": [
+"p001",
+"p002",
+"p004",
+"p016",
+"p018",
+"p063",
+"p069",
+"p071",
+"p074",
+"p075",
+"p076",
+"p079",
+"p080",
+"p082",
+"p083",
+"p084",
+"p104"
+],
+"n_members": 50
+},
+{
+"id": "c03",
+"title": "Cross-Validation in Model Evaluation",
+"size": 38,
+"passages": [
+"p013",
+"p031",
+"p035",
+"p044",
+"p048",
+"p049",
+"p050",
+"p052",
+"p054",
+"p055",
+"p056",
+"p058",
+"p087",
+"p132",
+"p133"
+],
+"n_members": 38
+},
+{
+"id": "c04",
+"title": "Bias-Variance Trade-off in Machine Learning",
+"size": 36,
+"passages": [
+"p010",
+"p032",
+"p036",
+"p039",
+"p040",
+"p041",
+"p042",
+"p043",
+"p044",
+"p045",
+"p046",
+"p047",
+"p056",
+"p093",
+"p104",
+"p105",
+"p113",
+"p130",
+"p138"
+],
+"n_members": 36
+},
+{
+"id": "c05",
+"title": "Gradient Descent Optimization Methods",
+"size": 34,
+"passages": [
+"p012",
+"p016",
+"p024",
+"p089",
+"p091",
+"p092",
+"p094",
+"p095",
+"p096",
+"p097",
+"p098"
+],
+"n_members": 34
+},
+{
+"id": "c06",
+"title": "Regression Methodologies and Collinearity Challenges",
+"size": 34,
+"passages": [
+"p009",
+"p010",
+"p011",
+"p067",
+"p070",
+"p073",
+"p075",
+"p077",
+"p078",
+"p085",
+"p087",
+"p104",
+"p116",
+"p126",
+"p129"
+],
+"n_members": 34
+},
+{
+"id": "c07",
+"title": "Decision Tree Models and Variants",
+"size": 32,
+"passages": [
+"p031",
+"p044",
+"p119",
+"p120",
+"p122",
+"p124",
+"p125",
+"p126",
+"p127",
+"p128",
+"p129",
+"p132",
+"p134",
+"p138"
+],
+"n_members": 32
+},
+{
+"id": "c08",
+"title": "Linear Regression and Statistical Modeling",
+"size": 32,
+"passages": [
+"p001",
+"p038",
+"p049",
+"p059",
+"p060",
+"p061",
+"p062",
+"p064",
+"p067",
+"p080",
+"p081",
+"p082",
+"p083",
+"p087",
+"p102",
+"p105",
+"p107"
+],
+"n_members": 32
+},
+{
+"id": "c09",
+"title": "Random Forests and Ensemble Variants",
+"size": 30,
+"passages": [
+"p012",
+"p034",
+"p129",
+"p131",
+"p133",
+"p134",
+"p135",
+"p137",
+"p138"
+],
+"n_members": 30
+},
+{
+"id": "c10",
+"title": "Support Vector Machines and Maximum-Margin Classification",
+"size": 30,
+"passages": [
+"p109",
+"p110",
+"p111",
+"p112",
+"p113",
+"p114",
+"p115",
+"p117"
+],
+"n_members": 30
+},
+{
+"id": "c11",
+"title": "Lasso Regression and Regularization",
+"size": 27,
+"passages": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p039",
+"p043",
+"p069",
+"p074",
+"p080",
+"p082",
+"p138"
+],
+"n_members": 27
+},
+{
+"id": "c12",
+"title": "Support Vector Machines and Optimization Techniques",
+"size": 27,
+"passages": [
+"p001",
+"p003",
+"p004",
+"p016",
+"p018",
+"p024",
+"p112",
+"p115",
+"p116",
+"p117"
+],
+"n_members": 27
+},
+{
+"id": "c13",
+"title": "Linear Regression Estimation and Regularization",
+"size": 26,
+"passages": [
+"p003",
+"p008",
+"p047",
+"p063",
+"p066",
+"p069",
+"p076"
+],
+"n_members": 26
+},
+{
+"id": "c14",
+"title": "Logistic Regression and Decision Tree Learning",
+"size": 21,
+"passages": [
+"p019",
+"p021",
+"p044",
+"p059",
+"p099",
+"p100",
+"p101",
+"p103",
+"p107",
+"p109",
+"p116",
+"p119"
+],
+"n_members": 21
+},
+{
+"id": "c15",
+"title": "Kernel SVMs and Feature Importance in scikit-learn",
+"size": 16,
+"passages": [
+"p118",
+"p136"
+],
+"n_members": 16
+}
+],
+"questions": [
+{
+"id": "q16",
+"question": "Which techniques does the overfitting article list for lessening overfitting, and which of them does the decision tree article call necessary for trees?",
+"type": "bridge",
+"gold": [
+"p031",
+"p127"
+],
+"seeds": [
+{
+"id": "n008",
+"name": "decision tree",
+"degree": 16,
+"passages": [
+"p120",
+"p122",
+"p126",
+"p127",
+"p128",
+"p129",
+"p138"
+]
+},
+{
+"id": "n001",
+"name": "overfitting",
+"degree": 21,
+"passages": [
+"p019",
+"p020",
+"p021",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p040",
+"p122",
+"p127",
+"p129"
+]
+}
+],
+"neighbours": [
+{
+"id": "n003",
+"name": "regularization",
+"passages": [
+"p001",
+"p005",
+"p011",
+"p019",
+"p021",
+"p022",
+"p027",
+"p031",
+"p043",
+"p044"
+]
+},
+{
+"id": "n004",
+"name": "cross-validation",
+"passages": [
+"p013",
+"p031",
+"p049",
+"p052",
+"p055",
+"p056",
+"p058",
+"p087",
+"p133"
+]
+},
+{
+"id": "n006",
+"name": "variance",
+"passages": [
+"p032",
+"p040",
+"p041",
+"p042",
+"p043",
+"p044",
+"p045",
+"p047"
+]
+},
+{
+"id": "n013",
+"name": "random forests",
+"passages": [
+"p129",
+"p131",
+"p134",
+"p135",
+"p137",
+"p138"
+]
+},
+{
+"id": "n029",
+"name": "bias\u2013variance tradeoff",
+"passages": [
+"p002",
+"p032",
+"p039"
+]
+},
+{
+"id": "n030",
+"name": "Classification trees",
+"passages": [
+"p119",
+"p120",
+"p132"
+]
+},
+{
+"id": "n033",
+"name": "early stopping",
+"passages": [
+"p021",
+"p031",
+"p034"
+]
+},
+{
+"id": "n041",
+"name": "model complexity",
+"passages": [
+"p030",
+"p037",
+"p039"
+]
+},
+{
+"id": "n048",
+"name": "tree",
+"passages": [
+"p120",
+"p124",
+"p125"
+]
+},
+{
+"id": "n060",
+"name": "dropout",
+"passages": [
+"p021",
+"p031"
+]
+},
+{
+"id": "n061",
+"name": "dummy variables",
+"passages": [
+"p070",
+"p126"
+]
+},
+{
+"id": "n083",
+"name": "L1 regularization",
+"passages": [
+"p005",
+"p021"
+]
+},
+{
+"id": "n095",
+"name": "performance",
+"passages": [
+"p034",
+"p138"
+]
+},
+{
+"id": "n101",
+"name": "pruning",
+"passages": [
+"p031",
+"p127"
+]
+},
+{
+"id": "n139",
+"name": "Bayesian priors",
+"passages": [
+"p031"
+]
+},
+{
+"id": "n155",
+"name": "born-again decision tree",
+"passages": [
+"p138"
+]
+},
+{
+"id": "n161",
+"name": "CART",
+"passages": [
+"p122"
+]
+},
+{
+"id": "n172",
+"name": "classifying examples",
+"passages": [
+"p120"
+]
+},
+{
+"id": "n183",
+"name": "Conditional Inference approach",
+"passages": [
+"p127"
+]
+},
+{
+"id": "n184",
+"name": "Conditional Inference Trees",
+"passages": [
+"p122"
+]
+},
+{
+"id": "n205",
+"name": "data normalization",
+"passages": [
+"p126"
+]
+},
+{
+"id": "n210",
+"name": "decision graph",
+"passages": [
+"p128"
+]
+},
+{
+"id": "n224",
+"name": "dual information distance (DID) tree",
+"passages": [
+"p127"
+]
+},
+{
+"id": "n258",
+"name": "Fuzzy Decision Tree",
+"passages": [
+"p122"
+]
+},
+{
+"id": "n301",
+"name": "ID3",
+"passages": [
+"p122"
+]
+},
+{
+"id": "n346",
+"name": "L2 regularization",
+"passages": [
+"p021"
+]
+},
+{
+"id": "n394",
+"name": "mathematical modeling",
+"passages": [
+"p029"
+]
+},
+{
+"id": "n408",
+"name": "model comparison",
+"passages": [
+"p031"
+]
+},
+{
+"id": "n460",
+"name": "optimization during training",
+"passages": [
+"p030"
+]
+},
+{
+"id": "n538",
+"name": "regression model selection",
+"passages": [
+"p032"
+]
+},
+{
+"id": "n541",
+"name": "regularization term",
+"passages": [
+"p020"
+]
+},
+{
+"id": "n629",
+"name": "validation data",
+"passages": [
+"p033"
+]
+},
+{
+"id": "n639",
+"name": "white box model",
+"passages": [
+"p126"
+]
+}
+],
+"p_seed": [
+"p019",
+"p020",
+"p021",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p040",
+"p120",
+"p122",
+"p126",
+"p127",
+"p128",
+"p129",
+"p138"
+],
+"p_hop": [
+"p001",
+"p002",
+"p005",
+"p011",
+"p013",
+"p019",
+"p020",
+"p021",
+"p022",
+"p027",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p039",
+"p040",
+"p041",
+"p042",
+"p043",
+"p044",
+"p045",
+"p047",
+"p049",
+"p052",
+"p055",
+"p056",
+"p058",
+"p070",
+"p087",
+"p119",
+"p120",
+"p122",
+"p124",
+"p125",
+"p126",
+"p127",
+"p128",
+"p129",
+"p131",
+"p132",
+"p133",
+"p134",
+"p135",
+"p137",
+"p138"
+],
+"keywords": [
+{
+"phrase": "ways to lessen overfitting",
+"cos": [
+0.4621,
+0.2174,
+0.217,
+0.4268,
+0.2319,
+0.1971,
+0.1628,
+0.3515,
+0.2697,
+0.2295,
+0.27,
+0.2179,
+0.2125,
+0.0576,
+0.2328
+],
+"order": [
+0,
+3,
+7,
+10,
+8,
+14,
+4,
+9,
+11,
+1,
+2,
+12,
+5,
+6,
+13
+]
+},
+{
+"phrase": "tree models",
+"cos": [
+0.2778,
+0.0841,
+0.1647,
+0.1486,
+0.1088,
+0.1744,
+0.4286,
+0.1638,
+0.4599,
+0.2616,
+0.1273,
+0.2003,
+0.1326,
+0.3877,
+0.123
+],
+"order": [
+8,
+6,
+13,
+0,
+9,
+11,
+5,
+2,
+7,
+3,
+12,
+10,
+14,
+4,
+1
+]
+},
+{
+"phrase": "overfitting",
+"cos": [
+0.4384,
+0.2238,
+0.2357,
+0.4057,
+0.1851,
+0.2454,
+0.2003,
+0.3771,
+0.3026,
+0.2667,
+0.2977,
+0.2576,
+0.2223,
+0.1157,
+0.2877
+],
+"order": [
+0,
+3,
+7,
+8,
+10,
+14,
+9,
+11,
+5,
+2,
+1,
+12,
+6,
+4,
+13
+]
+}
+]
+},
+{
+"id": "q12",
+"question": "Random forest is a specific type of which ensemble method, and how does that method build its trees?",
+"type": "bridge",
+"gold": [
+"p121",
+"p132"
+],
+"seeds": [
+{
+"id": "n013",
+"name": "random forests",
+"degree": 19,
+"passages": [
+"p129",
+"p131",
+"p134",
+"p135",
+"p137",
+"p138"
+]
+},
+{
+"id": "n237",
+"name": "ensemble method",
+"degree": 1,
+"passages": [
+"p121"
+]
+},
+{
+"id": "n048",
+"name": "tree",
+"degree": 6,
+"passages": [
+"p120",
+"p124",
+"p125"
+]
+}
+],
+"neighbours": [
+{
+"id": "n001",
+"name": "overfitting",
+"passages": [
+"p019",
+"p020",
+"p021",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p040",
+"p122",
+"p127",
+"p129"
+]
+},
+{
+"id": "n008",
+"name": "decision tree",
+"passages": [
+"p120",
+"p122",
+"p126",
+"p127",
+"p128",
+"p129",
+"p138"
+]
+},
+{
+"id": "n012",
+"name": "classification",
+"passages": [
+"p018",
+"p046",
+"p108",
+"p109",
+"p120",
+"p129"
+]
+},
+{
+"id": "n019",
+"name": "regression",
+"passages": [
+"p067",
+"p070",
+"p075",
+"p116",
+"p129"
+]
+},
+{
+"id": "n027",
+"name": "accuracy",
+"passages": [
+"p041",
+"p130",
+"p138"
+]
+},
+{
+"id": "n054",
+"name": "bootstrap sample",
+"passages": [
+"p133",
+"p134"
+]
+},
+{
+"id": "n079",
+"name": "information gain",
+"passages": [
+"p124",
+"p134"
+]
+},
+{
+"id": "n084",
+"name": "Leo Breiman",
+"passages": [
+"p131",
+"p137"
+]
+},
+{
+"id": "n123",
+"name": "adaptive kernel estimates",
+"passages": [
+"p137"
+]
+},
+{
+"id": "n124",
+"name": "adaptive nearest neighbor",
+"passages": [
+"p137"
+]
+},
+{
+"id": "n134",
+"name": "base learner",
+"passages": [
+"p138"
+]
+},
+{
+"id": "n154",
+"name": "Bootstrap aggregated decision trees",
+"passages": [
+"p121"
+]
+},
+{
+"id": "n160",
+"name": "candidate split",
+"passages": [
+"p125"
+]
+},
+{
+"id": "n235",
+"name": "Enriched Random Forest",
+"passages": [
+"p135"
+]
+},
+{
+"id": "n236",
+"name": "ensemble learning",
+"passages": [
+"p129"
+]
+},
+{
+"id": "n243",
+"name": "extremely randomized trees",
+"passages": [
+"p134"
+]
+},
+{
+"id": "n312",
+"name": "information",
+"passages": [
+"p124"
+]
+},
+{
+"id": "n335",
+"name": "kernel methods",
+"passages": [
+"p137"
+]
+},
+{
+"id": "n364",
+"name": "Lin and Jeon",
+"passages": [
+"p137"
+]
+},
+{
+"id": "n409",
+"name": "model compression",
+"passages": [
+"p138"
+]
+},
+{
+"id": "n510",
+"name": "Prefiltering",
+"passages": [
+"p135"
+]
+},
+{
+"id": "n528",
+"name": "randomized node optimization",
+"passages": [
+"p131"
+]
+},
+{
+"id": "n555",
+"name": "root node",
+"passages": [
+"p125"
+]
+},
+{
+"id": "n568",
+"name": "simplicity",
+"passages": [
+"p124"
+]
+},
+{
+"id": "n617",
+"name": "Tree-weighted random forest",
+"passages": [
+"p135"
+]
+}
+],
+"p_seed": [
+"p120",
+"p121",
+"p124",
+"p125",
+"p129",
+"p131",
+"p134",
+"p135",
+"p137",
+"p138"
+],
+"p_hop": [
+"p018",
+"p019",
+"p020",
+"p021",
+"p029",
+"p030",
+"p031",
+"p032",
+"p033",
+"p034",
+"p037",
+"p040",
+"p041",
+"p046",
+"p067",
+"p070",
+"p075",
+"p108",
+"p109",
+"p116",
+"p120",
+"p121",
+"p122",
+"p124",
+"p125",
+"p126",
+"p127",
+"p128",
+"p129",
+"p130",
+"p131",
+"p133",
+"p134",
+"p135",
+"p137",
+"p138"
+],
+"keywords": [
+{
+"phrase": "ensemble learning with trees",
+"cos": [
+0.299,
+0.14,
+0.138,
+0.261,
+0.1588,
+0.1146,
+0.3787,
+0.1605,
+0.6446,
+0.3303,
+0.2207,
+0.3122,
+0.1619,
+0.3693,
+0.2913
+],
+"order": [
+8,
+6,
+13,
+9,
+11,
+0,
+14,
+3,
+10,
+12,
+7,
+4,
+1,
+2,
+5
+]
+},
+{
+"phrase": "classification accuracy",
+"cos": [
+0.2725,
+0.1504,
+0.2783,
+0.3218,
+0.1197,
+0.098,
+0.3229,
+0.2074,
+0.4044,
+0.4239,
+0.2171,
+0.3954,
+0.1338,
+0.3056,
+0.4629
+],
+"order": [
+14,
+9,
+8,
+11,
+6,
+3,
+13,
+2,
+0,
+10,
+7,
+1,
+12,
+4,
+5
+]
+},
+{
+"phrase": "random forests",
+"cos": [
+0.386,
+0.276,
+0.2023,
+0.3708,
+0.2089,
+0.2853,
+0.4939,
+0.3354,
+0.7084,
+0.4701,
+0.3594,
+0.3582,
+0.2786,
+0.4912,
+0.4004
+],
+"order": [
+8,
+6,
+13,
+9,
+14,
+0,
+3,
+10,
+11,
+7,
+5,
+12,
+1,
+4,
+2
+]
+}
+]
+},
+{
+"id": "q09",
+"question": "Who introduced the regularized regression technique that the multicollinearity article lists beside LASSO and elastic net as less sensitive to useless predictors, and in which year?",
+"type": "bridge",
+"gold": [
+"p002",
+"p074"
+],
+"seeds": [
+{
+"id": "n543",
+"name": "regularized regression techniques",
+"degree": 6,
+"passages": [
+"p074"
+]
+},
+{
+"id": "n034",
+"name": "elastic net",
+"degree": 4,
+"passages": [
+"p015",
+"p016",
+"p017"
+]
+},
+{
+"id": "n628",
+"name": "useless predictors",
+"degree": 2,
+"passages": [
+"p074"
+]
+},
+{
+"id": "n011",
+"name": "multicollinearity",
+"degree": 15,
+"passages": [
+"p001",
+"p002",
+"p069",
+"p074",
+"p075",
+"p076",
+"p104"
+]
+},
+{
+"id": "n002",
+"name": "lasso",
+"degree": 22,
+"passages": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p074"
+]
+}
+],
+"neighbours": [
+{
+"id": "n003",
+"name": "regularization",
+"passages": [
+"p001",
+"p005",
+"p011",
+"p019",
+"p021",
+"p022",
+"p027",
+"p031",
+"p043",
+"p044"
+]
+},
+{
+"id": "n010",
+"name": "linear regression",
+"passages": [
+"p001",
+"p038",
+"p059",
+"p060",
+"p064",
+"p105",
+"p107"
+]
+},
+{
+"id": "n014",
+"name": "ridge regression",
+"passages": [
+"p001",
+"p002",
+"p004",
+"p016",
+"p074",
+"p082"
+]
+},
+{
+"id": "n022",
+"name": "interpretability",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p138"
+]
+},
+{
+"id": "n025",
+"name": "prediction accuracy",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p039"
+]
+},
+{
+"id": "n031",
+"name": "collinearity",
+"passages": [
+"p069",
+"p071",
+"p074"
+]
+},
+{
+"id": "n039",
+"name": "loss function",
+"passages": [
+"p012",
+"p016",
+"p024"
+]
+},
+{
+"id": "n043",
+"name": "ordinary least squares",
+"passages": [
+"p003",
+"p066",
+"p076"
+]
+},
+{
+"id": "n044",
+"name": "regularization parameter",
+"passages": [
+"p013",
+"p014",
+"p082"
+]
+},
+{
+"id": "n063",
+"name": "Elastic Net Regression",
+"passages": [
+"p018",
+"p074"
+]
+},
+{
+"id": "n064",
+"name": "ensemble",
+"passages": [
+"p012",
+"p134"
+]
+},
+{
+"id": "n083",
+"name": "L1 regularization",
+"passages": [
+"p005",
+"p021"
+]
+},
+{
+"id": "n085",
+"name": "linear regression models",
+"passages": [
+"p002",
+"p079"
+]
+},
+{
+"id": "n099",
+"name": "prior information",
+"passages": [
+"p073",
+"p075"
+]
+},
+{
+"id": "n106",
+"name": "regression models",
+"passages": [
+"p006",
+"p069"
+]
+},
+{
+"id": "n109",
+"name": "Robert Tibshirani",
+"passages": [
+"p005",
+"p006"
+]
+},
+{
+"id": "n116",
+"name": "stepwise regression",
+"passages": [
+"p075",
+"p077"
+]
+},
+{
+"id": "n120",
+"name": "variable selection",
+"passages": [
+"p005",
+"p013"
+]
+},
+{
+"id": "n137",
+"name": "Bayesian hierarchical models",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n156",
+"name": "Breiman's nonnegative garrote",
+"passages": [
+"p006"
+]
+},
+{
+"id": "n194",
+"name": "convex analysis",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n201",
+"name": "Damodar Gujarati",
+"passages": [
+"p076"
+]
+},
+{
+"id": "n256",
+"name": "frequentist estimation",
+"passages": [
+"p075"
+]
+},
+{
+"id": "n267",
+"name": "geophysics",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n351",
+"name": "Leamer",
+"passages": [
+"p076"
+]
+},
+{
+"id": "n374",
+"name": "linear support vector machine",
+"passages": [
+"p017"
+]
+},
+{
+"id": "n457",
+"name": "Olivier Blanchard",
+"passages": [
+"p076"
+]
+},
+{
+"id": "n461",
+"name": "optimization theory",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n462",
+"name": "oracle inequalities",
+"passages": [
+"p008"
+]
+},
+{
+"id": "n488",
+"name": "penalty function",
+"passages": [
+"p015"
+]
+},
+{
+"id": "n492",
+"name": "perfect multicollinearity",
+"passages": [
+"p069"
+]
+},
+{
+"id": "n517",
+"name": "quadratic penalty term",
+"passages": [
+"p016"
+]
+},
+{
+"id": "n533",
+"name": "regression analysis method",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n537",
+"name": "regression methods",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n544",
+"name": "relative simplicity measure",
+"passages": [
+"p014"
+]
+},
+{
+"id": "n572",
+"name": "sparse coefficients",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n581",
+"name": "spike-and-slab regression",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n658",
+"name": "non-convergence",
+"passages": []
+}
+],
+"p_seed": [
+"p001",
+"p002",
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p069",
+"p074",
+"p075",
+"p076",
+"p104"
+],
+"p_hop": [
+"p001",
+"p002",
+"p003",
+"p004",
+"p005",
+"p006",
+"p008",
+"p011",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p018",
+"p019",
+"p021",
+"p022",
+"p024",
+"p027",
+"p031",
+"p038",
+"p039",
+"p043",
+"p044",
+"p059",
+"p060",
+"p064",
+"p066",
+"p069",
+"p071",
+"p073",
+"p074",
+"p075",
+"p076",
+"p077",
+"p079",
+"p082",
+"p104",
+"p105",
+"p107",
+"p134",
+"p138"
+],
+"keywords": [
+{
+"phrase": "regularization against multicollinearity",
+"cos": [
+0.4384,
+0.612,
+0.1116,
+0.2666,
+0.3804,
+0.4096,
+0.0414,
+0.2612,
+0.1744,
+0.2031,
+0.4836,
+0.3193,
+0.5636,
+0.0964,
+0.1459
+],
+"order": [
+1,
+12,
+10,
+0,
+5,
+4,
+11,
+3,
+7,
+9,
+8,
+14,
+2,
+13,
+6
+]
+},
+{
+"phrase": "regression history",
+"cos": [
+0.2716,
+0.3379,
+0.1067,
+0.1925,
+0.1327,
+0.2946,
+0.101,
+0.3768,
+0.1192,
+0.1535,
+0.3014,
+0.1394,
+0.3164,
+0.1335,
+0.087
+],
+"order": [
+7,
+1,
+12,
+10,
+5,
+0,
+3,
+9,
+11,
+13,
+4,
+8,
+2,
+6,
+14
+]
+},
+{
+"phrase": "lasso",
+"cos": [
+0.426,
+0.4382,
+0.1833,
+0.3153,
+0.3675,
+0.5068,
+0.1928,
+0.3803,
+0.3249,
+0.2977,
+0.7087,
+0.36,
+0.4764,
+0.2706,
+0.2386
+],
+"order": [
+10,
+5,
+12,
+1,
+0,
+7,
+4,
+11,
+8,
+3,
+9,
+13,
+14,
+6,
+2
+]
+}
+]
+},
+{
+"id": "q18",
+"question": "How do the lasso and the elastic net behave differently on a group of highly correlated variables?",
+"type": "comparison",
+"gold": [
+"p015",
+"p026"
+],
+"seeds": [
+{
+"id": "n293",
+"name": "highly correlated variables",
+"degree": 3,
+"passages": [
+"p072"
+]
+},
+{
+"id": "n034",
+"name": "elastic net",
+"degree": 4,
+"passages": [
+"p015",
+"p016",
+"p017"
+]
+},
+{
+"id": "n002",
+"name": "lasso",
+"degree": 22,
+"passages": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p074"
+]
+}
+],
+"neighbours": [
+{
+"id": "n003",
+"name": "regularization",
+"passages": [
+"p001",
+"p005",
+"p011",
+"p019",
+"p021",
+"p022",
+"p027",
+"p031",
+"p043",
+"p044"
+]
+},
+{
+"id": "n014",
+"name": "ridge regression",
+"passages": [
+"p001",
+"p002",
+"p004",
+"p016",
+"p074",
+"p082"
+]
+},
+{
+"id": "n022",
+"name": "interpretability",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p138"
+]
+},
+{
+"id": "n025",
+"name": "prediction accuracy",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p039"
+]
+},
+{
+"id": "n039",
+"name": "loss function",
+"passages": [
+"p012",
+"p016",
+"p024"
+]
+},
+{
+"id": "n044",
+"name": "regularization parameter",
+"passages": [
+"p013",
+"p014",
+"p082"
+]
+},
+{
+"id": "n064",
+"name": "ensemble",
+"passages": [
+"p012",
+"p134"
+]
+},
+{
+"id": "n083",
+"name": "L1 regularization",
+"passages": [
+"p005",
+"p021"
+]
+},
+{
+"id": "n106",
+"name": "regression models",
+"passages": [
+"p006",
+"p069"
+]
+},
+{
+"id": "n109",
+"name": "Robert Tibshirani",
+"passages": [
+"p005",
+"p006"
+]
+},
+{
+"id": "n120",
+"name": "variable selection",
+"passages": [
+"p005",
+"p013"
+]
+},
+{
+"id": "n156",
+"name": "Breiman's nonnegative garrote",
+"passages": [
+"p006"
+]
+},
+{
+"id": "n194",
+"name": "convex analysis",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n267",
+"name": "geophysics",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n306",
+"name": "imperfect collinearity",
+"passages": [
+"p072"
+]
+},
+{
+"id": "n349",
+"name": "large standard errors",
+"passages": [
+"p072"
+]
+},
+{
+"id": "n374",
+"name": "linear support vector machine",
+"passages": [
+"p017"
+]
+},
+{
+"id": "n461",
+"name": "optimization theory",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n462",
+"name": "oracle inequalities",
+"passages": [
+"p008"
+]
+},
+{
+"id": "n488",
+"name": "penalty function",
+"passages": [
+"p015"
+]
+},
+{
+"id": "n496",
+"name": "poor estimates",
+"passages": [
+"p072"
+]
+},
+{
+"id": "n517",
+"name": "quadratic penalty term",
+"passages": [
+"p016"
+]
+},
+{
+"id": "n533",
+"name": "regression analysis method",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n543",
+"name": "regularized regression techniques",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n544",
+"name": "relative simplicity measure",
+"passages": [
+"p014"
+]
+},
+{
+"id": "n572",
+"name": "sparse coefficients",
+"passages": [
+"p005"
+]
+}
+],
+"p_seed": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p072",
+"p074"
+],
+"p_hop": [
+"p001",
+"p002",
+"p004",
+"p005",
+"p006",
+"p008",
+"p011",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p019",
+"p021",
+"p022",
+"p024",
+"p027",
+"p031",
+"p039",
+"p043",
+"p044",
+"p069",
+"p072",
+"p074",
+"p082",
+"p134",
+"p138"
+],
+"keywords": [
+{
+"phrase": "behaviour of shrinkage penalties on correlated variables",
+"cos": [
+0.231,
+0.4441,
+0.0117,
+0.2757,
+0.1962,
+0.388,
+-0.032,
+0.1927,
+0.1442,
+0.1081,
+0.3127,
+0.1221,
+0.3519,
+0.0092,
+0.0626
+],
+"order": [
+1,
+5,
+12,
+10,
+3,
+0,
+4,
+7,
+8,
+11,
+9,
+14,
+2,
+13,
+6
+]
+},
+{
+"phrase": "model fitting",
+"cos": [
+0.3085,
+0.2712,
+0.2003,
+0.2113,
+0.1374,
+0.202,
+0.1339,
+0.3384,
+0.183,
+0.1606,
+0.2536,
+0.1834,
+0.2467,
+0.1935,
+0.041
+],
+"order": [
+7,
+0,
+1,
+10,
+12,
+3,
+5,
+2,
+13,
+11,
+8,
+9,
+4,
+6,
+14
+]
+},
+{
+"phrase": "elastic net",
+"cos": [
+0.0856,
+0.1476,
+0.0489,
+0.0479,
+0.1441,
+0.1051,
+0.1734,
+0.0568,
+0.1512,
+0.1464,
+0.3082,
+0.1313,
+0.1506,
+0.1156,
+0.0059
+],
+"order": [
+10,
+6,
+8,
+12,
+1,
+9,
+4,
+11,
+13,
+5,
+0,
+7,
+2,
+3,
+14
+]
+}
+]
+},
+{
+"id": "q13",
+"question": "Which technique is often used to choose the lasso regularization parameter, and how does its k-fold variant work?",
+"type": "bridge",
+"gold": [
+"p013",
+"p051"
+],
+"seeds": [
+{
+"id": "n044",
+"name": "regularization parameter",
+"degree": 8,
+"passages": [
+"p013",
+"p014",
+"p082"
+]
+},
+{
+"id": "n002",
+"name": "lasso",
+"degree": 22,
+"passages": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p074"
+]
+}
+],
+"neighbours": [
+{
+"id": "n003",
+"name": "regularization",
+"passages": [
+"p001",
+"p005",
+"p011",
+"p019",
+"p021",
+"p022",
+"p027",
+"p031",
+"p043",
+"p044"
+]
+},
+{
+"id": "n004",
+"name": "cross-validation",
+"passages": [
+"p013",
+"p031",
+"p049",
+"p052",
+"p055",
+"p056",
+"p058",
+"p087",
+"p133"
+]
+},
+{
+"id": "n014",
+"name": "ridge regression",
+"passages": [
+"p001",
+"p002",
+"p004",
+"p016",
+"p074",
+"p082"
+]
+},
+{
+"id": "n022",
+"name": "interpretability",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p138"
+]
+},
+{
+"id": "n025",
+"name": "prediction accuracy",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p039"
+]
+},
+{
+"id": "n034",
+"name": "elastic net",
+"passages": [
+"p015",
+"p016",
+"p017"
+]
+},
+{
+"id": "n039",
+"name": "loss function",
+"passages": [
+"p012",
+"p016",
+"p024"
+]
+},
+{
+"id": "n064",
+"name": "ensemble",
+"passages": [
+"p012",
+"p134"
+]
+},
+{
+"id": "n083",
+"name": "L1 regularization",
+"passages": [
+"p005",
+"p021"
+]
+},
+{
+"id": "n106",
+"name": "regression models",
+"passages": [
+"p006",
+"p069"
+]
+},
+{
+"id": "n109",
+"name": "Robert Tibshirani",
+"passages": [
+"p005",
+"p006"
+]
+},
+{
+"id": "n111",
+"name": "shrinkage",
+"passages": [
+"p013",
+"p043"
+]
+},
+{
+"id": "n120",
+"name": "variable selection",
+"passages": [
+"p005",
+"p013"
+]
+},
+{
+"id": "n156",
+"name": "Breiman's nonnegative garrote",
+"passages": [
+"p006"
+]
+},
+{
+"id": "n194",
+"name": "convex analysis",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n215",
+"name": "degrees of freedom approach",
+"passages": [
+"p014"
+]
+},
+{
+"id": "n267",
+"name": "geophysics",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n310",
+"name": "inferencing",
+"passages": [
+"p013"
+]
+},
+{
+"id": "n374",
+"name": "linear support vector machine",
+"passages": [
+"p017"
+]
+},
+{
+"id": "n461",
+"name": "optimization theory",
+"passages": [
+"p012"
+]
+},
+{
+"id": "n462",
+"name": "oracle inequalities",
+"passages": [
+"p008"
+]
+},
+{
+"id": "n488",
+"name": "penalty function",
+"passages": [
+"p015"
+]
+},
+{
+"id": "n505",
+"name": "predictive capacity",
+"passages": [
+"p013"
+]
+},
+{
+"id": "n533",
+"name": "regression analysis method",
+"passages": [
+"p005"
+]
+},
+{
+"id": "n543",
+"name": "regularized regression techniques",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n544",
+"name": "relative simplicity measure",
+"passages": [
+"p014"
+]
+},
+{
+"id": "n572",
+"name": "sparse coefficients",
+"passages": [
+"p005"
+]
+}
+],
+"p_seed": [
+"p005",
+"p006",
+"p008",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p074",
+"p082"
+],
+"p_hop": [
+"p001",
+"p002",
+"p004",
+"p005",
+"p006",
+"p008",
+"p011",
+"p012",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p019",
+"p021",
+"p022",
+"p024",
+"p027",
+"p031",
+"p039",
+"p043",
+"p044",
+"p049",
+"p052",
+"p055",
+"p056",
+"p058",
+"p069",
+"p074",
+"p082",
+"p087",
+"p133",
+"p134",
+"p138"
+],
+"keywords": [
+{
+"phrase": "choosing hyperparameters by resampling",
+"cos": [
+0.2943,
+0.2223,
+0.3191,
+0.2542,
+0.2187,
+0.1784,
+0.1013,
+0.1607,
+0.2783,
+0.2435,
+0.2321,
+0.2208,
+0.2223,
+0.1217,
+0.2351
+],
+"order": [
+2,
+0,
+8,
+3,
+9,
+14,
+10,
+12,
+1,
+11,
+4,
+5,
+7,
+13,
+6
+]
+},
+{
+"phrase": "regularized regression",
+"cos": [
+0.5932,
+0.6663,
+0.1631,
+0.3959,
+0.3534,
+0.3935,
+0.207,
+0.4562,
+0.2652,
+0.3103,
+0.6405,
+0.4191,
+0.6436,
+0.3135,
+0.2244
+],
+"order": [
+1,
+12,
+10,
+0,
+7,
+11,
+3,
+5,
+4,
+13,
+9,
+8,
+14,
+6,
+2
+]
+},
+{
+"phrase": "lasso",
+"cos": [
+0.426,
+0.4382,
+0.1833,
+0.3153,
+0.3675,
+0.5068,
+0.1928,
+0.3803,
+0.3249,
+0.2977,
+0.7087,
+0.36,
+0.4764,
+0.2706,
+0.2386
+],
+"order": [
+10,
+5,
+12,
+1,
+0,
+7,
+4,
+11,
+8,
+3,
+9,
+13,
+14,
+6,
+2
+]
+}
+]
+},
+{
+"id": "q20",
+"question": "How does the holdout method differ from k-fold cross-validation?",
+"type": "comparison",
+"gold": [
+"p051",
+"p052"
+],
+"seeds": [
+{
+"id": "n327",
+"name": "k-fold cross-validation",
+"degree": 1,
+"passages": [
+"p051"
+]
+},
+{
+"id": "n297",
+"name": "holdout method",
+"degree": 3,
+"passages": [
+"p052"
+]
+}
+],
+"neighbours": [
+{
+"id": "n004",
+"name": "cross-validation",
+"passages": [
+"p013",
+"p031",
+"p049",
+"p052",
+"p055",
+"p056",
+"p058",
+"p087",
+"p133"
+]
+},
+{
+"id": "n005",
+"name": "training set",
+"passages": [
+"p035",
+"p044",
+"p048",
+"p050",
+"p052",
+"p054",
+"p055",
+"p132",
+"p133"
+]
+},
+{
+"id": "n118",
+"name": "test set",
+"passages": [
+"p052",
+"p054"
+]
+},
+{
+"id": "n439",
+"name": "non-exhaustive cross validation methods",
+"passages": [
+"p051"
+]
+}
+],
+"p_seed": [
+"p051",
+"p052"
+],
+"p_hop": [
+"p013",
+"p031",
+"p035",
+"p044",
+"p048",
+"p049",
+"p050",
+"p051",
+"p052",
+"p054",
+"p055",
+"p056",
+"p058",
+"p087",
+"p132",
+"p133"
+],
+"keywords": [
+{
+"phrase": "model validation by splitting data",
+"cos": [
+0.324,
+0.1908,
+0.5625,
+0.2771,
+0.078,
+0.1865,
+0.2389,
+0.1512,
+0.2294,
+0.3077,
+0.207,
+0.1744,
+0.1643,
+0.134,
+0.0727
+],
+"order": [
+2,
+0,
+9,
+3,
+6,
+8,
+10,
+1,
+5,
+11,
+12,
+7,
+13,
+4,
+14
+]
+},
+{
+"phrase": "training and testing",
+"cos": [
+0.1919,
+0.0801,
+0.3786,
+0.2038,
+0.113,
+0.1149,
+0.1239,
+0.1681,
+0.2367,
+0.2605,
+0.1308,
+0.2033,
+0.0973,
+0.176,
+0.2449
+],
+"order": [
+2,
+9,
+14,
+8,
+3,
+11,
+0,
+13,
+7,
+10,
+6,
+5,
+4,
+12,
+1
+]
+},
+{
+"phrase": "holdout method",
+"cos": [
+0.1693,
+0.0314,
+0.053,
+0.046,
+0.1109,
+0.0391,
+0.0799,
+0.0527,
+0.0373,
+0.0903,
+0.1091,
+0.1263,
+0.0352,
+0.0499,
+0.0272
+],
+"order": [
+0,
+11,
+4,
+10,
+9,
+6,
+2,
+7,
+13,
+3,
+5,
+8,
+12,
+1,
+14
+]
+}
+]
+},
+{
+"id": "q17",
+"question": "How does the shrinkage of principal component regression compare with that of ridge regression?",
+"type": "comparison",
+"gold": [
+"p082"
+],
+"seeds": [
+{
+"id": "n018",
+"name": "PCR",
+"degree": 14,
+"passages": [
+"p063",
+"p079",
+"p080",
+"p082",
+"p084"
+]
+},
+{
+"id": "n014",
+"name": "ridge regression",
+"degree": 18,
+"passages": [
+"p001",
+"p002",
+"p004",
+"p016",
+"p074",
+"p082"
+]
+},
+{
+"id": "n111",
+"name": "shrinkage",
+"degree": 4,
+"passages": [
+"p013",
+"p043"
+]
+}
+],
+"neighbours": [
+{
+"id": "n003",
+"name": "regularization",
+"passages": [
+"p001",
+"p005",
+"p011",
+"p019",
+"p021",
+"p022",
+"p027",
+"p031",
+"p043",
+"p044"
+]
+},
+{
+"id": "n011",
+"name": "multicollinearity",
+"passages": [
+"p001",
+"p002",
+"p069",
+"p074",
+"p075",
+"p076",
+"p104"
+]
+},
+{
+"id": "n015",
+"name": "Tikhonov regularization",
+"passages": [
+"p001",
+"p003",
+"p004",
+"p016",
+"p024",
+"p115"
+]
+},
+{
+"id": "n017",
+"name": "principal components",
+"passages": [
+"p080",
+"p081",
+"p082",
+"p083",
+"p087"
+]
+},
+{
+"id": "n022",
+"name": "interpretability",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p138"
+]
+},
+{
+"id": "n025",
+"name": "prediction accuracy",
+"passages": [
+"p005",
+"p006",
+"p013",
+"p039"
+]
+},
+{
+"id": "n029",
+"name": "bias\u2013variance tradeoff",
+"passages": [
+"p002",
+"p032",
+"p039"
+]
+},
+{
+"id": "n034",
+"name": "elastic net",
+"passages": [
+"p015",
+"p016",
+"p017"
+]
+},
+{
+"id": "n044",
+"name": "regularization parameter",
+"passages": [
+"p013",
+"p014",
+"p082"
+]
+},
+{
+"id": "n085",
+"name": "linear regression models",
+"passages": [
+"p002",
+"p079"
+]
+},
+{
+"id": "n093",
+"name": "partial least squares",
+"passages": [
+"p083",
+"p084"
+]
+},
+{
+"id": "n098",
+"name": "principal component analysis",
+"passages": [
+"p018",
+"p079"
+]
+},
+{
+"id": "n112",
+"name": "shrinkage estimator",
+"passages": [
+"p079",
+"p082"
+]
+},
+{
+"id": "n129",
+"name": "Arthur E. Hoerl",
+"passages": [
+"p004"
+]
+},
+{
+"id": "n219",
+"name": "dimension reduction",
+"passages": [
+"p080"
+]
+},
+{
+"id": "n226",
+"name": "efficient prediction",
+"passages": [
+"p080"
+]
+},
+{
+"id": "n296",
+"name": "Hoerl",
+"passages": [
+"p002"
+]
+},
+{
+"id": "n332",
+"name": "Kennard",
+"passages": [
+"p002"
+]
+},
+{
+"id": "n354",
+"name": "least square estimators",
+"passages": [
+"p002"
+]
+},
+{
+"id": "n431",
+"name": "multiple-regression models",
+"passages": [
+"p001"
+]
+},
+{
+"id": "n485",
+"name": "parameter estimation",
+"passages": [
+"p002"
+]
+},
+{
+"id": "n487",
+"name": "parametric models",
+"passages": [
+"p063"
+]
+},
+{
+"id": "n529",
+"name": "reduced rank regression",
+"passages": [
+"p079"
+]
+},
+{
+"id": "n534",
+"name": "regression analysis technique",
+"passages": [
+"p079"
+]
+},
+{
+"id": "n539",
+"name": "regression step",
+"passages": [
+"p080"
+]
+},
+{
+"id": "n542",
+"name": "regularized procedure",
+"passages": [
+"p079"
+]
+},
+{
+"id": "n543",
+"name": "regularized regression techniques",
+"passages": [
+"p074"
+]
+},
+{
+"id": "n549",
+"name": "ridge analysis",
+"passages": [
+"p004"
+]
+},
+{
+"id": "n551",
+"name": "ridge regression estimator",
+"passages": [
+"p002"
+]
+},
+{
+"id": "n598",
+"name": "supervised PCR",
+"passages": [
+"p084"
+]
+}
+],
+"p_seed": [
+"p001",
+"p002",
+"p004",
+"p013",
+"p016",
+"p043",
+"p063",
+"p074",
+"p079",
+"p080",
+"p082",
+"p084"
+],
+"p_hop": [
+"p001",
+"p002",
+"p003",
+"p004",
+"p005",
+"p006",
+"p011",
+"p013",
+"p014",
+"p015",
+"p016",
+"p017",
+"p018",
+"p019",
+"p021",
+"p022",
+"p024",
+"p027",
+"p031",
+"p032",
+"p039",
+"p043",
+"p044",
+"p063",
+"p069",
+"p074",
+"p075",
+"p076",
+"p079",
+"p080",
+"p081",
+"p082",
+"p083",
+"p084",
+"p087",
+"p104",
+"p115",
+"p138"
+],
+"keywords": [
+{
+"phrase": "how shrinkage differs between regression methods",
+"cos": [
+0.308,
+0.4573,
+0.1526,
+0.3022,
+0.1989,
+0.3221,
+0.0604,
+0.395,
+0.2349,
+0.178,
+0.4393,
+0.182,
+0.3751,
+0.1432,
+0.1133
+],
+"order": [
+1,
+10,
+7,
+12,
+5,
+0,
+3,
+8,
+4,
+11,
+9,
+2,
+13,
+14,
+6
+]
+},
+{
+"phrase": "dimension reduction",
+"cos": [
+0.2569,
+0.3098,
+0.1033,
+0.2981,
+0.1157,
+0.2424,
+0.1439,
+0.2953,
+0.2673,
+0.2567,
+0.2999,
+0.2289,
+0.283,
+0.124,
+0.189
+],
+"order": [
+1,
+10,
+3,
+7,
+12,
+8,
+0,
+9,
+5,
+11,
+14,
+6,
+13,
+4,
+2
+]
+},
+{
+"phrase": "ridge regression",
+"cos": [
+0.2418,
+0.6793,
+0.1117,
+0.2246,
+0.3421,
+0.4058,
+0.0934,
+0.4245,
+0.1718,
+0.298,
+0.4698,
+0.3297,
+0.6253,
+0.2409,
+0.1954
+],
+"order": [
+1,
+12,
+10,
+7,
+5,
+4,
+11,
+9,
+0,
+13,
+3,
+14,
+8,
+2,
+6
+]
+}
+]
+},
+{
+"id": "q06",
+"question": "What goes wrong in gradient descent if the step size is too large?",
+"type": "single-hop",
+"gold": [
+"p093"
+],
+"seeds": [
+{
+"id": "n009",
+"name": "gradient descent",
+"degree": 16,
+"passages": [
+"p089",
+"p091",
+"p094",
+"p095",
+"p096",
+"p097",
+"p098"
+]
+},
+{
+"id": "n590",
+"name": "step size",
+"degree": 3,
+"passages": [
+"p093"
+]
+}
+],
+"neighbours": [
+{
+"id": "n042",
+"name": "objective function",
+"passages": [
+"p094",
+"p096",
+"p098"
+]
+},
+{
+"id": "n057",
+"name": "convergence",
+"passages": [
+"p093",
+"p104"
+]
+},
+{
+"id": "n074",
+"name": "gradient",
+"passages": [
+"p024",
+"p089"
+]
+},
+{
+"id": "n086",
+"name": "local minimum",
+"passages": [
+"p092",
+"p095"
+]
+},
+{
+"id": "n218",
+"name": "differentiable multivariate function",
+"passages": [
+"p089"
+]
+},
+{
+"id": "n221",
+"name": "divergence",
+"passages": [
+"p093"
+]
+},
+{
+"id": "n251",
+"name": "first-order iterative algorithm",
+"passages": [
+"p089"
+]
+},
+{
+"id": "n253",
+"name": "fixed step size",
+"passages": [
+"p098"
+]
+},
+{
+"id": "n271",
+"name": "global minimum",
+"passages": [
+"p091"
+]
+},
+{
+"id": "n274",
+"name": "gradient ascent",
+"passages": [
+"p089"
+]
+},
+{
+"id": "n323",
+"name": "iterative method for local optimization",
+"passages": [
+"p096"
+]
+},
+{
+"id": "n366",
+"name": "line search step",
+"passages": [
+"p098"
+]
+},
+{
+"id": "n377",
+"name": "local search algorithm",
+"passages": [
+"p096"
+]
+},
+{
+"id": "n420",
+"name": "momentum method",
+"passages": [
+"p097"
+]
+},
+{
+"id": "n478",
+"name": "overshoot",
+"passages": [
+"p093"
+]
+},
+{
+"id": "n503",
+"name": "preconditioning",
+"passages": [
+"p095"
+]
+},
+{
+"id": "n569",
+"name": "slow convergence",
+"passages": [
+"p095"
+]
+},
+{
+"id": "n600",
+"name": "system of nonlinear equations",
+"passages": [
+"p094"
+]
+},
+{
+"id": "n624",
+"name": "unconstrained mathematical optimization",
+"passages": [
+"p089"
+]
+}
+],
+"p_seed": [
+"p089",
+"p091",
+"p093",
+"p094",
+"p095",
+"p096",
+"p097",
+"p098"
+],
+"p_hop": [
+"p024",
+"p089",
+"p091",
+"p092",
+"p093",
+"p094",
+"p095",
+"p096",
+"p097",
+"p098",
+"p104"
+],
+"keywords": [
+{
+"phrase": "optimisation by iterative steps",
+"cos": [
+0.2348,
+0.1308,
+0.0644,
+0.1687,
+0.5695,
+0.1779,
+0.1188,
+0.0883,
+0.1445,
+0.1014,
+0.1471,
+0.3181,
+0.1909,
+0.0971,
+0.0778
+],
+"order": [
+4,
+11,
+0,
+12,
+5,
+3,
+10,
+8,
+1,
+6,
+9,
+13,
+7,
+14,
+2
+]
+},
+{
+"phrase": "learning",
+"cos": [
+0.3813,
+0.1908,
+0.1833,
+0.2978,
+0.2601,
+0.1682,
+0.2112,
+0.2588,
+0.322,
+0.332,
+0.2506,
+0.3095,
+0.2405,
+0.2492,
+0.2451
+],
+"order": [
+0,
+9,
+8,
+11,
+3,
+4,
+7,
+10,
+13,
+14,
+12,
+6,
+1,
+2,
+5
+]
+},
+{
+"phrase": "gradient descent",
+"cos": [
+0.3861,
+0.2765,
+0.118,
+0.3408,
+0.6817,
+0.2031,
+0.1908,
+0.2957,
+0.289,
+0.2854,
+0.3518,
+0.4779,
+0.3065,
+0.2535,
+0.1679
+],
+"order": [
+4,
+11,
+0,
+10,
+3,
+12,
+7,
+8,
+9,
+1,
+13,
+5,
+6,
+14,
+2
+]
+}
+]
+}
+]
+}

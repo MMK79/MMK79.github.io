@@ -1,0 +1,493 @@
+{
+ "note": "our hand labels, a demo, not a benchmark; single labeller; gold list not exhaustive",
+ "relation": "requires",
+ "n_edges": 28,
+ "counts": {
+  "correct": 9,
+  "reversed": 2,
+  "borderline": 2,
+  "unsupported": 15
+ },
+ "audit": [
+  {
+   "n": 1,
+   "prereq": "multicollinearity",
+   "dependent": "linear regression models",
+   "graph_says": "linear regression models requires multicollinearity",
+   "passages": [
+    "p002"
+   ],
+   "label": "unsupported",
+   "why": "Passage: ridge regression fixes the trouble multicollinearity causes; nothing is required.",
+   "evidence": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables\u2014by creating a ridge regression estimator (RR).",
+   "quote_found": true
+  },
+  {
+   "n": 2,
+   "prereq": "sparse coefficients",
+   "dependent": "lasso",
+   "graph_says": "lasso requires sparse coefficients",
+   "passages": [
+    "p005"
+   ],
+   "label": "correct",
+   "why": "The lasso assumes sparse coefficients.",
+   "evidence": "The lasso method assumes that the coefficients of the linear model are sparse, meaning that few of them are non-zero.",
+   "quote_found": true
+  },
+  {
+   "n": 3,
+   "prereq": "restricted eigenvalue condition",
+   "dependent": "oracle inequalities",
+   "graph_says": "oracle inequalities requires restricted eigenvalue condition",
+   "passages": [
+    "p008"
+   ],
+   "label": "correct",
+   "why": "The sharp oracle inequality is proved under the restricted eigenvalue condition.",
+   "evidence": "Koltchinskii, Lounici and Tsybakov proved a sharp oracle inequality for the fixed-design lasso under a restricted eigenvalue condition.",
+   "quote_found": true
+  },
+  {
+   "n": 4,
+   "prereq": "convex analysis",
+   "dependent": "lasso",
+   "graph_says": "lasso requires convex analysis",
+   "passages": [
+    "p012"
+   ],
+   "label": "correct",
+   "why": "Solving the lasso uses convex analysis.",
+   "evidence": "== Computing lasso solutions == [formula] The loss function of the lasso is not differentiable, but a wide variety of techniques from convex analysis and optimization theory have been developed to compute the solutions path of the lasso.",
+   "quote_found": true
+  },
+  {
+   "n": 5,
+   "prereq": "optimization theory",
+   "dependent": "lasso",
+   "graph_says": "lasso requires optimization theory",
+   "passages": [
+    "p012"
+   ],
+   "label": "correct",
+   "why": "Solving the lasso uses optimization theory.",
+   "evidence": "== Computing lasso solutions == [formula] The loss function of the lasso is not differentiable, but a wide variety of techniques from convex analysis and optimization theory have been developed to compute the solutions path of the lasso.",
+   "quote_found": true
+  },
+  {
+   "n": 6,
+   "prereq": "training set",
+   "dependent": "machine learning model",
+   "graph_says": "machine learning model requires training set",
+   "passages": [
+    "p035"
+   ],
+   "label": "unsupported",
+   "why": "The passage is about reconstructing training instances, not a prerequisite.",
+   "evidence": "It may be possible to reconstruct details of individual training instances from an overfitted machine learning model's training set.",
+   "quote_found": true
+  },
+  {
+   "n": 7,
+   "prereq": "benign overfitting",
+   "dependent": "overparameterization",
+   "graph_says": "overparameterization requires benign overfitting",
+   "passages": [
+    "p038"
+   ],
+   "label": "reversed",
+   "why": "Overparameterization is the prerequisite of benign overfitting; the graph has it the other way.",
+   "evidence": "In particular, it has been shown that overparameterization is essential for benign overfitting in this setting.",
+   "quote_found": true
+  },
+  {
+   "n": 8,
+   "prereq": "hard wiring",
+   "dependent": "generic object recognition",
+   "graph_says": "generic object recognition requires hard wiring",
+   "passages": [
+    "p048"
+   ],
+   "label": "correct",
+   "why": "Object recognition cannot be learned from scratch, it requires hard wiring.",
+   "evidence": "argue that the bias\u2013variance dilemma implies that abilities such as generic object recognition cannot be learned from scratch, but require a certain degree of \"hard wiring\" that is later tuned by experience.",
+   "quote_found": true
+  },
+  {
+   "n": 9,
+   "prereq": "training set",
+   "dependent": "model-free approaches",
+   "graph_says": "model-free approaches requires training set",
+   "passages": [
+    "p048"
+   ],
+   "label": "correct",
+   "why": "Model-free inference requires very large training sets.",
+   "evidence": "argue that the bias\u2013variance dilemma implies that abilities such as generic object recognition cannot be learned from scratch, but require a certain degree of \"hard wiring\" that is later tuned by experience.",
+   "quote_found": true
+  },
+  {
+   "n": 10,
+   "prereq": "hyperparameter sets",
+   "dependent": "model evaluation",
+   "graph_says": "model evaluation requires hyperparameter sets",
+   "passages": [
+    "p054"
+   ],
+   "label": "unsupported",
+   "why": "Evaluation is run per hyperparameter set; not a prerequisite.",
+   "evidence": "Similar to the k*l-fold cross validation, the training set is used for model fitting and the validation set is used for model evaluation for each of the hyperparameter sets.",
+   "quote_found": true
+  },
+  {
+   "n": 11,
+   "prereq": "human biases",
+   "dependent": "cross-validation",
+   "graph_says": "cross-validation requires human biases",
+   "passages": [
+    "p055"
+   ],
+   "label": "unsupported",
+   "why": "Cross-validation is only meaningful if biases are controlled: a condition, not the concept \"human biases\".",
+   "evidence": "Cross-validation only yields meaningful results if the validation set and training set are drawn from the same population and only if human biases are controlled.",
+   "quote_found": true
+  },
+  {
+   "n": 12,
+   "prereq": "cross-validation",
+   "dependent": "feature selection",
+   "graph_says": "feature selection requires cross-validation",
+   "passages": [
+    "p056"
+   ],
+   "label": "unsupported",
+   "why": "The passage lists misuses of cross-validation, not that feature selection requires it.",
+   "evidence": "In addition to placing too much faith in predictions that may vary across modelers and lead to poor external validity due to these confounding modeler effects, these are some other ways that cross-validation can be misused: [formula] By performing an initial a",
+   "quote_found": true
+  },
+  {
+   "n": 13,
+   "prereq": "cross-validation",
+   "dependent": "model tuning",
+   "graph_says": "model tuning requires cross-validation",
+   "passages": [
+    "p056"
+   ],
+   "label": "unsupported",
+   "why": "Same sentence: misuse, not a prerequisite.",
+   "evidence": "In addition to placing too much faith in predictions that may vary across modelers and lead to poor external validity due to these confounding modeler effects, these are some other ways that cross-validation can be misused: [formula] By performing an initial a",
+   "quote_found": true
+  },
+  {
+   "n": 14,
+   "prereq": "mean interval length",
+   "dependent": "stationary bootstrap",
+   "graph_says": "stationary bootstrap requires mean interval length",
+   "passages": [
+    "p057"
+   ],
+   "label": "correct",
+   "why": "The stationary bootstrap call needs the mean interval length.",
+   "evidence": "The statistic of the bootstrap needs to accept an interval of the time series and return the summary statistic on it.",
+   "quote_found": true
+  },
+  {
+   "n": 15,
+   "prereq": "response variable",
+   "dependent": "hierarchical linear models",
+   "graph_says": "hierarchical linear models requires response variable",
+   "passages": [
+    "p067"
+   ],
+   "label": "unsupported",
+   "why": "Any regression has a response variable; not a stated prerequisite.",
+   "evidence": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C.",
+   "quote_found": true
+  },
+  {
+   "n": 16,
+   "prereq": "covariates",
+   "dependent": "hierarchical linear models",
+   "graph_says": "hierarchical linear models requires covariates",
+   "passages": [
+    "p067"
+   ],
+   "label": "unsupported",
+   "why": "Any regression has covariates; not a stated prerequisite.",
+   "evidence": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C.",
+   "quote_found": true
+  },
+  {
+   "n": 17,
+   "prereq": "prior information",
+   "dependent": "regression",
+   "graph_says": "regression requires prior information",
+   "passages": [
+    "p075"
+   ],
+   "label": "unsupported",
+   "why": "The passage complains prior information is missing; it does not say regression requires it.",
+   "evidence": "Researchers are often frustrated not by multicollinearity, but by their inability to incorporate relevant prior information in regressions.",
+   "quote_found": true
+  },
+  {
+   "n": 18,
+   "prereq": "uncertainty",
+   "dependent": "model selection procedure",
+   "graph_says": "model selection procedure requires uncertainty",
+   "passages": [
+    "p078"
+   ],
+   "label": "unsupported",
+   "why": "Invalid p-values result from ignoring uncertainty; reversed or not a prerequisite.",
+   "evidence": "P-values and confidence intervals derived from post hoc analyses are invalidated by ignoring the uncertainty in the model selection procedure.",
+   "quote_found": true
+  },
+  {
+   "n": 19,
+   "prereq": "primal formulation",
+   "dependent": "classical PCR",
+   "graph_says": "classical PCR requires primal formulation",
+   "passages": [
+    "p088"
+   ],
+   "label": "unsupported",
+   "why": "Classical PCR IS the primal formulation (a definition, not a prerequisite).",
+   "evidence": "It can be easily shown that this is the same as regressing the outcome vector on the corresponding principal components (which are finite-dimensional in this case), as defined in the context of the classical PCR.",
+   "quote_found": true
+  },
+  {
+   "n": 20,
+   "prereq": "explanatory variables",
+   "dependent": "beta coefficients",
+   "graph_says": "beta coefficients requires explanatory variables",
+   "passages": [
+    "p102"
+   ],
+   "label": "unsupported",
+   "why": "Coefficients are estimated from the explanatory variables; not a stated prerequisite.",
+   "evidence": "Again, the optimum beta coefficients may be found by maximizing the log-likelihood function generally using numerical methods.",
+   "quote_found": true
+  },
+  {
+   "n": 21,
+   "prereq": "degree of freedom",
+   "dependent": "chi-square distribution",
+   "graph_says": "chi-square distribution requires degree of freedom",
+   "passages": [
+    "p106"
+   ],
+   "label": "correct",
+   "why": "The chi-square distribution is defined by its degrees of freedom.",
+   "evidence": "In the case of a single predictor model, one simply compares the deviance of the predictor model with that of the null model on a chi-square distribution with a single degree of freedom.",
+   "quote_found": true
+  },
+  {
+   "n": 22,
+   "prereq": "dependent variable",
+   "dependent": "logistic regression",
+   "graph_says": "logistic regression requires dependent variable",
+   "passages": [
+    "p107"
+   ],
+   "label": "borderline",
+   "why": "A binary dependent variable is part of the model, but the edge is generic.",
+   "evidence": "The model of logistic regression, however, is based on quite different assumptions (about the relationship between the dependent and independent variables) from those of linear regression.",
+   "quote_found": true
+  },
+  {
+   "n": 23,
+   "prereq": "independent variables",
+   "dependent": "logistic regression",
+   "graph_says": "logistic regression requires independent variables",
+   "passages": [
+    "p107"
+   ],
+   "label": "borderline",
+   "why": "Generic dependency, not a stated prerequisite.",
+   "evidence": "The model of logistic regression, however, is based on quite different assumptions (about the relationship between the dependent and independent variables) from those of linear regression.",
+   "quote_found": true
+  },
+  {
+   "n": 24,
+   "prereq": "kernel SVMs",
+   "dependent": "standardization",
+   "graph_says": "standardization requires kernel SVMs",
+   "passages": [
+    "p118"
+   ],
+   "label": "reversed",
+   "why": "Standardization is recommended FOR kernel SVMs; the graph has it the other way.",
+   "evidence": "Preprocessing of data (standardization) is highly recommended to enhance accuracy of classification.",
+   "quote_found": true
+  },
+  {
+   "n": 25,
+   "prereq": "root node",
+   "dependent": "goodness",
+   "graph_says": "goodness requires root node",
+   "passages": [
+    "p125"
+   ],
+   "label": "unsupported",
+   "why": "Splits are scored at the root; \"goodness\" is not a prerequisite of \"root node\".",
+   "evidence": "Assume a candidate split [formula] such that records with a low savings will be put in the left child and all other records will be put into the right child.",
+   "quote_found": true
+  },
+  {
+   "n": 26,
+   "prereq": "decision tree",
+   "dependent": "pruning",
+   "graph_says": "pruning requires decision tree",
+   "passages": [
+    "p127"
+   ],
+   "label": "correct",
+   "why": "Pruning is applied to a decision tree, which must exist first.",
+   "evidence": "(This is known as overfitting.)  Mechanisms such as pruning are necessary to avoid this problem (with the exception of some algorithms such as the Conditional Inference approach, that does not require pruning).",
+   "quote_found": true
+  },
+  {
+   "n": 27,
+   "prereq": "training set",
+   "dependent": "B",
+   "graph_says": "B requires training set",
+   "passages": [
+    "p133"
+   ],
+   "label": "unsupported",
+   "why": "The number of trees B depends on training-set size; not a prerequisite.",
+   "evidence": "Typically, a few hundred to several thousand trees are used, depending on the size and nature of the training set.",
+   "quote_found": true
+  },
+  {
+   "n": 28,
+   "prereq": "accuracy",
+   "dependent": "random forests",
+   "graph_says": "random forests requires accuracy",
+   "passages": [
+    "p138"
+   ],
+   "label": "unsupported",
+   "why": "Accuracy is an outcome, not a prerequisite.",
+   "evidence": "To achieve both performance and interpretability, some model compression techniques allow transforming a random forest into a minimal \"born-again\" decision tree that faithfully reproduces the same decision function.",
+   "quote_found": true
+  }
+ ],
+ "gold": [
+  {
+   "prereq": "sparse coefficients",
+   "dependent": "lasso",
+   "passage": "p005",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "restricted eigenvalue condition",
+   "dependent": "oracle inequalities",
+   "passage": "p008",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "principal component analysis",
+   "dependent": "principal component regression",
+   "passage": "p079",
+   "in_requires_directed": false,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": false
+  },
+  {
+   "prereq": "hard wiring",
+   "dependent": "generic object recognition",
+   "passage": "p048",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "overparameterization",
+   "dependent": "benign overfitting",
+   "passage": "p038",
+   "in_requires_directed": false,
+   "in_requires_reversed": true,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "mean interval length",
+   "dependent": "stationary bootstrap",
+   "passage": "p057",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "gradient",
+   "dependent": "gradient descent",
+   "passage": "p096",
+   "in_requires_directed": false,
+   "in_requires_reversed": false,
+   "other_relation": [
+    "uses"
+   ],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "VC theory",
+   "dependent": "support vector machines",
+   "passage": "p109",
+   "in_requires_directed": false,
+   "in_requires_reversed": false,
+   "other_relation": [
+    "related_to"
+   ],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "logistic function",
+   "dependent": "logistic regression",
+   "passage": "p100",
+   "in_requires_directed": false,
+   "in_requires_reversed": false,
+   "other_relation": [
+    "uses"
+   ],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "decision tree",
+   "dependent": "pruning",
+   "passage": "p127",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  },
+  {
+   "prereq": "training set",
+   "dependent": "model-free approaches",
+   "passage": "p048",
+   "in_requires_directed": true,
+   "in_requires_reversed": false,
+   "other_relation": [],
+   "dependent_in_graph": true
+  }
+ ],
+ "summary": {
+  "precision_strict": 0.32142857142857145,
+  "precision_lenient": 0.39285714285714285,
+  "precision_ignoring_direction": 0.39285714285714285,
+  "gold_size": 11,
+  "recall_directed": 0.5454545454545454,
+  "recall_undirected": 0.6363636363636364,
+  "precision_vs_gold_floor": 0.21428571428571427
+ }
+}

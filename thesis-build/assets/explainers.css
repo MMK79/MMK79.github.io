@@ -1,0 +1,85 @@
+/* Explainer pages (metrics.html, algorithms.html, explainers.html). Tokens from site.css. Vertical page only:
+   everything wraps, demos and videos are fluid, nothing is wider than the viewport. */
+#top{max-width:1180px;margin:0 auto;padding:18px 28px 6px}
+#top h1{font-size:clamp(26px,3vw,38px);margin:0 0 6px}
+#top .lede{color:var(--muted);font-size:15px;max-width:76ch;margin-top:6px}
+.ex-story{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px;margin:14px 0 4px}
+.ex-story div{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;font-size:14px;min-width:0}
+.ex-story b{display:block;font:600 12px var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--ai);margin-bottom:3px}
+html[lang=fa] .ex-story b{text-transform:none}
+.ex-note{font-size:13px;color:var(--faint);margin-top:8px;max-width:none}
+/* filters */
+.ex-flt{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;max-width:1180px;margin:12px auto 0;padding:10px 28px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.ex-flt input[type=search]{font:14px var(--body);color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 9px;flex:1 1 200px;min-width:0}
+.ex-flt label{font-size:13.5px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.ex-flt select{max-width:100%}
+.ex-flt input[type=checkbox]{accent-color:var(--ai)}
+.ex-flt .live-count{margin-inline-start:auto}
+/* layer sections and cards */
+#ex-main section{padding:28px 0 4px}
+.ex-lmeas{font-size:14px;color:var(--muted);margin:0 0 10px}
+.ex-cards{display:grid;gap:10px}
+.ex-card{border:1px solid var(--line);border-radius:12px;background:var(--panel);min-width:0;scroll-margin-top:calc(var(--hdr) + 12px)}
+.ex-card:target,.ex-card.ex-hl{border-color:var(--ai)}
+.ex-card>details>summary{list-style:none;cursor:pointer;padding:12px 16px;display:grid;gap:4px}
+.ex-card>details>summary::-webkit-details-marker{display:none}
+.ex-card>details>summary:focus-visible{outline:2px solid var(--ai);outline-offset:-2px;border-radius:12px}
+.ex-sum-h{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
+.ex-card h3{font-size:19px;margin:0;overflow-wrap:anywhere}
+.ex-chev{flex:none;color:var(--muted);font-size:14px;transition:transform .15s}
+.ex-card details[open] .ex-chev{transform:rotate(90deg)}
+html[dir=rtl] .ex-chev{transform:scaleX(-1)} html[dir=rtl] .ex-card details[open] .ex-chev{transform:rotate(90deg)}
+.ex-q{color:var(--muted);font-size:14.5px;margin:0;max-width:none}
+.ex-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ex-tag{display:inline-block;font:500 11.5px/1.6 var(--body);border-radius:4px;padding:0 7px;border:1px solid color-mix(in srgb,var(--c,var(--muted)) 50%,var(--line));color:var(--c,var(--muted));white-space:nowrap}
+.ex-tag.ev-evidenced{--c:var(--he)} .ex-tag.ev-inferred{--c:var(--warn)} .ex-tag.ev-partly{--c:var(--ai)}
+.ex-tag.real{--c:var(--he)} .ex-tag.partial{--c:var(--ai)} .ex-tag.toy{--c:var(--muted)}
+.ex-tag.d3{--c:var(--both)} .ex-tag.rev{--c:var(--k12)} .ex-tag.sup{--c:var(--warn)}
+.ex-body{padding:0 16px 16px;display:grid;gap:14px;min-width:0}
+.ex-body h4{font:600 12px var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--ai);margin:0 0 6px}
+html[lang=fa] .ex-body h4{text-transform:none;font-size:13px}
+.ex-blk{min-width:0;overflow-wrap:anywhere}
+.ex-blk p,.ex-blk li{font-size:14.5px;max-width:none}
+.ex-blk ul{padding-inline-start:20px}
+.ex-blk li{margin:3px 0}
+.ex-media{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
+.ex-video video{display:block;width:100%;max-height:62vh;background:#000;border-radius:8px}
+.ex-novid{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;color:var(--muted)}
+.ex-demo{min-width:0;overflow-x:clip}
+.ex-demo .demo{max-width:100%}
+/* some demos put their mode buttons (Real example / Toy example) outside the kit's .demo box: same look as the kit's buttons */
+.ex-demo button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;font-size:13.5px;margin:0 4px 6px 0}
+.ex-demo button[aria-pressed=true],.ex-demo button.on{border-color:var(--ai);color:var(--ai)}
+.ex-demo .muted{font-size:13.5px}
+.ex-fx{font:15px/1.6 var(--mono);color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere;direction:ltr;text-align:left}
+.ex-tex summary{cursor:pointer;font-size:12.5px;color:var(--faint);margin-top:6px}
+.ex-tex code{display:block;font:12.5px/1.5 var(--mono);color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;margin-top:4px;direction:ltr;text-align:left}
+.ex-sym{display:grid;grid-template-columns:minmax(70px,max-content) minmax(0,1fr);gap:4px 12px;font-size:14px;margin:8px 0 0}
+.ex-sym dt{font-family:var(--mono);color:var(--ai);font-size:13px;overflow-wrap:anywhere}
+.ex-sym dd{margin:0;color:var(--text)}
+.ex-src{font-size:13.5px;color:var(--muted)}
+.ex-src a{color:var(--k12);overflow-wrap:anywhere}
+.ex-sup{border-inline-start:3px solid var(--warn);padding:4px 10px;margin-top:8px;font-size:13.5px}
+.ex-sup s{color:var(--faint)}
+.ex-sup code{font:12px var(--mono);color:var(--faint);white-space:pre-wrap;overflow-wrap:anywhere}
+.ex-caveat{border-inline-start:3px solid var(--warn);padding-inline-start:10px}
+.ex-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.ex-none{color:var(--faint);font-size:14px;margin:16px 0}
+.ex-link{font-size:12.5px;color:var(--faint);text-decoration:none}.ex-link:hover{color:var(--ai)}
+/* index page */
+.ex-idx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px;margin:18px 0}
+.ex-idx a{display:block;border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px 18px;text-decoration:none;color:var(--text);min-width:0}
+.ex-idx a:hover,.ex-idx a:focus-visible{border-color:var(--ai)}
+.ex-idx h2{font-size:26px;margin:0 0 6px}
+.ex-idx p{font-size:14.5px;color:var(--muted)}
+.ex-idx .num{color:var(--ai)}
+@media (max-width:720px){
+  #top{padding:14px 16px 6px} .ex-flt{padding:10px 16px} .ex-flt .live-count{margin-inline-start:0}
+  .ex-card>details>summary{padding:10px 12px} .ex-body{padding:0 12px 12px}
+  .ex-sym{grid-template-columns:minmax(0,1fr)} .ex-sym dd{margin-bottom:6px}
+}
+@media (prefers-reduced-motion:reduce){.ex-chev{transition:none}}
+.ex-tag.d3p{--c:var(--muted);border-style:dashed}
+.ex-rel{white-space:normal;text-decoration:none}
+a.ex-rel:hover{border-color:var(--ai);color:var(--ai)}
+.ex-rel.soon{opacity:.65;border-style:dashed}

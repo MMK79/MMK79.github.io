@@ -1,0 +1,21 @@
+/* Shared by every metric/algorithm demo. Tokens copied from thesis-site/templates/site.css (keep in sync). */
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--ai:#F2A93B;--k12:#7C9CFF;--he:#3CC7B4;--both:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+.demo{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;max-width:880px}
+.demo h3{font-family:var(--display);font-weight:300;margin:0 0 4px}
+.demo .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.demo .row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:8px 0}
+.demo label{color:var(--muted);font-size:13px}
+.demo input[type=range]{accent-color:var(--ai);min-width:160px}
+.demo input[type=number],.demo select{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:3px 6px;font:inherit}
+.demo button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit}
+.demo button[aria-pressed=true],.demo button.on{border-color:var(--ai);color:var(--ai)}
+.demo .num,.demo code{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.demo .result{font:300 34px var(--display);color:var(--ai);margin:8px 0}
+.demo .formula{font-family:var(--mono);color:var(--muted);font-size:13px;white-space:pre-wrap}
+.demo .changed{background:#F2A93B33;border-radius:3px;transition:background 1.2s}
+.demo table{border-collapse:collapse;width:100%}.demo td,.demo th{border-bottom:1px solid var(--line);padding:4px 8px;text-align:left}
+.demo .good{color:var(--he)}.demo .bad{color:var(--warn)}
+.demo svg text{fill:var(--text);font:12px var(--body)}
+@media(max-width:600px){.demo{padding:10px}}

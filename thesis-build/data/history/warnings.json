@@ -1,0 +1,45 @@
+{
+ "as_of": "2026-10-08",
+ "about": "The two GraphRAG warnings that the History page shows (history.js renders counts.json series[*].warning under the label hist.s_warning; both are on GraphRAG series), checked against primary records, plus one related stale card text. The data files are already corrected (old text kept in superseded[]); a rebuild (python3 site.py) shows the new warning text. proposed_text_en is the shorter wording proposed for the page if the site session wants it instead of the full data text.",
+ "warnings": [
+  {
+   "id": "w1-openalex-graphrag-early-hits",
+   "where": "counts.json series graphrag_openalex_title_abstract_graphrag .warning (shown under 'Series and the exact query')",
+   "claim": "the 2019, 2022, 2023 hits are 1 each and likely noise or later-edited abstracts",
+   "evidence": [
+    {"url": "https://api.openalex.org/works/W2989539713", "date_read": "2026-10-08", "finding": "2019 hit = CCNet (arXiv 1911.00359, 2019-11-01). The OpenAlex record carries a wrong, unrelated abstract (a 'semantic economy' text) that contains 'GraphRAG'. The arXiv abstract of 1911.00359 has no 'GraphRAG' (arXiv API, 0 matches)."},
+    {"url": "https://api.openalex.org/works/W7214435459", "date_read": "2026-10-08", "finding": "2022 hit = 'Agentic Artificial Intelligence for Enterprise Data Governance ... Microsoft 365', International Journal of Multidisciplinary Futuristic Development, publication_date 2022-01-01 but OpenAlex created_date 2026-09-27; the abstract describes agentic AI and GraphRAG, terms that did not exist in this sense in 2022 (inferred: misdated record)."},
+    {"url": "https://arxiv.org/abs/2309.12132v1", "date_read": "2026-10-08", "finding": "2023 hit = arXiv 2309.12132; v1 (21 Sep 2023) abstract has no 'GraphRAG'; v2 (19 May 2025) adds it."}
+   ],
+   "verdict": "Correct in direction, too vague. All three early hits are artefacts (one wrong abstract, one misdated record, one later-version abstract), not 'likely' noise.",
+   "action": "fix",
+   "proposed_text_en": "The 2019, 2022 and 2023 hits (one each) are errors in the records: a wrong abstract on an unrelated 2019 paper, a 2022 date on a record added in 2026, and a 2023 preprint that added the word only in its 2025 version. Read 2019-2023 as zero.",
+   "applied_to_data": "counts.json warning replaced; old text in series.superseded[]"
+  },
+  {
+   "id": "w2-arxiv-2309-12132",
+   "where": "counts.json series graphrag_arxiv_title_abstract .warning; same claim in the note (answer 2 and Claims vs evidence)",
+   "claim": "arXiv searches the latest abstract version; the single 2023 hit (2309.12132) only added the word GraphRAG in a later version (v1 abstract has no GraphRAG), so treat 2023 as 0",
+   "evidence": [
+    {"url": "https://arxiv.org/abs/2309.12132v1", "date_read": "2026-10-08", "finding": "v1 submitted Thu, 21 Sep 2023, title 'A knowledge representation approach for construction contract knowledge modeling'; abstract has no 'GraphRAG'."},
+    {"url": "https://arxiv.org/abs/2309.12132v2", "date_read": "2026-10-08", "finding": "v2 submitted Mon, 19 May 2025, retitled 'Automating construction contract review using knowledge graph-enhanced large language models'; abstract says 'a Graph Retrieval-Augmented Generation (GraphRAG) framework'."}
+   ],
+   "verdict": "Confirmed. Add the v2 date and the title change so a reader can check it.",
+   "action": "clarify",
+   "proposed_text_en": "The one 2023 hit (arXiv 2309.12132) uses the word GraphRAG only in its second version, posted 19 May 2025 under a new title; the September 2023 version does not. arXiv searches the latest version, so read 2023 as zero.",
+   "applied_to_data": "counts.json warning replaced; old text in series.superseded[]"
+  },
+  {
+   "id": "w3-nebulagraph-card-text",
+   "where": "timeline.json nebula-2023 one_liner (shown as 'What changed' on the card); related to the 'first appearance of the term' question",
+   "claim": "Earliest industry use of the phrase 'Graph RAG' that I found; secondary sources only.",
+   "evidence": [
+    {"url": "https://nebula-graph.io/posts/nebulagraph-launches-industry-first-graphrag-retrieval-augmented-generation-with-llm-based-on-knowledge-graphs", "date_read": "2026-10-07 (verification pass; re-used here)", "finding": "Primary page, dated 'Sep 6, 2023' on the page, title spells 'GraphRAG'. Earliest Wayback capture is 2026, so the 2023 date rests on the page's own text. Microsoft's blog is 13 Feb 2024 (page datePublished)."}
+   ],
+   "verdict": "Stale: the card still says 'secondary sources only' after the source was opened, and spells the term 'Graph RAG'. The order (NebulaGraph Sep 2023 before Microsoft Feb 2024) holds; 'first' remains unproven because no wider priority search was run.",
+   "action": "fix",
+   "proposed_text_en": "Earliest industry use of the name 'GraphRAG' that we found: a graph-database vendor's launch post, 6 Sep 2023, five months before Microsoft's blog. Not a research paper; 'industry-first' is the vendor's own claim.",
+   "applied_to_data": "timeline.json one_liner replaced; old text in nebula-2023.superseded[]"
+  }
+ ]
+}

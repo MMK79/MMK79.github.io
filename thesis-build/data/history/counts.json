@@ -1,0 +1,145 @@
+{
+ "as_of": "2026-10-07",
+ "note": "2026 is a partial year (to 7 Oct). Counts are phrase matches, so they miss papers that say only 'RAG'; read the shape, not the absolute level. OpenAlex indexes abstracts late, so title+abstract counts for 2023 and earlier are low; the arXiv series is the better check for early years.",
+ "series": {
+  "rag_openalex_title_abstract": {
+   "source": "OpenAlex works API",
+   "filter": "title_and_abstract.search:\"retrieval-augmented generation\"",
+   "by_year": {
+    "2019": 2,
+    "2020": 10,
+    "2021": 14,
+    "2022": 26,
+    "2023": 200,
+    "2024": 2942,
+    "2025": 9247,
+    "2026": 15420
+   }
+  },
+  "rag_openalex_title": {
+   "source": "OpenAlex works API",
+   "filter": "title.search:\"retrieval-augmented generation\"",
+   "by_year": {
+    "2019": 0,
+    "2020": 4,
+    "2021": 3,
+    "2022": 6,
+    "2023": 54,
+    "2024": 929,
+    "2025": 2473,
+    "2026": 3678
+   }
+  },
+  "rag_openalex_fulltext_any": {
+   "source": "OpenAlex works API (default.search covers title, abstract, full text where indexed)",
+   "filter": "default.search:\"retrieval-augmented generation\"",
+   "by_year": {
+    "2019": 25,
+    "2020": 52,
+    "2021": 255,
+    "2022": 498,
+    "2023": 1400,
+    "2024": 8898,
+    "2025": 20264,
+    "2026": 36060
+   }
+  },
+  "rag_arxiv_title_abstract": {
+   "source": "arXiv API export.arxiv.org",
+   "query": "(ti:\"retrieval-augmented generation\" OR abs:\"retrieval-augmented generation\" OR ti:\"retrieval augmented generation\" OR abs:\"retrieval augmented generation\")",
+   "by_year": {
+    "2019": 0,
+    "2020": 2,
+    "2021": 7,
+    "2022": 10,
+    "2023": 98,
+    "2024": 1241,
+    "2025": 2546,
+    "2026": 2159
+   }
+  },
+  "graphrag_openalex_title_abstract_graphrag": {
+   "source": "OpenAlex works API",
+   "filter": "title_and_abstract.search:graphrag",
+   "by_year": {
+    "2019": 1,
+    "2020": 0,
+    "2021": 0,
+    "2022": 1,
+    "2023": 1,
+    "2024": 30,
+    "2025": 298,
+    "2026": 820
+   },
+   "warning": "the 2019, 2022 and 2023 hits (1 each) are all artefacts, checked 2026-10-08: 2019 = OpenAlex W2989539713 (CCNet, arXiv 1911.00359) carries a wrong, unrelated abstract that contains 'GraphRAG'; 2022 = W7214435459, a journal record created in OpenAlex on 2026-09-27 but dated 2022; 2023 = arXiv 2309.12132, whose GraphRAG wording is from v2 (19 May 2025). Treat 2019-2023 as 0.",
+   "superseded": [
+    {
+     "field": "warning",
+     "was": "the 2019, 2022, 2023 hits are 1 each and likely noise or later-edited abstracts",
+     "now": "the 2019, 2022 and 2023 hits (1 each) are all artefacts, checked 2026-10-08: 2019 = OpenAlex W2989539713 (CCNet, arXiv 1911.00359) carries a wrong, unrelated abstract that contains 'GraphRAG'; 2022 = W7214435459, a journal record created in OpenAlex on 2026-09-27 but dated 2022; 2023 = arXiv 2309.12132, whose GraphRAG wording is from v2 (19 May 2025). Treat 2019-2023 as 0.",
+     "checked": "2026-10-08",
+     "evidence": [
+      "https://api.openalex.org/works/W2989539713",
+      "https://api.openalex.org/works/W7214435459",
+      "https://arxiv.org/abs/2309.12132v1"
+     ]
+    }
+   ]
+  },
+  "graphrag_openalex_title_abstract_phrase": {
+   "source": "OpenAlex works API",
+   "filter": "title_and_abstract.search:\"graph retrieval-augmented generation\"",
+   "by_year": {
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 2,
+    "2024": 20,
+    "2025": 141,
+    "2026": 217
+   }
+  },
+  "graphrag_openalex_title_graphrag": {
+   "source": "OpenAlex works API",
+   "filter": "title.search:graphrag",
+   "by_year": {
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 0,
+    "2024": 10,
+    "2025": 110,
+    "2026": 328
+   }
+  },
+  "graphrag_arxiv_title_abstract": {
+   "source": "arXiv API export.arxiv.org",
+   "query": "(ti:GraphRAG OR abs:GraphRAG OR ti:\"graph retrieval-augmented generation\" OR abs:\"graph retrieval-augmented generation\" OR ti:\"graph retrieval augmented generation\" OR abs:\"graph retrieval augmented generation\")",
+   "by_year": {
+    "2019": 0,
+    "2020": 0,
+    "2021": 0,
+    "2022": 0,
+    "2023": 1,
+    "2024": 20,
+    "2025": 123,
+    "2026": 155
+   },
+   "warning": "the single 2023 hit is arXiv 2309.12132: v1 (21 Sep 2023, 'A knowledge representation approach for construction contract knowledge modeling') has no 'GraphRAG'; v2 (19 May 2025, retitled 'Automating construction contract review using knowledge graph-enhanced large language models') adds it. arXiv searches the latest version, so treat 2023 as 0. Checked 2026-10-08.",
+   "superseded": [
+    {
+     "field": "warning",
+     "was": "arXiv searches the latest abstract version; the single 2023 hit (2309.12132) only added the word GraphRAG in a later version (v1 abstract has no GraphRAG), so treat 2023 as 0",
+     "now": "the single 2023 hit is arXiv 2309.12132: v1 (21 Sep 2023, 'A knowledge representation approach for construction contract knowledge modeling') has no 'GraphRAG'; v2 (19 May 2025, retitled 'Automating construction contract review using knowledge graph-enhanced large language models') adds it. arXiv searches the latest version, so treat 2023 as 0. Checked 2026-10-08.",
+     "checked": "2026-10-08",
+     "evidence": [
+      "https://arxiv.org/abs/2309.12132v1",
+      "https://arxiv.org/abs/2309.12132v2"
+     ]
+    }
+   ]
+  }
+ }
+}

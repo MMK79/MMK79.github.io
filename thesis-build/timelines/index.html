@@ -57,6 +57,8 @@ html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
 .site-hdr .lang span{color:#3A4352;font-size:12px}
+@media (max-width:1560px) and (min-width:761px){.site-hdr{gap:16px;padding:0 16px}.site-hdr nav{gap:0}.site-hdr nav a{padding:8px 8px;font-size:13.5px}.site-hdr nav a[aria-current="page"]::after{inset-inline:8px}}
+@media (max-width:1560px) and (min-width:761px){.site-hdr .mark span{display:none}.site-hdr nav{overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}}
 @media (max-width:760px){.site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}.site-hdr nav a{padding:8px 7px;font-size:13px}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}.site-hdr nav{overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}.site-hdr nav a[aria-current="page"]::after{bottom:0}}
 @media print{.site-hdr,.fa-banner{display:none}}
 .to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
@@ -86,6 +88,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/ml-courses.html" data-sec="ml-courses" data-i18n="nav.ml_courses">ML courses</a>
     <a href="/thesis/datasets.html" data-sec="datasets" data-i18n="nav.datasets">Datasets</a>
     <a href="/thesis/ecosystem.html" data-sec="ecosystem" data-i18n="nav.ecosystem">Who builds it</a>
+    <a href="/thesis/history.html" data-sec="history" data-i18n="nav.history">RAG history</a>
+    <a href="/thesis/llm-providers.html" data-sec="llm-providers" data-i18n="nav.llm">LLM providers</a>
+    <a href="/thesis/production-stack.html" data-sec="production-stack" data-i18n="nav.ps">RAG stack</a>
+    <a href="/thesis/explainers.html" data-sec="explainers" data-also="metrics algorithms" data-i18n="nav.ex">Explainers</a>
     <a href="/thesis/thesis.html" data-sec="thesis" data-i18n="nav.thesis">Thesis</a>
   </nav>
   <div class="lang" role="group" aria-label="Language / زبان">
@@ -94,7 +100,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </header>
 <script>
 (()=>{const p=location.pathname, sec=p.includes("/thesis/timelines/")?"timelines":(p.split("/").pop().replace(".html","")||"index");
-  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ if(a.dataset.sec===(sec==="index"?"home":sec)) a.setAttribute("aria-current","page"); });
+  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ const k=sec==="index"?"home":sec; if(a.dataset.sec===k||(a.dataset.also||"").split(" ").includes(k)) a.setAttribute("aria-current","page"); });
   // language switch: EN | فا (remembered; the page reloads in the chosen language)
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
@@ -203,6 +209,13 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
           <tr><td class="v"><b data-i18n="tli.i_edu">Computers &amp; AI in Iranian education</b><span data-i18n="tli.i_edu_s">Distance university, smart schools, SHAD, AI courses.</span></td><td class="l"><a class="btn" href="iran/edu-story.html" data-i18n="tl.story">Story</a><a class="btn" href="iran/edu-slide.html" data-i18n="tl.slide">Slide</a></td></tr>
           <tr><td class="v"><b data-i18n="tli.i_comb">Iran: from the lab to the classroom</b><span data-i18n="tli.i_comb_s">Lags from Iran's own dated record.</span></td><td class="l"><a class="btn" href="iran/combined-story.html" data-i18n="tl.story">Story</a><a class="btn" href="iran/combined-slide.html" data-i18n="tl.slide">Slide</a></td></tr>
         </table></div>
+      <div class="set" id="rag"><h2 data-i18n="tli.rag">RAG and GraphRAG</h2><p class="lede" data-i18n-html="tli.rag_lede">156 events, 1957–2025: 116 on the research side, 40 on the practice side (libraries, databases, APIs, products), joined by 20 dated links. The detailed page with people, paper counts and citations is <a href="/thesis/history.html">RAG history</a>.</p>
+        <table>
+          <tr><td class="v"><b data-i18n="tli.r_res">RAG and GraphRAG: the research</b><span data-i18n="tli.r_res_s">Eight lineages, with OpenAlex citation counts on the papers.</span></td><td class="l"><a class="btn" href="rag/research-story.html" data-i18n="tl.story">Story</a><a class="btn" href="rag/research-slide.html" data-i18n="tl.slide">Slide</a></td></tr>
+          <tr><td class="v"><b data-i18n="tli.r_prac">RAG in practice</b><span data-i18n="tli.r_prac_s">The libraries, databases, APIs and products, each date read in its source.</span></td><td class="l"><a class="btn" href="rag/practice-story.html" data-i18n="tl.story">Story</a><a class="btn" href="rag/practice-slide.html" data-i18n="tl.slide">Slide</a></td></tr>
+          <tr><td class="v"><b data-i18n="tli.r_comb">From research to production</b><span data-i18n="tli.r_comb_s">How long a retrieval idea takes to reach a library, an API or a product.</span></td><td class="l"><a class="btn" href="rag/combined-story.html" data-i18n="tl.story">Story</a><a class="btn" href="rag/combined-slide.html" data-i18n="tl.slide">Slide</a></td></tr>
+        </table>
+        <p class="lede" style="margin-top:14px;font-size:13.5px" data-i18n="tli.rag_foot">The links between a paper and a product are drawn only where the release notes, code or post name the method; the pairing and the era names are our framing.</p></div>
     </div>
   </section>
 </main>

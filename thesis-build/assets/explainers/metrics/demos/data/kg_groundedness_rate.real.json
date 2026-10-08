@@ -1,0 +1,846 @@
+{
+"n_edges": 762,
+"rows": [
+{
+"qid": "q01",
+"arm": "B",
+"i": 0,
+"claim": "Ridge regression was first introduced by Hoerl and Kennard.",
+"edges": [
+9,
+10
+],
+"grounded": true,
+"jA": "supported",
+"jB": "contradicted"
+},
+{
+"qid": "q01",
+"arm": "B",
+"i": 1,
+"claim": "Ridge regression was first introduced in 1970.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "contradicted"
+},
+{
+"qid": "q01",
+"arm": "B",
+"i": 2,
+"claim": "Hoerl and Kennard presented the theory in their Technometrics papers.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q01",
+"arm": "B",
+"i": 3,
+"claim": "The Technometrics papers were titled \"Ridge regressions: biased estimation of nonorthogonal problems\" and \"Ridge regressions: applications in nonorthogonal problems\".",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q01",
+"arm": "C",
+"i": 0,
+"claim": "Ridge regression was first introduced by Hoerl and Kennard in 1970.",
+"edges": [
+9,
+10
+],
+"grounded": true,
+"jA": "supported",
+"jB": "contradicted"
+},
+{
+"qid": "q01",
+"arm": "C",
+"i": 1,
+"claim": "Hoerl and Kennard presented the theory in their Technometrics papers titled \"Ridge regressions: biased estimation of nonorthogonal problems\" and \"Ridge regressions: applications in nonorthogonal problems\".",
+"edges": [
+9,
+10
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "B",
+"i": 0,
+"claim": "In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples, often referred to as folds.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "B",
+"i": 1,
+"claim": "Of these k subsamples, a single subsample is retained as the validation data for testing the model.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "B",
+"i": 2,
+"claim": "The remaining k \u2212 1 subsamples are used as training data.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "C",
+"i": 0,
+"claim": "In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples, often referred to as folds.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "C",
+"i": 1,
+"claim": "Of these k subsamples, a single subsample is retained as the validation data for testing the model.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q04",
+"arm": "C",
+"i": 2,
+"claim": "The remaining k \u2212 1 subsamples are used as training data.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q06",
+"arm": "B",
+"i": 0,
+"claim": "If the step size is too large, it leads to overshoot and divergence.",
+"edges": [
+495,
+496
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q06",
+"arm": "C",
+"i": 0,
+"claim": "If the step size is too large, it leads to overshoot.",
+"edges": [
+495
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q06",
+"arm": "C",
+"i": 1,
+"claim": "If the step size is too large, it leads to divergence.",
+"edges": [
+496
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "B",
+"i": 0,
+"claim": "Under perfect multicollinearity, the design matrix has less than full rank.",
+"edges": [
+388,
+389
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "B",
+"i": 1,
+"claim": "Under perfect multicollinearity, the predictive variables have an exact linear relationship.",
+"edges": [
+388
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "B",
+"i": 2,
+"claim": "Under perfect multicollinearity, the moment matrix cannot be inverted.",
+"edges": [
+388,
+390
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "B",
+"i": 3,
+"claim": "Under perfect multicollinearity, the system of equations has infinitely many solutions.",
+"edges": [
+388
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "B",
+"i": 4,
+"claim": "Under perfect multicollinearity, the parameter estimates of the regression are not well-defined.",
+"edges": [
+388,
+391
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "C",
+"i": 0,
+"claim": "Under perfect multicollinearity, the design matrix has less than full rank because the predictive variables have an exact linear relationship.",
+"edges": [
+388,
+389
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "C",
+"i": 1,
+"claim": "Under perfect multicollinearity, the moment matrix cannot be inverted.",
+"edges": [
+388,
+390
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "C",
+"i": 2,
+"claim": "Under perfect multicollinearity, the system of equations has infinitely many solutions.",
+"edges": [
+388
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q08",
+"arm": "C",
+"i": 3,
+"claim": "Under perfect multicollinearity, the parameter estimates of the regression are not well-defined.",
+"edges": [
+388,
+391
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "B",
+"i": 0,
+"claim": "When dealing with a group of highly correlated variables, the LASSO tends to select only one variable from the group while ignoring the others.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "B",
+"i": 1,
+"claim": "The elastic net overcomes this limitation by adding a quadratic penalty term to the LASSO's penalty function.",
+"edges": [
+87,
+88,
+90,
+93
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "B",
+"i": 2,
+"claim": "This modification allows the elastic net to handle groups of correlated variables more effectively than the standard LASSO approach.",
+"edges": [
+87,
+93
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "C",
+"i": 0,
+"claim": "The LASSO tends to select only one variable from a group of highly correlated variables and ignore the others.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "C",
+"i": 1,
+"claim": "The elastic net overcomes the LASSO's limitation by adding a quadratic penalty term to the LASSO's penalty function.",
+"edges": [
+87,
+88,
+90,
+93
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "C",
+"i": 2,
+"claim": "The elastic net can include multiple correlated variables rather than just selecting a single representative.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q18",
+"arm": "C",
+"i": 3,
+"claim": "The elastic net provides a more stable solution in high-dimensional settings where LASSO might saturate or arbitrarily pick variables.",
+"edges": [
+87,
+93
+],
+"grounded": true,
+"jA": "unsupported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "B",
+"i": 0,
+"claim": "In the holdout method, data is randomly assigned to two sets, a training set and a test set.",
+"edges": [
+287,
+288
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "B",
+"i": 1,
+"claim": "The holdout method involves only a single run of model testing.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "B",
+"i": 2,
+"claim": "k-fold cross-validation partitions the original sample into k equal sized subsamples, or folds.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "B",
+"i": 3,
+"claim": "For each iteration in k-fold cross-validation, one subsample is retained as validation data while the remaining k \u2212 1 subsamples are used for training.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "B",
+"i": 4,
+"claim": "Typical cross-validation averages the results of multiple runs of model-testing together.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "C",
+"i": 0,
+"claim": "The holdout method involves a single run where data is randomly split into a training set and a test set.",
+"edges": [
+287,
+288
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "C",
+"i": 1,
+"claim": "k-fold cross-validation partitions the original sample into k equal-sized subsamples, or folds.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "C",
+"i": 2,
+"claim": "For each iteration of k-fold cross-validation, one subsample is used for validation while the remaining k-1 subsamples serve as training data.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q20",
+"arm": "C",
+"i": 3,
+"claim": "Typical cross-validation averages the results of multiple runs of model testing.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 0,
+"claim": "The source lists ridge regression, LASSO, elastic net, and spike-and-slab regression as techniques less sensitive to useless predictors.",
+"edges": [
+87,
+93,
+94
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 1,
+"claim": "The source does not specify who introduced ridge regression.",
+"edges": [],
+"grounded": false,
+"jA": "contradicted",
+"jB": "contradicted"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 2,
+"claim": "The source does not specify who introduced spike-and-slab regression.",
+"edges": [],
+"grounded": false,
+"jA": "unsupported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 3,
+"claim": "The source does not specify the year of introduction of ridge regression.",
+"edges": [],
+"grounded": false,
+"jA": "contradicted",
+"jB": "contradicted"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 4,
+"claim": "The source does not specify the year of introduction of spike-and-slab regression.",
+"edges": [],
+"grounded": false,
+"jA": "unsupported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 5,
+"claim": "The provided texts detail the introduction of LASSO by Robert Tibshirani in 1996.",
+"edges": [
+40
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "B",
+"i": 6,
+"claim": "LASSO was independently introduced in geophysics in 1986.",
+"edges": [
+39
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "C",
+"i": 0,
+"claim": "The regularized regression technique listed beside LASSO and elastic net as less sensitive to useless predictors is ridge regression.",
+"edges": [
+87,
+93,
+94,
+410,
+411,
+414
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "C",
+"i": 1,
+"claim": "Ridge regression is also known as Tikhonov regularization.",
+"edges": [
+0,
+3,
+26
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q09",
+"arm": "C",
+"i": 2,
+"claim": "Tikhonov regularization is named for Andrey Tikhonov.",
+"edges": [
+1
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "B",
+"i": 0,
+"claim": "The method that selects at most n variables before saturating in the 'large p, small n' case is LASSO.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "B",
+"i": 1,
+"claim": "Statistician Robert Tibshirani independently rediscovered and popularized LASSO.",
+"edges": [
+40
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "B",
+"i": 2,
+"claim": "Robert Tibshirani popularized LASSO in 1996.",
+"edges": [
+40
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "C",
+"i": 0,
+"claim": "The method described is Lasso.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "unsupported"
+},
+{
+"qid": "q10",
+"arm": "C",
+"i": 1,
+"claim": "Lasso selects at most n variables before saturating in the large p, small n case.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "C",
+"i": 2,
+"claim": "Statistician Robert Tibshirani independently rediscovered and popularized this method.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q10",
+"arm": "C",
+"i": 3,
+"claim": "Robert Tibshirani popularized this method in 1996.",
+"edges": [],
+"grounded": false,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "B",
+"i": 0,
+"claim": "Mechanisms such as pruning are necessary to avoid overfitting in decision-tree learners.",
+"edges": [
+178,
+658,
+696,
+697
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "B",
+"i": 1,
+"claim": "Algorithms like the Conditional Inference approach are exceptions to the necessity of pruning to avoid overfitting in decision-tree learners.",
+"edges": [
+178,
+658,
+696,
+697,
+698,
+699
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "B",
+"i": 2,
+"claim": "Methods such as the dual information distance (DID) tree were proposed to reduce the greedy effect of local optimality.",
+"edges": [
+683
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "B",
+"i": 3,
+"claim": "Pruning is identified as the necessary mechanism for avoiding overfitting in standard decision trees.",
+"edges": [
+178,
+658,
+696,
+697
+],
+"grounded": true,
+"jA": "supported",
+"jB": "unsupported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 0,
+"claim": "The overfitting article lists model comparison as a technique to lessen overfitting.",
+"edges": [
+176
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 1,
+"claim": "The overfitting article lists cross-validation as a technique to lessen overfitting.",
+"edges": [
+177
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 2,
+"claim": "The overfitting article lists regularization as a technique to lessen overfitting.",
+"edges": [
+112,
+124
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 3,
+"claim": "The overfitting article lists early stopping as a technique to lessen overfitting.",
+"edges": [
+129
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 4,
+"claim": "The overfitting article lists pruning as a technique to lessen overfitting.",
+"edges": [
+178
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 5,
+"claim": "The overfitting article lists Bayesian priors as a technique to lessen overfitting.",
+"edges": [
+179
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 6,
+"claim": "The overfitting article lists dropout as a technique to lessen overfitting.",
+"edges": [
+135
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 7,
+"claim": "The decision tree article states that mechanisms such as pruning are necessary to avoid the problem of overfitting in decision-tree learners.",
+"edges": [
+178,
+658,
+696,
+697
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 8,
+"claim": "The decision tree article notes an exception for algorithms like the Conditional Inference approach.",
+"edges": [
+658,
+699
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+},
+{
+"qid": "q16",
+"arm": "C",
+"i": 9,
+"claim": "The Conditional Inference approach does not require pruning.",
+"edges": [
+698
+],
+"grounded": true,
+"jA": "supported",
+"jB": "supported"
+}
+]
+}

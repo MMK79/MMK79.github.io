@@ -85,3 +85,4 @@ a.ex-rel:hover{border-color:var(--ai);color:var(--ai)}
 .ex-rel.soon{opacity:.65;border-style:dashed}
 
 .ex-sub{font-size:20px;margin:26px 0 0}
+.ex-idx .ex-vid{color:var(--ai);font-size:13px;margin-top:6px}

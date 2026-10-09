@@ -6,13 +6,18 @@
 // mounted (demo-kit.js + demo.css; the 3D demos import three.js themselves, from /assets/explainers/_demo-kit/vendor/).
 // Videos: /videos/<Class>.<sha8>.mp4 + poster (web encodes copied by site.py; they ship with the site). Not encoded yet:
 // "video encoding" (the demo still works); a rebuild picks the file up.
-// UI strings: ex.* (en/fa). Catalogue text stays English (lang="en"); a line under the intro says so on Persian.
+// UI strings: ex.* (en/fa). Catalogue text: on Persian, D.ex_fa (i18n/fa/explainers.json: {layers:{id:{measures}}, units:{id:{name, question,
+// symbols, range, higher_is_better, blind_spots, use_vs_neighbours, worked_example{setup,steps}}}}, same shapes as the English fields) is used per
+// field; a field without a translation stays English (lang="en"), and the line under the intro says so while any such field is shown.
 (async () => {
 const I = window.I18N || {fa: false, has: () => false, digits: s => s, esc: s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]))};
 const T = (k, v) => (window.t ? window.t(k, v) : k);
 const esc = I.esc, N = x => (I.fa ? I.digits(String(x)) : String(x));
 const main = document.getElementById("ex-main"), kind = main.dataset.kind;
-if (I.fa) document.getElementById("ex-en").hidden = false;
+const FX = (typeof D !== "undefined" && D.ex_fa) || {}, FXU = FX.units || {}, FXL = FX.layers || {};
+const fx = (u, k) => (I.fa && FXU[u.id] && FXU[u.id][k] != null && FXU[u.id][k] !== "") ? FXU[u.id][k] : null;
+let missing = false;   // a Persian page that shows an English catalogue field says so (ex-en)
+const noteEn = () => { missing = true; const n = document.getElementById("ex-en"); if (n && I.fa) n.hidden = false; };
 
 const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + " " + r.status); return r.json(); });
 let cat, status, rel = {};
@@ -26,6 +31,8 @@ try {
 // ---------- helpers ----------
 const wiki = s => String(s ?? "").replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (m, a, b) => b || a);
 const E = s => esc(wiki(s));
+const isoFa = h => (I.iso ? I.iso(h) : h);   // Latin runs in Persian text in <bdi>, so brackets next to them keep their place
+const loc = (tag, enHtml, faHtml, cls = "") => faHtml != null ? `<${tag}${cls ? ` class="${cls}"` : ""}>${isoFa(faHtml)}</${tag}>` : (I.fa && noteEn(), en(tag, enHtml, cls));
 const en = (tag, html, cls = "") => `<${tag} lang="en" dir="ltr"${cls ? ` class="${cls}"` : ""}>${html}</${tag}>`;
 const realKind = r => { const k = String(r ?? "").split(":")[0].trim(); return k === "done" ? "real" : k === "partial" ? "partial" : "toy"; };
 const realWhy = r => { const s = String(r ?? ""); const i = s.indexOf(":"); return i > 0 ? s.slice(i + 1).trim() : ""; };
@@ -81,18 +88,22 @@ function srcLink(id) {
   else if (/^(?:doi:\s*)?10\.\d{4,}\//i.test(id)) u = "https://doi.org/" + id.replace(/^doi:\s*/i, "");
   return u ? `<a href="${esc(u)}" rel="noopener" target="_blank">${esc(id)}</a>` : esc(wiki(id));
 }
-function symbols(sym) {
-  if (!sym) return "";
-  let rows = [];
-  if (typeof sym === "object" && !Array.isArray(sym)) rows = Object.entries(sym);
-  else if (Array.isArray(sym)) rows = sym.map(x => typeof x === "object" ? [x.symbol ?? x.name ?? "", x.meaning ?? x.text ?? JSON.stringify(x)] : ["", String(x)]);
-  else {
-    const parts = String(sym).split(/;\s+(?=[^;]{1,60}?\s=\s)/);
-    rows = parts.map(p => { const i = p.indexOf(" = "); return i > 0 && i < 60 ? [p.slice(0, i), p.slice(i + 3)] : ["", p]; });
-  }
-  return `<dl class="ex-sym" lang="en" dir="ltr">${rows.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${E(v)}</dd>`).join("")}</dl>`;
+const symRows = sym => {
+  if (!sym) return [];
+  if (typeof sym === "object" && !Array.isArray(sym)) return Object.entries(sym);
+  if (Array.isArray(sym)) return sym.map(x => typeof x === "object" ? [x.symbol ?? x.name ?? "", x.meaning ?? x.text ?? JSON.stringify(x)] : ["", String(x)]);
+  const parts = String(sym).split(/;\s+(?=[^;]{1,60}?\s=\s)/);
+  return parts.map(p => { const i = p.indexOf(" = "); return i > 0 && i < 60 ? [p.slice(0, i), p.slice(i + 3)] : ["", p]; });
+};
+// the symbols stay left to right and in Latin; on Persian the explanation of each symbol is the Persian row of the same position
+function symbols(sym, faSym) {
+  const rows = symRows(sym); if (!rows.length) return "";
+  const fr = faSym != null ? symRows(faSym) : null, ok = fr && fr.length === rows.length;
+  if (I.fa && !ok) noteEn();
+  return `<dl class="ex-sym"${ok ? "" : ' lang="en" dir="ltr"'}>${rows.map(([k, v], i) => `<dt lang="en" dir="ltr">${esc(k)}</dt><dd>${ok ? isoFa(esc(wiki(fr[i][1]))) : E(v)}</dd>`).join("")}</dl>`;
 }
-const list = x => Array.isArray(x) ? `<ul>${x.map(i => `<li>${E(typeof i === "object" ? JSON.stringify(i) : i)}</li>`).join("")}</ul>` : `<p>${E(x)}</p>`;
+const list = (x, f) => { const y = f != null ? f : x, E2 = x => f != null ? isoFa(E(x)) : E(x), L = s => Array.isArray(y) ? `<ul>${y.map(i => `<li>${E2(typeof i === "object" ? JSON.stringify(i) : i)}</li>`).join("")}</ul>` : `<p>${E2(y)}</p>`;
+  return f != null ? L() : `<div lang="en" dir="ltr">${L()}</div>`; };
 const fmtResult = r => typeof r === "number" ? String(+r.toFixed(6)) : JSON.stringify(r);
 
 // ---------- build ----------
@@ -105,7 +116,7 @@ function card(u) {
   const st = status[u.id] || {}, rk = realKind(st.real), ev = u.evidence_status || "inferred";
   const a = document.createElement("article");
   a.className = "ex-card"; a.id = u.id; a.dataset.layer = u.layer; a.dataset.ev = ev; a.dataset.real = rk; a.dataset.three = u.three ? "1" : "";
-  a.dataset.text = [u.id, u.name, u.question, typeof u.symbols === "string" ? u.symbols : Object.keys(u.symbols || {}).join(" ")].join(" ").toLowerCase();
+  a.dataset.text = [u.id, u.name, u.question, fx(u, "name") || "", fx(u, "question") || "", typeof u.symbols === "string" ? u.symbols : Object.keys(u.symbols || {}).join(" ")].join(" ").toLowerCase();
   const tags = [
     `<span class="ex-tag ev-${esc(ev)}" title="${esc(T("ex.ev_title"))}">${esc(evName(ev))}</span>`,
     `<span class="ex-tag ${rk}"${realWhy(st.real) ? ` title="${esc(realWhy(st.real))}"` : ""}>${esc(T("ex." + rk))}</span>`,
@@ -114,8 +125,8 @@ function card(u) {
     st.revised ? `<span class="ex-tag rev">${rev(st.revised)}</span>` : "",
     (u.superseded || []).length ? `<span class="ex-tag sup">${esc(T("ex.tag_sup", {n: N(u.superseded.length)}))}</span>` : "",
   ].join("");
-  a.innerHTML = `<details><summary><div class="ex-sum-h">${en("h3", E(u.name))}<span class="ex-chev" aria-hidden="true">›</span></div>
-    ${en("p", E(u.question), "ex-q")}<div class="ex-tags">${tags}</div></summary><div class="ex-body"></div></details>`;
+  a.innerHTML = `<details><summary><div class="ex-sum-h">${loc("h3", E(u.name), fx(u, "name") && E(fx(u, "name")))}<span class="ex-chev" aria-hidden="true">›</span></div>
+    ${loc("p", E(u.question), fx(u, "question") && E(fx(u, "question")), "ex-q")}<div class="ex-tags">${tags}</div></summary><div class="ex-body"></div></details>`;
   const det = a.querySelector("details");
   det.addEventListener("toggle", () => {
     if (!det.open) return;
@@ -123,6 +134,15 @@ function card(u) {
     if (location.hash !== "#" + u.id) history.replaceState(null, "", "#" + u.id);
   });
   return a;
+}
+
+// worked example: setup and steps in Persian when translated (the result is a number: shown as data), else English
+function wx(u, we) {
+  const f = fx(u, "worked_example") || {}, fs = f.setup != null && we.setup, ft = f.steps != null && we.steps;
+  if (I.fa && ((we.setup && !fs) || (we.steps && !ft))) noteEn();
+  const res = "result" in we ? `<p><b>${esc(T("ex.result"))}:</b> <span class="num" lang="en" dir="ltr">${esc(fmtResult(we.result))}</span></p>` : "";
+  const part = (ok, enHtml, faHtml) => ok ? faHtml : `<div lang="en" dir="ltr">${enHtml}</div>`;
+  return (we.setup ? part(fs, `<p>${E(we.setup)}</p>`, `<p>${isoFa(E(f.setup))}</p>`) : "") + (we.steps ? part(ft, list(we.steps).replace(/^<div[^>]*>|<\/div>$/g, ""), list(we.steps, f.steps)) : "") + res;
 }
 
 function body(u, el) {
@@ -138,8 +158,8 @@ function body(u, el) {
     <div class="ex-blk"><h4>${esc(T("ex.h_formula"))}</h4>
       <div class="ex-fx" lang="en">${esc(tex(u.formula_latex))}</div>
       <details class="ex-tex"><summary>${esc(T("ex.latex"))}</summary><code>${esc(u.formula_latex || "")}</code></details>
-      <h4 style="margin-top:12px">${esc(T("ex.h_symbols"))}</h4>${symbols(u.symbols)}
-      ${u.range || u.higher_is_better ? en("p", `${esc(T("ex.range"))}: ${E(u.range || "—")} · ${esc(T("ex.better"))}: ${E(u.higher_is_better ?? "—")}`, "ex-src") : ""}
+      <h4 style="margin-top:12px">${esc(T("ex.h_symbols"))}</h4>${symbols(u.symbols, fx(u, "symbols"))}
+      ${u.range || u.higher_is_better ? loc("p", `${esc(T("ex.range"))}: ${E(u.range || "—")} · ${esc(T("ex.better"))}: ${E(u.higher_is_better ?? "—")}`, (fx(u, "range") || fx(u, "higher_is_better")) ? `${esc(T("ex.range"))}: ${E(fx(u, "range") || u.range || "—")} · ${esc(T("ex.better"))}: ${E(fx(u, "higher_is_better") ?? u.higher_is_better ?? "—")}` : null, "ex-src") : ""}
     </div>
     <div class="ex-grid2">
       <div class="ex-blk"><h4>${esc(T("ex.h_evidence"))}</h4>
@@ -151,14 +171,14 @@ function body(u, el) {
       </div>
       <div class="ex-blk ex-caveat"><h4>${esc(T("ex.h_caveats"))}</h4>
         <p class="ex-src">${esc(T("ex.example_" + rk))}${realWhy(st.real) ? " " + en("span", E(realWhy(st.real))) : ""}${st.revised ? " · " + rev(st.revised) : ""}</p>
-        <div lang="en" dir="ltr">${list(u.blind_spots)}</div>
+        ${list(u.blind_spots, fx(u, "blind_spots"))}
       </div>
     </div>
     ${related(u)}
     <details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_worked"))}</summary>
-      <div lang="en" dir="ltr">${we.setup ? `<p>${E(we.setup)}</p>` : ""}${we.steps ? list(we.steps) : ""}${"result" in we ? `<p><b>${esc(T("ex.result"))}:</b> <span class="num">${esc(fmtResult(we.result))}</span></p>` : ""}</div>
+      ${wx(u, we)}
     </details>
-    ${u.use_vs_neighbours ? `<details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_use"))}</summary>${en("p", E(u.use_vs_neighbours))}</details>` : ""}
+    ${u.use_vs_neighbours ? `<details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_use"))}</summary>${loc("p", E(u.use_vs_neighbours), fx(u, "use_vs_neighbours") && E(fx(u, "use_vs_neighbours")))}</details>` : ""}
     <a class="ex-link" href="#${esc(u.id)}">#${esc(u.id)}</a>`;
   video(u, el.querySelector(".ex-video"));
   demo(u, el.querySelector(".ex-demo"));
@@ -211,7 +231,7 @@ for (const l of layers) {
   const us = byLayer.get(l.id) || []; if (!us.length) continue;
   const sec = document.createElement("section");
   sec.setAttribute("data-hx-section", ""); sec.id = "layer-" + l.id; sec.dataset.layer = l.id;
-  sec.innerHTML = `<h2>${esc(layerName(l))} <span class="live-count" data-n></span></h2>${l.measures ? en("p", E(l.measures), "ex-lmeas") : ""}<div class="ex-cards"></div>`;
+  sec.innerHTML = `<h2>${esc(layerName(l))} <span class="live-count" data-n></span></h2>${l.measures ? loc("p", E(l.measures), FXL[l.id] && FXL[l.id].measures && E(FXL[l.id].measures), "ex-lmeas") : ""}<div class="ex-cards"></div>`;
   us.forEach(u => sec.querySelector(".ex-cards").append(card(u)));
   main.append(sec);
 }

@@ -47,7 +47,7 @@ html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
 .site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
 .site-hdr .mark span{font-size:12.5px;color:#7D8596}
-.site-hdr nav{display:flex;gap:4px;flex-wrap:nowrap;min-width:0}
+.site-hdr nav{display:flex;gap:4px;flex-wrap:nowrap;min-width:0;overflow-x:auto;scrollbar-width:none}.site-hdr nav::-webkit-scrollbar{display:none}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 .site-hdr nav a{position:relative;padding:8px 12px;border-radius:8px;font-size:14px;color:#98A0B0;text-decoration:none;white-space:nowrap}
 .site-hdr nav a:hover{color:#E9ECF2;background:#151A24}
@@ -74,7 +74,7 @@ html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
 .live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
-/* Persian pages: a small machine-translation notice, dismissible, linking to the glossary note on the thesis page */
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
   background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
 .fa-banner a{color:#FFB38F}
@@ -96,6 +96,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/production-stack.html" data-sec="production-stack" data-i18n="nav.ps">RAG stack</a>
     <a href="/thesis/explainers.html" data-sec="explainers" data-also="metrics algorithms" data-i18n="nav.ex">Explainers</a>
     <a href="/thesis/thesis.html" data-sec="thesis" data-i18n="nav.thesis">Thesis</a>
+    <a href="/thesis/glossary.html" data-sec="glossary" data-i18n="nav.gl">Glossary</a>
   </nav>
   <div class="lang" role="group" aria-label="Language / زبان">
     <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
@@ -103,7 +104,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </header>
 <script>
 (()=>{const p=location.pathname, sec=p.includes("/thesis/timelines/")?"timelines":(p.split("/").pop().replace(".html","")||"index");
-  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ const k=sec==="index"?"home":sec; if(a.dataset.sec===k||(a.dataset.also||"").split(" ").includes(k)) a.setAttribute("aria-current","page"); });
+  document.querySelectorAll(".site-hdr nav a").forEach(a=>{ const k=sec==="index"?"home":sec; if(a.dataset.sec===k||(a.dataset.also||"").split(" ").includes(k)) { a.setAttribute("aria-current","page"); try{ a.scrollIntoView({inline:"center",block:"nearest"}); }catch(e){} } });
   // language switch: EN | فا (remembered; the page reloads in the chosen language)
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
@@ -111,7 +112,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   // Persian: a dismissible "machine translation, not reviewed" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
-      d.innerHTML=`<a href="/thesis/thesis.html#glossary">${I.t("i18n.banner")}</a><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      d.innerHTML=`<a href="/thesis/glossary.html">${I.t("i18n.banner")}</a><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
       d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
       document.body.appendChild(d); };
     document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }

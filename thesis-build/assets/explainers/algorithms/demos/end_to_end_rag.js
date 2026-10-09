@@ -3,6 +3,19 @@
 (function (root) {
   const defaults = { s: [1, 1, 0.975, 0.9 / 0.975, 1, 1] };
   const STAGES = ['Translate', 'Route', 'Retrieve + fuse', 'Rerank', 'Generate', 'Cache / monitor'];
+  /* PURE. Per-stage latency of one request: retrieval stages MEASURED LOCALLY (algos_real_local.json, time.perf_counter, median of 7, CPU, 138 passages) + the real answer-call latency (s) of the answer study. */
+  function stageLatency(local, qid, names, genS) {
+    const t = local.timing.questions.find(x => x.qid === qid); if (!t) return null;
+    const sp = names.map(n => ({ name: n, ms: t[n].median_ms, src: 'local' })); if (genS != null) sp.push({ name: 'generate (answer call)', ms: genS * 1000, src: 'network call' });
+    return { spans: sp, total_ms: sp.reduce((a, s) => a + s.ms, 0) };
+  }
+  function latBlock(K, lat, title, note) {
+    if (!lat) return K.el('p', { class: 'bad' }, 'pending real data. No local timing for this question.');
+    const t = K.el('table', { style: 'font-size:12px' }); t.append(K.el('tr', {}, ...['stage', 'ms', 'how measured', 'share'].map(h => K.el('th', {}, h))));
+    lat.spans.forEach(s => t.append(K.el('tr', {}, K.el('td', {}, s.name), K.el('td', { class: 'num' }, K.fmt(s.ms, s.ms < 10 ? 3 : 0)), K.el('td', { class: 'hint' }, s.src === 'local' ? 'local, median of 7' : 'one real call'), K.el('td', { class: 'num' }, K.fmt(100 * s.ms / lat.total_ms, 1) + '%'))));
+    return K.el('div', {}, K.el('b', {}, title), K.el('div', { style: 'overflow-x:auto' }, t), K.el('p', { class: 'num', style: 'font-size:13px' }, 'total: ' + K.fmt(lat.total_ms, 0) + ' ms'), K.el('p', { class: 'hint' }, note));
+  }
+
   const PENDING = [true, true, false, false, false, true];
   const ANS_SNAP = {"answers": [{"qid": "q09", "arm": "B", "context_ids": ["p074", "p005", "p016", "p006", "p015"], "context_words": 390, "answer": "The source [p074] lists ridge regression, LASSO, elastic net, and spike-and-slab regression as techniques less sensitive to useless predictors, but it does not specify who introduced ridge regression or spike-and-slab regression, nor the year of their introduction. The provided texts only detail the introduction of LASSO by Robert Tibshirani in 1996 (and independently in geophysics in 1986) [p005][p006]. There is no information in the sources regarding the originators or dates for ridge regression or spike-and-slab regression. Therefore, the answer is not in the sources.", "cited": ["p074", "p005", "p006"], "refused": true, "prompt_tokens": 688, "completion_tokens": 137, "latency_s": 5.12, "usd": 0.0003407, "call_date": "2026-10-08", "prompt_cache_tag": "ans_q09_B"}], "verdicts": [{"judge": "A", "qid": "q09", "arm": "B", "claims": ["The source lists ridge regression, LASSO, elastic net, and spike-and-slab regression as techniques less sensitive to useless predictors.", "The source does not specify who introduced ridge regression.", "The source does not specify who introduced spike-and-slab regression.", "The source does not specify the year of introduction of ridge regression.", "The source does not specify the year of introduction of spike-and-slab regression.", "The provided texts detail the introduction of LASSO by Robert Tibshirani in 1996.", "LASSO was independently introduced in geophysics in 1986."], "verdicts": [{"verdict": "supported", "passages": []}, {"verdict": "contradicted", "passages": []}, {"verdict": "unsupported", "passages": []}, {"verdict": "contradicted", "passages": []}, {"verdict": "unsupported", "passages": []}, {"verdict": "supported", "passages": []}, {"verdict": "supported", "passages": []}]}, {"judge": "B", "qid": "q09", "arm": "B", "claims": ["The source lists ridge regression, LASSO, elastic net, and spike-and-slab regression as techniques less sensitive to useless predictors.", "The source does not specify who introduced ridge regression.", "The source does not specify who introduced spike-and-slab regression.", "The source does not specify the year of introduction of ridge regression.", "The source does not specify the year of introduction of spike-and-slab regression.", "The provided texts detail the introduction of LASSO by Robert Tibshirani in 1996.", "LASSO was independently introduced in geophysics in 1986."], "verdicts": [{"verdict": "supported", "passages": ["p074"]}, {"verdict": "contradicted", "passages": ["p002"]}, {"verdict": "supported", "passages": []}, {"verdict": "contradicted", "passages": ["p002"]}, {"verdict": "supported", "passages": []}, {"verdict": "supported", "passages": ["p006"]}, {"verdict": "supported", "passages": ["p006"]}]}], "pq": [{"qid": "q09", "arm": "B", "type": "bridge", "refused": true, "n_claims": 7, "judgeA_counts": {"supported": 3, "unsupported": 2, "contradicted": 2}, "faithfulness_A": 0.4286, "judgeB_counts": {"supported": 5, "unsupported": 0, "contradicted": 2}, "faithfulness_B": 0.7143, "faithfulness_own_context_A": 0.0, "hallucinated": 1, "cited": ["p074", "p005", "p006"], "citation_precision": 0.3333, "cited_outside_context": [], "citation_recall": 0.5, "correctness": 0.0, "context_precision_judge": 0.2, "context_precision_ranked_judge": 1.0, "context_recall_judge": 0.3333, "context_precision_gold": 0.2, "context_recall_gold": 0.5, "prompt_tokens": 688, "completion_tokens": 137, "latency_s": 5.12, "usd_answer": 0.0003407, "context_words": 390}], "faith": {"n": 9, "mean": 0.9365, "ci95": [0.8095, 1.0], "resamples": 10000, "seed": 7}, "cost": {"n": 12, "prompt_tokens_mean": 684.3, "completion_tokens_mean": 68.7, "usd_per_answer_mean": 0.0002645, "usd_total": 0.003174, "latency_s_mean": 3.79, "latency_s_median": 3.75, "latency_s_max": 5.91, "context_words_mean": 416.4}};
   const GEN_FAITH = 0.9365; /* arm B faithfulness, 9 answerable, judge A (pack summary.json) */
@@ -28,7 +41,7 @@
     const base = SRC ? new URL('../../_real-examples/', SRC).href : '';
     const shell = K.shell(el, 'One question through the whole RAG stack',
       'Default: a real question from the demo pack (138 passages; not the thesis system). Click a stage to see what it returns. Generation shows the real answer, claims, verdicts, cost and latency of the answer study (12 questions, arm B). Stages with no real run say "pending real data". The Production Stack page tells the same flow in full.');
-    let mode = 'real', V = null, DATA = null, ANS = ANS_SNAP, stage = 0, s = defaults.s.slice();
+    let LOC = null; let mode = 'real', V = null, DATA = null, ANS = ANS_SNAP, stage = 0, s = defaults.s.slice();
     const realS = () => { const r = defaults.s.slice(); r[4] = (ANS.faith && ANS.faith.mean) || GEN_FAITH; return r; };
     s = realS();
     const modeRow = K.el('div', { class: 'row' }), qRow = K.el('div', { class: 'row' }), stRow = K.el('div', { class: 'row' }), qbox = K.el('div', { class: 'hint' }), panel = K.el('div', {}), calc = K.el('div', {});
@@ -101,7 +114,10 @@
           if (ANS.cost) n.push(K.el('p', { class: 'hint' }, 'Arm B mean over 12 questions: ' + ANS.cost.prompt_tokens_mean + ' prompt + ' + ANS.cost.completion_tokens_mean + ' completion tokens, $' + ANS.cost.usd_per_answer_mean.toFixed(5) + ' per answer, ' + ANS.cost.latency_s_mean + ' s per call (one run, network to China, indicative only).'));
         }
       } else {
-        n.push(K.el('p', {}, K.el('b', {}, 'Cache and monitor. '), 'Caches skip repeated work; a trace has one span per stage.'), pend('No cache hit, trace span or monitoring was measured. Real and measured: only the generation call (cost and latency on the previous stage); the translation call has tokens but no timing. Routing, retrieval, rerank and cache latency were not timed.'));
+        n.push(K.el('p', {}, K.el('b', {}, 'Cache and monitor. '), 'Caches skip repeated work; a trace has one span per stage.'), pend('No cache hit, routing or production monitoring was measured. The stage latencies below are real but local: retrieval stages timed on this Mac for this question; the generation call is the answer study call; the translation call has tokens but no timing.'));
+        const pqb = ANS.pq.find(x => x.qid === (V && V.id)); const g = pqb ? pqb.latency_s : null;
+        if (LOC && V) { n.push(latBlock(K, stageLatency(LOC, V.id, ['embed', 'bm25', 'dense', 'rrf'], g), 'Measured per-stage latency of the arm B path (' + V.id + '): query embedding, BM25, dense, RRF fusion, generation', 'Arm B has no rerank. In the full backbone the cross-encoder rerank of the top-20 would add a measured ' + K.fmt(LOC.timing.questions.find(x => x.qid === V.id).rerank.median_ms, 0) + ' ms. Corpus of 138 passages on one CPU: retrieval is cheap here, so generation dominates; with millions of vectors and a remote index that ratio changes. Retrieval timings and the answer call are not from the same run.')); }
+        else n.push(pend('data/algos_real_local.json not loaded.'));
       }
       return K.el('div', {}, ...n);
     }
@@ -126,11 +142,12 @@
         K.el('div', { class: 'formula' }, 'P = ' + s.map(x => K.fmt(x, 4)).join(' x ') + ' = ' + K.fmt(P, 4) + '\n' +
           (mode === 'real' ? 'Real: retrieve = gold recall@20 after RRF (0.975), rerank = recall@5 / recall@20 = 0.90 / 0.975, on 20 questions; generate = arm B faithfulness 0.9365 (judge A, 9 answerable questions, context = RRF top-5, a different question set and context than the first two). Stages with no data are set to 1, so P is optimistic. The product rule assumes independent stages (ours).'
             : 'Toy: ' + s.length + ' stages at 0.9 give ' + K.fmt(Math.pow(0.9, s.length), 4) + '. Each stage looks fine alone; the chain does not.') +
-          '\ncost = sum of stage costs, latency = sum over sequential stages: measured for the generation call only (arm B mean $0.00026, 3.79 s); other stages pending real data.'));
+          '\ncost = sum of stage costs, latency = sum over sequential stages: measured for the generation call only (arm B mean $0.00026, 3.79 s); retrieval stages are timed locally (see the Cache and monitor stage); routing and cache pending real data.'));
     }
 
     draw();
     if (!base) { V = view(SNAP.data, 'q09'); sel.replaceChildren(K.el('option', { value: 'q09' }, 'q09 (snapshot)')); draw(); return; }
+    fetch(new URL('data/algos_real_local.json', SRC).href).then(r => r.ok ? r.json() : null).then(d => { LOC = d; draw(); }).catch(() => null);
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
     Promise.all([get('data/questions.json'), get('data/corpus.json'), get('data/query_transforms.json'), ...['bm25_lucene', 'dense_cosine', 'rrf_bm25_dense', 'rerank_ce_rrf'].map(m => get('runs/' + m + '.json')), ...['answers', 'verdicts', 'per_question', 'summary'].map(f => get('answers/' + f + '.json').catch(() => null))])
       .then(([qs, cs, tr, a, b, c, d, ra, rv, rp, rs]) => {
@@ -142,6 +159,6 @@
       }).catch(e => { V = view(SNAP.data, 'q09'); qbox.textContent = 'Pack not reachable (' + e.message + '); showing the embedded q09 snapshot.'; sel.replaceChildren(K.el('option', { value: 'q09' }, 'q09 (snapshot)')); draw(); });
   }
 
-  const api = { defaults, compute, mount };
+  const api = { defaults, compute, stageLatency, mount };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['end_to_end_rag'] = api;
 })(this);

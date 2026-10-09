@@ -42,6 +42,7 @@ a{color:inherit}
 .eyebrow{font:500 12px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
 h1{font:300 clamp(40px,6vw,76px)/1.02 var(--display);margin:14px 0 18px;letter-spacing:-.01em}
 .sub{font-size:19px;color:var(--muted);max-width:760px}
+.tlvideo{margin:34px 0 0;max-width:860px}.tlvideo video{width:100%;height:auto;border-radius:10px;background:#0B0D12}
 .stats{display:flex;gap:40px;margin-top:34px;flex-wrap:wrap}
 .stats b{display:block;font:500 34px var(--display)}
 .stats span{font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
@@ -312,6 +313,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <h1 id="title"></h1>
   <p class="sub" id="sub"></p>
   <div class="stats" id="stats"></div>
+  <figure class="tlvideo"><video controls preload="none" playsinline poster="/thesis/videos/TimelineRag.3dc6d7a2.jpg" width="1920" height="1080" aria-label="Timeline video (English, no sound)"><source src="/thesis/videos/TimelineRag.3dc6d7a2.mp4" type="video/mp4"></video></figure>
 </header>
 <div class="strip"><svg id="strip" aria-label="Every event on one axis; click a tick to jump to it" data-i18n-attr="aria-label:tl.strip_aria"></svg><div class="legend" id="legend"></div></div>
 

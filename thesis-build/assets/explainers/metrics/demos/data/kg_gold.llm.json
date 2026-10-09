@@ -1,0 +1,897 @@
+{
+ "model": "qwen3.7-plus",
+ "date": "2026-10-09",
+ "rule": "You are checking triples that another model extracted from ONE Wikipedia passage. Read only the passage; use no outside knowledge.\nLabel each triple (source --relation--> target) with exactly one of:\n correct: the passage states it, or it follows directly from one sentence, with the relation meaning what its name says and the direction right.\n partly: the two entities are right and the passage links them, but the relation is vaguer or only loosely fitting (for example related_to where a clear relation exists, a wrong direction, or a relation that fits only one reading).\n incorrect: the passage does not support it, or contradicts it, or an entity is not what the passage means.\nGive a reason of at most 15 words for each label.\nThen list MISSED triples: facts the passage clearly states between two entities that are NOT in the extracted list, at most 6, each as source, relation, target plus an exact quote (copied word for word from the passage) that supports it. Use only these relations: is_a, part_of, uses, introduced_by, extends, special_case_of, alternative_to, compared_with, improves, causes, requires, applied_to, related_to. Skip years and bare numbers as entities. If there are none, return an empty list.\nReturn ONLY JSON: {\"labels\":[{\"i\":int,\"label\":\"correct|partly|incorrect\",\"reason\":str}],\"missed\":[{\"source\":str,\"relation\":str,\"target\":str,\"quote\":str}]}",
+ "passages": [
+  {
+   "id": "p002",
+   "text": "In general, the method provides improved efficiency in parameter estimation problems in exchange for a tolerable amount of bias (see bias–variance tradeoff). The theory was first introduced by Hoerl and Kennard in 1970 in their Technometrics papers \"Ridge regressions: biased estimation of nonorthogonal problems\" and \"Ridge regressions: applications in nonorthogonal problems\". Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge regression estimator (RR). This provides a more precise ridge parameters estimate, as its variance and mean square estimator are often smaller than the least square estimators previously derived.",
+   "article": "Ridge regression",
+   "triples": [
+    {
+     "i": 0,
+     "source": "ridge regression",
+     "relation": "applied_to",
+     "target": "parameter estimation",
+     "s": "n014",
+     "t": "n485",
+     "llm": "correct",
+     "reason": "Passage states method provides improved efficiency in parameter estimation problems.",
+     "other_passages": []
+    },
+    {
+     "i": 1,
+     "source": "ridge regression",
+     "relation": "related_to",
+     "target": "bias–variance tradeoff",
+     "s": "n014",
+     "t": "n029",
+     "llm": "correct",
+     "reason": "Passage links bias to bias–variance tradeoff in context of the method.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "ridge regression",
+     "relation": "introduced_by",
+     "target": "Hoerl",
+     "s": "n014",
+     "t": "n296",
+     "llm": "correct",
+     "reason": "Passage states theory was first introduced by Hoerl and Kennard.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "ridge regression",
+     "relation": "introduced_by",
+     "target": "Kennard",
+     "s": "n014",
+     "t": "n332",
+     "llm": "correct",
+     "reason": "Passage states theory was first introduced by Hoerl and Kennard.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "ridge regression",
+     "relation": "alternative_to",
+     "target": "least square estimators",
+     "s": "n014",
+     "t": "n354",
+     "llm": "partly",
+     "reason": "It is a solution to imprecision, not strictly an alternative to estimators themselves.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "ridge regression",
+     "relation": "applied_to",
+     "target": "linear regression models",
+     "s": "n014",
+     "t": "n085",
+     "llm": "correct",
+     "reason": "Developed as solution when linear regression models have multicollinear variables.",
+     "other_passages": []
+    },
+    {
+     "i": 6,
+     "source": "linear regression models",
+     "relation": "requires",
+     "target": "multicollinearity",
+     "s": "n085",
+     "t": "n011",
+     "llm": "incorrect",
+     "reason": "Ridge regression addresses multicollinearity; models do not require it generally.",
+     "other_passages": []
+    },
+    {
+     "i": 7,
+     "source": "ridge regression",
+     "relation": "uses",
+     "target": "ridge regression estimator",
+     "s": "n014",
+     "t": "n551",
+     "llm": "correct",
+     "reason": "Method works by creating a ridge regression estimator.",
+     "other_passages": []
+    },
+    {
+     "i": 8,
+     "source": "ridge regression estimator",
+     "relation": "improves",
+     "target": "least square estimators",
+     "s": "n551",
+     "t": "n354",
+     "llm": "partly",
+     "reason": "Estimator provides more precise estimates than least square estimators, improving precision.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "ridge regression",
+     "relation": "causes",
+     "target": "bias",
+     "quote": "provides improved efficiency ... in exchange for a tolerable amount of bias",
+     "quote_in_passage": false
+    },
+    {
+     "source": "ridge regression",
+     "relation": "improves",
+     "target": "efficiency",
+     "quote": "the method provides improved efficiency in parameter estimation problems",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p005",
+   "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization in order to enhance the prediction accuracy and interpretability of the resulting statistical model. The lasso method assumes that the coefficients of the linear model are sparse, meaning that few of them are non-zero. It was originally introduced in geophysics, and later by Robert Tibshirani, who coined the term.",
+   "article": "Lasso (statistics)",
+   "triples": [
+    {
+     "i": 0,
+     "source": "lasso",
+     "relation": "is_a",
+     "target": "regression analysis method",
+     "s": "n002",
+     "t": "n533",
+     "llm": "correct",
+     "reason": "Passage explicitly states lasso is a regression analysis method.",
+     "other_passages": []
+    },
+    {
+     "i": 1,
+     "source": "lasso",
+     "relation": "related_to",
+     "target": "L1 regularization",
+     "s": "n002",
+     "t": "n083",
+     "llm": "correct",
+     "reason": "Passage lists L1 regularization as an alternative name for lasso.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "lasso",
+     "relation": "uses",
+     "target": "variable selection",
+     "s": "n002",
+     "t": "n120",
+     "llm": "correct",
+     "reason": "Passage states lasso performs variable selection.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "lasso",
+     "relation": "uses",
+     "target": "regularization",
+     "s": "n002",
+     "t": "n003",
+     "llm": "correct",
+     "reason": "Passage states lasso performs regularization.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "lasso",
+     "relation": "improves",
+     "target": "prediction accuracy",
+     "s": "n002",
+     "t": "n025",
+     "llm": "correct",
+     "reason": "Passage states it enhances prediction accuracy.",
+     "other_passages": [
+      "p006"
+     ]
+    },
+    {
+     "i": 5,
+     "source": "lasso",
+     "relation": "improves",
+     "target": "interpretability",
+     "s": "n002",
+     "t": "n022",
+     "llm": "correct",
+     "reason": "Passage states it enhances interpretability of the model.",
+     "other_passages": [
+      "p006"
+     ]
+    },
+    {
+     "i": 6,
+     "source": "lasso",
+     "relation": "requires",
+     "target": "sparse coefficients",
+     "s": "n002",
+     "t": "n572",
+     "llm": "partly",
+     "reason": "Passage says method assumes sparsity, not strictly requires it.",
+     "other_passages": []
+    },
+    {
+     "i": 7,
+     "source": "sparse coefficients",
+     "relation": "part_of",
+     "target": "linear model",
+     "s": "n572",
+     "t": "n038",
+     "llm": "incorrect",
+     "reason": "Coefficients belong to the model; sparsity is a property, not part.",
+     "other_passages": []
+    },
+    {
+     "i": 8,
+     "source": "lasso",
+     "relation": "introduced_by",
+     "target": "geophysics",
+     "s": "n002",
+     "t": "n267",
+     "llm": "incorrect",
+     "reason": "Geophysics is the field of introduction, not the person introducing it.",
+     "other_passages": []
+    },
+    {
+     "i": 9,
+     "source": "lasso",
+     "relation": "introduced_by",
+     "target": "Robert Tibshirani",
+     "s": "n002",
+     "t": "n109",
+     "llm": "correct",
+     "reason": "Passage states it was later introduced by Robert Tibshirani.",
+     "other_passages": [
+      "p006"
+     ]
+    }
+   ],
+   "missed": [
+    {
+     "source": "lasso",
+     "relation": "applied_to",
+     "target": "geophysics",
+     "quote": "It was originally introduced in geophysics",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p016",
+   "text": "To overcome these limitations, the elastic net adds a quadratic part ( [formula] ) to the penalty, which when used alone is ridge regression (known also as Tikhonov regularization). The estimates from the elastic net method are defined by [formula] The quadratic penalty term makes the loss function strongly convex, and it therefore has a unique minimum. The elastic net method includes the LASSO and ridge regression: in other words, each of them is a special case where [formula] .",
+   "article": "Elastic net regularization",
+   "triples": [
+    {
+     "i": 0,
+     "source": "ridge regression",
+     "relation": "alternative_to",
+     "target": "Tikhonov regularization",
+     "s": "n014",
+     "t": "n015",
+     "llm": "incorrect",
+     "reason": "Passage states they are the same method, not alternatives.",
+     "other_passages": [
+      "p001"
+     ]
+    },
+    {
+     "i": 1,
+     "source": "elastic net",
+     "relation": "uses",
+     "target": "quadratic penalty term",
+     "s": "n034",
+     "t": "n517",
+     "llm": "correct",
+     "reason": "Passage states elastic net adds a quadratic part to penalty.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "quadratic penalty term",
+     "relation": "causes",
+     "target": "strongly convex",
+     "s": "n517",
+     "t": "n117",
+     "llm": "correct",
+     "reason": "Passage states quadratic penalty term makes loss function strongly convex.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "strongly convex",
+     "relation": "related_to",
+     "target": "loss function",
+     "s": "n117",
+     "t": "n039",
+     "llm": "partly",
+     "reason": "Relation is vague; passage says term makes loss function convex.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "lasso",
+     "relation": "special_case_of",
+     "target": "elastic net",
+     "s": "n002",
+     "t": "n034",
+     "llm": "correct",
+     "reason": "Passage states LASSO is a special case of elastic net.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "ridge regression",
+     "relation": "special_case_of",
+     "target": "elastic net",
+     "s": "n014",
+     "t": "n034",
+     "llm": "correct",
+     "reason": "Passage states ridge regression is a special case of elastic net.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "ridge regression",
+     "relation": "is_a",
+     "target": "Tikhonov regularization",
+     "quote": "ridge regression (known also as Tikhonov regularization)",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p004",
+   "text": "Tikhonov regularization was invented independently in many different contexts. It became widely known through its application to integral equations in the works of Andrey Tikhonov and David L. Phillips. Some authors use the term Tikhonov–Phillips regularization. The finite-dimensional case was expounded by Arthur E. Hoerl, who took a statistical approach, and by Manus Foster, who interpreted this method as a Wiener–Kolmogorov (Kriging) filter. Following Hoerl, it is known in the statistical literature as ridge regression, named after ridge analysis (\"ridge\" refers to the path from the constrained maximum).",
+   "article": "Ridge regression",
+   "triples": [
+    {
+     "i": 0,
+     "source": "Tikhonov regularization",
+     "relation": "introduced_by",
+     "target": "Andrey Tikhonov",
+     "s": "n015",
+     "t": "n050",
+     "llm": "correct",
+     "reason": "Passage states it became known through works of Andrey Tikhonov.",
+     "other_passages": [
+      "p001"
+     ]
+    },
+    {
+     "i": 1,
+     "source": "Tikhonov regularization",
+     "relation": "introduced_by",
+     "target": "David L. Phillips",
+     "s": "n015",
+     "t": "n208",
+     "llm": "correct",
+     "reason": "Passage states it became known through works of David L. Phillips.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "Tikhonov–Phillips regularization",
+     "relation": "alternative_to",
+     "target": "Tikhonov regularization",
+     "s": "n605",
+     "t": "n015",
+     "llm": "incorrect",
+     "reason": "Passage says authors use the term, not that it is an alternative.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "ridge regression",
+     "relation": "special_case_of",
+     "target": "Tikhonov regularization",
+     "s": "n014",
+     "t": "n015",
+     "llm": "partly",
+     "reason": "Passage says it is known as ridge regression, implying equivalence, not special case.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "ridge regression",
+     "relation": "introduced_by",
+     "target": "Arthur E. Hoerl",
+     "s": "n014",
+     "t": "n129",
+     "llm": "correct",
+     "reason": "Hoerl expounded finite-dimensional case, known in statistics as ridge regression.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "ridge regression",
+     "relation": "related_to",
+     "target": "ridge analysis",
+     "s": "n014",
+     "t": "n549",
+     "llm": "correct",
+     "reason": "Ridge regression is named after ridge analysis.",
+     "other_passages": []
+    },
+    {
+     "i": 6,
+     "source": "Manus Foster",
+     "relation": "related_to",
+     "target": "Wiener–Kolmogorov filter",
+     "s": "n389",
+     "t": "n640",
+     "llm": "partly",
+     "reason": "Foster interpreted method as filter; relation is interpretation, not just related.",
+     "other_passages": []
+    },
+    {
+     "i": 7,
+     "source": "Wiener–Kolmogorov filter",
+     "relation": "related_to",
+     "target": "Kriging",
+     "s": "n640",
+     "t": "n340",
+     "llm": "correct",
+     "reason": "Passage explicitly equates Wiener–Kolmogorov with Kriging in parentheses.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "Tikhonov regularization",
+     "relation": "applied_to",
+     "target": "integral equations",
+     "quote": "application to integral equations",
+     "quote_in_passage": true
+    },
+    {
+     "source": "Manus Foster",
+     "relation": "interpreted",
+     "target": "Wiener–Kolmogorov (Kriging) filter",
+     "quote": "interpreted this method as a Wiener–Kolmogorov (Kriging) filter",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p013",
+   "text": "Choosing the regularization parameter ( [formula] ) is a fundamental part of lasso. A good value is essential to the performance of lasso since it controls the strength of shrinkage and variable selection, which, in moderation can improve both prediction accuracy and interpretability. However, if the regularization becomes too strong, important variables may be omitted and coefficients may be shrunk excessively, which can harm both predictive capacity and inferencing. Cross-validation is often used to find the regularization parameter.",
+   "article": "Lasso (statistics)",
+   "triples": [
+    {
+     "i": 0,
+     "source": "regularization parameter",
+     "relation": "part_of",
+     "target": "lasso",
+     "s": "n044",
+     "t": "n002",
+     "llm": "correct",
+     "reason": "Passage states choosing it is a fundamental part of lasso.",
+     "other_passages": []
+    },
+    {
+     "i": 1,
+     "source": "regularization parameter",
+     "relation": "related_to",
+     "target": "shrinkage",
+     "s": "n044",
+     "t": "n111",
+     "llm": "correct",
+     "reason": "Passage states parameter controls the strength of shrinkage.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "regularization parameter",
+     "relation": "related_to",
+     "target": "variable selection",
+     "s": "n044",
+     "t": "n120",
+     "llm": "correct",
+     "reason": "Passage states parameter controls the strength of variable selection.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "shrinkage",
+     "relation": "improves",
+     "target": "prediction accuracy",
+     "s": "n111",
+     "t": "n025",
+     "llm": "incorrect",
+     "reason": "Shrinkage itself harms if excessive; moderation of both improves accuracy.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "shrinkage",
+     "relation": "improves",
+     "target": "interpretability",
+     "s": "n111",
+     "t": "n022",
+     "llm": "incorrect",
+     "reason": "Shrinkage itself harms if excessive; moderation of both improves interpretability.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "variable selection",
+     "relation": "improves",
+     "target": "prediction accuracy",
+     "s": "n120",
+     "t": "n025",
+     "llm": "incorrect",
+     "reason": "Variable selection alone doesn't improve; moderation of both does.",
+     "other_passages": []
+    },
+    {
+     "i": 6,
+     "source": "variable selection",
+     "relation": "improves",
+     "target": "interpretability",
+     "s": "n120",
+     "t": "n022",
+     "llm": "incorrect",
+     "reason": "Variable selection alone doesn't improve; moderation of both does.",
+     "other_passages": []
+    },
+    {
+     "i": 7,
+     "source": "regularization parameter",
+     "relation": "causes",
+     "target": "predictive capacity",
+     "s": "n044",
+     "t": "n505",
+     "llm": "incorrect",
+     "reason": "Strong regularization harms predictive capacity, not causes it generally.",
+     "other_passages": []
+    },
+    {
+     "i": 8,
+     "source": "regularization parameter",
+     "relation": "causes",
+     "target": "inferencing",
+     "s": "n044",
+     "t": "n310",
+     "llm": "incorrect",
+     "reason": "Strong regularization harms inferencing, not causes it generally.",
+     "other_passages": []
+    },
+    {
+     "i": 9,
+     "source": "cross-validation",
+     "relation": "related_to",
+     "target": "regularization parameter",
+     "s": "n004",
+     "t": "n044",
+     "llm": "correct",
+     "reason": "Passage states cross-validation is used to find the parameter.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "regularization parameter",
+     "relation": "improves",
+     "target": "prediction accuracy",
+     "quote": "can improve both prediction accuracy and interpretability",
+     "quote_in_passage": true
+    },
+    {
+     "source": "regularization parameter",
+     "relation": "improves",
+     "target": "interpretability",
+     "quote": "can improve both prediction accuracy and interpretability",
+     "quote_in_passage": true
+    },
+    {
+     "source": "regularization parameter",
+     "relation": "causes",
+     "target": "omitted variables",
+     "quote": "important variables may be omitted",
+     "quote_in_passage": true
+    },
+    {
+     "source": "regularization parameter",
+     "relation": "causes",
+     "target": "shrunk coefficients",
+     "quote": "coefficients may be shrunk excessively",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p051",
+   "text": "Non-exhaustive cross validation methods do not compute all ways of splitting the original sample. These methods are approximations of leave-p-out cross-validation. ==== k-fold cross-validation ==== [formula] In k-fold cross-validation, the original sample is randomly partitioned into k equal sized subsamples, often referred to as \"folds\". Of the k subsamples, a single subsample is retained as the validation data for testing the model, and the remaining k − 1 subsamples are used as training data.",
+   "article": "Cross-validation (statistics)",
+   "triples": [
+    {
+     "i": 0,
+     "source": "non-exhaustive cross validation methods",
+     "relation": "special_case_of",
+     "target": "leave-p-out cross-validation",
+     "s": "n439",
+     "t": "n358",
+     "llm": "partly",
+     "reason": "Passage says they are approximations, not special cases.",
+     "other_passages": []
+    },
+    {
+     "i": 1,
+     "source": "k-fold cross-validation",
+     "relation": "is_a",
+     "target": "non-exhaustive cross validation methods",
+     "s": "n327",
+     "t": "n439",
+     "llm": "incorrect",
+     "reason": "Passage does not state k-fold is non-exhaustive.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "non-exhaustive cross validation methods",
+     "relation": "related_to",
+     "target": "leave-p-out cross-validation",
+     "quote": "These methods are approximations of leave-p-out cross-validation.",
+     "quote_in_passage": true
+    },
+    {
+     "source": "k-fold cross-validation",
+     "relation": "uses",
+     "target": "validation data",
+     "quote": "a single subsample is retained as the validation data",
+     "quote_in_passage": true
+    },
+    {
+     "source": "k-fold cross-validation",
+     "relation": "uses",
+     "target": "training data",
+     "quote": "remaining k − 1 subsamples are used as training data",
+     "quote_in_passage": true
+    }
+   ]
+  },
+  {
+   "id": "p031",
+   "text": "To lessen the chance or amount of overfitting, several techniques are available (e.g., model comparison, cross-validation, regularization, early stopping, pruning, Bayesian priors, or dropout). The basis of some techniques is to either (1) explicitly penalize overly complex models or (2) test the model's ability to generalize by evaluating its performance on a set of data not used for training, which is assumed to approximate the typical unseen data that a model will encounter.",
+   "article": "Overfitting",
+   "triples": [
+    {
+     "i": 0,
+     "source": "regularization",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n003",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": [
+      "p021"
+     ]
+    },
+    {
+     "i": 1,
+     "source": "early stopping",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n033",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": [
+      "p021",
+      "p034"
+     ]
+    },
+    {
+     "i": 2,
+     "source": "dropout",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n060",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": [
+      "p021"
+     ]
+    },
+    {
+     "i": 3,
+     "source": "model comparison",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n408",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "cross-validation",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n004",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "pruning",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n101",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": [
+      "p127"
+     ]
+    },
+    {
+     "i": 6,
+     "source": "Bayesian priors",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n139",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Techniques lessen overfitting; 'improves' implies making it better/worse ambiguously.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "regularization",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., ... regularization ...)",
+     "quote_in_passage": false
+    },
+    {
+     "source": "early stopping",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., ... early stopping ...)",
+     "quote_in_passage": false
+    },
+    {
+     "source": "dropout",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., ... dropout)",
+     "quote_in_passage": false
+    },
+    {
+     "source": "model comparison",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., model comparison ...)",
+     "quote_in_passage": false
+    },
+    {
+     "source": "cross-validation",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., ... cross-validation ...)",
+     "quote_in_passage": false
+    },
+    {
+     "source": "pruning",
+     "relation": "applied_to",
+     "target": "overfitting",
+     "quote": "To lessen the chance or amount of overfitting, several techniques are available (e.g., ... pruning ...)",
+     "quote_in_passage": false
+    }
+   ]
+  },
+  {
+   "id": "p127",
+   "text": "Such algorithms cannot guarantee to return the globally optimal decision tree. To reduce the greedy effect of local optimality, some methods such as the dual information distance (DID) tree were proposed. Decision-tree learners can create over-complex trees that do not generalize well from the training data. (This is known as overfitting.)  Mechanisms such as pruning are necessary to avoid this problem (with the exception of some algorithms such as the Conditional Inference approach, that does not require pruning).",
+   "article": "Decision tree learning",
+   "triples": [
+    {
+     "i": 0,
+     "source": "pruning",
+     "relation": "improves",
+     "target": "overfitting",
+     "s": "n101",
+     "t": "n001",
+     "llm": "incorrect",
+     "reason": "Pruning avoids overfitting; it does not improve the problem itself.",
+     "other_passages": [
+      "p031"
+     ]
+    },
+    {
+     "i": 1,
+     "source": "dual information distance (DID) tree",
+     "relation": "special_case_of",
+     "target": "decision tree",
+     "s": "n224",
+     "t": "n008",
+     "llm": "partly",
+     "reason": "Passage calls it a method to reduce greedy effect, not explicitly a special case.",
+     "other_passages": []
+    },
+    {
+     "i": 2,
+     "source": "dual information distance (DID) tree",
+     "relation": "improves",
+     "target": "decision tree",
+     "s": "n224",
+     "t": "n008",
+     "llm": "partly",
+     "reason": "It reduces greedy effect in learning, not generally improving the tree structure itself.",
+     "other_passages": []
+    },
+    {
+     "i": 3,
+     "source": "decision tree",
+     "relation": "causes",
+     "target": "overfitting",
+     "s": "n008",
+     "t": "n001",
+     "llm": "correct",
+     "reason": "Learners create complex trees causing overfitting; passage links trees to this problem.",
+     "other_passages": []
+    },
+    {
+     "i": 4,
+     "source": "pruning",
+     "relation": "requires",
+     "target": "decision tree",
+     "s": "n101",
+     "t": "n008",
+     "llm": "incorrect",
+     "reason": "Decision trees require pruning, not the other way around. Direction is wrong.",
+     "other_passages": []
+    },
+    {
+     "i": 5,
+     "source": "Conditional Inference approach",
+     "relation": "alternative_to",
+     "target": "pruning",
+     "s": "n183",
+     "t": "n101",
+     "llm": "incorrect",
+     "reason": "It is an algorithm that doesn't need pruning, not an alternative to the mechanism.",
+     "other_passages": []
+    },
+    {
+     "i": 6,
+     "source": "Conditional Inference approach",
+     "relation": "special_case_of",
+     "target": "decision tree",
+     "s": "n183",
+     "t": "n008",
+     "llm": "partly",
+     "reason": "Implied as a decision-tree learner approach, but passage focuses on its pruning exception.",
+     "other_passages": []
+    }
+   ],
+   "missed": [
+    {
+     "source": "pruning",
+     "relation": "applied_to",
+     "target": "decision tree",
+     "quote": "Mechanisms such as pruning are necessary to avoid this problem",
+     "quote_in_passage": true
+    },
+    {
+     "source": "dual information distance (DID) tree",
+     "relation": "alternative_to",
+     "target": "greedy effect of local optimality",
+     "quote": "To reduce the greedy effect of local optimality, some methods such as the dual information distance (DID) tree were proposed",
+     "quote_in_passage": true
+    }
+   ]
+  }
+ ],
+ "n_calls": 8
+}

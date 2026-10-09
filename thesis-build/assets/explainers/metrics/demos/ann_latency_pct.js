@@ -51,7 +51,8 @@
     if (realData) return realData;
     const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    realData = Promise.all([get('answers/answers.json'), get('data/questions.json')]).then(a => ({ answers: a[0], qs: Object.fromEntries(a[1].map(q => [q.id, q])) }));
+    const annU = new URL('data/ann_latency_pct.real.json', SCRIPT_SRC || location.href).href;
+    realData = Promise.all([get('answers/answers.json'), get('data/questions.json'), fetch(annU).then(r => { if (!r.ok) throw new Error('ann_latency_pct.real.json ' + r.status); return r.json(); })]).then(a => ({ answers: a[0], qs: Object.fromEntries(a[1].map(q => [q.id, q])), ann: a[2] }));
     return realData;
   }
 
@@ -128,27 +129,50 @@
   }
 
   function mountReal(el, D) {
-    const K = root.DemoKit;
-    const st = { arm: 'ALL', extra: 0, nsub: 36 };
-    const shell = K.shell(el, 'Real example: latency percentiles of 36 real LLM calls',
-      'These are LLM-CALL latencies of the answer study (12 questions x 3 arms, qwen3.7-plus, wall clock of one non-streaming call from a shared machine, endpoint in China, one run, 2026-10-08), NOT ANN-search latencies: the HNSW experiment stores only a mean ms/query per setting, no per-query latencies, so an ANN percentile cannot be computed honestly (real ANN percentiles: pending). The 36 calls are a real sample to show the percentile maths. n = 12 per arm and 36 pooled is demo scale: p99 is the maximum.');
+    const K = root.DemoKit, A = D.ann;
+    const st = { src: 'ann', ef: A.runs[2].ef_search, arm: 'ALL', extra: 0, nsub: 36, nq: A.n_queries };
+    const shell = K.shell(el, 'Real example: latency percentiles',
+      'Two real samples. (1) ANN search, the default: we rebuilt the standard hnswlib index (M=16, efConstruction=200, cosine, one thread) over 20,000 real Simple English Wikipedia passages (384-d MiniLM vectors from the pack) and timed each of 500 held-out queries on its own with time.perf_counter on this Mac on 2026-10-09 (k=10, one warm-up pass, one timed pass; the Mac was under load, so absolute values are indicative; recall@10 is shown beside each setting). (2) The 36 wall-clock latencies of the real LLM calls of the answer study (qwen3.7-plus, 2026-10-08, endpoint in China), a small sample that shows how p99 behaves when n is tiny. Demo scale, single-process, no concurrency: this is the service time of one query, not a load test.');
+    const src = K.el('div', { class: 'row', role: 'group', 'aria-label': 'sample' }), hostA = K.el('div'), hostL = K.el('div');
+    const bA = K.el('button', { type: 'button', onclick: () => { st.src = 'ann'; render(); } }, 'ANN search: 500 queries (HNSW)'), bL = K.el('button', { type: 'button', onclick: () => { st.src = 'llm'; render(); } }, 'LLM calls: 36 (answer study)');
+    src.append(bA, bL);
+    // --- ANN panel
+    const efSel = K.el('select', { 'aria-label': 'efSearch' }, A.runs.map(r => K.el('option', Object.assign({ value: r.ef_search }, r.ef_search === st.ef ? { selected: '' } : {}), `efSearch = ${r.ef_search} (recall@10 ${r.recall10})`)));
+    efSel.addEventListener('change', () => { st.ef = Number(efSel.value); render(); });
+    const nSl = K.slider('use only the first n queries', 20, A.n_queries, 10, st.nq, v => { st.nq = v; render(); });
+    const exA = K.slider('add one extra query of (ms, 0 = none)', 0, 50, 1, 0, v => { st.exA = v; render(); });
+    const infoA = K.el('p', { class: 'hint', 'aria-live': 'polite' });
+    hostA.append(K.el('div', { class: 'row' }, K.el('label', {}, 'search effort ', efSel)), K.el('div', { class: 'row' }, nSl.node), K.el('div', { class: 'row' }, exA.node), infoA);
+    const hA = K.el('div'); hostA.append(hA);
+    const curA = () => A.runs.find(r => r.ef_search === st.ef).lat_ms.slice(0, st.nq).concat(st.exA > 0 ? [st.exA] : []);
+    const drawA = stats(K, hA, curA, 'ms', 3, null);
+    // --- LLM panel
     const all = D.answers.map((a, i) => ({ i, qid: a.qid, arm: a.arm, s: a.latency_s, refused: a.refused }));
-    const arms = K.el('div', { class: 'row', role: 'group', 'aria-label': 'sample' }), host = K.el('div'), info = K.el('p', { class: 'hint', 'aria-live': 'polite' });
+    const arms = K.el('div', { class: 'row', role: 'group', 'aria-label': 'arm' }), infoL = K.el('p', { class: 'hint', 'aria-live': 'polite' });
     const sub = K.slider('use only the first n calls (in question order)', 6, 36, 1, st.nsub, v => { st.nsub = v; render(); });
     const ex = K.slider('add one extra call of (seconds, 0 = none)', 0, 60, 1, 0, v => { st.extra = v; render(); });
     const abtn = {};
     [['ALL', 'all 36 calls'], ['A', 'arm A (12)'], ['B', 'arm B (12)'], ['C', 'arm C (12)']].forEach(([k, t]) => { abtn[k] = K.el('button', { type: 'button', onclick: () => { st.arm = k; render(); } }, t); arms.append(abtn[k]); });
-    shell.append(arms, K.el('div', { class: 'row' }, sub.node), K.el('div', { class: 'row' }, ex.node), info, host);
+    const hL = K.el('div');
+    hostL.append(arms, K.el('div', { class: 'row' }, sub.node), K.el('div', { class: 'row' }, ex.node), infoL, hL);
     const cur = () => { let rows = all.filter(r => st.arm === 'ALL' || r.arm === st.arm); rows = rows.slice(0, Math.min(st.nsub, rows.length)); return rows; };
     const get = () => cur().map(r => r.s).concat(st.extra > 0 ? [st.extra] : []);
-    const draw = stats(K, host, get, 's', 2, null);
+    const drawL = stats(K, hL, get, 's', 2, null);
+    shell.append(src, hostA, hostL);
     function render() {
-      Object.keys(abtn).forEach(k => abtn[k].setAttribute('aria-pressed', String(k === st.arm)));
-      const rows = cur(), slow = rows.slice().sort((a, b) => b.s - a.s)[0];
-      info.textContent = `Sample: ${rows.length} real calls${st.extra > 0 ? ' + 1 invented call of ' + st.extra + ' s (your slider)' : ''}. Slowest real call: ${slow.qid} arm ${slow.arm}, ${K.fmt(slow.s, 2)} s (call index ${slow.i + 1} of 36; latency alone does not say why: network, queue or generation length). Use the arm buttons to see that p50 barely moves between arms while the max (= p99 here) does: ranking arms by p99 of 12 calls is ranking noise.`;
-      draw();
+      bA.setAttribute('aria-pressed', String(st.src === 'ann')); bL.setAttribute('aria-pressed', String(st.src === 'llm'));
+      hostA.style.display = st.src === 'ann' ? '' : 'none'; hostL.style.display = st.src === 'llm' ? '' : 'none';
+      if (st.src === 'ann') {
+        const r = A.runs.find(x => x.ef_search === st.ef), lat = r.lat_ms.slice(0, st.nq), mx = Math.max(...lat);
+        infoA.textContent = `Sample: ${lat.length} real queries (one HNSW search each) on an index of ${A.n_index.toLocaleString('en-US')} vectors, d = ${A.dim}, k = ${A.k}, efSearch = ${r.ef_search}, recall@10 = ${r.recall10} (full 500 queries). Slowest of this sample: ${K.fmt(mx, 3)} ms. Raise efSearch: recall rises and p50, p95 and p99 rise with it. With n = 500, p99 is the 6th largest value, so it is a real percentile but still wobbly. The bootstrap interval only covers resampling within this one run, not run-to-run variation (the Mac was busy), so repeat runs would scatter wider. Machine load average at the start of the run: ${A.machine.load_avg.map(v => K.fmt(v, 1)).join(' ')}.${st.exA > 0 ? ' One invented extra query (your slider) is included.' : ''}`;
+        drawA();
+      } else {
+        const rows = cur(), slow = rows.slice().sort((a, b) => b.s - a.s)[0];
+        infoL.textContent = `Sample: ${rows.length} real calls${st.extra > 0 ? ' + 1 invented call of ' + st.extra + ' s (your slider)' : ''}. These are LLM-call latencies, not ANN latencies. Slowest real call: ${slow.qid} arm ${slow.arm}, ${K.fmt(slow.s, 2)} s (call ${slow.i + 1} of 36). n = 12 per arm and 36 pooled is demo scale: p99 is the maximum, so ranking arms by p99 of 12 calls is ranking noise.`;
+        drawL();
+      }
     }
-    coPanel(K, host);
+    coPanel(K, shell);
     render();
   }
 

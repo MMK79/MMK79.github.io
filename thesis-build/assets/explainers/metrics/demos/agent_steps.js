@@ -70,10 +70,46 @@
     return realData;
   }
 
+  let agentData = null;
+  function loadAgent() {
+    if (agentData) return agentData;
+    const url = new URL('data/agent_steps.real.json', SCRIPT_SRC || location.href).href;
+    agentData = fetch(url).then(r => { if (!r.ok) throw new Error('agent_steps.real.json ' + r.status); return r.json(); });
+    return agentData;
+  }
+
+  /* real agent loop: 24 questions, steps = searches the agent made (data/agent_steps.real.json, built by agent_steps.build.py) */
+  function mountAgent(el, A) {
+    const K = root.DemoKit, st = { cap: A.cap, q: 0 };
+    const shell = K.shell(el, 'Real example: a small search agent, 24 questions',
+      'Our own run on 2026-10-09: ' + A.model + ' (temperature 0, JSON replies) may search or answer; the tool is BM25 over the 138 public Wikipedia passages of the pack (top 3, 90-word excerpts). One search = one step. Cap n_max = ' + A.cap + ': a 9th search request would be stopped and recorded as capped. 24 questions (20 answerable, 4 unanswerable), ONE run, ' + A.llm_calls + ' LLM calls, USD ' + A.usd + ' (public text only). Demo scale: a toy agent with one tool, not the thesis tutor; lowering the cap with the slider only RE-CAPS the recorded steps; the agent is not re-run.');
+    const capS = K.slider('cap n_max (re-caps the recorded steps)', 1, A.cap, 1, st.cap, v => { st.cap = v; render(); });
+    const res = K.resultBox(), res2 = K.resultBox();
+    const out = K.el('div', { class: 'row' }, res.node, K.el('span', { class: 'hint' }, ' mean steps (recorded)'), res2.node, K.el('span', { class: 'hint' }, ' FTS'));
+    const formula = K.el('div', { class: 'formula', 'aria-live': 'polite', style: 'white-space:pre-wrap' }), tbl = K.el('div'), note = K.el('p', { class: 'hint' });
+    const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, A.rows.map((r, i) => K.el('option', { value: i }, r.qid + ' (' + r.type + '): ' + r.steps + ' steps, ' + r.outcome)));
+    qSel.addEventListener('change', () => { st.q = +qSel.value; render(); });
+    const trace = K.el('div', { class: 'formula', style: 'white-space:pre-wrap;overflow-wrap:anywhere' });
+    shell.append(K.el('div', { class: 'row' }, capS.node), out, formula, tbl, K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;width:100%' }, 'trace ', qSel)), trace, note);
+    function render() {
+      const steps = A.rows.map(r => r.steps), r = compute({ steps, cap: st.cap }), N = steps.length;
+      res.set(r.mean_steps, 3); res2.set(r.FTS, 3);
+      const hit = steps.filter(n => n >= st.cap).length, trueMean = steps.reduce((a, b) => a + b, 0) / N;
+      formula.textContent = `mean = ${steps.map(n => Math.min(n, st.cap)).reduce((a, b) => a + b, 0)} / ${N} = ${K.fmt(r.mean_steps, 3)}   (true mean of this run: ${K.fmt(trueMean, 3)})\nFTS  = ${hit} / ${N} = ${K.fmt(r.FTS, 3)}   (at cap ${st.cap})`;
+      const tb = K.el('table'); tb.append(K.el('tr', {}, ['question type', 'n', 'mean steps', 'max steps'].map(h => K.el('th', {}, h))));
+      ['single-hop', 'bridge', 'comparison', 'unanswerable'].forEach(t => { const x = A.rows.filter(q => q.type === t).map(q => q.steps); tb.append(K.el('tr', {}, [t, x.length, K.fmt(x.reduce((a, b) => a + b, 0) / x.length, 2), Math.max(...x)].map(v => K.el('td', {}, String(v))))); });
+      tbl.replaceChildren(K.el('div', { style: 'overflow-x:auto;max-width:100%' }, tb));
+      const q = A.rows[st.q];
+      trace.textContent = `${q.qid} (${q.type}): ${q.steps} search${q.steps === 1 ? '' : 'es'}, outcome ${q.outcome}\n` + q.queries.map((x, i) => `step ${i + 1}: search "${x}"`).join('\n') + (q.answer ? `\nanswer: ${q.answer}` : '');
+      note.textContent = 'What it shows: this model on this tiny corpus almost always stops after one search (only the 4 unanswerable questions take more than 2 steps: 3 on average, up to 5), so the failure-to-stop rate at cap ' + A.cap + ' is ' + K.fmt(compute({ steps, cap: A.cap }).FTS, 2) + '. Lower the cap and FTS rises only because the cap now bites, not because the agent changed. The metric counts effort, not quality: an agent that answers an unanswerable question after 3 searches is not shown as wrong here. n = 24, one run, one model, one tool.';
+    }
+    render();
+  }
+
   function mountReal(el, D) {
     const K = root.DemoKit;
     const st = { mode: 'all', cap: 6, q: D.calls[0].qid };
-    const shell = K.shell(el, 'Real example: the pack has no agent loop',
+    const shell = K.shell(el, 'Proxy: LLM calls of the evaluation harness (not an agent)',
       'Honest scope: our three arms are single-shot pipelines (retrieve once, answer once), not agents, so there are no tool-call traces and no real failure-to-stop rate. What the pack does contain: (1) LLM calls per answer in the evaluation harness (answer + judging calls, evaluator overhead, not agent behaviour; pairwise calls are per question pair and excluded) and (2) how many sub-questions or rewrites the query-transform runs produced. We use them as "steps" only to show the formula on real counts. n = 12 questions, one run, demo scale.');
     const counts = r => st.mode === 'answer' ? 1 : st.mode === 'gen' ? (r.answer || 0) + (r.claims || 0) : (r.answer || 0) + (r.claims || 0) + (r.verdicts || 0) + (r.correctness || 0) + (r.context || 0);
     const modeSel = K.el('select', { 'aria-label': 'which calls to count' }, [['all', 'all harness calls (answer + judges)'], ['gen', 'answer + claim extraction'], ['answer', 'answer call only']].map(([v, t]) => K.el('option', { value: v }, t)));
@@ -107,7 +143,7 @@
     function real() {
       bR.setAttribute('aria-pressed', 'true'); bT.setAttribute('aria-pressed', 'false');
       body.replaceChildren(K.el('p', { class: 'hint' }, 'Loading real data...'));
-      loadReal().then(D => { body.replaceChildren(); mountReal(body, D); })
+      Promise.all([loadReal(), loadAgent()]).then(([D, A]) => { body.replaceChildren(); mountAgent(body, A); const det = K.el('details', {}, K.el('summary', {}, 'Proxy from the answer study: LLM calls per answer in the evaluation harness (evaluator overhead, not agent behaviour)')); body.append(det); mountReal(det, D); })
         .catch(e => { realData = null; body.replaceChildren(K.el('p', { class: 'hint bad' }, 'Real data not available (' + e.message + '). Showing the toy example.')); mountToy(body); });
     }
     bR.addEventListener('click', real); bT.addEventListener('click', toy);

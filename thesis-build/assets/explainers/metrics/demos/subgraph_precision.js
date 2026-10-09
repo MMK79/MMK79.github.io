@@ -64,16 +64,28 @@
     if (realData) return realData;
     const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    realData = Promise.all([get('graph/graph.json'), get('graph/khop.json'), get('graph/pcst.json'), get('data/questions.json')]).then(a => {
+    realData = Promise.all([get('graph/graph.json'), get('graph/khop.json'), get('graph/pcst.json'), get('data/questions.json'), fetch(new URL('data/kg_gold.real.json', SCRIPT_SRC || location.href).href).then(r => { if (!r.ok) throw new Error('kg_gold ' + r.status); return r.json(); })]).then(a => {
       const g = a[0], adj = {}, byName = {};
       g.nodes.forEach(n => { adj[n.id] = []; byName[n.name] = n.id; });
       g.edges.forEach(e => { adj[e.source].push(e.target); adj[e.target].push(e.source); });
       const qs = {}; a[3].forEach(q => { qs[q.id] = q; });
       const seeds = {}; a[1].questions.forEach(q => { if (q.seeds && q.seeds.length) seeds[q.qid] = q.seeds.map(s => s.id); });
       const ids = Object.keys(seeds).filter(id => qs[id].type !== 'unanswerable' && a[2].questions[id]).sort();
-      return { g, adj, byName, qs, seeds, pcst: a[2].questions, ids };
+      const D = { g, adj, byName, qs, seeds, pcst: a[2].questions, ids, kg: a[4] };
+      goldSets(D); return D;
     });
     return realData;
+  }
+  /* labelled gold (kg_gold.real.json, 2026-10-09): per covered question, edge keys s|t|relation labelled correct (strict) or correct+partly (lenient) in a gold passage */
+  const ekey = e => e.source + '|' + e.target + '|' + e.relation;
+  function goldSets(D) {
+    D.kgSets = { strict: {}, lenient: {} };
+    const P = {}; D.kg.passages.forEach(p => { P[p.id] = p; });
+    D.kg.covered_questions.forEach(id => {
+      [['strict', ['correct']], ['lenient', ['correct', 'partly']]].forEach(([m, pos]) => {
+        const set = new Set(); D.qs[id].gold_passages.forEach(p => P[p].triples.forEach(t => { if (pos.includes(t.final)) set.add(t.s + '|' + t.t + '|' + t.relation); })); D.kgSets[m][id] = set;
+      });
+    });
   }
   /* undirected BFS from the seeds (same rule as khop.json); returns the node-id set within h hops */
   function bfs(D, seeds, h) {
@@ -82,9 +94,10 @@
     return S;
   }
   /* induced edges of a node set; an edge is gold-supported if one of its source passages is a gold passage (our proxy: the pack has no gold triples) */
-  function score(D, nodes, gold) {
+  function score(D, nodes, gold, mode, qid) {
     const gs = new Set(gold), edges = D.g.edges.filter(e => nodes.has(e.source) && nodes.has(e.target));
-    const sup = edges.filter(e => e.passages.some(p => gs.has(p)));
+    const lab = mode && mode !== 'proxy' ? D.kgSets[mode][qid] : null;
+    const sup = edges.filter(e => lab ? lab.has(ekey(e)) : e.passages.some(p => gs.has(p)));
     return { edges, sup, total: edges.length, hits: sup.length, sp: edges.length ? sup.length / edges.length : null };
   }
   function pcstNodes(D, qid) { return new Set(D.pcst[qid].nodes.map(n => D.byName[n])); }
@@ -92,13 +105,17 @@
 
   function mountReal(el, D) {
     const K = root.DemoKit;
-    const st = { qid: D.ids.includes('q02') ? 'q02' : D.ids[0], hop: 1 };
+    const st = { qid: D.ids.includes('q02') ? 'q02' : D.ids[0], hop: 1, mode: 'strict' };
+    const cov = id => !!D.kgSets.strict[id];
     const shell = K.shell(el, 'Real example: subgraph precision, k-hop vs PCST',
-      'Scale: 138 passages, 24 questions, a knowledge graph of 662 nodes and 762 edges that an LLM (qwen3.8-flash) extracted from them. The pack has NO gold triples. So "gold-supported" is our proxy: an edge counts if the passage it was extracted from is a gold passage of the question. This undercounts true evidence, because gold labels only mark necessary passages and extraction can be wrong, so precision is a lower bound. Subgraph edges = all graph edges whose two end nodes are in the subgraph. Seeds come from entity linking (noisy). A demo, not a benchmark.');
+      'Scale: 138 passages, 24 questions, a knowledge graph of 662 nodes and 762 edges that an LLM (qwen3.8-flash) extracted. GOLD LABELS (new, 2026-10-09): for the 8 gold passages of 7 questions (q01 q02 q03 q04 q11 q13 q16) all 59 extracted triples were labelled correct / partly / incorrect against the passage text by an LLM labeller (qwen3.7-plus) and re-read by us (15 labels changed). A subgraph edge is gold when it is labelled correct (strict) or correct + partly (lenient) in a gold passage of the question. Subgraph edges = all graph edges whose two end nodes are in the subgraph. Seeds come from noisy entity linking. n = 7 questions, one labeller pair, no human annotator: a demo, not a benchmark. The earlier proxy (any edge extracted from a gold passage, unlabelled, all 20 questions) stays as the third choice; it counts wrong extractions as gold.');
     const opt = (v, t) => K.el('option', { value: v }, t);
-    const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, D.ids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question.slice(0, 60))));
+    const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, D.ids.map(id => opt(id, (cov(id) ? '[labelled] ' : '[proxy only] ') + id + ' (' + D.qs[id].type + '): ' + D.qs[id].question.slice(0, 50))));
     qSel.value = st.qid;
     qSel.addEventListener('change', () => { st.qid = qSel.value; render(); });
+    const mSel = K.el('select', { 'aria-label': 'gold set', style: 'width:100%;max-width:100%;box-sizing:border-box' },
+      opt('strict', 'Gold = labelled correct only (strict)'), opt('lenient', 'Gold = labelled correct + partly (lenient)'), opt('proxy', 'Gold = proxy: any edge from a gold passage (unlabelled)'));
+    mSel.value = st.mode; mSel.addEventListener('change', () => { st.mode = mSel.value; render(); });
     const hopS = K.slider('k-hop expansion: hop', 0, 3, 1, st.hop, v => { st.hop = v; render(); });
     const qline = K.el('p', { class: 'hint' });
     const res = K.resultBox();
@@ -107,13 +124,17 @@
     const list = K.el('div', { role: 'group', 'aria-label': 'edges of the PCST subgraph' });
     const note = K.el('p', { class: 'hint' });
     const meanBox = K.el('p', { class: 'hint', style: 'white-space:pre-wrap' });
-    shell.append(K.el('div', { style: 'max-width:100%' }, K.el('label', { style: 'display:block;max-width:100%' }, 'question ', qSel)), hopS.node, qline, res.node, formula, table, K.el('p', { class: 'hint' }, 'Edges of the PCST subgraph (teal = gold-supported, orange = not):'), list, note, meanBox);
+    shell.append(K.el('div', { style: 'max-width:100%' }, K.el('label', { style: 'display:block;max-width:100%' }, 'question ', qSel), K.el('label', { style: 'display:block;max-width:100%' }, 'gold set ', mSel)), hopS.node, qline, res.node, formula, table, K.el('p', { class: 'hint' }, 'Edges of the PCST subgraph (teal = gold-supported, orange = not):'), list, note, meanBox);
 
     function render() {
       const q = D.qs[st.qid], gold = q.gold_passages, sd = D.seeds[st.qid];
+      if (st.mode !== 'proxy' && !cov(st.qid)) {
+        qline.textContent = q.question + '  | gold passages: ' + gold.join(', '); res.set(0, 3); formula.textContent = 'This question is not in the labelled set (its gold passages were not labelled). Pick a [labelled] question or the proxy gold set.';
+        table.textContent = ''; list.replaceChildren(); note.textContent = ''; meanBox.textContent = means(); return;
+      }
       qline.textContent = q.question + '  | gold passages: ' + gold.join(', ') + ' | seeds: ' + sd.length;
-      const kh = [0, 1, 2, 3].map(h => score(D, bfs(D, sd, h), gold));
-      const pc = score(D, pcstNodes(D, st.qid), gold);
+      const kh = [0, 1, 2, 3].map(h => score(D, bfs(D, sd, h), gold, st.mode, st.qid));
+      const pc = score(D, pcstNodes(D, st.qid), gold, st.mode, st.qid);
       const cur = kh[st.hop];
       res.set(cur.sp === null ? 0 : cur.sp, 3);
       formula.textContent = cur.total
@@ -131,12 +152,18 @@
       });
       note.textContent = `Teaching point: from hop 0 to hop 3 the subgraph grows from ${kh[0].total} to ${kh[3].total} edges while SP falls to ${f(kh[3])}. PCST keeps ${pc.total} edges at SP ${f(pc)}. Each edge shows the passage ids it was extracted from. Edges not marked gold may still be useful context (non-gold passages can support a bridge), so SP alone is a lower bound on usefulness.`;
     }
-    // mean over all 20 answerable questions with seeds and a PCST subgraph (hop 0 has no edges for some: excluded from that mean)
-    const rows = [0, 1, 2, 3].map(h => D.ids.map(id => score(D, bfs(D, D.seeds[id], h), D.qs[id].gold_passages)));
-    const prow = D.ids.map(id => score(D, pcstNodes(D, id), D.qs[id].gold_passages));
-    const mm = a => K.fmt(mean(a.map(x => x.sp)), 3), me = a => K.fmt(a.reduce((s, x) => s + x.total, 0) / a.length, 1);
-    meanBox.textContent = `Mean over the ${D.ids.length} answerable questions with seeds (macro average, undefined SP skipped):\n` +
-      rows.map((r, h) => `k-hop ${h}: SP ${mm(r)}, mean ${me(r)} edges` + (r.some(x => x.sp === null) ? ` (${r.filter(x => x.sp === null).length} questions have no edge)` : '')).join('\n') + `\nPCST: SP ${mm(prow)}, mean ${me(prow)} edges`;
+    // macro mean; labelled modes use the 7 labelled questions, proxy mode the 20 answerable ones with seeds; undefined SP (no edge) is skipped
+    function means() {
+      const lab = st.mode !== 'proxy', ids = lab ? D.ids.filter(cov) : D.ids;
+      const run = mode => ({ rows: [0, 1, 2, 3].map(h => ids.map(id => score(D, bfs(D, D.seeds[id], h), D.qs[id].gold_passages, mode, id))), prow: ids.map(id => score(D, pcstNodes(D, id), D.qs[id].gold_passages, mode, id)) });
+      const mm = a => K.fmt(mean(a.map(x => x.sp)), 3), me = a => K.fmt(a.reduce((s, x) => s + x.total, 0) / a.length, 1);
+      const r = run(st.mode);
+      let t = `Mean over ${ids.length} ${lab ? 'LABELLED' : 'answerable'} questions with seeds (macro average, ${st.mode} gold, undefined SP skipped):\n` +
+        r.rows.map((x, h) => `k-hop ${h}: SP ${mm(x)}, mean ${me(x)} edges` + (x.some(y => y.sp === null) ? ` (${x.filter(y => y.sp === null).length} questions have no edge)` : '')).join('\n') + `\nPCST: SP ${mm(r.prow)}, mean ${me(r.prow)} edges`;
+      if (lab) { const p = run('proxy'); t += '\nSame questions with the unlabelled proxy gold: ' + p.rows.map((x, h) => `k-hop ${h} ${mm(x)}`).join(', ') + `, PCST ${mm(p.prow)}`; }
+      return t;
+    }
+    const render0 = render; render = () => { render0(); meanBox.textContent = means(); };
     render();
   }
 

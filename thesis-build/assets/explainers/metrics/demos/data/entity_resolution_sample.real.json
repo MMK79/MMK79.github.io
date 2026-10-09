@@ -1,0 +1,3785 @@
+{
+ "model": "qwen3.7-plus",
+ "date": "2026-10-09",
+ "seed": 9,
+ "rule": "You label pairs of entity names from a knowledge graph built on machine-learning Wikipedia passages. For each pair decide:\n same: a reader would treat the two names as ONE entity in a knowledge graph (synonym, abbreviation, plural, spelling, spacing or capitalisation variant of the same thing, or the same person with a fuller name).\n different: one is broader or narrower than the other, a variant or special case, an opposite, a part of the other, or simply another thing, even when the names look alike.\nUse only the two names, their types and the sentences shown. Give a reason of at most 12 words.\nReturn ONLY JSON: {\"labels\":[{\"i\":int,\"label\":\"same|different\",\"reason\":str}]}",
+ "pool_unmerged": 402,
+ "n_merged": 43,
+ "n_unmerged_sampled": 120,
+ "pairs": [
+  {
+   "stratum": "merged",
+   "a": "lasso",
+   "b": "least absolute shrinkage and selection operator",
+   "node_a": "n002",
+   "node_b": "n002",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "ev_b": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "llm": "same",
+   "llm_reason": "Abbreviation and full name refer to same method.",
+   "idx": 0,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "training set",
+   "b": "training sets",
+   "node_a": "n005",
+   "node_b": "n005",
+   "type_a": "Dataset",
+   "type_b": "Dataset",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p035",
+    "text": "It may be possible to reconstruct details of individual training instances from an overfitted machine learning model's training set."
+   },
+   "ev_b": {
+    "passage": "p048",
+    "text": "This is because model-free approaches to inference require impractically large training sets if they are to avoid high variance."
+   },
+   "llm": "same",
+   "llm_reason": "Singular and plural forms of the same dataset concept.",
+   "idx": 1,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "decision tree",
+   "b": "decision trees",
+   "node_a": "n008",
+   "node_b": "n008",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p128",
+    "text": "In general, decision graphs infer models with fewer leaves than decision trees."
+   },
+   "llm": "same",
+   "llm_reason": "Singular and plural forms of the same method.",
+   "idx": 2,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "random forests",
+   "b": "random forest",
+   "node_a": "n013",
+   "node_b": "n013",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "ev_b": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 3,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "PCR",
+   "b": "Principal component regression",
+   "node_a": "n018",
+   "node_b": "n018",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "llm": "same",
+   "llm_reason": "Acronym and full name refer to same method.",
+   "idx": 4,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "PCR",
+   "b": "principal component regression",
+   "node_a": "n018",
+   "node_b": "n018",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "llm": "same",
+   "llm_reason": "Acronym and lowercase full name refer to same method.",
+   "idx": 5,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "regression",
+   "b": "regressions",
+   "node_a": "n019",
+   "node_b": "n019",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "llm": "same",
+   "llm_reason": "Singular and plural forms of the same method.",
+   "idx": 6,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "SVM",
+   "b": "SVMs",
+   "node_a": "n020",
+   "node_b": "n020",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p018",
+    "text": "Because SVM is easily parallelizable, the code can be faster than Glmnet on modern hardware."
+   },
+   "ev_b": {
+    "passage": "p115",
+    "text": "SVMs belong to a family of generalized linear classifiers and can be interpreted as an extension of the perceptron."
+   },
+   "llm": "same",
+   "llm_reason": "Acronym singular and plural refer to same method.",
+   "idx": 7,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "maximum-margin hyperplane",
+   "b": "maximum-margin hyperplanes",
+   "node_a": "n024",
+   "node_b": "n024",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p110",
+    "text": "If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability."
+   },
+   "ev_b": {
+    "passage": "p112",
+    "text": "In 1992, Bernhard Boser, Isabelle Guyon and Vladimir Vapnik suggested a way to create nonlinear classifiers by applying the kernel trick to maximum-margin hyperplanes."
+   },
+   "llm": "same",
+   "llm_reason": "Singular and plural forms of the same concept.",
+   "idx": 8,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "Classification trees",
+   "b": "classification tree",
+   "node_a": "n030",
+   "node_b": "n030",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 9,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "linear model",
+   "b": "linear models",
+   "node_a": "n038",
+   "node_b": "n038",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p005",
+    "text": "The lasso method assumes that the coefficients of the linear model are sparse, meaning that few of them are non-zero."
+   },
+   "ev_b": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "llm": "same",
+   "llm_reason": "Singular and plural forms of the same method.",
+   "idx": 10,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "ordinary least squares",
+   "b": "OLS",
+   "node_a": "n043",
+   "node_b": "n043",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p003",
+    "text": "In the ordinary least squares solution of  [formula] the problem of a near-singular moment matrix [formula] is alleviated by adding positive elements to the diagonals, thereby decreasing its condition number."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Multivariate analogues of ordinary least squares (OLS) and generalized least squares (GLS) have been developed."
+   },
+   "llm": "same",
+   "llm_reason": "Full name and acronym refer to same method.",
+   "idx": 11,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "ordinary least squares",
+   "b": "ols",
+   "node_a": "n043",
+   "node_b": "n043",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p003",
+    "text": "In the ordinary least squares solution of  [formula] the problem of a near-singular moment matrix [formula] is alleviated by adding positive elements to the diagonals, thereby decreasing its condition number."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Multivariate analogues of ordinary least squares (OLS) and generalized least squares (GLS) have been developed."
+   },
+   "llm": "same",
+   "llm_reason": "Full name and lowercase acronym refer to same method.",
+   "idx": 12,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "support vector machines",
+   "b": "SVM",
+   "node_a": "n047",
+   "node_b": "n047",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p113",
+    "text": "It is noteworthy that working in a higher-dimensional feature space increases the generalization error of support vector machines, although given enough samples the algorithm still performs well."
+   },
+   "ev_b": {
+    "passage": "p109",
+    "text": "In machine learning, a support vector machine (SVM) or support vector network is a supervised max-margin model with associated learning algorithms that analyze data for classification and regression analysis."
+   },
+   "llm": "same",
+   "llm_reason": "Plural full name and acronym refer to same method.",
+   "idx": 13,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "support vector machines",
+   "b": "support vector machine",
+   "node_a": "n047",
+   "node_b": "n047",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p113",
+    "text": "It is noteworthy that working in a higher-dimensional feature space increases the generalization error of support vector machines, although given enough samples the algorithm still performs well."
+   },
+   "ev_b": {
+    "passage": "p109",
+    "text": "In machine learning, a support vector machine (SVM) or support vector network is a supervised max-margin model with associated learning algorithms that analyze data for classification and regression analysis."
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 14,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "artificial neural networks",
+   "b": "artificial neural network",
+   "node_a": "n051",
+   "node_b": "n051",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p044",
+    "text": "In artificial neural networks, the variance increases and the bias decreases as the number of hidden units increase, although this classical assumption has been the subject of recent debate."
+   },
+   "ev_b": {
+    "passage": "p044",
+    "text": "In artificial neural networks, the variance increases and the bias decreases as the number of hidden units increase, although this classical assumption has been the subject of recent debate."
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 15,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "dummy variables",
+   "b": "dummy variable",
+   "node_a": "n061",
+   "node_b": "n061",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p126",
+    "text": "Since trees can handle qualitative predictors, there is no need to create dummy variables."
+   },
+   "ev_b": {
+    "passage": "p070",
+    "text": "Similarly, including a dummy variable for every category (e.g., summer, autumn, winter, and spring) as well as an intercept term will result in perfect collinearity."
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same concept.",
+   "idx": 16,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "Features",
+   "b": "feature",
+   "node_a": "n068",
+   "node_b": "n068",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same concept.",
+   "idx": 17,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "generalized least squares",
+   "b": "GLS",
+   "node_a": "n072",
+   "node_b": "n072",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p063",
+    "text": "In the case where the errors are modeled as normal random variables, there is a close connection between mixed models and generalized least squares."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Multivariate analogues of ordinary least squares (OLS) and generalized least squares (GLS) have been developed."
+   },
+   "llm": "same",
+   "llm_reason": "Full name and acronym refer to same method.",
+   "idx": 18,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "generalized linear models",
+   "b": "generalized linear model",
+   "node_a": "n073",
+   "node_b": "n073",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "ev_b": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 19,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "linear regression models",
+   "b": "linear regression model",
+   "node_a": "n085",
+   "node_b": "n085",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method.",
+   "idx": 20,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "maximum margin classifiers",
+   "b": "maximum-margin classifier",
+   "node_a": "n088",
+   "node_b": "n088",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p115",
+    "text": "A special property is that they simultaneously minimize the empirical classification error and maximize the geometric margin; hence they are also known as maximum margin classifiers."
+   },
+   "ev_b": {
+    "passage": "p110",
+    "text": "If such a hyperplane exists, it is known as the maximum-margin hyperplane and the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability."
+   },
+   "llm": "same",
+   "llm_reason": "Hyphenated variant refers to the same classifier type.",
+   "idx": 21,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "partial least squares",
+   "b": "PLS",
+   "node_a": "n093",
+   "node_b": "n093",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "ev_b": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "llm": "same",
+   "llm_reason": "PLS is the standard abbreviation for partial least squares.",
+   "idx": 22,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "partial least squares",
+   "b": "pls",
+   "node_a": "n093",
+   "node_b": "n093",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "ev_b": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "llm": "same",
+   "llm_reason": "Lowercase abbreviation refers to the same method.",
+   "idx": 23,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "principal component analysis",
+   "b": "PCA",
+   "node_a": "n098",
+   "node_b": "n098",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p018",
+    "text": "SpaSM, a Matlab implementation of sparse regression, classification and principal component analysis, including elastic net regularized regression."
+   },
+   "ev_b": {
+    "passage": "p079",
+    "text": "In statistics, principal component regression (PCR) is a regression analysis technique that is based on principal component analysis (PCA)."
+   },
+   "llm": "same",
+   "llm_reason": "PCA is the standard abbreviation for principal component analysis.",
+   "idx": 24,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "proximal methods",
+   "b": "proximal method",
+   "node_a": "n100",
+   "node_b": "n100",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p028",
+    "text": "It can be solved by proximal methods."
+   },
+   "ev_b": {
+    "passage": "p027",
+    "text": "This can be solved by the proximal method, where the proximal operator is a block-wise soft-thresholding function:"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same method class.",
+   "idx": 25,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "randomized decision tree algorithms",
+   "b": "randomized decision tree algorithm",
+   "node_a": "n103",
+   "node_b": "n103",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same algorithm type.",
+   "idx": 26,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "regression models",
+   "b": "regression model",
+   "node_a": "n106",
+   "node_b": "n106",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p006",
+    "text": "Lasso was introduced in order to improve the prediction accuracy and interpretability of regression models."
+   },
+   "ev_b": {
+    "passage": "p006",
+    "text": "Lasso was introduced in order to improve the prediction accuracy and interpretability of regression models."
+   },
+   "llm": "same",
+   "llm_reason": "Plural and singular forms of the same concept.",
+   "idx": 27,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "scikit-learn",
+   "b": "scikit learn",
+   "node_a": "n110",
+   "node_b": "n110",
+   "type_a": "Software",
+   "type_b": "Software",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p118",
+    "text": "Kernel SVMs are available in many machine-learning toolkits, including LIBSVM, MATLAB, SAS, SVMlight, kernlab, scikit-learn, Shogun, Weka, Shark, JKernelMachines, OpenCV and others."
+   },
+   "ev_b": {
+    "passage": "p136",
+    "text": "The scikit learn default implementation can report misleading feature importance: [formula] it favors high cardinality features it uses training statistics and so does not reflect a feature's usefulness for predictions o"
+   },
+   "llm": "same",
+   "llm_reason": "Spacing variant of the same software name.",
+   "idx": 28,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "Committees of decision trees",
+   "b": "K DT",
+   "node_a": "n175",
+   "node_b": "n175",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "llm": "same",
+   "llm_reason": "K-DT is the abbreviation for Committees of decision trees.",
+   "idx": 29,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "dual information distance (DID) tree",
+   "b": "DID",
+   "node_a": "n224",
+   "node_b": "n224",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p127",
+    "text": "To reduce the greedy effect of local optimality, some methods such as the dual information distance (DID) tree were proposed."
+   },
+   "ev_b": {
+    "passage": "p127",
+    "text": "To reduce the greedy effect of local optimality, some methods such as the dual information distance (DID) tree were proposed."
+   },
+   "llm": "different",
+   "llm_reason": "DID is a component, not the full tree method.",
+   "idx": 30,
+   "final": "same",
+   "mine": "p127 writes 'dual information distance (DID) tree': DID is the stated abbreviation"
+  },
+  {
+   "stratum": "merged",
+   "a": "empirical risk minimization",
+   "b": "ERM",
+   "node_a": "n234",
+   "node_b": "n234",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p114",
+    "text": "The soft-margin support vector machine described above is an example of an empirical risk minimization (ERM) algorithm for the hinge loss."
+   },
+   "ev_b": {
+    "passage": "p114",
+    "text": "The soft-margin support vector machine described above is an example of an empirical risk minimization (ERM) algorithm for the hinge loss."
+   },
+   "llm": "same",
+   "llm_reason": "ERM is the standard abbreviation for empirical risk minimization.",
+   "idx": 31,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "Enriched Random Forest",
+   "b": "ERF",
+   "node_a": "n235",
+   "node_b": "n235",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p135",
+    "text": "Enriched Random Forest (ERF): Use weighted random sampling instead of simple random sampling at each node of each tree, giving greater weight to features that appear to be more informative."
+   },
+   "ev_b": {
+    "passage": "p135",
+    "text": "Enriched Random Forest (ERF): Use weighted random sampling instead of simple random sampling at each node of each tree, giving greater weight to features that appear to be more informative."
+   },
+   "llm": "same",
+   "llm_reason": "ERF is the standard abbreviation for Enriched Random Forest.",
+   "idx": 32,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "first-nearest neighbor estimator",
+   "b": "1 NN",
+   "node_a": "n249",
+   "node_b": "n249",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "ev_b": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "llm": "different",
+   "llm_reason": "1-NN is a specific case, not the general estimator.",
+   "idx": 33,
+   "final": "same",
+   "mine": "p045 writes 'first-nearest neighbor (1-NN) estimator': 1-NN is the stated abbreviation"
+  },
+  {
+   "stratum": "merged",
+   "a": "Fuzzy Decision Tree",
+   "b": "FDT",
+   "node_a": "n258",
+   "node_b": "n258",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p122",
+    "text": "It has also been proposed to leverage concepts of fuzzy set theory for the definition of a special version of decision tree, known as Fuzzy Decision Tree (FDT)."
+   },
+   "ev_b": {
+    "passage": "p122",
+    "text": "It has also been proposed to leverage concepts of fuzzy set theory for the definition of a special version of decision tree, known as Fuzzy Decision Tree (FDT)."
+   },
+   "llm": "same",
+   "llm_reason": "FDT is the standard abbreviation for Fuzzy Decision Tree.",
+   "idx": 34,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "Kernel Random Forest",
+   "b": "KERF",
+   "node_a": "n336",
+   "node_b": "n336",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p137",
+    "text": "Davies and Ghahramani proposed Kernel Random Forest (KeRF) and showed that it can empirically outperform state-of-art kernel methods."
+   },
+   "ev_b": {
+    "passage": "p137",
+    "text": "Davies and Ghahramani proposed Kernel Random Forest (KeRF) and showed that it can empirically outperform state-of-art kernel methods."
+   },
+   "llm": "same",
+   "llm_reason": "KeRF is the abbreviation for Kernel Random Forest.",
+   "idx": 35,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "linear support vector machine",
+   "b": "SVM",
+   "node_a": "n374",
+   "node_b": "n374",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p017",
+    "text": "It was proven in 2014 that the elastic net can be reduced to the linear support vector machine."
+   },
+   "ev_b": {
+    "passage": "p017",
+    "text": "The authors showed that for every instance of the elastic net, an artificial binary classification problem can be constructed such that the hyper-plane solution of a linear support vector machine (SVM) is identical to th"
+   },
+   "llm": "different",
+   "llm_reason": "Linear SVM is a specific type of general SVM.",
+   "idx": 36,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "minimum message length",
+   "b": "MML",
+   "node_a": "n402",
+   "node_b": "n402",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p128",
+    "text": "In a decision graph, it is possible to use disjunctions (ORs) to join two more paths together using minimum message length (MML)."
+   },
+   "ev_b": {
+    "passage": "p128",
+    "text": "In a decision graph, it is possible to use disjunctions (ORs) to join two more paths together using minimum message length (MML)."
+   },
+   "llm": "same",
+   "llm_reason": "MML is the standard abbreviation for minimum message length.",
+   "idx": 37,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "quadratic programming",
+   "b": "QP",
+   "node_a": "n518",
+   "node_b": "n518",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p117",
+    "text": "There exist several specialized algorithms for quickly solving the quadratic programming (QP) problem that arises from SVMs, mostly relying on heuristics for breaking the problem down into smaller, more manageable chunks"
+   },
+   "ev_b": {
+    "passage": "p117",
+    "text": "There exist several specialized algorithms for quickly solving the quadratic programming (QP) problem that arises from SVMs, mostly relying on heuristics for breaking the problem down into smaller, more manageable chunks"
+   },
+   "llm": "same",
+   "llm_reason": "QP is the standard abbreviation for quadratic programming.",
+   "idx": 38,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "ridge regression estimator",
+   "b": "RR",
+   "node_a": "n551",
+   "node_b": "n551",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "llm": "different",
+   "llm_reason": "RR usually means Ridge Regression, but context lacks explicit link.",
+   "idx": 39,
+   "final": "same",
+   "mine": "p002 writes 'a ridge regression estimator (RR)': RR is the stated abbreviation"
+  },
+  {
+   "stratum": "merged",
+   "a": "Tree-weighted random forest",
+   "b": "TWRF",
+   "node_a": "n617",
+   "node_b": "n617",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p135",
+    "text": "Tree-weighted random forest (TWRF): Give more weight to more accurate trees."
+   },
+   "ev_b": {
+    "passage": "p135",
+    "text": "Tree-weighted random forest (TWRF): Give more weight to more accurate trees."
+   },
+   "llm": "same",
+   "llm_reason": "TWRF is an abbreviation for Tree-weighted random forest.",
+   "idx": 40,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "true positive rate",
+   "b": "TPR",
+   "node_a": "n620",
+   "node_b": "n620",
+   "type_a": "Metric",
+   "type_b": "Metric",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p123",
+    "text": "To combat this, one could use a more powerful metric known as Sensitivity that takes into account the proportions of the values from the confusion matrix to give the actual true positive rate (TPR)."
+   },
+   "ev_b": {
+    "passage": "p123",
+    "text": "To combat this, one could use a more powerful metric known as Sensitivity that takes into account the proportions of the values from the confusion matrix to give the actual true positive rate (TPR)."
+   },
+   "llm": "same",
+   "llm_reason": "TPR is the standard abbreviation for true positive rate.",
+   "idx": 41,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "merged",
+   "a": "validation statistic, Vn",
+   "b": "VN",
+   "node_a": "n630",
+   "node_b": "n630",
+   "type_a": "Metric",
+   "type_b": "Metric",
+   "pack_merged": true,
+   "ev_a": {
+    "passage": "p058",
+    "text": "It forms the basis of the validation statistic, Vn which is used to test the statistical validity of meta-analysis summary estimates."
+   },
+   "ev_b": {
+    "passage": "p058",
+    "text": "It forms the basis of the validation statistic, Vn which is used to test the statistical validity of meta-analysis summary estimates."
+   },
+   "llm": "same",
+   "llm_reason": "VN is a capitalization variant of the metric Vn.",
+   "idx": 42,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "overfitting",
+   "b": "benign overfitting",
+   "node_a": "n001",
+   "node_b": "n142",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p019",
+    "text": "It is often used in solving ill-posed problems or to prevent overfitting."
+   },
+   "ev_b": {
+    "passage": "p038",
+    "text": "Benign overfitting describes the phenomenon of a statistical model that seems to generalize well to unseen data, even when it has been fit perfectly on noisy training data (i.e., obtains perfect predictive accuracy on th"
+   },
+   "llm": "different",
+   "llm_reason": "Benign overfitting is a specific type of overfitting.",
+   "idx": 43,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "lasso",
+   "b": "fused lasso",
+   "node_a": "n002",
+   "node_b": "n071",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "ev_b": {
+    "passage": "p009",
+    "text": "Fused lasso can account for the spatial or temporal characteristics of a problem, resulting in estimates that better match system structure."
+   },
+   "llm": "different",
+   "llm_reason": "Fused lasso is a specific variant of lasso.",
+   "idx": 44,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "lasso",
+   "b": "group lasso",
+   "node_a": "n002",
+   "node_b": "n075",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "ev_b": {
+    "passage": "p009",
+    "text": "Group lasso allows groups of related covariates to be selected as a single unit, which can be useful in settings where it does not make sense to include some covariates without others."
+   },
+   "llm": "different",
+   "llm_reason": "Group lasso is a specific variant of lasso.",
+   "idx": 45,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "lasso",
+   "b": "clustered lasso",
+   "node_a": "n002",
+   "node_b": "n173",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "ev_b": {
+    "passage": "p011",
+    "text": "Clustered lasso is a generalization of fused lasso that identifies and groups relevant covariates based on their effects (coefficients)."
+   },
+   "llm": "different",
+   "llm_reason": "Clustered lasso is a generalization of fused lasso.",
+   "idx": 46,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regularization",
+   "b": "Tikhonov regularization",
+   "node_a": "n003",
+   "node_b": "n015",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "llm": "different",
+   "llm_reason": "Tikhonov regularization is a specific type of regularization.",
+   "idx": 47,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regularization",
+   "b": "[formula] regularization",
+   "node_a": "n003",
+   "node_b": "n255",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p026",
+    "text": "This can be problematic for certain applications, and is overcome by combining [formula] regularization in elastic net regularization, which takes the following form: [formula] Elastic net regularization tends to have a "
+   },
+   "llm": "different",
+   "llm_reason": "Formula regularization is a specific component within elastic net.",
+   "idx": 48,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regularization",
+   "b": "L2 regularization",
+   "node_a": "n003",
+   "node_b": "n346",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p021",
+    "text": "Techniques like early stopping, L1 and L2 regularization, and dropout are designed to prevent overfitting and underfitting, thereby enhancing the model's ability to adapt to and perform well with new data, thus improving"
+   },
+   "llm": "different",
+   "llm_reason": "L2 regularization is a specific type of regularization.",
+   "idx": 49,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "cross-validation",
+   "b": "k*l-fold cross validation",
+   "node_a": "n004",
+   "node_b": "n338",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p013",
+    "text": "Cross-validation is often used to find the regularization parameter."
+   },
+   "ev_b": {
+    "passage": "p054",
+    "text": "Similar to the k*l-fold cross validation, the training set is used for model fitting and the validation set is used for model evaluation for each of the hyperparameter sets."
+   },
+   "llm": "different",
+   "llm_reason": "k*l-fold cross validation is a specific variant of cross-validation.",
+   "idx": 50,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "training set",
+   "b": "outer training set",
+   "node_a": "n005",
+   "node_b": "n473",
+   "type_a": "Dataset",
+   "type_b": "Dataset",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p035",
+    "text": "It may be possible to reconstruct details of individual training instances from an overfitted machine learning model's training set."
+   },
+   "ev_b": {
+    "passage": "p053",
+    "text": "One by one, a set is selected as the (outer) test set and the k - 1 other sets are combined into the corresponding outer training set."
+   },
+   "llm": "different",
+   "llm_reason": "Outer training set is a specific subset of training data.",
+   "idx": 51,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "variance",
+   "b": "high variance",
+   "node_a": "n006",
+   "node_b": "n290",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "ev_b": {
+    "passage": "p048",
+    "text": "This is because model-free approaches to inference require impractically large training sets if they are to avoid high variance."
+   },
+   "llm": "different",
+   "llm_reason": "High variance describes a specific state of variance.",
+   "idx": 52,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "variance",
+   "b": "inflated variance",
+   "node_a": "n006",
+   "node_b": "n311",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "ev_b": {
+    "passage": "p042",
+    "text": "In other words, test data may not agree as closely with training data, which would indicate imprecision and therefore inflated variance."
+   },
+   "llm": "different",
+   "llm_reason": "Inflated variance describes a specific condition of variance.",
+   "idx": 53,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "variance",
+   "b": "low variance",
+   "node_a": "n006",
+   "node_b": "n385",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "ev_b": {
+    "passage": "p036",
+    "text": "With a high bias and low variance, the result of the model is that it will inaccurately represent the data points and thus insufficiently be able to predict future data results (see Generalization error)."
+   },
+   "llm": "different",
+   "llm_reason": "Low variance describes a specific state of variance.",
+   "idx": 54,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "bias",
+   "b": "lower bias",
+   "node_a": "n007",
+   "node_b": "n655",
+   "type_a": "Property",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p039",
+    "text": "In statistics and machine learning, the bias–variance tradeoff describes the relationship between a model's complexity, the accuracy of its predictions, and how well it can make predictions on previously unseen data that"
+   },
+   "ev_b": {
+    "passage": "",
+    "text": "(no passage recorded)"
+   },
+   "llm": "different",
+   "llm_reason": "Lower bias is a comparative description, not the entity itself.",
+   "idx": 55,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "decision tree",
+   "b": "tree",
+   "node_a": "n008",
+   "node_b": "n048",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "llm": "different",
+   "llm_reason": "Tree is broader; decision tree is a specific method.",
+   "idx": 56,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "decision tree",
+   "b": "randomized decision tree algorithms",
+   "node_a": "n008",
+   "node_b": "n103",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "llm": "different",
+   "llm_reason": "Randomized decision tree algorithms are a specific variant.",
+   "idx": 57,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "decision tree",
+   "b": "Committees of decision trees",
+   "node_a": "n008",
+   "node_b": "n175",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "Committees of decision trees (also called k-DT), an early method that used randomized decision tree algorithms to generate multiple different trees from the training data, and then combine them using majority voting to g"
+   },
+   "llm": "different",
+   "llm_reason": "Committees of decision trees is an ensemble method.",
+   "idx": 58,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "decision tree",
+   "b": "Regression decision tree",
+   "node_a": "n008",
+   "node_b": "n535",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "In this formalism, a classification or regression decision tree is used as a predictive model to draw conclusions about a set of observations."
+   },
+   "llm": "different",
+   "llm_reason": "Regression decision tree is a specific type of decision tree.",
+   "idx": 59,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression",
+   "b": "multiple linear regression",
+   "node_a": "n010",
+   "node_b": "n090",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p059",
+    "text": "A linear model with exactly one explanatory variable is a simple linear regression; a model with two or more explanatory variables is a multiple linear regression."
+   },
+   "llm": "different",
+   "llm_reason": "Multiple linear regression is a specific type of linear regression.",
+   "idx": 60,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression",
+   "b": "classical linear regression model",
+   "node_a": "n010",
+   "node_b": "n170",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Conditional linearity of  [formula] is still assumed, with a matrix B replacing the vector β of the classical linear regression model."
+   },
+   "llm": "same",
+   "llm_reason": "Classical linear regression model is a synonym for linear regression.",
+   "idx": 61,
+   "final": "different",
+   "mine": "a specific model with the classical assumptions, not the technique itself"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression",
+   "b": "Least squares linear regression",
+   "node_a": "n010",
+   "node_b": "n355",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p068",
+    "text": "The Least squares linear regression, as a means of finding a good rough linear fit to a set of points was performed by Legendre (1805) and Gauss (1809) for the prediction of planetary movement."
+   },
+   "llm": "same",
+   "llm_reason": "Least squares is the standard method for linear regression.",
+   "idx": 62,
+   "final": "different",
+   "mine": "least squares is one estimation method for linear regression, narrower than it"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression",
+   "b": "linear regression analysis",
+   "node_a": "n010",
+   "node_b": "n373",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "It is particularly useful to mitigate the problem of multicollinearity in linear regression, which commonly occurs in models with large numbers of parameters."
+   },
+   "ev_b": {
+    "passage": "p068",
+    "text": "Isaac Newton is credited with inventing \"a certain technique known today as linear regression analysis\" in his work on equinoxes in 1700, and wrote down the first of the two normal equations of the ordinary least squares"
+   },
+   "llm": "same",
+   "llm_reason": "Linear regression analysis is a synonym for linear regression.",
+   "idx": 63,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "classification",
+   "b": "Classification trees",
+   "node_a": "n012",
+   "node_b": "n030",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p018",
+    "text": "SpaSM, a Matlab implementation of sparse regression, classification and principal component analysis, including elastic net regularized regression."
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "llm": "different",
+   "llm_reason": "Classification trees are a specific type of classification method.",
+   "idx": 64,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "random forests",
+   "b": "Enriched Random Forest",
+   "node_a": "n013",
+   "node_b": "n235",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "ev_b": {
+    "passage": "p135",
+    "text": "Enriched Random Forest (ERF): Use weighted random sampling instead of simple random sampling at each node of each tree, giving greater weight to features that appear to be more informative."
+   },
+   "llm": "different",
+   "llm_reason": "Enriched Random Forest is a specific variant of random forests.",
+   "idx": 65,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "random forests",
+   "b": "Tree-weighted random forest",
+   "node_a": "n013",
+   "node_b": "n617",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p129",
+    "text": "Random forests or random decision forests is an ensemble learning method for classification, regression and other tasks that works by creating a multitude of decision trees during training."
+   },
+   "ev_b": {
+    "passage": "p135",
+    "text": "Tree-weighted random forest (TWRF): Give more weight to more accurate trees."
+   },
+   "llm": "different",
+   "llm_reason": "Tree-weighted random forest is a specific variant of random forests.",
+   "idx": 66,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "ridge regression",
+   "b": "regression",
+   "node_a": "n014",
+   "node_b": "n019",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "llm": "different",
+   "llm_reason": "Ridge regression is a specific type of regression.",
+   "idx": 67,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "regression models",
+   "node_a": "n016",
+   "node_b": "n106",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p006",
+    "text": "Lasso was introduced in order to improve the prediction accuracy and interpretability of regression models."
+   },
+   "llm": "different",
+   "llm_reason": "Regression models are a specific type of model.",
+   "idx": 68,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "mixed models",
+   "node_a": "n016",
+   "node_b": "n405",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "In the case where the errors are modeled as normal random variables, there is a close connection between mixed models and generalized least squares."
+   },
+   "llm": "different",
+   "llm_reason": "Mixed models are a specific type of model.",
+   "idx": 69,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "model building",
+   "node_a": "n016",
+   "node_b": "n407",
+   "type_a": "Concept",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p056",
+    "text": "The reason for the success of the swapped sampling is a built-in control for human biases in model building."
+   },
+   "llm": "different",
+   "llm_reason": "Model building is a process, not the model itself.",
+   "idx": 70,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "model compression",
+   "node_a": "n016",
+   "node_b": "n409",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p138",
+    "text": "To achieve both performance and interpretability, some model compression techniques allow transforming a random forest into a minimal \"born-again\" decision tree that faithfully reproduces the same decision function."
+   },
+   "llm": "different",
+   "llm_reason": "Model compression is a technique applied to models.",
+   "idx": 71,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "model evaluation",
+   "node_a": "n016",
+   "node_b": "n410",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p054",
+    "text": "Similar to the k*l-fold cross validation, the training set is used for model fitting and the validation set is used for model evaluation for each of the hyperparameter sets."
+   },
+   "llm": "different",
+   "llm_reason": "Model evaluation is a process, not the model itself.",
+   "idx": 72,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "model flexibility",
+   "node_a": "n016",
+   "node_b": "n413",
+   "type_a": "Concept",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p039",
+    "text": "In statistics and machine learning, the bias–variance tradeoff describes the relationship between a model's complexity, the accuracy of its predictions, and how well it can make predictions on previously unseen data that"
+   },
+   "llm": "different",
+   "llm_reason": "Model flexibility is a property, not the model itself.",
+   "idx": 73,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "model parameters",
+   "node_a": "n016",
+   "node_b": "n416",
+   "type_a": "Concept",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p022",
+    "text": "From a Bayesian point of view, many regularization techniques correspond to imposing certain prior distributions on model parameters."
+   },
+   "llm": "different",
+   "llm_reason": "Model parameters are components of a model.",
+   "idx": 74,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "parametric models",
+   "node_a": "n016",
+   "node_b": "n487",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "They are generally fit as parametric models, using maximum likelihood or Bayesian estimation."
+   },
+   "llm": "different",
+   "llm_reason": "Parametric models are a specific type of model.",
+   "idx": 75,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model",
+   "b": "sparse models",
+   "node_a": "n016",
+   "node_b": "n575",
+   "type_a": "Concept",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p022",
+    "text": "Concrete notions of complexity used include restrictions for smoothness and bounds on the vector space norm."
+   },
+   "llm": "different",
+   "llm_reason": "Sparse models are a specific type of model.",
+   "idx": 76,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "PCR",
+   "b": "classical PCR",
+   "node_a": "n018",
+   "node_b": "n055",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "ev_b": {
+    "passage": "p087",
+    "text": "Clearly, kernel PCR has a discrete shrinkage effect on the eigenvectors of K', quite similar to the discrete shrinkage effect of classical PCR on the principal components, as discussed earlier."
+   },
+   "llm": "same",
+   "llm_reason": "Classical PCR is a synonym or standard form of PCR.",
+   "idx": 77,
+   "final": "different",
+   "mine": "'classical PCR' is set against kernel PCR in p087: a variant"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "PCR",
+   "b": "PCR estimator",
+   "node_a": "n018",
+   "node_b": "n094",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p063",
+    "text": "Principal component regression (PCR) is used when the number of predictor variables is large, or when strong correlations exist among the predictor variables."
+   },
+   "ev_b": {
+    "passage": "p081",
+    "text": "The fitting process for obtaining the PCR estimator involves regressing the response vector on the derived data matrix  [formula] which has orthogonal columns for any [formula] since the principal components are mutually"
+   },
+   "llm": "same",
+   "llm_reason": "PCR estimator refers to the result of the PCR method.",
+   "idx": 78,
+   "final": "different",
+   "mine": "an estimator that the method produces, not the method"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "stepwise regression",
+   "node_a": "n019",
+   "node_b": "n116",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p075",
+    "text": "Stepwise regression (the procedure of excluding \"collinear\" or \"insignificant\" variables) is especially vulnerable to multicollinearity, and is one of the few procedures wholly invalidated by it (with any collinearity re"
+   },
+   "llm": "different",
+   "llm_reason": "Stepwise regression is a specific type of regression.",
+   "idx": 79,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "polytomous regression",
+   "node_a": "n019",
+   "node_b": "n495",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p108",
+    "text": "The general case of having dependent variables with more than two values is termed polytomous regression."
+   },
+   "llm": "different",
+   "llm_reason": "Polytomous regression is a specific type of regression.",
+   "idx": 80,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "regression methods",
+   "node_a": "n019",
+   "node_b": "n537",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p074",
+    "text": "Many regression methods are naturally \"robust\" to multicollinearity and generally perform better than ordinary least squares regression, even when variables are independent."
+   },
+   "llm": "same",
+   "llm_reason": "Regression methods refers to the same general concept.",
+   "idx": 81,
+   "final": "different",
+   "mine": "regression is the task, 'regression methods' is a class of methods"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "regression step",
+   "node_a": "n019",
+   "node_b": "n539",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p080",
+    "text": "PCR can aptly deal with such situations by excluding some of the low-variance principal components in the regression step."
+   },
+   "llm": "different",
+   "llm_reason": "Regression step is a part of a process, not the method.",
+   "idx": 82,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "sparse regression",
+   "node_a": "n019",
+   "node_b": "n576",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p018",
+    "text": "SpaSM, a Matlab implementation of sparse regression, classification and principal component analysis, including elastic net regularized regression."
+   },
+   "llm": "different",
+   "llm_reason": "Sparse regression is a specific variant of regression.",
+   "idx": 83,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regression",
+   "b": "spectral regression",
+   "node_a": "n019",
+   "node_b": "n580",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p087",
+    "text": "In machine learning, this technique is also known as spectral regression."
+   },
+   "llm": "different",
+   "llm_reason": "Spectral regression is a specific technique, not general regression.",
+   "idx": 84,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "SVM",
+   "b": "kernel SVMs",
+   "node_a": "n020",
+   "node_b": "n337",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p018",
+    "text": "Because SVM is easily parallelizable, the code can be faster than Glmnet on modern hardware."
+   },
+   "ev_b": {
+    "passage": "p118",
+    "text": "The general kernel SVMs can also be solved more efficiently using sub-gradient descent (e.g."
+   },
+   "llm": "different",
+   "llm_reason": "Kernel SVMs are a specific type of SVM.",
+   "idx": 85,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "covariates",
+   "b": "binary covariates",
+   "node_a": "n021",
+   "node_b": "n149",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p010",
+    "text": "In 2006, Yuan and Lin introduced the group lasso to allow predefined groups of covariates to jointly be selected into or out of a model."
+   },
+   "ev_b": {
+    "passage": "p010",
+    "text": "This is useful in many settings, perhaps most obviously when a categorical variable is coded as a collection of binary covariates."
+   },
+   "llm": "different",
+   "llm_reason": "Binary covariates are a specific subset of covariates.",
+   "idx": 86,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "prediction accuracy",
+   "b": "accuracy",
+   "node_a": "n025",
+   "node_b": "n027",
+   "type_a": "Metric",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "In statistics and machine learning, lasso (least absolute shrinkage and selection operator; also Lasso, LASSO or L1 regularization) is a regression analysis method that performs both variable selection and regularization"
+   },
+   "ev_b": {
+    "passage": "p041",
+    "text": "An analogy can be made to the relationship between accuracy and precision."
+   },
+   "llm": "different",
+   "llm_reason": "Prediction accuracy is specific; accuracy is general or distinct metric.",
+   "idx": 87,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Classification trees",
+   "b": "tree",
+   "node_a": "n030",
+   "node_b": "n048",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p120",
+    "text": "A decision tree is a simple representation for classifying examples."
+   },
+   "llm": "different",
+   "llm_reason": "Classification trees are a specific type of tree model.",
+   "idx": 88,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear model",
+   "b": "multivariable linear models",
+   "node_a": "n038",
+   "node_b": "n433",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "The lasso method assumes that the coefficients of the linear model are sparse, meaning that few of them are non-zero."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "Multivariable linear models are a specific type of linear model.",
+   "idx": 89,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear model",
+   "b": "multivariate linear models",
+   "node_a": "n038",
+   "node_b": "n434",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p005",
+    "text": "The lasso method assumes that the coefficients of the linear model are sparse, meaning that few of them are non-zero."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "\"General linear models\" are also called \"multivariate linear models\"."
+   },
+   "llm": "different",
+   "llm_reason": "Multivariate linear models are a specific type of linear model.",
+   "idx": 90,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "loss function",
+   "b": "0-1 loss",
+   "node_a": "n039",
+   "node_b": "n121",
+   "type_a": "Concept",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p012",
+    "text": "== Computing lasso solutions == [formula] The loss function of the lasso is not differentiable, but a wide variety of techniques from convex analysis and optimization theory have been developed to compute the solutions p"
+   },
+   "ev_b": {
+    "passage": "p046",
+    "text": "For the case of classification under the 0-1 loss (misclassification rate), it is possible to find a similar decomposition, with the caveat that the variance term becomes dependent on the target label."
+   },
+   "llm": "different",
+   "llm_reason": "0-1 loss is a specific type of loss function.",
+   "idx": 91,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "ordinary least squares",
+   "b": "generalized least squares",
+   "node_a": "n043",
+   "node_b": "n072",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p003",
+    "text": "In the ordinary least squares solution of  [formula] the problem of a near-singular moment matrix [formula] is alleviated by adding positive elements to the diagonals, thereby decreasing its condition number."
+   },
+   "ev_b": {
+    "passage": "p063",
+    "text": "In the case where the errors are modeled as normal random variables, there is a close connection between mixed models and generalized least squares."
+   },
+   "llm": "different",
+   "llm_reason": "Generalized least squares is a distinct method from ordinary least squares.",
+   "idx": 92,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "regularization parameter",
+   "b": "parameters",
+   "node_a": "n044",
+   "node_b": "n483",
+   "type_a": "Concept",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p013",
+    "text": "Choosing the regularization parameter ( [formula] ) is a fundamental part of lasso."
+   },
+   "ev_b": {
+    "passage": "p029",
+    "text": "An overfitted model is a mathematical model that contains more parameters than can be justified by the data."
+   },
+   "llm": "different",
+   "llm_reason": "Regularization parameter is a specific type of parameter.",
+   "idx": 93,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "artificial neural networks",
+   "b": "deep neural networks",
+   "node_a": "n051",
+   "node_b": "n212",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p044",
+    "text": "In artificial neural networks, the variance increases and the bias decreases as the number of hidden units increase, although this classical assumption has been the subject of recent debate."
+   },
+   "ev_b": {
+    "passage": "p038",
+    "text": "The phenomenon is of particular interest in deep neural networks, but is studied from a theoretical perspective in the context of much simpler models, such as linear regression."
+   },
+   "llm": "different",
+   "llm_reason": "Deep neural networks are a specific subset of artificial neural networks.",
+   "idx": 94,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "coefficients",
+   "b": "regression coefficients",
+   "node_a": "n056",
+   "node_b": "n105",
+   "type_a": "Concept",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p011",
+    "text": "Clustered lasso is a generalization of fused lasso that identifies and groups relevant covariates based on their effects (coefficients)."
+   },
+   "ev_b": {
+    "passage": "p077",
+    "text": "Excluding collinear variables leads to artificially small estimates for standard errors, but does not reduce the true (not estimated) standard errors for regression coefficients."
+   },
+   "llm": "same",
+   "llm_reason": "Coefficients in this context refer to regression coefficients.",
+   "idx": 95,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "coefficients",
+   "b": "correlation coefficient",
+   "node_a": "n056",
+   "node_b": "n198",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p011",
+    "text": "Clustered lasso is a generalization of fused lasso that identifies and groups relevant covariates based on their effects (coefficients)."
+   },
+   "ev_b": {
+    "passage": "p061",
+    "text": "In contrast, the marginal effect of xj on y can be assessed using a correlation coefficient or simple linear regression model relating only xj to y; this effect is the total derivative of y with respect to xj."
+   },
+   "llm": "different",
+   "llm_reason": "Correlation coefficient is a specific metric, not general coefficients.",
+   "idx": 96,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "convergence",
+   "b": "Convergence diagnostics",
+   "node_a": "n057",
+   "node_b": "n192",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p093",
+    "text": "Since using a step size  [formula] that is too small would slow convergence, and a [formula] too large would lead to overshoot and divergence, finding a good setting of [formula] is an important practical problem."
+   },
+   "ev_b": {
+    "passage": "p047",
+    "text": "Convergence diagnostics can be used to control bias via burn-in removal, but due to a limited computational budget, a bias–variance trade-off arises, leading to a wide range of approaches, in which a controlled bias is a"
+   },
+   "llm": "different",
+   "llm_reason": "Convergence diagnostics are tools, convergence is a state.",
+   "idx": 97,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "convergence",
+   "b": "convergence rate",
+   "node_a": "n057",
+   "node_b": "n193",
+   "type_a": "Concept",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p093",
+    "text": "Since using a step size  [formula] that is too small would slow convergence, and a [formula] too large would lead to overshoot and divergence, finding a good setting of [formula] is an important practical problem."
+   },
+   "ev_b": {
+    "passage": "p098",
+    "text": "The assumptions made affect the convergence rate, and other properties, that can be proven for gradient descent."
+   },
+   "llm": "different",
+   "llm_reason": "Convergence rate is a metric measuring convergence speed.",
+   "idx": 98,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "convergence",
+   "b": "non-convergence",
+   "node_a": "n057",
+   "node_b": "n658",
+   "type_a": "Concept",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p093",
+    "text": "Since using a step size  [formula] that is too small would slow convergence, and a [formula] too large would lead to overshoot and divergence, finding a good setting of [formula] is an important practical problem."
+   },
+   "ev_b": {
+    "passage": "",
+    "text": "(no passage recorded)"
+   },
+   "llm": "different",
+   "llm_reason": "Non-convergence is the opposite state of convergence.",
+   "idx": 99,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "error",
+   "b": "rounding errors",
+   "node_a": "n065",
+   "node_b": "n557",
+   "type_a": "Metric",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p039",
+    "text": "That is, the model has lower error or lower bias."
+   },
+   "ev_b": {
+    "passage": "p071",
+    "text": "A computer algorithm may or may not be able to compute an approximate inverse; even if it can, the resulting inverse may have large rounding errors."
+   },
+   "llm": "different",
+   "llm_reason": "General metric versus specific computational error type.",
+   "idx": 100,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Features",
+   "b": "feature selection",
+   "node_a": "n068",
+   "node_b": "n070",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p044",
+    "text": "Dimensionality reduction and feature selection can decrease variance by simplifying models."
+   },
+   "llm": "different",
+   "llm_reason": "Input variables versus method for selecting them.",
+   "idx": 101,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Features",
+   "b": "feature importance",
+   "node_a": "n068",
+   "node_b": "n245",
+   "type_a": "Concept",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p136",
+    "text": "the following statistics can be used: [formula] Entropy The normalized importance is then obtained by normalizing over all features, so that the sum of normalized feature importances is 1."
+   },
+   "llm": "different",
+   "llm_reason": "Input variables versus their calculated importance scores.",
+   "idx": 102,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Features",
+   "b": "feature space",
+   "node_a": "n068",
+   "node_b": "n246",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p085",
+    "text": "In general, under the kernel machine setting, the vector of covariates is first mapped into a high-dimensional (potentially infinite-dimensional) feature space characterized by the kernel function chosen."
+   },
+   "llm": "different",
+   "llm_reason": "Variables versus the mathematical space they define.",
+   "idx": 103,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Features",
+   "b": "input features",
+   "node_a": "n068",
+   "node_b": "n314",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Tree models where the target variable can take a discrete set of values are called classification trees; in these tree structures, leaves represent class labels and branches represent conjunctions of features that lead t"
+   },
+   "ev_b": {
+    "passage": "p120",
+    "text": "For this section, assume that all of the input features have finite discrete domains, and there is a single target feature called the \"classification\"."
+   },
+   "llm": "same",
+   "llm_reason": "Synonymous terms for model input variables.",
+   "idx": 104,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "generalized linear models",
+   "b": "generalized linear classifiers",
+   "node_a": "n073",
+   "node_b": "n264",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "ev_b": {
+    "passage": "p115",
+    "text": "SVMs belong to a family of generalized linear classifiers and can be interpreted as an extension of the perceptron."
+   },
+   "llm": "different",
+   "llm_reason": "Regression models versus classification models family.",
+   "idx": 105,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "generalized linear models",
+   "b": "multiple linear models",
+   "node_a": "n073",
+   "node_b": "n430",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "Generalized linear models differ from multiple linear models.",
+   "idx": 106,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "generalized linear models",
+   "b": "multivariable linear models",
+   "node_a": "n073",
+   "node_b": "n433",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p044",
+    "text": "Learning algorithms typically have some tunable parameters that control bias and variance; for example, [formula] linear and Generalized linear models can be regularized to decrease their variance at the cost of increasi"
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "Generalized linear models differ from multivariable linear models.",
+   "idx": 107,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "gradient",
+   "b": "negative gradient",
+   "node_a": "n074",
+   "node_b": "n436",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p024",
+    "text": "Written in matrix form, the optimal  [formula] is the one for which the gradient of the loss function with respect to [formula] where the third statement is a first-order condition."
+   },
+   "ev_b": {
+    "passage": "p090",
+    "text": "A red arrow originating at a point shows the direction of the negative gradient at that point."
+   },
+   "llm": "different",
+   "llm_reason": "Vector versus its opposite direction vector.",
+   "idx": 108,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression models",
+   "b": "multiple linear regression",
+   "node_a": "n085",
+   "node_b": "n090",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p059",
+    "text": "A linear model with exactly one explanatory variable is a simple linear regression; a model with two or more explanatory variables is a multiple linear regression."
+   },
+   "llm": "different",
+   "llm_reason": "General class versus specific multi-variable instance.",
+   "idx": 109,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression models",
+   "b": "regression models",
+   "node_a": "n085",
+   "node_b": "n106",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p006",
+    "text": "Lasso was introduced in order to improve the prediction accuracy and interpretability of regression models."
+   },
+   "llm": "different",
+   "llm_reason": "Specific linear type versus general regression category.",
+   "idx": 110,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression models",
+   "b": "classical linear regression model",
+   "node_a": "n085",
+   "node_b": "n170",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "Conditional linearity of  [formula] is still assumed, with a matrix B replacing the vector β of the classical linear regression model."
+   },
+   "llm": "different",
+   "llm_reason": "General class versus specific classical assumption variant.",
+   "idx": 111,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression models",
+   "b": "multiple linear models",
+   "node_a": "n085",
+   "node_b": "n430",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p002",
+    "text": "Ridge regression was developed as a possible solution to the imprecision of least square estimators when linear regression models have some multicollinear (highly correlated) independent variables—by creating a ridge reg"
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "Linear regression differs from multiple linear models.",
+   "idx": 112,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "partial least squares",
+   "b": "least-squares regression",
+   "node_a": "n093",
+   "node_b": "n357",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p083",
+    "text": "A somewhat similar estimator that tries to address this issue through its very construction is the partial least squares (PLS) estimator."
+   },
+   "ev_b": {
+    "passage": "p046",
+    "text": "The bias–variance decomposition was originally formulated for least-squares regression."
+   },
+   "llm": "different",
+   "llm_reason": "PLS is distinct from standard least-squares regression.",
+   "idx": 113,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "prior information",
+   "b": "information",
+   "node_a": "n099",
+   "node_b": "n312",
+   "type_a": "Method",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p073",
+    "text": "There are two ways to discover this information: [formula] Using prior information or theory."
+   },
+   "ev_b": {
+    "passage": "p124",
+    "text": "Information gain is used to decide which feature to split on at each step in building the tree."
+   },
+   "llm": "different",
+   "llm_reason": "Specific prior knowledge versus general information concept.",
+   "idx": 114,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "steepest descent",
+   "b": "steepest descent direction",
+   "node_a": "n115",
+   "node_b": "n589",
+   "type_a": "Property",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p089",
+    "text": "[formula] The idea is to take repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent."
+   },
+   "ev_b": {
+    "passage": "p093",
+    "text": "While using a direction that deviates from the steepest descent direction may seem counter-intuitive, the idea is that the smaller slope may be compensated for by being sustained over a much longer distance."
+   },
+   "llm": "same",
+   "llm_reason": "Property describes the same directional concept.",
+   "idx": 115,
+   "final": "different",
+   "mine": "a method versus a direction"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "test set",
+   "b": "outer test set",
+   "node_a": "n118",
+   "node_b": "n472",
+   "type_a": "Dataset",
+   "type_b": "Dataset",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p052",
+    "text": "In the holdout method, we randomly assign data points to two sets d0 and d1, usually called the training set and the test set, respectively."
+   },
+   "ev_b": {
+    "passage": "p053",
+    "text": "This is a truly nested variant which contains an outer loop of k sets and an inner loop of l sets."
+   },
+   "llm": "different",
+   "llm_reason": "Standard test set versus nested outer loop set.",
+   "idx": 116,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "adaptive nearest neighbor",
+   "b": "k-nearest neighbors regression",
+   "node_a": "n124",
+   "node_b": "n328",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p137",
+    "text": "Lin and Jeon established the connection between random forests and adaptive nearest neighbor, implying that random forests can be seen as adaptive kernel estimates."
+   },
+   "ev_b": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "llm": "different",
+   "llm_reason": "Adaptive method versus standard k-nearest neighbors regression.",
+   "idx": 117,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Arthur E. Hoerl",
+   "b": "Hoerl",
+   "node_a": "n129",
+   "node_b": "n296",
+   "type_a": "Person",
+   "type_b": "Person",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p004",
+    "text": "Tikhonov regularization was invented independently in many different contexts."
+   },
+   "ev_b": {
+    "passage": "p002",
+    "text": "The theory was first introduced by Hoerl and Kennard in 1970 in their Technometrics papers \"Ridge regressions: biased estimation of nonorthogonal problems\" and \"Ridge regressions: applications in nonorthogonal problems\"."
+   },
+   "llm": "same",
+   "llm_reason": "Surname refers to the same person Arthur Hoerl.",
+   "idx": 118,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Bayesian hierarchical models",
+   "b": "hierarchical linear models",
+   "node_a": "n137",
+   "node_b": "n284",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p074",
+    "text": "Bayesian hierarchical models (provided by software like BRMS) can perform such regularization automatically, learning informative priors from the data."
+   },
+   "ev_b": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "llm": "different",
+   "llm_reason": "Bayesian approach versus frequentist hierarchical linear models.",
+   "idx": 119,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Bayesian priors",
+   "b": "prior",
+   "node_a": "n139",
+   "node_b": "n512",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p031",
+    "text": "To lessen the chance or amount of overfitting, several techniques are available (e.g., model comparison, cross-validation, regularization, early stopping, pruning, Bayesian priors, or dropout)."
+   },
+   "ev_b": {
+    "passage": "p020",
+    "text": "In explicit regularization, independent of the problem or model, there is always a data term, that corresponds to a likelihood of the measurement, and a regularization term that corresponds to a prior."
+   },
+   "llm": "different",
+   "llm_reason": "Plural specific technique versus singular general concept.",
+   "idx": 120,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Classification decision tree",
+   "b": "Decision tree learning",
+   "node_a": "n171",
+   "node_b": "n211",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Decision tree learning is a supervised learning approach used in statistics, data mining and machine learning."
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "Decision tree learning is a supervised learning approach used in statistics, data mining and machine learning."
+   },
+   "llm": "same",
+   "llm_reason": "Specific instance is synonymous with the general method name here.",
+   "idx": 121,
+   "final": "different",
+   "mine": "a kind of tree versus the learning approach"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "correlated input features",
+   "b": "input features",
+   "node_a": "n197",
+   "node_b": "n314",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p026",
+    "text": "This can be problematic for certain applications, and is overcome by combining [formula] regularization in elastic net regularization, which takes the following form: [formula] Elastic net regularization tends to have a "
+   },
+   "ev_b": {
+    "passage": "p120",
+    "text": "For this section, assume that all of the input features have finite discrete domains, and there is a single target feature called the \"classification\"."
+   },
+   "llm": "different",
+   "llm_reason": "Correlated features are a specific subset of input features.",
+   "idx": 122,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "cross-entropy",
+   "b": "Entropy",
+   "node_a": "n199",
+   "node_b": "n238",
+   "type_a": "Metric",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p046",
+    "text": "Alternatively, if the classification problem can be phrased as probabilistic classification, then the expected cross-entropy can instead be decomposed to give bias and variance terms with the same semantics but taking a "
+   },
+   "ev_b": {
+    "passage": "p136",
+    "text": "the following statistics can be used: [formula] Entropy The normalized importance is then obtained by normalizing over all features, so that the sum of normalized feature importances is 1."
+   },
+   "llm": "different",
+   "llm_reason": "Cross-entropy is a specific type of entropy metric.",
+   "idx": 123,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "data",
+   "b": "test data",
+   "node_a": "n202",
+   "node_b": "n602",
+   "type_a": "Dataset",
+   "type_b": "Dataset",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p029",
+    "text": "In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations r"
+   },
+   "ev_b": {
+    "passage": "p042",
+    "text": "In other words, test data may not agree as closely with training data, which would indicate imprecision and therefore inflated variance."
+   },
+   "llm": "different",
+   "llm_reason": "Test data is a specific subset of general data.",
+   "idx": 124,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "data",
+   "b": "training data",
+   "node_a": "n202",
+   "node_b": "n610",
+   "type_a": "Dataset",
+   "type_b": "Dataset",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p029",
+    "text": "In mathematical modeling, overfitting is the production of an analysis that corresponds too closely or exactly to a particular set of data and may therefore fail to fit to additional data or predict future observations r"
+   },
+   "ev_b": {
+    "passage": "p042",
+    "text": "In other words, test data may not agree as closely with training data, which would indicate imprecision and therefore inflated variance."
+   },
+   "llm": "different",
+   "llm_reason": "Training data is a specific subset of general data.",
+   "idx": 125,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Decision tree learning",
+   "b": "Regression decision tree",
+   "node_a": "n211",
+   "node_b": "n535",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p119",
+    "text": "Decision tree learning is a supervised learning approach used in statistics, data mining and machine learning."
+   },
+   "ev_b": {
+    "passage": "p119",
+    "text": "In this formalism, a classification or regression decision tree is used as a predictive model to draw conclusions about a set of observations."
+   },
+   "llm": "different",
+   "llm_reason": "Regression tree is a specific type of decision tree learning.",
+   "idx": 126,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "empirical classification error",
+   "b": "empirical error",
+   "node_a": "n232",
+   "node_b": "n233",
+   "type_a": "Metric",
+   "type_b": "Metric",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p115",
+    "text": "A special property is that they simultaneously minimize the empirical classification error and maximize the geometric margin; hence they are also known as maximum margin classifiers."
+   },
+   "ev_b": {
+    "passage": "p023",
+    "text": "Therefore, the expected error is unmeasurable, and the best surrogate available is the empirical error over the [formula] Without bounds on the complexity of the function space (formally, the reproducing kernel Hilbert s"
+   },
+   "llm": "different",
+   "llm_reason": "Classification error is a specific type of empirical error.",
+   "idx": 127,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Enriched Random Forest",
+   "b": "Kernel Random Forest",
+   "node_a": "n235",
+   "node_b": "n336",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p135",
+    "text": "Enriched Random Forest (ERF): Use weighted random sampling instead of simple random sampling at each node of each tree, giving greater weight to features that appear to be more informative."
+   },
+   "ev_b": {
+    "passage": "p137",
+    "text": "Davies and Ghahramani proposed Kernel Random Forest (KeRF) and showed that it can empirically outperform state-of-art kernel methods."
+   },
+   "llm": "different",
+   "llm_reason": "Enriched and Kernel Random Forests are distinct methods.",
+   "idx": 128,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Enriched Random Forest",
+   "b": "random forest classifier",
+   "node_a": "n235",
+   "node_b": "n524",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p135",
+    "text": "Enriched Random Forest (ERF): Use weighted random sampling instead of simple random sampling at each node of each tree, giving greater weight to features that appear to be more informative."
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "A random forest classifier is a specific type of bootstrap aggregating"
+   },
+   "llm": "different",
+   "llm_reason": "Enriched Random Forest is a specific variant of random forest.",
+   "idx": 129,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "feature space",
+   "b": "transformed feature space",
+   "node_a": "n246",
+   "node_b": "n616",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p085",
+    "text": "In general, under the kernel machine setting, the vector of covariates is first mapped into a high-dimensional (potentially infinite-dimensional) feature space characterized by the kernel function chosen."
+   },
+   "ev_b": {
+    "passage": "p113",
+    "text": "This allows the algorithm to fit the maximum-margin hyperplane in a transformed feature space."
+   },
+   "llm": "same",
+   "llm_reason": "Transformed feature space refers to the same concept in context.",
+   "idx": 130,
+   "final": "different",
+   "mine": "the transformed space is one specific space, narrower than 'feature space'"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "flat prior",
+   "b": "prior",
+   "node_a": "n254",
+   "node_b": "n512",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p076",
+    "text": "Leamer notes that \"bad\" regression results that are often misattributed to multicollinearity instead indicate the researcher has chosen an unrealistic prior probability (generally the flat prior used in OLS)."
+   },
+   "ev_b": {
+    "passage": "p020",
+    "text": "In explicit regularization, independent of the problem or model, there is always a data term, that corresponds to a likelihood of the measurement, and a regularization term that corresponds to a prior."
+   },
+   "llm": "different",
+   "llm_reason": "Flat prior is a specific type of prior distribution.",
+   "idx": 131,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "general linear model",
+   "b": "multiple linear models",
+   "node_a": "n262",
+   "node_b": "n430",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p066",
+    "text": "The general linear model considers the situation when the response variable is not a scalar (for each observation) but a vector, yi."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "General linear model differs from multiple linear models.",
+   "idx": 132,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "generalized linear classifiers",
+   "b": "linear classifier",
+   "node_a": "n264",
+   "node_b": "n367",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p115",
+    "text": "SVMs belong to a family of generalized linear classifiers and can be interpreted as an extension of the perceptron."
+   },
+   "ev_b": {
+    "passage": "p110",
+    "text": "This is called a linear classifier."
+   },
+   "llm": "different",
+   "llm_reason": "Generalized linear classifiers are a broader family than linear classifiers.",
+   "idx": 133,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "geometric margin",
+   "b": "margin",
+   "node_a": "n266",
+   "node_b": "n390",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p115",
+    "text": "A special property is that they simultaneously minimize the empirical classification error and maximize the geometric margin; hence they are also known as maximum margin classifiers."
+   },
+   "ev_b": {
+    "passage": "p110",
+    "text": "One reasonable choice as the best hyperplane is the one that represents the largest separation, or margin, between the two classes."
+   },
+   "llm": "same",
+   "llm_reason": "Geometric margin is the specific margin referred to in context.",
+   "idx": 134,
+   "final": "different",
+   "mine": "the geometric margin is one specific margin, narrower than 'margin'"
+  },
+  {
+   "stratum": "unmerged",
+   "a": "goodness",
+   "b": "goodness of fit",
+   "node_a": "n272",
+   "node_b": "n273",
+   "type_a": "Metric",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p125",
+    "text": "[formula] To build the tree, the \"goodness\" of all candidate splits for the root node need to be calculated."
+   },
+   "ev_b": {
+    "passage": "p105",
+    "text": "The reason for this choice is that not only is the deviance a good measure of the goodness of fit, it is also approximately chi-squared distributed, with the approximation improving as the number of data points (K) incre"
+   },
+   "llm": "different",
+   "llm_reason": "Goodness is a split metric; goodness of fit is model evaluation.",
+   "idx": 135,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "hierarchical linear models",
+   "b": "multiple linear models",
+   "node_a": "n284",
+   "node_b": "n430",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "different",
+   "llm_reason": "Hierarchical and multiple linear models are distinct statistical methods.",
+   "idx": 136,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "hierarchical linear models",
+   "b": "multivariate linear models",
+   "node_a": "n284",
+   "node_b": "n434",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p067",
+    "text": "Hierarchical linear models (or multilevel regression) organizes the data into a hierarchy of regressions, for example where A is regressed on B, and B is regressed on C."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "\"General linear models\" are also called \"multivariate linear models\"."
+   },
+   "llm": "different",
+   "llm_reason": "Hierarchical models differ from multivariate (general) linear models.",
+   "idx": 137,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Kernel Random Forest",
+   "b": "random forest classifier",
+   "node_a": "n336",
+   "node_b": "n524",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p137",
+    "text": "Davies and Ghahramani proposed Kernel Random Forest (KeRF) and showed that it can empirically outperform state-of-art kernel methods."
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "A random forest classifier is a specific type of bootstrap aggregating"
+   },
+   "llm": "different",
+   "llm_reason": "Kernel Random Forest is a specific variant of random forest.",
+   "idx": 138,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "line search algorithm",
+   "b": "line search step",
+   "node_a": "n365",
+   "node_b": "n366",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p096",
+    "text": "An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a \"better\" direction, combined with a more sophisticated line search algorithm, to "
+   },
+   "ev_b": {
+    "passage": "p098",
+    "text": "The properties of gradient descent depend on the properties of the objective function and the variant of gradient descent used (for example, if a line search step is used)."
+   },
+   "llm": "different",
+   "llm_reason": "Algorithm is the method; step is a single iteration component.",
+   "idx": 139,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "line search algorithm",
+   "b": "local search algorithm",
+   "node_a": "n365",
+   "node_b": "n377",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p096",
+    "text": "An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a \"better\" direction, combined with a more sophisticated line search algorithm, to "
+   },
+   "ev_b": {
+    "passage": "p096",
+    "text": "While it is sometimes possible to substitute gradient descent for a local search algorithm, gradient descent is not in the same family: although it is an iterative method for local optimization, it relies on an objective"
+   },
+   "llm": "different",
+   "llm_reason": "Distinct optimization methods with different mechanisms.",
+   "idx": 140,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear kernel",
+   "b": "non-linear kernels",
+   "node_a": "n370",
+   "node_b": "n441",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p088",
+    "text": "Thus, for the linear kernel, the kernel PCR based on a dual formulation is exactly equivalent to the classical PCR based on a primal formulation."
+   },
+   "ev_b": {
+    "passage": "p088",
+    "text": "It can be easily shown that this is the same as regressing the outcome vector on the corresponding principal components (which are finite-dimensional in this case), as defined in the context of the classical PCR."
+   },
+   "llm": "different",
+   "llm_reason": "Linear and non-linear kernels are opposites.",
+   "idx": 141,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "linear regression analysis",
+   "b": "regression analysis technique",
+   "node_a": "n373",
+   "node_b": "n534",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p068",
+    "text": "Isaac Newton is credited with inventing \"a certain technique known today as linear regression analysis\" in his work on equinoxes in 1700, and wrote down the first of the two normal equations of the ordinary least squares"
+   },
+   "ev_b": {
+    "passage": "p079",
+    "text": "In statistics, principal component regression (PCR) is a regression analysis technique that is based on principal component analysis (PCA)."
+   },
+   "llm": "different",
+   "llm_reason": "Specific method versus broader category of techniques.",
+   "idx": 142,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "logistic distribution function",
+   "b": "logistic function",
+   "node_a": "n381",
+   "node_b": "n382",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p107",
+    "text": "Second, the predicted values are probabilities and are therefore restricted to (0,1) through the logistic distribution function because logistic regression predicts the probability of particular outcomes rather than the "
+   },
+   "ev_b": {
+    "passage": "p100",
+    "text": "The essential mechanism of logistic regression is grounded in the logistic function's ability to model the probability of binary outcomes accurately."
+   },
+   "llm": "same",
+   "llm_reason": "Synonyms referring to the same mathematical function.",
+   "idx": 143,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "M-estimators",
+   "b": "R-estimators",
+   "node_a": "n386",
+   "node_b": "n521",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "ev_b": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "llm": "different",
+   "llm_reason": "Distinct types of robust estimation techniques.",
+   "idx": 144,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "M-estimators",
+   "b": "ridge estimator",
+   "node_a": "n386",
+   "node_b": "n550",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "ev_b": {
+    "passage": "p003",
+    "text": "Compared to the ordinary least squares estimator, the simple ridge estimator has an extra term [formula] in the denominator: [formula] where [formula] is the regressand or response vector, [formula] is the design matrix,"
+   },
+   "llm": "different",
+   "llm_reason": "Different robust and regularized estimation methods.",
+   "idx": 145,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model parameters",
+   "b": "parameter k",
+   "node_a": "n416",
+   "node_b": "n486",
+   "type_a": "Other",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p022",
+    "text": "From a Bayesian point of view, many regularization techniques correspond to imposing certain prior distributions on model parameters."
+   },
+   "ev_b": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "llm": "different",
+   "llm_reason": "General concept versus specific hyperparameter instance.",
+   "idx": 146,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "model selection procedure",
+   "b": "regression model selection",
+   "node_a": "n417",
+   "node_b": "n538",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p078",
+    "text": "P-values and confidence intervals derived from post hoc analyses are invalidated by ignoring the uncertainty in the model selection procedure."
+   },
+   "ev_b": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "llm": "different",
+   "llm_reason": "General procedure versus specific regression application.",
+   "idx": 147,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "multiple linear models",
+   "b": "multiple-regression models",
+   "node_a": "n430",
+   "node_b": "n431",
+   "type_a": "Method",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "ev_b": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "llm": "same",
+   "llm_reason": "Synonyms for models with multiple predictors.",
+   "idx": 148,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "multiple linear models",
+   "b": "multivariable linear models",
+   "node_a": "n430",
+   "node_b": "n433",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "llm": "same",
+   "llm_reason": "Text explicitly states they are also called each other.",
+   "idx": 149,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "multiple linear models",
+   "b": "multivariate linear models",
+   "node_a": "n430",
+   "node_b": "n434",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "\"General linear models\" are also called \"multivariate linear models\"."
+   },
+   "llm": "different",
+   "llm_reason": "Multiple refers to predictors; multivariate refers to responses.",
+   "idx": 150,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "multiple-regression models",
+   "b": "regression model selection",
+   "node_a": "n431",
+   "node_b": "n538",
+   "type_a": "Concept",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p001",
+    "text": "Ridge regression (also known as Tikhonov regularization, named for Andrey Tikhonov) is a method of estimating the coefficients of multiple-regression models in scenarios where the variables are highly correlated."
+   },
+   "ev_b": {
+    "passage": "p032",
+    "text": "In the process of regression model selection, the mean squared error of the random regression function can be split into random noise, approximation bias, and variance in the estimate of the regression function."
+   },
+   "llm": "different",
+   "llm_reason": "Model structure versus process of selecting models.",
+   "idx": 151,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "multivariable linear models",
+   "b": "multivariate linear models",
+   "node_a": "n433",
+   "node_b": "n434",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p066",
+    "text": "These are not the same as multivariable linear models (also called \"multiple linear models\")."
+   },
+   "ev_b": {
+    "passage": "p066",
+    "text": "\"General linear models\" are also called \"multivariate linear models\"."
+   },
+   "llm": "different",
+   "llm_reason": "Multivariable implies multiple inputs; multivariate implies multiple outputs.",
+   "idx": 152,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "parameters",
+   "b": "tunable parameters",
+   "node_a": "n483",
+   "node_b": "n622",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p029",
+    "text": "An overfitted model is a mathematical model that contains more parameters than can be justified by the data."
+   },
+   "ev_b": {
+    "passage": "p039",
+    "text": "In general, as the number of tunable parameters in a model increases, it becomes more flexible, and can better fit a training data set."
+   },
+   "llm": "different",
+   "llm_reason": "General parameters versus specific subset of tunable ones.",
+   "idx": 153,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "parameter estimates",
+   "b": "parameter k",
+   "node_a": "n484",
+   "node_b": "n486",
+   "type_a": "Metric",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p069",
+    "text": "In this situation, the parameter estimates of the regression are not well-defined, as the system of equations has infinitely many solutions."
+   },
+   "ev_b": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "llm": "different",
+   "llm_reason": "Estimated values versus a specific hyperparameter property.",
+   "idx": 154,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "parameter k",
+   "b": "tunable parameters",
+   "node_a": "n486",
+   "node_b": "n622",
+   "type_a": "Property",
+   "type_b": "Property",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p045",
+    "text": "In the case of k-nearest neighbors regression, when the expectation is taken over the possible labeling of a fixed training set, a closed-form expression exists that relates the bias–variance decomposition to the paramet"
+   },
+   "ev_b": {
+    "passage": "p039",
+    "text": "In general, as the number of tunable parameters in a model increases, it becomes more flexible, and can better fit a training data set."
+   },
+   "llm": "different",
+   "llm_reason": "Specific hyperparameter versus general class of adjustable parameters.",
+   "idx": 155,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "prior",
+   "b": "prior distributions",
+   "node_a": "n512",
+   "node_b": "n513",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p020",
+    "text": "In explicit regularization, independent of the problem or model, there is always a data term, that corresponds to a likelihood of the measurement, and a regularization term that corresponds to a prior."
+   },
+   "ev_b": {
+    "passage": "p022",
+    "text": "From a Bayesian point of view, many regularization techniques correspond to imposing certain prior distributions on model parameters."
+   },
+   "llm": "same",
+   "llm_reason": "Prior is shorthand for prior distributions in this context.",
+   "idx": 156,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "probability",
+   "b": "probability of success",
+   "node_a": "n515",
+   "node_b": "n516",
+   "type_a": "Concept",
+   "type_b": "Concept",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p102",
+    "text": "Once the beta coefficients have been estimated from the data, we will be able to estimate the probability that any subsequent set of explanatory variables will result in any of the possible outcome categories."
+   },
+   "ev_b": {
+    "passage": "p101",
+    "text": "As noted above, each separate trial has its own probability of success, just as each trial has its own explanatory variables."
+   },
+   "llm": "different",
+   "llm_reason": "General concept versus specific outcome probability.",
+   "idx": 157,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "R-estimators",
+   "b": "ridge estimator",
+   "node_a": "n521",
+   "node_b": "n550",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "ev_b": {
+    "passage": "p003",
+    "text": "Compared to the ordinary least squares estimator, the simple ridge estimator has an extra term [formula] in the denominator: [formula] where [formula] is the regressand or response vector, [formula] is the design matrix,"
+   },
+   "llm": "different",
+   "llm_reason": "Distinct robust and regularized estimation methods.",
+   "idx": 158,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "R-estimators",
+   "b": "S-estimators",
+   "node_a": "n521",
+   "node_b": "n558",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "ev_b": {
+    "passage": "p064",
+    "text": "Other robust estimation techniques, including the α-trimmed mean approach, and L-, M-, S-, and R-estimators have been introduced."
+   },
+   "llm": "different",
+   "llm_reason": "Distinct types of robust estimation techniques.",
+   "idx": 159,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "random decision forests",
+   "b": "random forest classifier",
+   "node_a": "n523",
+   "node_b": "n524",
+   "type_a": "Method",
+   "type_b": "Method",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p130",
+    "text": "The general method of random decision forests was first proposed by Salzberg and Heath in 1993, with a method that used a randomized decision tree algorithm to create multiple trees and then combine them using majority v"
+   },
+   "ev_b": {
+    "passage": "p121",
+    "text": "A random forest classifier is a specific type of bootstrap aggregating"
+   },
+   "llm": "same",
+   "llm_reason": "Synonymous terms for the same machine learning ensemble method.",
+   "idx": 160,
+   "final": "same",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "training data set",
+   "b": "fitting training data set",
+   "node_a": "n612",
+   "node_b": "n649",
+   "type_a": "Dataset",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p039",
+    "text": "In general, as the number of tunable parameters in a model increases, it becomes more flexible, and can better fit a training data set."
+   },
+   "ev_b": {
+    "passage": "",
+    "text": "(no passage recorded)"
+   },
+   "llm": "different",
+   "llm_reason": "One is a dataset, the other describes an action or state.",
+   "idx": 161,
+   "final": "different",
+   "mine": ""
+  },
+  {
+   "stratum": "unmerged",
+   "a": "Wald statistic",
+   "b": "overly conservative Wald statistic",
+   "node_a": "n638",
+   "node_b": "n659",
+   "type_a": "Metric",
+   "type_b": "Other",
+   "pack_merged": false,
+   "ev_a": {
+    "passage": "p104",
+    "text": "[formula] Having a large ratio of variables to cases results in an overly conservative Wald statistic (discussed below) and can lead to non-convergence."
+   },
+   "ev_b": {
+    "passage": "",
+    "text": "(no passage recorded)"
+   },
+   "llm": "different",
+   "llm_reason": "One is a metric, the other is a specific qualified instance.",
+   "idx": 162,
+   "final": "different",
+   "mine": ""
+  }
+ ],
+ "stats": {
+  "merged_tp": 42,
+  "merged_fp": 1,
+  "unmerged_same": 9,
+  "unmerged_n": 120,
+  "pool": 402,
+  "fn_est": 30.1,
+  "fn_lo": 16.1,
+  "fn_hi": 54.8,
+  "P": 0.977,
+  "R_est": 0.582,
+  "F1_est": 0.729,
+  "R_range": [
+   0.434,
+   0.723
+  ],
+  "F1_range": [
+   0.601,
+   0.831
+  ],
+  "n_overridden": 12,
+  "n_total": 163,
+  "agreement": 0.926,
+  "spot_check": "all 163 labels read by the agent (names, types, evidence sentences for the 18 doubtful ones)"
+ }
+}

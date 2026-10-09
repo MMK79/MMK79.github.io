@@ -1,6 +1,6 @@
 /* LightRAG dual-level retrieval: local keywords match entity keys, global keywords match relation (theme) keys, then one hop outward.
    Toy example ("break it"): a 6-entity, 5-relation graph with invented 2-D embeddings; the LLM keyword step is two points you set (precomputed stand-in).
-   Real example (default, PARTIAL): the real-example pack has NO LightRAG run. This walk-through is ASSEMBLED from pack data: stored entity links (low level),
+   Real run (default, 2026-10-09): a LightRAG-STYLE run on the real graph with real LLM keyword calls (demos/data/lightrag_real_run.build.py). The older walk-through below it is kept: the real-example pack has NO LightRAG run. This walk-through is ASSEMBLED from pack data: stored entity links (low level),
    the 662-node graph (one hop), the 15 community reports (stand-in for relation keys). The global phrases and the MiniLM cosines between phrase and report are
    ours, computed by demos/data/lightrag_dual_real.build.py. Gold coverage is counted from stored passage ids.
    2D on purpose: two keys, one ring; 3D would add nothing here. */
@@ -95,7 +95,7 @@
       'IMPORTANT: the pack has no LightRAG run. Nothing below is a LightRAG measurement. What is real: the low-level keys (entities the stored linker found in each question), the 662-node graph that an LLM extracted from 138 Wikipedia passages, and the 15 community reports. What is ours: the global phrases (hand-written, standing in for the LLM keyword step) and the cosines between phrase and report (MiniLM, computed by us). LightRAG matches global keys against RELATION keys; the pack has none, so a community report stands in for one. Gold coverage is counted from stored passage ids.');
     const body = K.el('div', {}, 'loading...'); box.append(body);
     fetch(base + 'lightrag_dual_real.json').then(r => { if (!r.ok) throw new Error('lightrag_dual_real.json ' + r.status); return r.json(); }).then(D => {
-      const sel = K.el('select', { 'aria-label': 'question' }, ...D.questions.map((q, i) => K.el('option', { value: i }, q.id + '  ' + q.question.slice(0, 70))));
+      const sel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%' }, ...D.questions.map((q, i) => K.el('option', { value: i }, q.id + '  ' + q.question.slice(0, 70))));
       const kwR = K.el('div', { class: 'row' }), out = K.el('div', {}), qbox = K.el('div', {}), seedBox = K.el('div', {}), repBox = K.el('div', {}), ctxBox = K.el('div', {}), verdict = K.el('div', {});
       let kw = 0; const kS = K.slider('reports taken (k)', 1, 3, 1, 1, () => draw());
       function bar(label, n, color, gold, G) { const w = Math.round(n / D.n_passages * 100);
@@ -127,18 +127,62 @@
       }
       sel.addEventListener('change', () => { kw = 0; draw(); });
       const cav = K.el('div', { class: 'hint' }, `Limits: ${D.questions.length} hand-picked questions with entity links and multi-passage or theme wording; keyword phrases are ours; LightRAG's relation keys and its entity/relation text are not in the pack; the dual set is our assembly (community footprint added to a one-hop set), not LightRAG's code. Demo scale, not an evaluation. Text from Wikipedia, CC BY-SA 4.0.`);
-      body.replaceChildren(K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;max-width:100%' }, 'question ', sel)), qbox, kwR, K.el('div', { class: 'row' }, kS.node), seedBox, repBox, ctxBox, verdict, cav); draw();
+      body.replaceChildren(K.el('div', { class: 'row' }, K.el('label', { style: 'flex:1 1 100%;min-width:0;max-width:100%' }, 'question ', sel)), qbox, kwR, K.el('div', { class: 'row' }, kS.node), seedBox, repBox, ctxBox, verdict, cav); draw();
     }).catch(e => { body.textContent = 'could not load the assembled data (' + e.message + '). Use the toy example.'; });
   }
 
-  function mount(el) {
-    const K = DemoKit, bar = K.el('div', { class: 'row' }), real = K.el('div', {}), toy = K.el('div', {});
-    const b1 = K.el('button', {}, 'Real example (assembled from the pack)'), b2 = K.el('button', {}, 'Toy example (break it)');
-    const show = r => { real.style.display = r ? '' : 'none'; toy.style.display = r ? 'none' : ''; b1.setAttribute('aria-pressed', String(r)); b2.setAttribute('aria-pressed', String(!r)); };
-    b1.addEventListener('click', () => show(true)); b2.addEventListener('click', () => show(false));
-    bar.append(b1, b2); el.append(bar, real, toy); mountReal(real); mountToy(toy); show(true);
+  /* PURE. LightRAG-style context of one stored question: low level = passages of the top-k entities (own + incident edges), high level = passages of the top-k relations;
+     passages ranked by how many chosen entities/relations point at them. levels: low | high | dual. */
+  function assembleRun(it, k, levels) {
+    const hits = {};
+    if (levels !== 'high') it.entities.slice(0, k).forEach(e => new Set([...e.own, ...e.incident]).forEach(p => { hits[p] = (hits[p] || 0) + 1; }));
+    if (levels !== 'low') it.relations.slice(0, k).forEach(r => r.passages.forEach(p => { hits[p] = (hits[p] || 0) + 1; }));
+    const ids = Object.keys(hits).sort((a, b) => hits[b] - hits[a] || (a < b ? -1 : 1));
+    return { hits, ids, n: ids.length, gold: it.gold.filter(g => hits[g]) };
   }
 
-  const api = { defaults, compute, mount, assemble, detail };
+  function mountRun(el) {
+    const K = DemoKit, base = new URL('data/', SRC || location.href).href;
+    const box = K.shell(el, 'Real run: LightRAG-style dual-level retrieval on the real graph',
+      'A real run of the LightRAG idea on the 138 Wikipedia passages and the 662-node, 762-edge graph that an LLM extracted from them (2026-10-09). REAL: one LLM call per question writes high-level and low-level keywords (qwen3.8-flash, 24 calls, about USD 0.001); the cosines and the retrieved entities, relations and passages are computed from the real graph. NOT LightRAG itself: its index holds an LLM-written description per entity and relation; this graph has names, types and typed edges only, so the entity key is "name (type)" and the relation key is "source relation target". Demo scale, one run, no tuning.');
+    const body = K.el('div', {}, 'loading...'); box.append(body);
+    fetch(base + 'lightrag_real_run.json').then(r => { if (!r.ok) throw new Error('lightrag_real_run.json ' + r.status); return r.json(); }).then(D => {
+      const Q = D.questions.filter(x => x.entities); let lv = 'dual';
+      const sel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%' }, ...Q.map((q, i) => K.el('option', { value: i }, `${q.id} (${q.type}) ${q.question.slice(0, 64)}`)));
+      const kS = K.slider('top-k entities and relations', 1, 10, 1, 5, () => draw());
+      const lb = K.el('div', { class: 'row' }, ...[['low', 'low level only (entities)'], ['high', 'high level only (relations)'], ['dual', 'dual (both)']].map(([v, t]) => { const b = K.el('button', { 'aria-pressed': String(v === lv) }, t); b.addEventListener('click', () => { lv = v; [...lb.children].forEach(c => c.setAttribute('aria-pressed', String(c === b))); draw(); }); return b; }));
+      const qbox = K.el('div', {}), ent = K.el('div', {}), rel = K.el('div', {}), ctx = K.el('div', { 'aria-live': 'polite' }), aggBox = K.el('div', { class: 'hint' });
+      const row = (label, c, extra, color) => K.el('div', { style: 'display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:2px 0' }, K.el('span', { style: 'flex:1 1 220px;min-width:0;overflow-wrap:anywhere' }, label),
+        K.el('div', { style: 'width:90px;background:var(--line);border-radius:2px' }, K.el('div', { style: `height:8px;border-radius:2px;width:${Math.round(Math.max(c, 0) * 100)}%;background:${color}` })), K.el('span', { class: 'num' }, K.fmt(c, 3)), K.el('span', { class: 'hint' }, extra));
+      function draw() {
+        const q = Q[sel.value | 0], k = kS.get(), a = assembleRun(q, k, lv), G = q.gold.length;
+        qbox.replaceChildren(K.el('div', {}, K.el('b', {}, q.question), K.el('span', { class: 'hint' }, `  (${q.type}; gold ${G ? q.gold.join(', ') : 'none: unanswerable'})`)),
+          K.el('div', {}, K.el('span', { class: 'hint' }, 'LLM high-level keywords: '), K.el('b', {}, q.high.join(' | ') || '(none)')), K.el('div', {}, K.el('span', { class: 'hint' }, 'LLM low-level keywords: '), K.el('b', {}, q.low.join(' | ') || '(none)')));
+        ent.replaceChildren(K.el('b', { style: 'color:var(--ai)' }, 'Low level: entity key search over 662 nodes (cosine of the joined low keywords)'), ...q.entities.slice(0, k).map(e => row(`${e.name}`, e.cos, `${e.degree} edges, ${new Set([...e.own, ...e.incident]).size} passages${e.own.concat(e.incident).some(p => q.gold.includes(p)) ? ', touches gold' : ''}`, 'var(--ai)')));
+        rel.replaceChildren(K.el('b', { style: 'color:var(--k12)' }, 'High level: relation key search over 762 edges (cosine of the joined high keywords)'), ...q.relations.slice(0, k).map(r => row(r.key, r.cos, `${r.passages.length} passages${r.passages.some(p => q.gold.includes(p)) ? ', touches gold' : ''}`, 'var(--k12)')));
+        const lo = assembleRun(q, k, 'low'), hi = assembleRun(q, k, 'high'), du = assembleRun(q, k, 'dual');
+        const line = (n, r, c) => K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:10px' }, K.el('b', { style: 'flex:1 1 200px' }, n), K.el('span', { class: 'num' }, `${r.n} of ${D.meta.n_passages} passages`), K.el('span', { class: 'num ' + (G === 0 ? '' : r.gold.length === G ? 'good' : 'bad') }, G ? `gold ${r.gold.length} of ${G}` : 'no gold'));
+        const top = a.ids.slice(0, 8).map(p => K.el('span', { class: 'num', style: 'margin-right:8px;' + (q.gold.includes(p) ? 'font-weight:700;color:var(--he)' : '') }, `${p}${q.gold.includes(p) ? '*' : ''}x${a.hits[p]}`));
+        ctx.replaceChildren(K.el('b', {}, 'Context sets'), line('low level only', lo), line('high level only', hi), line('dual (union)', du),
+          K.el('div', { class: 'hint' }, `Selected mode (${lv}): passages ranked by hits (xN = number of chosen entities/relations pointing at the passage, * = gold): `), K.el('div', { style: 'display:flex;flex-wrap:wrap' }, ...top),
+          G === 0 ? K.el('div', { class: 'bad' }, 'Unanswerable: the graph still returns entities and passages; nothing in this stage says "the answer is not here".') : (du.gold.length < G ? K.el('div', { class: 'bad' }, `Still missing ${q.gold.filter(g => !du.hits[g]).join(', ')}: neither key reaches it, so the LLM never sees it.`) : ''));
+        const ag = ['low', 'high', 'dual'].map(m => { const rs = Q.filter(x => x.gold.length).map(x => { const z = assembleRun(x, k, m); return [z.gold.length / x.gold.length, z.n]; }); return `${m}: gold recall ${K.fmt(rs.reduce((s, r) => s + r[0], 0) / rs.length, 3)}, mean ${K.fmt(rs.reduce((s, r) => s + r[1], 0) / rs.length, 1)} passages`; });
+        aggBox.textContent = `All 20 answerable questions at k = ${k}: ${ag.join(' ; ')}. Recall is of gold passages inside the set, not a ranking; the set is a share of the 138-passage corpus, so a big set is cheap recall. Compare with dense top-5 recall 0.85 and graph+vector 0.875 in the pack (those are 5-passage lists). n = 20, LLM keywords, gold labels cover necessary passages only.`;
+      }
+      sel.addEventListener('change', draw);
+      body.replaceChildren(K.el('div', { class: 'row' }, K.el('label', { style: 'flex:1 1 100%;min-width:0;max-width:100%' }, 'question ', sel)), K.el('div', { class: 'row' }, kS.node), lb, qbox, ent, rel, ctx, aggBox,
+        K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px' }, `Limits: ${D.meta.n_calls} keyword calls (${D.meta.prompt_tokens} in / ${D.meta.completion_tokens} out tokens, mean latency ${D.meta.latency_s_mean} s). No LLM-written entity/relation descriptions, so the keys are shorter than LightRAG's. No answer generation here: this is the retrieval step only. Text: Wikipedia contributors, CC BY-SA 4.0.`)); draw();
+    }).catch(e => { body.textContent = 'could not load the real run (' + e.message + '). real example pending.'; });
+  }
+
+  function mount(el) {
+    const K = DemoKit, bar = K.el('div', { class: 'row' }), run = K.el('div', {}), real = K.el('div', {}), toy = K.el('div', {});
+    const b0 = K.el('button', {}, 'Real run (LightRAG-style)'), b1 = K.el('button', {}, 'Assembled from the pack (reports)'), b2 = K.el('button', {}, 'Toy example (break it)'), bs = [b0, b1, b2], ps = [run, real, toy];
+    const show = i => { ps.forEach((p, n) => { p.style.display = n === i ? '' : 'none'; bs[n].setAttribute('aria-pressed', String(n === i)); }); };
+    bs.forEach((b, i) => b.addEventListener('click', () => show(i)));
+    bar.append(...bs); el.append(bar, run, real, toy); mountRun(run); mountReal(real); mountToy(toy); show(0);
+  }
+
+  const api = { defaults, compute, mount, assemble, detail, assembleRun };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['lightrag_dual'] = api;
 })(this);

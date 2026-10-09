@@ -1,0 +1,503 @@
+{
+ "model": "qwen3.7-plus",
+ "date": "2026-10-09",
+ "prompt": "A knowledge graph was built from Wikipedia passages. A question has a gold answer. Below are graph nodes whose names occur in the gold answer (candidates).\nKeep a candidate ONLY if the gold answer gives that entity AS the thing the question asks for (the answer itself, or one item of a list answer). Drop a candidate that is only context, a definition, a generic word (for example \"theory\", \"class\", \"data\") or part of how the answer is explained. Use only the question and the gold answer. Keep none if no candidate is the answer.\nReturn ONLY JSON: {\"keep\":[candidate names exactly as written],\"reason\":str (max 20 words)}",
+ "n_answerable": 20,
+ "rows": [
+  {
+   "qid": "q01",
+   "question": "Who first introduced ridge regression, and in which year?",
+   "gold_answer": "Hoerl and Kennard introduced the theory in 1970.",
+   "candidates": [
+    "Hoerl",
+    "Kennard",
+    "theory"
+   ],
+   "llm_keep": [
+    "Hoerl",
+    "Kennard"
+   ],
+   "llm_reason": "Hoerl and Kennard are the entities who introduced ridge regression; theory is a generic word.",
+   "cand_ids": {
+    "Hoerl": "n296",
+    "Kennard": "n332",
+    "theory": "n603"
+   },
+   "final": [
+    "Hoerl",
+    "Kennard"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n296",
+    "n332"
+   ]
+  },
+  {
+   "qid": "q02",
+   "question": "What does the name lasso stand for?",
+   "gold_answer": "Least absolute shrinkage and selection operator.",
+   "candidates": [],
+   "llm_keep": [],
+   "llm_reason": "no candidate",
+   "cand_ids": {},
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q03",
+   "question": "What does the quadratic penalty term of the elastic net do to the loss function?",
+   "gold_answer": "It makes the loss function strongly convex, so it has a unique minimum.",
+   "candidates": [
+    "strongly convex"
+   ],
+   "llm_keep": [
+    "strongly convex"
+   ],
+   "llm_reason": "The gold answer states the loss function becomes strongly convex, making this the direct answer.",
+   "cand_ids": {
+    "strongly convex": "n117"
+   },
+   "final": [
+    "strongly convex"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n117"
+   ]
+  },
+  {
+   "qid": "q04",
+   "question": "How does k-fold cross-validation split the data?",
+   "gold_answer": "The sample is randomly partitioned into k equal-sized folds; one fold is kept as validation data and the other k-1 folds are used for training.",
+   "candidates": [
+    "validation data"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Validation data is a role assigned to a fold, not the splitting method itself.",
+   "cand_ids": {
+    "validation data": "n629"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q05",
+   "question": "The soft-margin support vector machine is an example of which kind of algorithm?",
+   "gold_answer": "An empirical risk minimization (ERM) algorithm for the hinge loss.",
+   "candidates": [
+    "empirical risk minimization",
+    "hinge loss"
+   ],
+   "llm_keep": [
+    "empirical risk minimization"
+   ],
+   "llm_reason": "ERM is the algorithm type; hinge loss is a component, not the algorithm kind.",
+   "cand_ids": {
+    "empirical risk minimization": "n234",
+    "hinge loss": "n294"
+   },
+   "final": [
+    "empirical risk minimization"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n234"
+   ]
+  },
+  {
+   "qid": "q06",
+   "question": "What goes wrong in gradient descent if the step size is too large?",
+   "gold_answer": "It overshoots and diverges.",
+   "candidates": [
+    "overshoot"
+   ],
+   "llm_keep": [
+    "overshoot"
+   ],
+   "llm_reason": "Overshoot is explicitly stated as part of the direct answer to what goes wrong.",
+   "cand_ids": {
+    "overshoot": "n478"
+   },
+   "final": [
+    "overshoot"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n478"
+   ]
+  },
+  {
+   "qid": "q07",
+   "question": "How does a random forest produce its output for classification and for regression?",
+   "gold_answer": "For classification it outputs the class selected by most trees; for regression it outputs the average of the trees' predictions.",
+   "candidates": [
+    "tree",
+    "prediction",
+    "class"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are generic terms or components, not the specific output mechanisms described.",
+   "cand_ids": {
+    "tree": "n048",
+    "prediction": "n097",
+    "class": "n168"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q08",
+   "question": "Why can the parameters not be estimated under perfect multicollinearity?",
+   "gold_answer": "The design matrix has less than full rank, so the moment matrix cannot be inverted and the system has infinitely many solutions.",
+   "candidates": [
+    "design matrix",
+    "moment matrix"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are explanatory concepts, not the direct answer to 'why'.",
+   "cand_ids": {
+    "design matrix": "n032",
+    "moment matrix": "n089"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q09",
+   "question": "Who introduced the regularized regression technique that the multicollinearity article lists beside LASSO and elastic net as less sensitive to useless predictors, and in which year?",
+   "gold_answer": "Ridge regression, introduced by Hoerl and Kennard in 1970.",
+   "candidates": [
+    "ridge regression",
+    "Hoerl",
+    "Kennard"
+   ],
+   "llm_keep": [
+    "Hoerl",
+    "Kennard"
+   ],
+   "llm_reason": "Question asks who introduced it; Hoerl and Kennard are the specific people named as introducers.",
+   "cand_ids": {
+    "ridge regression": "n014",
+    "Hoerl": "n296",
+    "Kennard": "n332"
+   },
+   "final": [
+    "Hoerl",
+    "Kennard"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n296",
+    "n332"
+   ]
+  },
+  {
+   "qid": "q10",
+   "question": "Which statistician popularised the method that, in the 'large p, small n' case, selects at most n variables before it saturates, and in which year?",
+   "gold_answer": "Robert Tibshirani popularised the lasso in 1996.",
+   "candidates": [
+    "lasso",
+    "Robert Tibshirani"
+   ],
+   "llm_keep": [
+    "Robert Tibshirani"
+   ],
+   "llm_reason": "Question asks for the statistician. Lasso is the method, not the person.",
+   "cand_ids": {
+    "lasso": "n002",
+    "Robert Tibshirani": "n109"
+   },
+   "final": [
+    "Robert Tibshirani"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n109"
+   ]
+  },
+  {
+   "qid": "q11",
+   "question": "The quadratic part of the elastic net penalty equals which method on its own, and why is that method called 'ridge'?",
+   "gold_answer": "It is ridge regression (Tikhonov regularization); it is named after ridge analysis, where 'ridge' refers to the path from the constrained maximum.",
+   "candidates": [
+    "ridge regression",
+    "Tikhonov regularization",
+    "ridge analysis"
+   ],
+   "llm_keep": [
+    "ridge regression",
+    "Tikhonov regularization"
+   ],
+   "llm_reason": "These are the methods identified as the answer; ridge analysis explains the name origin.",
+   "cand_ids": {
+    "ridge regression": "n014",
+    "Tikhonov regularization": "n015",
+    "ridge analysis": "n549"
+   },
+   "final": [
+    "ridge regression",
+    "Tikhonov regularization"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n014",
+    "n015"
+   ]
+  },
+  {
+   "qid": "q12",
+   "question": "Random forest is a specific type of which ensemble method, and how does that method build its trees?",
+   "gold_answer": "Bootstrap aggregating (bagging): it repeatedly draws a random sample with replacement from the training set and fits a tree to each sample.",
+   "candidates": [
+    "training set",
+    "bagging"
+   ],
+   "llm_keep": [
+    "bagging"
+   ],
+   "llm_reason": "Bagging is the ensemble method asked for; training set is context.",
+   "cand_ids": {
+    "training set": "n005",
+    "bagging": "n133"
+   },
+   "final": [
+    "bagging"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n133"
+   ]
+  },
+  {
+   "qid": "q13",
+   "question": "Which technique is often used to choose the lasso regularization parameter, and how does its k-fold variant work?",
+   "gold_answer": "Cross-validation; k-fold cross-validation partitions the sample into k folds, keeps one for validation and trains on the other k-1.",
+   "candidates": [
+    "cross-validation",
+    "k-fold cross-validation"
+   ],
+   "llm_keep": [
+    "cross-validation",
+    "k-fold cross-validation"
+   ],
+   "llm_reason": "Both are explicitly named as the technique and its variant in the answer.",
+   "cand_ids": {
+    "cross-validation": "n004",
+    "k-fold cross-validation": "n327"
+   },
+   "final": [
+    "cross-validation",
+    "k-fold cross-validation"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n004",
+    "n327"
+   ]
+  },
+  {
+   "qid": "q14",
+   "question": "Which method can solve general kernel SVMs more efficiently, and what does that method do at each step?",
+   "gold_answer": "Sub-gradient descent; gradient descent repeatedly steps in the direction opposite to the gradient, the direction of steepest descent.",
+   "candidates": [
+    "gradient descent",
+    "gradient",
+    "steepest descent",
+    "sub-gradient descent"
+   ],
+   "llm_keep": [
+    "sub-gradient descent"
+   ],
+   "llm_reason": "Only sub-gradient descent is the method identified as the answer.",
+   "cand_ids": {
+    "gradient descent": "n009",
+    "gradient": "n074",
+    "steepest descent": "n115",
+    "sub-gradient descent": "n594"
+   },
+   "final": [
+    "sub-gradient descent"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n594"
+   ]
+  },
+  {
+   "qid": "q15",
+   "question": "Which technique is principal component regression based on, and how does its shrinkage differ from that of ridge regression?",
+   "gold_answer": "PCR is based on principal component analysis; it shrinks discretely, dropping low-variance components entirely, whereas ridge regression shrinks smoothly through its regularization parameter.",
+   "candidates": [
+    "regularization parameter",
+    "principal component analysis",
+    "low variance"
+   ],
+   "llm_keep": [
+    "principal component analysis"
+   ],
+   "llm_reason": "Only principal component analysis is the technique PCR is based on; others are explanatory details.",
+   "cand_ids": {
+    "regularization parameter": "n044",
+    "principal component analysis": "n098",
+    "low variance": "n385"
+   },
+   "final": [
+    "principal component analysis"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n098"
+   ]
+  },
+  {
+   "qid": "q16",
+   "question": "Which techniques does the overfitting article list for lessening overfitting, and which of them does the decision tree article call necessary for trees?",
+   "gold_answer": "The overfitting article lists model comparison, cross-validation, regularization, early stopping, pruning, Bayesian priors and dropout; the decision tree article says pruning is necessary for trees.",
+   "candidates": [
+    "regularization",
+    "cross-validation",
+    "early stopping",
+    "dropout",
+    "pruning",
+    "Bayesian priors",
+    "model comparison"
+   ],
+   "llm_keep": [
+    "regularization",
+    "cross-validation",
+    "early stopping",
+    "dropout",
+    "pruning",
+    "Bayesian priors",
+    "model comparison"
+   ],
+   "llm_reason": "All candidates are explicitly listed as techniques in the gold answer.",
+   "cand_ids": {
+    "regularization": "n003",
+    "cross-validation": "n004",
+    "early stopping": "n033",
+    "dropout": "n060",
+    "pruning": "n101",
+    "Bayesian priors": "n139",
+    "model comparison": "n408"
+   },
+   "final": [
+    "regularization",
+    "cross-validation",
+    "early stopping",
+    "dropout",
+    "pruning",
+    "Bayesian priors",
+    "model comparison"
+   ],
+   "mine": "",
+   "final_ids": [
+    "n003",
+    "n004",
+    "n033",
+    "n060",
+    "n101",
+    "n139",
+    "n408"
+   ]
+  },
+  {
+   "qid": "q17",
+   "question": "How does the shrinkage of principal component regression compare with that of ridge regression?",
+   "gold_answer": "PCR shrinks discretely (low-variance components are removed completely); ridge shrinks smoothly through the regularization parameter.",
+   "candidates": [
+    "regularization parameter",
+    "low variance"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are explanatory details, not the entities being compared.",
+   "cand_ids": {
+    "regularization parameter": "n044",
+    "low variance": "n385"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q18",
+   "question": "How do the lasso and the elastic net behave differently on a group of highly correlated variables?",
+   "gold_answer": "The lasso tends to select one variable from the group and ignore the others; the elastic net has a grouping effect that gives correlated features equal weights.",
+   "candidates": [
+    "Features",
+    "grouping effect"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are generic terms or mechanisms, not the specific behavior described as the answer.",
+   "cand_ids": {
+    "Features": "n068",
+    "grouping effect": "n277"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q19",
+   "question": "How do the assumptions of logistic regression differ from those of linear regression?",
+   "gold_answer": "Logistic regression has a Bernoulli (not Gaussian) conditional distribution because the outcome is binary, and its predictions are probabilities restricted to (0,1).",
+   "candidates": [
+    "outcome",
+    "prediction"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are generic terms, not the specific entities (Bernoulli, Gaussian) requested.",
+   "cand_ids": {
+    "outcome": "n091",
+    "prediction": "n097"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  },
+  {
+   "qid": "q20",
+   "question": "How does the holdout method differ from k-fold cross-validation?",
+   "gold_answer": "The holdout method assigns data to one training and one test set and runs once; k-fold cross-validation rotates through k folds and averages multiple runs.",
+   "candidates": [
+    "test set",
+    "data"
+   ],
+   "llm_keep": [],
+   "llm_reason": "Candidates are generic terms or context, not the specific methods requested.",
+   "cand_ids": {
+    "test set": "n118",
+    "data": "n202"
+   },
+   "final": [],
+   "mine": "",
+   "final_ids": []
+  }
+ ],
+ "n_with_answer_node": 12,
+ "n_overridden": 0,
+ "hits": {
+  "hits_1": 0.0833,
+  "hits_3": 0.4167,
+  "hits_10": 0.5833
+ },
+ "ranks_python_check": {
+  "q01": 13,
+  "q03": 2,
+  "q05": 1,
+  "q06": 3,
+  "q09": 61,
+  "q10": 18,
+  "q11": 2,
+  "q12": 93,
+  "q13": 5,
+  "q14": 5,
+  "q15": 20,
+  "q16": 2
+ }
+}

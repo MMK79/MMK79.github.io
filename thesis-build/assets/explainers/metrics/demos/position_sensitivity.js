@@ -10,6 +10,10 @@
     const v = Object.values(inp.acc);
     return v.length ? Math.max(...v) - Math.min(...v) : 0;
   }
+  /* Liu et al. 2023 Sec. 2: correct if ANY gold answer string appears in the output as a SUBSTRING (case-insensitive; not exact match).
+     Same normalisation as the build script: lowercase, unicode minus to '-', runs of whitespace/hyphens/dashes to one space. */
+  const normTxt = s => String(s).toLowerCase().replace(/\u2212/g, '-').replace(/[\s\-\u2010\u2011\u2013\u2014]+/g, ' ');
+  function anyGold(golds, output) { const o = normTxt(output); return golds.some(g => o.includes(normTxt(g))); }
   function wilson(k, n) {
     if (!n) return [NaN, NaN];
     const z = 1.96, p = k / n, d = 1 + z * z / n, c = p + z * z / (2 * n), h = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
@@ -84,25 +88,25 @@
     const conds = Object.keys(D.conditions);
     const st = { N: conds[0], p: null, q: 0 };
     const shell = K.shell(el, 'Real example: where the gold passage sits, ' + D.conditions[conds[0]].length + ' questions re-answered',
-      'A new small experiment made for this page (the answer study had no position run). The ' + D.conditions[conds[0]].length + ' answerable questions with ONE gold passage; context = the gold passage plus distractors (the next-best RRF passages, fixed order); only the position of the gold passage changes. Answerer ' + D.answer_model + ', temperature 0, one run, correct = judge ' + D.judge_model + ' scored 1.0. Cost USD ' + D.usd + '. ' + D.caveats[2] + ' ' + D.caveats[3] + '.');
+      'A new small experiment made for this page (the answer study had no position run). The ' + D.conditions[conds[0]].length + ' answerable questions with ONE gold passage; context = the gold passage plus distractors (the next-best RRF passages, fixed order); only the position of the gold passage changes. Answerer ' + D.answer_model + ', temperature 0, one run, correct = Liu et al. rule (ANY gold answer string appears in the output as a substring, not exact match; the gold strings are our key phrases for the question), computed live in this page from the stored answers; the judge ' + D.judge_model + ' score is a cross-check. Cost USD ' + D.usd + '. ' + D.caveats[0] + '. ' + D.caveats[2] + '. ' + D.caveats[3] + '. ' + D.caveats[D.caveats.length - 1]);
     const opt = (v, t) => K.el('option', { value: v }, t);
     const nSel = K.el('select', { 'aria-label': 'number of passages in the context' }, conds.map(n => opt(n, n + ' passages in the context')));
     nSel.addEventListener('change', () => { st.N = nSel.value; st.p = null; render(); });
-    const qSel = K.el('select', { 'aria-label': 'question', style: 'max-width:100%' }, D.conditions[conds[0]].map((d, i) => opt(i, d.id + ': ' + d.question)));
+    const qSel = K.el('select', { 'aria-label': 'question', style: 'max-width:100%;width:100%' }, D.conditions[conds[0]].map((d, i) => opt(i, d.id + ': ' + d.question)));
     qSel.addEventListener('change', () => { st.q = Number(qSel.value); render(); });
     const pBox = K.el('div', { class: 'row', role: 'group', 'aria-label': 'gold position' });
     const view = K.el('div'), res = K.resultBox();
     const formula = K.el('div', { class: 'formula', 'aria-live': 'polite', style: 'white-space:pre-wrap' });
     const ans = K.el('div', { class: 'formula', style: 'white-space:pre-wrap' });
     const note = K.el('p', { class: 'hint' });
-    shell.append(K.el('div', { class: 'row' }, K.el('label', {}, 'context ', nSel)), K.el('div', { class: 'row' }, K.el('label', {}, 'question ', qSel)), pBox, view, res.node, formula, ans, note);
+    shell.append(K.el('div', { class: 'row' }, K.el('label', {}, 'context ', nSel)), K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;max-width:100%' }, 'question ', qSel)), pBox, view, res.node, formula, ans, note);
 
     function render() {
       const Q = D.conditions[st.N], n = Q.length, N = Number(st.N), poss = Object.keys(Q[0].positions).map(Number);
       if (st.p === null || !poss.includes(st.p)) st.p = poss[0];
       pBox.replaceChildren(...poss.map(p => K.el('button', { type: 'button', 'aria-pressed': p === st.p ? 'true' : 'false', onclick: () => { st.p = p; render(); } }, 'gold at position ' + p)));
       const accs = {}, pts = poss.map(p => {
-        const k = Q.reduce((s, d) => s + d.positions[p].correct, 0), ci = wilson(k, n); accs[p] = k / n;
+        const k = Q.reduce((s, d) => s + (anyGold(d.check_terms, d.positions[p].answer) ? 1 : 0), 0), ci = wilson(k, n); accs[p] = k / n;
         return { p, acc: k / n, lo: ci[0], hi: ci[1] };
       });
       view.replaceChildren(boxes(K, N, st.p), chart(K, pts, N, st.p));
@@ -110,11 +114,12 @@
       res.set(g, 3);
       formula.textContent = 'Acc(p) = ' + pts.map(q => `${Math.round(q.acc * n)}/${n} = ${K.fmt(q.acc, 2)} (95% Wilson [${K.fmt(q.lo, 2)}, ${K.fmt(q.hi, 2)}]) at p=${q.p}`).join('\n         ') +
         `\ngap = max - min = ${K.fmt(Math.max(...Object.values(accs)), 2)} - ${K.fmt(Math.min(...Object.values(accs)), 2)} = ${K.fmt(g, 3)}` +
-        `\nlexical cross-check (all gold key phrases appear): ` + poss.map(p => `${Q.reduce((s, d) => s + d.positions[p].terms_ok, 0)}/${n} at p=${p}`).join(', ');
+        `\ncross-check, stricter rule (ALL key phrases appear): ` + poss.map(p => `${Q.reduce((s, d) => s + d.positions[p].terms_ok, 0)}/${n} at p=${p}`).join(', ') +
+        `\ncross-check, LLM judge score 1.0: ` + poss.map(p => `${Q.reduce((s, d) => s + d.positions[p].correct, 0)}/${n} at p=${p}`).join(', ');
       const d = Q[st.q], r = d.positions[st.p];
-      ans.textContent = `${d.id} with the gold passage ${d.gold_passage} at position ${st.p}:\ncontext order: ${r.context_ids.join(' ')}\nanswer: ${r.answer}\njudge score ${r.score}: ${r.judge_reason}`;
+      ans.textContent = `${d.id} with the gold passage ${d.gold_passage} at position ${st.p}:\ncontext order: ${r.context_ids.join(' ')}\nanswer: ${r.answer}\ngold strings: ${d.check_terms.join(' | ')} -> substring rule says ${anyGold(d.check_terms, r.answer) ? 'correct' : 'wrong'}\njudge score ${r.score}: ${r.judge_reason}`;
       note.textContent = g === 0
-        ? 'The curve is flat at the ceiling: with 5 or 10 short passages this model finds the gold passage wherever it sits. That does NOT contradict Lost in the Middle (20+ passages, long contexts, weaker models); it means this context is too easy to show the effect. The difference between the lexical and judge counts is phrasing (q07, q19 are right but word the key phrase differently), not position.'
+        ? 'The curve is flat at the ceiling: with 5 or 10 short passages this model finds the gold passage wherever it sits. That does NOT contradict Lost in the Middle (20+ passages, long contexts, weaker models); it means this context is too easy to show the effect. Any difference between the substring rule and the judge count is phrasing (an answer is right but words the key phrase differently), not position.'
         : 'The gap is non-zero. With n = ' + n + ' each point carries a wide interval: check it before reading a U shape into it.';
     }
     render();
@@ -137,6 +142,6 @@
     real();
   }
 
-  const api = { defaults, compute, mount };
+  const api = { defaults, compute, mount, anyGold };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['position_sensitivity'] = api;
 })(this);

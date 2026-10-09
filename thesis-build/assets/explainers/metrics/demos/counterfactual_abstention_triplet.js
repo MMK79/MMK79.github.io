@@ -61,8 +61,8 @@
     const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
     const get = (b, p) => fetch(b + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
     const here = new URL('data/', SCRIPT_SRC || location.href).href;
-    realData = Promise.all([get(base, 'answers/answers.json'), get(base, 'metrics/answer_correctness.json'), get(base, 'data/questions.json'), get(here, 'counterfactual_robustness.real.json').catch(() => null)])
-      .then(a => ({ ans: Object.fromEntries(a[0].map(r => [r.qid + '_' + r.arm, r])), corr: a[1], qs: Object.fromEntries(a[2].map(q => [q.id, q])), cf: a[3] }));
+    realData = Promise.all([get(base, 'answers/answers.json'), get(base, 'metrics/answer_correctness.json'), get(base, 'data/questions.json'), get(here, 'counterfactual_robustness.real.json').catch(() => null), get(here, 'counterfactual_masked.real.json')])
+      .then(a => ({ ans: Object.fromEntries(a[0].map(r => [r.qid + '_' + r.arm, r])), corr: a[1], qs: Object.fromEntries(a[2].map(q => [q.id, q])), cf: a[3], masked: a[4] }));
     return realData;
   }
 
@@ -70,20 +70,56 @@
     const K = root.DemoKit;
     const unq = Object.keys(D.qs).filter(id => D.qs[id].type === 'unanswerable' && D.ans[id + '_A']);
     const ansq = Object.keys(D.qs).filter(id => D.qs[id].type !== 'unanswerable' && D.corr.per_question.A[id] !== undefined);
-    const st = { arm: 'B', lucky: new Set() };
+    const st = { arm: 'B', lucky: new Set(), view: 'masked', partly: 'hallucination' };
     const shell = K.shell(el, 'Real example: three behaviours, three real quantities',
-      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run, temperature 0, answerer ' + D.corr.answer_model + ', LLM judges. The catalogue triplet needs questions whose gold documents are hidden; this pack has no masked-gold run, so the 3 unanswerable questions (nothing in the 138-passage corpus sample answers them) are the closest real stand-in. They have no gold answer, so EM is undefined: every reply that does not abstain counts as a hallucination unless YOU mark it right by luck. Arm C gets about 40% more context than B.');
+      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run, temperature 0, answerer ' + D.corr.answer_model + ', LLM judges. The catalogue triplet needs questions whose gold documents are hidden. NEW (2026-10-09): a masked-gold run, the default view below: the 9 answerable questions with their gold passages removed from the arm-B context. The EARLIER stand-in (3 unanswerable questions, no gold answer, so EM undefined and every non-abstaining reply counts as a hallucination unless YOU mark it right by luck) stays under the question-set selector, with the per-arm numbers. The counterfactual axis is a separate small run. Arm C gets about 40% more context than B.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     aSel.value = st.arm; aSel.addEventListener('change', () => { st.arm = aSel.value; render(); });
-    const list = K.el('div', { role: 'group', 'aria-label': 'unanswerable questions' });
+    const vSel = K.el('select', { 'aria-label': 'question set', style: 'width:100%;max-width:100%;box-sizing:border-box' }, opt('masked', 'Masked gold (new): 9 answerable questions, gold passages removed from the context'), opt('unans', 'Stand-in: 3 unanswerable questions (earlier view)'));
+    vSel.value = st.view; vSel.addEventListener('change', () => { st.view = vSel.value; render(); });
+    const pSel = K.el('select', { 'aria-label': 'partly right answers count as', style: 'width:100%;max-width:100%;box-sizing:border-box' }, opt('hallucination', 'partly-right answers count as hallucination (strict)'), opt('lucky_correct', 'partly-right answers count as right (lenient)'));
+    pSel.addEventListener('change', () => { st.partly = pSel.value; render(); });
+    const mnote = K.el('p', { class: 'hint' });
+    const list = K.el('div', { role: 'group', 'aria-label': 'questions' });
     const view = K.el('div'), res = K.resultBox();
     const formula = K.el('div', { class: 'formula', 'aria-live': 'polite', style: 'white-space:pre-wrap' });
     const prof = K.el('div', { class: 'formula', style: 'white-space:pre-wrap' });
     const note = K.el('p', { class: 'hint' });
-    shell.append(K.el('div', { class: 'row' }, K.el('label', {}, 'arm ', aSel)), list, view, res.node, formula, K.el('h4', {}, 'The three real quantities side by side (all arms)'), prof, note);
+    shell.append(K.el('div', { style: 'max-width:100%' }, K.el('label', { style: 'display:block;max-width:100%' }, 'question set ', vSel), K.el('label', { style: 'display:block;max-width:100%' }, pSel), K.el('label', { style: 'display:block' }, 'arm (stand-in view) ', aSel)), mnote, list, view, res.node, formula, K.el('h4', {}, 'The three real quantities side by side (all arms)'), prof, note);
 
+    function statProfile() {
+      const n = unq.length;
+      const lines = ['A', 'B', 'C'].map(a => {
+        const acc = D.corr.per_question[a], sc = ansq.map(q => acc[q]), mean = sc.reduce((x, y) => x + y, 0) / sc.length;
+        const ref = unq.filter(q => D.ans[q + '_' + a].refused).length;
+        return `${a}: answerable accuracy ${K.fmt(mean, 2)} (judge, ${sc.length} questions) | unanswerable: abstains ${ref}/${n}, answers anyway ${n - ref}/${n}`;
+      });
+      let cf = 'counterfactual axis (one configuration, plain prompt, 5 questions where the planted source is wrong): ';
+      if (D.cf) {
+        const p = D.cf.aggregate.plain, w = D.cf.aggregate.warn;
+        cf += `flagged the error ${p.flagged}/${p.n}, repeated the planted wrong fact ${p.believed_wrong}/${p.n}; with a warning in the prompt flagged ${w.flagged}/${w.n}, still repeated it ${w.believed_wrong}/${w.n}. (separate run from the counterfactual_robustness unit, not split by arm)`;
+      } else cf += 'pending: counterfactual_robustness data not found.';
+      prof.textContent = lines.join('\n') + '\n' + cf;
+    }
+    function renderMasked() {
+      const M = D.masked, rows = M.rows;
+      mnote.textContent = 'MEASURED: for each of the 9 answerable questions of the answer study we removed its gold passages from the arm-B context (pack hybrid ranking, top 5 of the rest), ran the same prompt with ' + M.answer_model + ' (' + M.date + ', temperature 0, one run), and let ' + M.judge_model + ' score the reply against the gold answer (the pack\'s correctness prompt). Abstained = the fixed refusal sentence, or (our read, 1 reply changed) a reply that says the sources do not define what was asked. PROXY: n = 9; one run; LLM judge; "lucky-correct" here means right although gold was hidden, which happened through ANOTHER passage that also holds the answer, not through memory (prompt says sources only). The lexical leak check (all check_terms present in the masked context) flagged ' + M.n_leak + ' questions, so it missed that case: gold labels cover only the necessary passages. A demo, not a benchmark.';
+      list.replaceChildren(...rows.map(r => {
+        const col = r.final === 'abstained' ? 'he' : r.final === 'lucky_correct' ? 'ai' : 'warn', lab = { abstained: 'abstains', lucky_correct: 'answers, right (score 1)', partly_right: 'answers, partly right (score ' + r.score + ')', hallucination: 'answers, wrong' }[r.final];
+        return K.el('div', { style: 'margin:4px 0;padding:2px 6px;border-left:4px solid var(--' + col + ')' }, K.el('b', {}, r.qid + ': ' + lab + ' '), K.el('span', { class: 'hint' }, r.question),
+          K.el('p', { class: 'hint' }, 'Context (gold ' + r.gold_passages.join(', ') + ' removed): ' + r.context.join(', ') + ' | Answer: ' + r.answer.slice(0, 300) + (r.answer.length > 300 ? '...' : '')),
+          K.el('p', { class: 'hint' }, 'Judge: ' + r.judge_reason + (r.mine ? ' | Ours: ' + r.mine : '')));
+      }));
+      const abstain = rows.map(r => r.final === 'abstained' ? 1 : 0), em = rows.map(r => r.final === 'lucky_correct' || (st.partly === 'lucky_correct' && r.final === 'partly_right') ? 1 : 0);
+      const r = compute({ abstain, em }), n = rows.length;
+      view.replaceChildren(bars(K, r)); res.set(r.abstention, 3);
+      formula.textContent = `abstention = ${Math.round(r.abstention * n)}/${n} = ${K.fmt(r.abstention, 2)}   hallucination = ${Math.round(r.hallucination * n)}/${n} = ${K.fmt(r.hallucination, 2)}   lucky-correct = ${Math.round(r.lucky_correct * n)}/${n} = ${K.fmt(r.lucky_correct, 2)}   (sum ${K.fmt(r.abstention + r.hallucination + r.lucky_correct, 2)})\nraw outcomes: abstained ${M.counts.abstained}, right ${M.counts.lucky_correct}, partly right ${M.counts.partly_right}, wrong ${M.counts.hallucination}`;
+      note.textContent = 'Reading it: with the gold passages hidden, the hybrid-RAG arm mostly refuses (6/9) and fabricates nothing on these 9 questions; its two partly-right replies are grounded in other passages and say what is missing. Under the strict triplet those two count as hallucination (they answered without the full fact), so the 0.22 is an upper reading. The "right" case is a leak of the answer through a non-gold passage, so hiding gold does not guarantee the answer is gone. Arm A (no retrieval) is not tested here.';
+    }
     function render() {
+      if (st.view === 'masked') { renderMasked(); statProfile(); return; }
+      mnote.textContent = 'Stand-in view (earlier): the 3 unanswerable questions per arm.';
       list.replaceChildren();
       const abstain = [], em = [];
       unq.forEach(id => {
@@ -99,17 +135,7 @@
       view.replaceChildren(bars(K, r)); res.set(r.abstention, 3);
       const n = unq.length;
       formula.textContent = `abstention = ${Math.round(r.abstention * n)}/${n} = ${K.fmt(r.abstention, 2)}   hallucination = ${Math.round(r.hallucination * n)}/${n} = ${K.fmt(r.hallucination, 2)}   lucky-correct = ${Math.round(r.lucky_correct * n)}/${n} = ${K.fmt(r.lucky_correct, 2)}   (sum ${K.fmt(r.abstention + r.hallucination + r.lucky_correct, 2)})`;
-      const lines = ['A', 'B', 'C'].map(a => {
-        const acc = D.corr.per_question[a], sc = ansq.map(q => acc[q]), mean = sc.reduce((x, y) => x + y, 0) / sc.length;
-        const ref = unq.filter(q => D.ans[q + '_' + a].refused).length;
-        return `${a}: answerable accuracy ${K.fmt(mean, 2)} (judge, ${sc.length} questions) | unanswerable: abstains ${ref}/${n}, answers anyway ${n - ref}/${n}`;
-      });
-      let cf = 'counterfactual axis (one configuration, plain prompt, 5 questions where the planted source is wrong): ';
-      if (D.cf) {
-        const p = D.cf.aggregate.plain, w = D.cf.aggregate.warn;
-        cf += `flagged the error ${p.flagged}/${p.n}, repeated the planted wrong fact ${p.believed_wrong}/${p.n}; with a warning in the prompt flagged ${w.flagged}/${w.n}, still repeated it ${w.believed_wrong}/${w.n}. (separate run from the counterfactual_robustness unit, not split by arm)`;
-      } else cf += 'pending: counterfactual_robustness data not found.';
-      prof.textContent = lines.join('\n') + '\n' + cf;
+      statProfile();
       note.textContent = 'Reading the profile: arm A answers well from memory (0.94) but never abstains (0/3), and some of its replies on the unanswerable questions are true world knowledge (for example Adam default 0.001): a lucky-correct case the corpus-based label cannot see. B and C abstain 3/3 and keep high accuracy, but n = 3 and n = 9 are tiny, and the counterfactual result shows that abstaining on missing evidence is not the same as noticing wrong evidence: the model followed the planted error in most cases. The three axes are not combined into one score on purpose.';
     }
     render();

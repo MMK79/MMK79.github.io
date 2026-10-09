@@ -65,18 +65,19 @@
     render();
   }
 
-  /* ---- Real example: pack Presentations/_real-examples (metrics/answer_correctness.json + answers/) ---- */
+  /* ---- Real example: pack Presentations/_real-examples (answers/ + metrics/answer_correctness.json) + our hand-labelled claim sets (data/answer_correctness.real.json) ---- */
   let realData = null;
   function loadReal() {
     if (realData) return realData;
     const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    realData = Promise.all([get('metrics/answer_correctness.json'), get('answers/answers.json'), get('answers/claims.json'), get('data/questions.json')]).then(a => {
-      const ans = {}, cl = {}, qs = {};
+    const lab = new URL('data/answer_correctness.real.json', SCRIPT_SRC || location.href).href;
+    realData = Promise.all([get('metrics/answer_correctness.json'), get('answers/answers.json'), get('data/questions.json'), fetch(lab).then(r => { if (!r.ok) throw new Error('answer_correctness.real.json ' + r.status); return r.json(); })]).then(a => {
+      const ans = {}, qs = {}, lb = {};
       a[1].forEach(r => { ans[r.qid + '_' + r.arm] = r; });
-      a[2].forEach(r => { cl[r.qid + '_' + r.arm] = r.claims; });
-      a[3].forEach(q => { qs[q.id] = q; });
-      return { m: a[0], ans, cl, qs };
+      a[2].forEach(q => { qs[q.id] = q; });
+      a[3].rows.forEach(r => { lb[r.qid + '_' + r.arm] = r; });
+      return { m: a[0], ans, qs, lb, L: a[3] };
     });
     return realData;
   }
@@ -84,52 +85,47 @@
 
   function mountReal(el, D) {
     const K = root.DemoKit;
-    const answerable = qid => D.qs[qid].type !== 'unanswerable';
-    const qids = Object.keys(D.m.per_question.B).filter(answerable);
-    const st = { arm: 'B', q: qids[0], cos: 0.9 };
-    const shell = K.shell(el, 'Real example: Answer correctness on a real answer study',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Not shown, because the pack does not contain it: the claim-level TP / FP / FN split against the gold answer and the embedding cosine. What the pack has is the judge verdict 1 / 0.5 / 0 against the gold answer, which stands in for the factual part.');
+    const qids = [...new Set(D.L.rows.map(r => r.qid))];
+    const st = { arm: 'B', q: qids[0] };
+    const shell = K.shell(el, 'Real example: Answer correctness, claim by claim',
+      'Scale: 9 answerable questions x 3 arms = 27 answers, one run, temperature 0 (answerer qwen3.7-plus). Factual part: we split each gold answer into short claims and labelled every answer claim of the pack (the claims the faithfulness judge extracted) as TP (states a gold claim) or FP (anything else, including true extra detail: that is how Ragas defines it); FN = gold claims no answer claim states. Labeller: ' + D.L.labeller + ', 2026-10-09; an LLM, not a human; some labels are arguable (marked ?). Semantic part: cosine of the sentence vectors of the answer and the gold answer from ' + D.L.embedding + ', so the AC value is not comparable with published Ragas scores. Demo scale, not a benchmark. The pack judge verdict (1 / 0.5 / 0) is shown beside it as a cross-check.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));
     aSel.value = st.arm;
     aSel.addEventListener('change', () => { st.arm = aSel.value; render(); });
     qSel.addEventListener('change', () => { st.q = qSel.value; render(); });
-    const cosSl = K.slider('what-if cosine (NOT measured)', 0, 1, 0.05, st.cos, v => { st.cos = v; render(); });
     const info = K.el('div', { 'aria-live': 'polite', style: 'overflow-wrap:anywhere' });
     const res = K.resultBox();
     const formula = K.el('div', { class: 'formula', 'aria-live': 'polite', style: 'white-space:pre-wrap;overflow-wrap:anywhere' });
     const note = K.el('p', { class: 'hint' });
-    const means = K.el('p', { class: 'hint', style: 'overflow-wrap:anywhere' });
+    const means = K.el('p', { class: 'hint', style: 'overflow-wrap:anywhere;white-space:pre-wrap' });
     shell.append(K.el('div', { class: 'row' }, K.el('label', {}, 'arm ', aSel)), K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;width:100%' }, 'question ', qSel)),
-      info, res.node, formula, K.el('div', { class: 'row' }, cosSl.node), note, means);
+      info, res.node, formula, note, means);
 
     function render() {
-      const key = st.q + '_' + st.arm, q = D.qs[st.q], a = D.ans[key];
-      const v = D.m.per_question[st.arm][st.q];
-      const claims = D.cl[key] || [];
-      const lab = (t, s) => K.el('p', { style: 'margin:6px 0' }, K.el('b', {}, t + ' '), s);
+      const key = st.q + '_' + st.arm, q = D.qs[st.q], a = D.ans[key], r = D.lb[key];
+      const lab = (t, x) => K.el('p', { style: 'margin:6px 0' }, K.el('b', {}, t + ' '), x);
+      const chip = (t, c) => K.el('span', { class: 'num', style: 'display:inline-block;min-width:2.2em;text-align:center;border-radius:4px;padding:0 4px;margin-right:6px;font-size:12px;background:' + c + ';color:#08201c' }, t);
+      const g = D.L.gold[st.q];
       info.replaceChildren(
         lab('Gold answer:', q.gold_answer),
         lab('System answer (' + st.arm + (a && a.context_ids && a.context_ids.length ? ', context ' + a.context_ids.join(', ') : ', no context') + '):', a ? a.answer : '(missing)'),
-        lab('Answer claims (' + claims.length + ', split for faithfulness; the pack does not label them TP / FP / FN against the gold):', ''),
-        K.el('ol', { style: 'margin:2px 0 6px 18px;padding:0' }, claims.map(c => K.el('li', { class: 'hint' }, c))),
-        lab('Judge A verdict:', v + ' (1 = matches the gold facts, 0.5 = partly, 0 = no). Reason: ' + (D.m.reasons[key] || '')));
-      res.set(v, 3);
-      const sem = st.cos, score = compute({ tp: 0, fp: 0, fn: 0, cos: sem, wf: 0.75 });
-      const mix = 0.75 * v + 0.25 * sem;
-      formula.textContent = `factual part = judge verdict = ${K.fmt(v, 2)}  (measured, replaces F1_fact)\n` +
-        `semantic part = cosine = ${K.fmt(sem, 2)}  (what-if, not in the pack)\n` +
-        `AC = 0.75 x ${K.fmt(v, 2)} + 0.25 x ${K.fmt(sem, 2)} = ${K.fmt(mix, 3)}  (pack value shown above is the factual part alone: ${K.fmt(v, 2)})`;
-      note.textContent = v === 1 ? 'The judge found the gold facts in the answer. Even so, the Ragas score would also depend on the embedding cosine, which was not computed here.'
-        : 'The judge found the gold facts only partly or not at all: ' + (st.arm === 'A' ? 'with no retrieval the model may answer fluently from memory and still miss the corpus facts.' : 'see the reason above.');
-      const row = arm => {
-        const xs = Object.keys(D.m.per_question[arm]).filter(answerable).map(id => D.m.per_question[arm][id]);
-        const s = D.m.summary[arm];
-        return `${arm}: ${K.fmt(meanOf(xs), 4)} recomputed over n=${xs.length} (pack ${s.mean}, 95% CI [${s.ci95.join(', ')}])`;
-      };
-      means.textContent = 'Arm means (9 answerable questions, judge verdict): ' + ['A', 'B', 'C'].map(row).join('  |  ') +
-        '. B is lower than A because q09 and q18 were judged worse in B; with n = 9 the intervals overlap, so this is not a ranking.';
+        lab('Gold claims (' + g.length + ', split by hand); covered by an answer claim, or FN (missing):', ''),
+        K.el('ol', { style: 'margin:2px 0 6px 18px;padding:0' }, g.map((t, i) => K.el('li', { class: 'hint' }, r.fn_gold.includes(i + 1) ? chip('FN', 'var(--k12,#7C9CFF)') : chip('ok', 'var(--he,#3CC7B4)'), t))),
+        lab('Answer claims (' + r.items.length + '): TP states a gold claim (its number after the chip), FP does not:', ''),
+        K.el('ol', { style: 'margin:2px 0 6px 18px;padding:0' }, r.items.map(c => K.el('li', { class: 'hint' }, chip(c.label + (c.gold.length ? ' ' + c.gold.join('+') : '') + (c.arguable ? '?' : ''), c.label === 'TP' ? 'var(--he,#3CC7B4)' : 'var(--warn,#F2A93B)'), c.claim))));
+      const sc = compute({ tp: r.tp, fp: r.fp, fn: r.fn, cos: r.cos_minilm, wf: 0.75 });
+      res.set(sc, 3);
+      const d = r.tp + 0.5 * (r.fp + r.fn);
+      formula.textContent = `TP = ${r.tp}, FP = ${r.fp}, FN = ${r.fn}  (hand labels)\nF1_fact = ${r.tp} / (${r.tp} + 0.5 x (${r.fp} + ${r.fn})) = ${K.fmt(d > 0 ? r.tp / d : 0, 3)}\ncos = ${K.fmt(r.cos_minilm, 3)}  (MiniLM stand-in, measured)\n` +
+        `AC = 0.75 x ${K.fmt(r.f1_fact, 3)} + 0.25 x ${K.fmt(r.cos_minilm, 3)} = ${K.fmt(sc, 3)}\ncross-check, pack judge A verdict (1 / 0.5 / 0) = ${r.judge_score}`;
+      note.textContent = (r.f1_fact < 0.7 && r.judge_score === 1 ? 'The judge says the gold facts are in the answer (1.0), yet F1_fact is low: the answer adds many claims that are not in the short gold answer (FP). Claim-level F1 punishes helpful extra detail; the verdict ignores it. ' : '') +
+        (st.q === 'q06' && st.arm === 'C' ? 'Arm C and arm B gave the same one-line answer here, but judge A scored it 1.0 for B and 0.5 for C: a judge inconsistency the claim sets do not have. ' : '') +
+        'The 0.75 / 0.25 weights are a Ragas default. The semantic part (cosine) stays high for fluent text even when facts are missing (q09 B has F1 0 and cosine ' + K.fmt(D.lb[st.q + '_B'].cos_minilm, 2) + ').';
+      const rows = arm => D.L.rows.filter(x => x.arm === arm);
+      means.textContent = 'Arm means over 9 answerable questions (F1_fact, AC, judge verdict mean):\n' + ['A', 'B', 'C'].map(arm => { const rr = rows(arm); return `${arm}: F1_fact ${K.fmt(meanOf(rr.map(x => x.f1_fact)), 3)}   AC ${K.fmt(meanOf(rr.map(x => x.ac)), 3)}   judge ${K.fmt(meanOf(rr.map(x => x.judge_score)), 3)}`; }).join('\n') +
+        '\nThe arm order differs between the two measures: the judge verdict ranks A first, claim F1 ranks it last. Arm A has the lowest F1_fact on 6 of 9 questions despite top judge verdicts, because it writes the most extra claims (more FP); arm B is lowest on the verdict mostly because of q09, q16 and q18, where it misses gold claims (FN). n = 9, one labeller (an LLM): differences between arms are not significant.';
     }
     render();
   }

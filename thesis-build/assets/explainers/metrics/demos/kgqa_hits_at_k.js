@@ -90,21 +90,28 @@
     if (realP) return realP;
     const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    realP = Promise.all(['graph/graph.json', 'graph/ppr.json', 'data/questions.json', 'graph/entity_linking.json'].map(get)).then(([graph, ppr, qs, el]) => ({ graph, ppr, qs, el })).catch(e => { realP = null; throw e; });
+    realP = Promise.all(['graph/graph.json', 'graph/ppr.json', 'data/questions.json', 'graph/entity_linking.json'].map(get).concat([fetch(new URL('data/kgqa_answers.real.json', SCRIPT_SRC || location.href).href).then(r => { if (!r.ok) throw new Error('kgqa_answers ' + r.status); return r.json(); })])).then(([graph, ppr, qs, el, v2]) => ({ graph, ppr, qs, el, v2 })).catch(e => { realP = null; throw e; });
     return realP;
   }
 
   function mountReal(box, D) {
     const K = root.DemoKit, nodes = prepNodes(D.graph), G = buildGraph(D.graph), STORED = D.ppr.restart;
-    const st = { k: 3, drop: true, alpha: STORED, q: null };
+    const st = { k: 3, drop: true, alpha: STORED, q: null, rule: 'v2' };
     const info = qualified => qualified;
-    const Q = D.qs.map(q => ({ q, r: qualify(q, nodes) }));
-    const QUAL = Q.filter(x => x.r.ok); st.q = QUAL[0].q.id;
+    const V1 = D.qs.map(q => ({ q, r: qualify(q, nodes) }));
+    const V2 = D.qs.map(q => { const row = D.v2.rows.find(r => r.qid === q.id); return { q, r: !row ? { ok: false, why: 'unanswerable: no gold answer' } : row.final.length ? { ok: true, A: row.final_ids.map(id => G.idx[id]) } : { ok: false, why: 'no candidate node is the answer (' + (row.candidates.length ? 'LLM dropped ' + row.candidates.join(', ') : 'no node in the gold answer') + ')' } }; });
+    let Q = V2, QUAL = Q.filter(x => x.r.ok); st.q = QUAL[0].q.id;
+    const sw = r => { st.rule = r; Q = r === 'v1' ? V1 : V2; QUAL = Q.filter(x => x.r.ok); if (!QUAL.some(x => x.q.id === st.q)) st.q = QUAL[0].q.id; fillQ(); render(); };
     const shell = K.shell(box, 'Real example: Hits@k of Personalized PageRank on the real graph',
-      `Scale: a ${G.n}-node graph extracted by a language model from 138 Wikipedia passages, ${D.qs.length} helper-written questions, one run. Only ${QUAL.length} questions have an answer that is a graph node (rule below), so one question moves Hits@k by ${K.fmt(1 / QUAL.length, 1)}. A demo, not a benchmark.`);
-    const rule = K.el('details', {}, K.el('summary', {}, 'The answer-node rule (lexical, no judge): which questions qualify'),
+      `Scale: a ${G.n}-node graph extracted by a language model from 138 Wikipedia passages, ${D.qs.length} helper-written questions (20 answerable), one run, PPR ranking. MEASURED: the rank of the first answer node in a live Personalized PageRank. PROXY: which node is "the answer". Rule v1 (lexical, who/which questions only) finds ${V1.filter(x => x.r.ok).length} questions. Rule v2 (new, 2026-10-09) takes every lexical node of the gold answer as a candidate and lets an LLM (${D.v2.model}) keep those that are the thing asked for; we re-read all ${D.v2.n_answerable} picks and changed ${D.v2.n_overridden}. v2 finds ${V2.filter(x => x.r.ok).length} questions, so one question moves Hits@k by about 0.08. The other ${D.v2.n_answerable - V2.filter(x => x.r.ok).length} answerable questions have a sentence as answer, no node, so Hits@k does not apply. A demo, not a benchmark.`);
+    const ruleSel = K.el('select', { 'aria-label': 'answer-node rule', style: 'width:100%;max-width:100%;box-sizing:border-box' }, K.el('option', { value: 'v2' }, 'Answer-node rule v2: lexical candidates + LLM pick (' + V2.filter(x => x.r.ok).length + ' questions)'), K.el('option', { value: 'v1' }, 'Answer-node rule v1: lexical who/which only (' + V1.filter(x => x.r.ok).length + ' questions)'));
+    ruleSel.addEventListener('change', () => sw(ruleSel.value));
+    const ruleList = K.el('div', { style: 'font-size:12px;overflow-wrap:anywhere' });
+    const fillQ = () => { ruleList.replaceChildren(...Q.map(x => K.el('div', {}, K.el('b', { class: x.r.ok ? 'good' : '' }, x.q.id + (x.r.ok ? ' qualifies: ' + x.r.A.map(i => nodes[i].name).join(', ') : ' excluded: ' + x.r.why)), ' ' + x.q.question.slice(0, 70) + (x.q.question.length > 70 ? '...' : '')))); qSel.replaceChildren(...QUAL.map(x => K.el('option', { value: x.q.id }, x.q.id + ': ' + x.q.question))); qSel.value = st.q; };
+    const rule = K.el('details', {}, K.el('summary', {}, 'The answer-node rules and which questions qualify (v1 text first, then v2)'),
       K.el('p', { class: 'hint' }, 'A question is an entity-answer question if it has gold passages and contains the word "who" or "which". Its answer nodes A* are the graph nodes (by name or alias, lower-cased, plural s dropped) whose name occurs in the first clause of the gold answer (up to ";" or ":"), keeping only the longest match, dropping nodes already named in the question, and keeping Person nodes for "who"/"statistician" questions and non-Person nodes otherwise. Weakness: it is a word match, so a node can be picked that is not truly the answer (q05 also picks "hinge loss") and a list answer (q16) has 7 answer nodes.'),
-      K.el('div', { style: 'font-size:12px;overflow-wrap:anywhere' }, ...Q.map(x => K.el('div', {}, K.el('b', { class: x.r.ok ? 'good' : '' }, x.q.id + (x.r.ok ? ' qualifies: ' + x.r.A.map(i => nodes[i].name).join(', ') : ' excluded: ' + x.r.why)), ' ' + x.q.question.slice(0, 70) + (x.q.question.length > 70 ? '...' : '')))));
+      K.el('p', { class: 'hint' }, 'Rule v2: for every answerable question the candidates are the graph nodes (name or alias, same normalisation) whose name occurs in the WHOLE gold answer, longest match only, minus nodes named in the question, any type. The LLM labeller then received this instruction (verbatim): ' + D.v2.prompt),
+      ruleList);
     const kS = K.slider('k', 1, 20, 1, st.k, v => { st.k = v; render(); });
     const aS = K.slider('restart alpha', 0.05, 0.95, 0.05, st.alpha, v => { st.alpha = v; render(); });
     const dropB = K.el('button', { type: 'button', 'aria-pressed': 'true' }, 'seed nodes removed from the ranking (they are in the question)');
@@ -112,10 +119,11 @@
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, ...QUAL.map(x => K.el('option', { value: x.q.id }, x.q.id + ': ' + x.q.question)));
     const head = K.el('div', { class: 'row', 'aria-live': 'polite' }), res = K.resultBox(), listBox = K.el('div'), fo = K.el('div', { class: 'formula', style: 'overflow-wrap:anywhere' }), tbl = K.el('div'), note = K.el('p', { class: 'hint' });
     qSel.addEventListener('change', () => { st.q = qSel.value; render(); });
+    fillQ();
     const pre = K.el('div', { class: 'row' },
       K.el('button', { type: 'button', onclick: () => { st.drop = false; render(); } }, 'Break it: keep the seeds in the ranking'),
       K.el('button', { type: 'button', onclick: () => { st.drop = true; st.alpha = STORED; aS.set(STORED); st.k = 3; kS.set(3); render(); } }, 'Reset (k = 3, alpha ' + STORED + ')'));
-    shell.append(rule, pre, K.el('div', { class: 'row' }, kS.node, aS.node, dropB), K.el('div', { class: 'row' }, qSel), head, listBox, res.node, fo, note, tbl);
+    shell.append(ruleSel, rule, pre, K.el('div', { class: 'row' }, kS.node, aS.node, dropB), K.el('div', { class: 'row' }, qSel), head, listBox, res.node, fo, note, tbl);
 
     const cache = {};
     function perQ(x) {
@@ -144,7 +152,7 @@
       const t = K.el('table', { style: 'font-size:12px' }, K.el('tr', {}, ...['q', 'answer node(s)', 'rank', '@1', '@3', '@10'].map(h => K.el('th', {}, h))),
         ...rows.map(r => K.el('tr', { style: r.x.q.id === st.q ? 'background:rgba(242,169,59,.10)' : '' }, K.el('td', {}, r.x.q.id), K.el('td', { style: 'overflow-wrap:anywhere' }, r.x.r.A.map(i => nodes[i].name).join(', ')), K.el('td', { class: 'num' }, r.p.rank == null ? '-' : String(r.p.rank)),
           ...[1, 3, 10].map(k => K.el('td', { class: 'num' }, r.p.rank != null && r.p.rank <= k ? '1' : '0')))));
-      tbl.replaceChildren(K.el('p', { class: 'hint', style: 'margin:10px 0 4px' }, `All ${rows.length} entity-answer questions (live PPR, alpha ${st.alpha}; for the other ${D.qs.length - rows.length} the metric does not apply):`), t);
+      tbl.replaceChildren(K.el('p', { class: 'hint', style: 'margin:10px 0 4px' }, `All ${rows.length} entity-answer questions (live PPR, alpha ${st.alpha}; for the other ${D.qs.length - rows.length} questions the metric does not apply):`), t);
     }
     render();
   }

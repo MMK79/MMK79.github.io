@@ -67,73 +67,55 @@
     render();
   }
 
-  /* ---- Real example: Presentations/_real-examples/graph/graph.json (762 real LLM-extracted typed edges, 138 passages).
-     The pack has NO gold triples. The labels below are OUR hand labels for two passages (a demo, not a benchmark). ---- */
-  const PASSAGES = ['p001', 'p002'];
-  /* hand label: 1 = correct per the passage text, 0 = wrong; reason in the note */
-  const LABELS = {
-    'ridge regression|applied_to|multiple-regression models': [1, 'text: "method of estimating the coefficients of multiple-regression models"'],
-    'ridge regression|is_a|regularization': [1, 'text: "a method of regularization"'],
-    'ridge regression|improves|multicollinearity': [1, 'text: "mitigate the problem of multicollinearity"'],
-    'multicollinearity|part_of|linear regression': [0, 'multicollinearity is a problem that occurs in linear regression, not a part of it'],
-    'ridge regression|applied_to|parameter estimation': [1, 'text: "improved efficiency in parameter estimation problems"'],
-    'ridge regression|related_to|bias–variance tradeoff': [1, 'text: "(see bias–variance tradeoff)"'],
-    'ridge regression|introduced_by|Hoerl': [1, 'text: "introduced by Hoerl and Kennard in 1970"'],
-    'ridge regression|introduced_by|Kennard': [1, 'text: "introduced by Hoerl and Kennard in 1970"'],
-    'ridge regression|alternative_to|least square estimators': [1, 'a solution to the imprecision of least square estimators'],
-    'ridge regression|applied_to|linear regression models': [1, 'text: "linear regression models have some multicollinear variables"'],
-    'linear regression models|requires|multicollinearity': [0, 'wrong: multicollinearity is a problem in these models, they do not require it'],
-    'ridge regression|uses|ridge regression estimator': [0, 'circular: the estimator is the method itself'],
-    'ridge regression estimator|improves|least square estimators': [1, 'text: variance and mean square error "often smaller than the least square estimators"'],
-  };
-  /* triples a careful reader would add from the same two passages that the extractor did NOT produce (our hand-written gold additions) */
-  const MISSED = [['ridge regression', 'also_known_as', 'Tikhonov regularization'], ['ridge regression', 'used_in', 'econometrics'],
-    ['ridge regression', 'used_in', 'chemistry'], ['ridge regression', 'used_in', 'engineering'], ['ridge regression', 'applied_to', 'ill-posed inverse problems']];
+  /* ---- Real example (2026-10-09): demos/data/kg_gold.real.json = 59 real extracted triples of 8 Wikipedia passages (graph.json, qwen3.8-flash),
+     each labelled correct / partly / incorrect against the passage text by an LLM labeller (qwen3.7-plus) and re-read by us; plus 13 LLM-proposed missed triples
+     whose quote occurs word for word in the passage. Pure scoring function below; the mount only edits labels. ---- */
+  const MODES = { strict: ['correct'], lenient: ['correct', 'partly'] };
+  /* PURE: P, R, F1 over labelled triples. labels = array of 'correct'|'partly'|'incorrect' (one per extracted triple); missed = number of gold triples the extractor did not produce. */
+  function scoreLabels(labels, missed, mode) {
+    const pos = MODES[mode] || MODES.strict, tp = labels.filter(l => pos.includes(l)).length, np = labels.length, ng = tp + missed;
+    const P = np ? tp / np : 0, R = ng ? tp / ng : 0;
+    return { tp, np, ng, P, R, F1: P + R ? 2 * P * R / (P + R) : 0 };
+  }
   let realData = null;
   function loadReal() {
     if (realData) return realData;
-    const base = new URL('../../_real-examples/', SCRIPT_SRC || location.href).href;
-    realData = Promise.all([fetch(base + 'graph/graph.json'), fetch(base + 'data/corpus.json')].map(p => p.then(r => { if (!r.ok) throw new Error(r.url + ' ' + r.status); return r.json(); })))
-      .then(a => ({ g: a[0], c: a[1] }));
+    realData = fetch(new URL('data/kg_gold.real.json', SCRIPT_SRC || location.href).href).then(r => { if (!r.ok) throw new Error('kg_gold.real.json ' + r.status); return r.json(); });
     return realData;
   }
   function mountReal(el, D) {
-    const K = root.DemoKit;
-    const N = {}; D.g.nodes.forEach(n => { N[n.id] = n.name; });
-    const triples = D.g.edges.filter(e => e.passages.length === 1 && PASSAGES.includes(e.passages[0]))
-      .map(e => ({ t: [N[e.source], e.relation, N[e.target]], pid: e.passages[0] }));
-    const txt = pid => (D.c.find(p => p.id === pid) || {}).text || '';
-    const st = { lab: triples.map(x => (LABELS[x.t.join('|')] || [1])[0]), miss: new Set(MISSED.map((_, i) => i)) };
-    const shell = K.shell(el, 'Real example: auditing real extracted triples by hand',
-      'DEMO ONLY: our hand labels, not a benchmark. The real-example pack holds 762 real LLM-extracted edges but NO gold triples, so no P/R/F1 can be reported for the whole graph. Here we read two passages (p001, p002 of the ridge regression article) and label each extracted triple ourselves. Click a triple to flip our label. Recall needs a gold list, so we also wrote 5 triples the extractor missed (click to drop one). Every number below is only as good as these labels.');
-    const res = K.resultBox(), line = K.el('div', { class: 'formula', 'aria-live': 'polite' }), note = K.el('p', { class: 'hint' });
-    const gridP = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px' }), gridM = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px' });
-    const src = PASSAGES.map(pid => K.el('details', {}, K.el('summary', {}, 'Passage ' + pid + ' (source text)'), K.el('p', { class: 'hint' }, txt(pid))));
+    const K = root.DemoKit, NEXT = { correct: 'partly', partly: 'incorrect', incorrect: 'correct' }, COL = { correct: 'var(--he)', partly: 'var(--warn)', incorrect: 'var(--k12)' }, MARK = { correct: '✓ ', partly: '~ ', incorrect: '✗ ' };
+    const all = []; D.passages.forEach(p => p.triples.forEach(t => all.push({ pid: p.id, t, lab: t.final })));
+    const st = { mode: 'strict', pid: 'all', missed: true, useLlm: false };
+    const shell = K.shell(el, 'Real example: a small gold set for triple P / R / F1',
+      'MEASURED here: the 59 triples that the pack extractor (qwen3.8-flash) really produced from 8 Wikipedia passages (p002 p005 p016 p004 p013 p051 p031 p127, chosen before labelling because they are the gold passages of 7 questions). Each triple was labelled correct / partly / incorrect against the passage text by an LLM labeller (' + D.model + ', 2026-10-09, a different model from the extractor), then we re-read ALL 59 against the passage and changed ' + D.stats.n_overridden + ' labels (agreement ' + K.fmt(D.stats.agreement, 3) + '; the disagreements are mostly "incorrect" vs "partly"). PROXY: recall needs gold triples the extractor missed; the LLM proposed ' + D.stats.missed_kept + ' (each with a word-for-word quote that code checked), so recall is a rough upper bound on what is missed. n = 59 triples, 8 passages, no human annotator, no kappa. A demo gold set, not a benchmark, not a measurement of the thesis extractor. Click a triple to cycle our label.');
+    const res = K.resultBox(), line = K.el('div', { class: 'formula', 'aria-live': 'polite', style: 'white-space:pre-wrap' }), note = K.el('p', { class: 'hint' });
+    const rule = K.el('details', {}, K.el('summary', {}, 'Labelling rule given to the LLM (verbatim)'), K.el('pre', { class: 'hint', style: 'white-space:pre-wrap;max-width:100%;overflow-wrap:anywhere' }, D.rule));
+    const pSel = K.el('select', { 'aria-label': 'passage', style: 'max-width:100%' }, K.el('option', { value: 'all' }, 'all 8 passages'), ...D.passages.map(p => K.el('option', { value: p.id }, p.id + ' (' + p.triples.length + ' triples)')));
+    pSel.addEventListener('change', () => { st.pid = pSel.value; render(); });
+    const txt = K.el('p', { class: 'hint', style: 'white-space:pre-wrap' });
+    const grid = K.el('div', { style: 'display:flex;flex-direction:column;gap:6px' }), gridM = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:6px' }), tbl = K.el('div', { class: 'formula', style: 'white-space:pre-wrap;overflow-x:auto' });
     const btn = (t, f) => K.el('button', { type: 'button', onclick: f }, t);
     const presets = K.el('div', { class: 'row' },
-      btn('Our labels', () => { st.lab = triples.map(x => (LABELS[x.t.join('|')] || [1])[0]); st.miss = new Set(MISSED.map((_, i) => i)); render(); }),
-      btn('Break it: no missed triples in gold', () => { st.miss = new Set(); render(); }),
-      btn('Break it: label everything correct', () => { st.lab = triples.map(() => 1); render(); }));
-    shell.append(...src, presets,
-      K.el('h4', { style: 'margin:10px 0 4px;color:var(--k12)' }, 'Real extracted triples (click to flip our label)'), gridP,
-      K.el('h4', { style: 'margin:10px 0 4px;color:var(--he)' }, 'Triples the extractor missed, written by us (click to drop)'), gridM,
-      res.node, line, note);
+      btn('Strict: only "correct" counts', () => { st.mode = 'strict'; render(); }), btn('Lenient: "partly" counts too', () => { st.mode = 'lenient'; render(); }),
+      btn('Our final labels', () => { all.forEach(x => { x.lab = x.t.final; }); st.useLlm = false; render(); }), btn('LLM labels only (before our read)', () => { all.forEach(x => { x.lab = x.t.llm; }); st.useLlm = true; render(); }),
+      btn('Break it: no missed triples in gold', () => { st.missed = false; render(); }), btn('Missed triples back', () => { st.missed = true; render(); }));
+    shell.append(rule, presets, res.node, line, tbl, note, K.el('label', {}, 'show ', pSel), txt, K.el('h4', { style: 'margin:10px 0 4px' }, 'Extracted triples (click to cycle the label: correct, partly, incorrect). Hover: LLM label and reason, then our note.'), grid,
+      K.el('h4', { style: 'margin:10px 0 4px;color:var(--he)' }, 'Triples the extractor missed (LLM-proposed, quote verified)'), gridM);
     function render() {
-      gridP.replaceChildren(...triples.map((x, i) => {
-        const ok = st.lab[i] === 1, col = ok ? 'var(--he)' : 'var(--k12)';
-        return K.el('button', { type: 'button', 'aria-pressed': ok ? 'true' : 'false', title: (LABELS[x.t.join('|')] || ['', ''])[1],
-          style: `font-size:12px;border-color:${col};color:${col}`, onclick: () => { st.lab[i] = ok ? 0 : 1; render(); } },
-          (ok ? '✓ ' : '✗ ') + `(${x.t.join(', ')})`);
-      }));
-      gridM.replaceChildren(...MISSED.map((t, i) => K.el('button', { type: 'button', 'aria-pressed': st.miss.has(i) ? 'true' : 'false',
-        style: 'font-size:12px;' + (st.miss.has(i) ? 'border-color:var(--he);color:var(--he)' : 'opacity:.35'),
-        onclick: () => { st.miss.has(i) ? st.miss.delete(i) : st.miss.add(i); render(); } }, `(${t.join(', ')})`)));
-      const tp = st.lab.reduce((a, b) => a + b, 0), np = triples.length, ng = tp + st.miss.size;
-      const P = np ? tp / np : 0, R = ng ? tp / ng : 0, F1 = P + R ? 2 * P * R / (P + R) : 0;
-      res.set(F1, 4);
-      line.textContent = `P = ${tp}/${np} = ${K.fmt(P)}   R = ${tp}/${ng} = ${K.fmt(R)}   (gold = ${tp} correct extracted + ${st.miss.size} missed, hand-made)\nF1 = 2 x ${K.fmt(P)} x ${K.fmt(R)} / (${K.fmt(P)} + ${K.fmt(R)}) = ${K.fmt(F1, 4)}`;
-      note.textContent = 'Demo of two passages and 13 triples, one labeller (us), no second annotator, no kappa. Not a measurement of the thesis extractor. A real P/R/F1 needs an independent gold set. Notice: the extractor also had to pick a relation name ("is_a", "related_to"); a stricter labeller would mark some of these wrong.';
-      note.className = 'hint';
+      const sel = all.filter(x => st.pid === 'all' || x.pid === st.pid), P = D.passages.filter(p => st.pid === 'all' || p.id === st.pid);
+      txt.textContent = st.pid === 'all' ? '' : 'Passage ' + st.pid + ' (' + P[0].article + '): ' + P[0].text;
+      grid.replaceChildren(...sel.map(x => K.el('button', { type: 'button', 'aria-pressed': x.lab === 'correct' ? 'true' : 'false',
+        title: 'LLM: ' + x.t.llm + ' (' + x.t.reason + ')' + (x.t.mine ? ' | ours: ' + x.t.final + ' (' + x.t.mine + ')' : ''), style: `font-size:12px;text-align:left;border-color:${COL[x.lab]};color:${COL[x.lab]};max-width:100%;white-space:normal`,
+        onclick: () => { x.lab = NEXT[x.lab]; render(); } }, MARK[x.lab] + x.pid + ': (' + x.t.source + ', ' + x.t.relation + ', ' + x.t.target + ')' + (x.lab !== x.t.llm ? '  [LLM said ' + x.t.llm + ']' : ''))));
+      const missed = P.flatMap(p => p.missed.map(m => ({ p: p.id, m })));
+      gridM.replaceChildren(...missed.map(x => K.el('span', { class: 'hint', title: 'quote: ' + x.m.quote, style: 'border:1px solid var(--he);border-radius:6px;padding:1px 6px;font-size:12px;' + (st.missed ? '' : 'opacity:.35') }, x.p + ': (' + x.m.source + ', ' + x.m.relation + ', ' + x.m.target + ')')));
+      const mcount = st.missed ? missed.length : 0, sc = scoreLabels(sel.map(x => x.lab), mcount, st.mode);
+      res.set(sc.F1, 4);
+      line.textContent = `mode: ${st.mode} (${MODES[st.mode].join(' + ')} count as right)   labels: ${st.useLlm ? 'LLM only' : 'ours, after re-reading'}\nP = ${sc.tp}/${sc.np} = ${K.fmt(sc.P)}   R = ${sc.tp}/${sc.ng} = ${K.fmt(sc.R)}   (gold = ${sc.tp} right extracted + ${mcount} missed)\nF1 = 2 x ${K.fmt(sc.P)} x ${K.fmt(sc.R)} / (${K.fmt(sc.P)} + ${K.fmt(sc.R)}) = ${K.fmt(sc.F1, 4)}`;
+      const n = a => a.length, c = (a, l) => a.filter(x => x.lab === l).length;
+      tbl.textContent = `labels in view: correct ${c(sel, 'correct')}, partly ${c(sel, 'partly')}, incorrect ${c(sel, 'incorrect')} of ${n(sel)}\nwhole set, strict / lenient, ours: P ${K.fmt(D.stats.final_labels.correct / D.stats.n_triples)} / ${K.fmt((D.stats.final_labels.correct + D.stats.final_labels.partly) / D.stats.n_triples)}; LLM alone: P ${K.fmt(D.stats.llm_labels.correct / D.stats.n_triples)} / ${K.fmt((D.stats.llm_labels.correct + D.stats.llm_labels.partly) / D.stats.n_triples)}`;
+      note.textContent = 'Read it like this: with strict labels fewer than half the extracted triples are right, because the extractor often picks a vague or reversed relation ("improves overfitting" for a technique that lessens it). With lenient labels most are acceptable. The gap between the two is the matching-rule blind spot of the metric, now measured on real triples. The LLM labeller alone was harsher than us on "improves" and "partly" cases: the same triples score differently under two labellers.';
     }
     render();
   }
@@ -155,6 +137,6 @@
     real();
   }
 
-  const api = { defaults, compute, mount };
+  const api = { defaults, compute, mount, scoreLabels };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['triple_prf'] = api;
 })(this);

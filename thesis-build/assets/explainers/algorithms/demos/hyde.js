@@ -34,7 +34,21 @@
     const K = DemoKit, base = new URL('../../_real-examples/', SRC || location.href).href;
     const body = K.el('div', {}, 'loading real data...'); box.append(body);
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    Promise.all([get('data/query_transforms.json'), get('runs/dense_cosine.json'), get('runs/hyde_dense.json'), get('runs/hyde_plus_query.json'), get('data/corpus.json'), get('runs/metrics_by_method.json')]).then(([qt, dc, hd, hq, corpus, mm]) => {
+    Promise.all([get('data/query_transforms.json'), get('runs/dense_cosine.json'), get('runs/hyde_dense.json'), get('runs/hyde_plus_query.json'), get('data/corpus.json'), get('runs/metrics_by_method.json'), fetch(new URL('data/algos_real_local.json', SRC || location.href).href).then(r => r.ok ? r.json() : null).catch(() => null)]).then(([qt, dc, hd, hq, corpus, mm, loc]) => {
+      const LH = {}; if (loc) loc.hyde.questions.forEach(x => { LH[x.qid] = x; });
+      const NS = 'http://www.w3.org/2000/svg';
+      const sv = (t, a, txt) => { const e = document.createElementNS(NS, t); Object.entries(a).forEach(([k, v]) => e.setAttribute(k, v)); if (txt) e.textContent = txt; return e; };
+      function plot(L) {
+        if (!L) return K.el('div', { class: 'hint' }, 'real example pending: the embedded vector of the hypothetical text is not loaded (data/algos_real_local.json missing).');
+        const pts = Object.entries(L.xy.passages), all = pts.map(([, v]) => v).concat([L.xy.q, L.xy.h, L.xy.mix]);
+        const xs = all.map(v => v[0]), ys = all.map(v => v[1]), x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys), W = 560, H = 300, m = 26;
+        const X = v => m + (W - 2 * m) * (v - x0) / ((x1 - x0) || 1), Y = v => H - m - (H - 2 * m) * (v - y0) / ((y1 - y0) || 1);
+        const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, role: 'img', 'aria-label': 'two-dimensional view of the question vector, the hypothetical vector and nearby passages', style: 'width:100%;max-width:560px;height:auto;display:block;background:var(--card,transparent);border:1px solid var(--line);border-radius:6px' });
+        pts.forEach(([id, v]) => { const g = L.gold.includes(id); svg.append(sv('circle', { cx: X(v[0]), cy: Y(v[1]), r: g ? 6 : 3.5, fill: g ? 'var(--he,#2a9d8f)' : 'var(--muted,#888)', opacity: g ? 1 : 0.6 })); svg.append(sv('text', { x: X(v[0]) + 7, y: Y(v[1]) + 3, 'font-size': 10, fill: 'currentColor' }, id + (g ? ' gold' : ''))); });
+        [['q', L.xy.q, 'var(--k12,#3a7bd5)'], ['h', L.xy.h, 'var(--ai,#c0392b)'], ['h+q', L.xy.mix, 'var(--both,#8e44ad)']].forEach(([n, v, c]) => { svg.append(sv('rect', { x: X(v[0]) - 5, y: Y(v[1]) - 5, width: 10, height: 10, fill: c })); svg.append(sv('text', { x: X(v[0]) + 8, y: Y(v[1]) - 6, 'font-size': 12, 'font-weight': 700, fill: c }, n)); });
+        return K.el('div', {}, K.el('b', {}, 'Redrawn on real vectors: q, the hypothetical text h and their mix, and the passages (2-D PCA of the 384-d MiniLM space)'), svg,
+          K.el('div', { class: 'hint' }, `Measured locally 2026-10-09 by embedding the stored hypothetical text with ${qt.models.embedder} (normalised; same model as the pack; the top-5 lists re-computed here equal the stored runs). cos(q, h) = ${L.cos_q_h.toFixed(3)}. Gold passage cosine to q / h / mix: ${L.gold.map(g => `${g} ${L.cos_gold[g].q.toFixed(3)} / ${L.cos_gold[g].h.toFixed(3)} / ${L.cos_gold[g].mix.toFixed(3)}`).join('; ')}. First gold rank among all 138 passages: q #${L.first_gold_rank.q}, h #${L.first_gold_rank.h}, h+q #${L.first_gold_rank.mix}. The 2-D picture keeps ${(100 * (loc.hyde.pca_variance[0] + loc.hyde.pca_variance[1])).toFixed(0)}% of the variance of the passage vectors, so distances in it are only indicative; the cosines above are exact.`));
+      }
       const items = qt.items.filter(i => i.technique === 'hyde');
       const rk = run => Object.fromEntries(run.questions.map(q => [q.qid, q.ranking]));
       const D = rk(dc), H = rk(hd), P = rk(hq);
@@ -62,6 +76,7 @@
             col('search with q', D[q], gold, 'var(--k12)'), col('search with the hypothetical text', H[q], gold, 'var(--ai)'), col('hypothetical text + question', P[q], gold, 'var(--both)')),
           K.el('div', { class: 'row' }, K.el('span', {}, `gold rank (top 20 stored): with q ${f(res.question)} | with hypothetical ${f(res.hyde)} | hypothetical + q ${f(res.hyde_plus_query)} `)),
           K.el('div', { class: 'row', 'aria-live': 'polite' }, K.el('b', { class: cls(res.verdict_hyde) }, 'HyDE alone: ' + word[res.verdict_hyde]), ' ; ', K.el('b', { class: cls(res.verdict_plus) }, 'hypothetical + q: ' + word[res.verdict_plus]), '  (by the best-placed gold passage)'),
+          plot(LH[q]),
           pass);
       }
       const B = mm.subset_baselines.hyde_dense;

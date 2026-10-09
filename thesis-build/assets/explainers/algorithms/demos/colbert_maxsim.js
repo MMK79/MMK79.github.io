@@ -120,16 +120,17 @@
       'Real runs: 138 passages from 15 English Wikipedia articles, 24 questions. IMPORTANT: this is a MaxSim STAND-IN built from all-MiniLM-L6-v2 token vectors. It is NOT a trained ColBERT (MiniLM was trained for one pooled sentence vector, not with a late-interaction loss). It shows the mechanism, not ColBERT quality. Scores are stored from the run, not computed in this page.');
     const body = K.el('div', {}, 'loading real data...'); box.append(body);
     const get = p => fetch(base + p).then(r => { if (!r.ok) throw new Error(p + ' ' + r.status); return r.json(); });
-    Promise.all([get('data/corpus.json'), get('data/questions.json'), get('runs/metrics_by_method.json'), get('runs/maxsim_minilm.json'), get('runs/dense_cosine.json'), get('data/maxsim_example.json')]).then(([corpus, qs, met, ms, dn, ex]) => {
+    Promise.all([get('data/corpus.json'), get('data/questions.json'), get('runs/metrics_by_method.json'), get('runs/maxsim_minilm.json'), get('runs/dense_cosine.json'), get('data/maxsim_example.json'), fetch(new URL('data/algos_real_local.json', SRC || location.href).href).then(r => r.ok ? r.json() : null).catch(() => null)]).then(([corpus, qs, met, ms, dn, ex, loc]) => {
+      const CB = {}; if (loc) loc.colbert.questions.forEach(x => { CB[x.qid] = x; }); let pick = 0, lastQ = '';
       const P = {}; corpus.forEach(p => { P[p.id] = p; });
       const idx = r => { const m = {}; r.questions.forEach(q => { m[q.qid] = q.ranking; }); return m; };
       const A = idx(ms), B = idx(dn);
-      const sel = K.el('select', { 'aria-label': 'question', style: 'max-width:100%' }, ...qs.map(q => K.el('option', { value: q.id }, `${q.id} (${q.type}): ${q.question.slice(0, 70)}`)));
+      const sel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%' }, ...qs.map(q => K.el('option', { value: q.id }, `${q.id} (${q.type}): ${q.question.slice(0, 70)}`)));
       sel.value = 'q01';
       const info = K.el('div', {}), cols = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:12px' }), summ = K.el('div', {}), tokBox = K.el('div', {}), agg = K.el('div', { class: 'hint' });
       const open = new Set();
       const cav = K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px;margin-top:10px' },
-        'Caveats: MaxSim here is a stand-in, not a trained ColBERT. 20 answerable questions (24 in total, written by Claude from the corpus text, not a benchmark). The gain over the single vector is within noise at this size (one question moves MRR by about 0.05, no confidence interval). Gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. MiniLM token vectors also match stopword and punctuation tokens (see the table). The pack stores no full token-by-token similarity matrices: only the ranking scores, and for q01 with its gold passage the best match per query token. Text: Wikipedia contributors, CC BY-SA 4.0.');
+        'Caveats: MaxSim here is a stand-in, not a trained ColBERT. 20 answerable questions (24 in total, written by Claude from the corpus text, not a benchmark). The gain over the single vector is within noise at this size (one question moves MRR by about 0.05, no confidence interval). Gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. MiniLM token vectors also match stopword and punctuation tokens (see the table). The per-token table is re-computed locally (best match per query token for the gold passages and the top-1 passages, not the full matrices). Text: Wikipedia contributors, CC BY-SA 4.0.');
       function col(title, color, items, gold, fmt) {
         const rows = items.slice(0, 8).map((x, i) => {
           const isG = gold.includes(x.id), key = title + x.id;
@@ -148,19 +149,30 @@
         const ra = rrOf(a, g), rb = rrOf(b, g);
         summ.replaceChildren(K.el('div', {}, 'reciprocal rank (first gold): MaxSim ', K.el('b', {}, K.fmt(ra, 3)), ', single vector ', K.el('b', { class: rb >= ra ? '' : 'good' }, K.fmt(rb, 3))),
           g.length === 0 ? K.el('div', { class: 'bad' }, 'Unanswerable question: both methods still rank something first.') : '');
-        if (q.id === ex.qid) {
+        const cb = CB[q.id];
+        if (cb) {
+          if (lastQ !== q.id) { pick = 0; lastQ = q.id; }
+          const pp = cb.passages[Math.min(pick, cb.passages.length - 1)];
+          const ps = K.el('select', { 'aria-label': 'passage to inspect' }, ...cb.passages.map((x, i) => K.el('option', { value: String(i) }, `${x.id} (${x.role.replace('_', ' ')}, rank ${x.rank_maxsim})`))); ps.value = String(Math.min(pick, cb.passages.length - 1));
+          ps.addEventListener('change', () => { pick = +ps.value; draw(); });
+          const sim = pp.matches.map(t => [t.cos]);
+          const total = compute({ docs: [{ name: pp.id, sim, cos: 0 }] }).maxsim[0], stored = (a.find(x => x.id === pp.id) || {}).score;
+          tokBox.replaceChildren(K.el('b', {}, `Inside the score: ${q.id} against `), ps,
+            K.el('div', { class: 'hint' }, `Measured locally on 2026-10-09 from the real MiniLM token vectors (stand-in for ColBERT weights, not trained for late interaction): each query token keeps only its best match in the passage. Stopwords and punctuation also find a partner. ${cb.n_query_tokens} query tokens.`),
+            ...pp.matches.map(t => K.el('div', { class: 'row', style: 'gap:8px;margin:1px 0;flex-wrap:nowrap' }, K.el('code', { class: 'num', style: 'width:42%;font-size:12px;overflow-wrap:anywhere' }, `${t.q} -> ${t.d}`), K.el('span', { class: 'num', style: 'width:44px;font-size:12px' }, K.fmt(t.cos, 3)), K.el('div', { style: 'flex:1 1 40px;background:var(--line);height:8px;border-radius:2px' }, K.el('div', { style: `height:8px;border-radius:2px;width:${Math.max(0, 100 * t.cos)}%;background:${t.cos < 0.5 ? 'var(--warn)' : 'var(--he)'}` })))),
+            K.el('div', { class: 'formula' }, `S = ${pp.matches.map(t => K.fmt(t.cos, 2)).join(' + ')} = ${K.fmt(total, 3)}  (stored run: ${stored === undefined ? 'outside stored top-20' : K.fmt(stored, 3)}; recomputed here from the vectors: ${K.fmt(pp.maxsim, 3)})`));
+        } else if (q.id === ex.qid) {
           const sim = ex.query_tokens.map(t => [t.max_cosine]);
           const total = compute({ docs: [{ name: ex.passage, sim, cos: 0 }] }).maxsim[0];
           tokBox.replaceChildren(K.el('b', {}, `Inside the score: ${ex.qid} against its gold passage ${ex.passage}`),
-            K.el('div', { class: 'hint' }, 'Each query token keeps only its best match in the passage (real values from the stored example). Stopwords and punctuation also find a partner.'),
             ...ex.query_tokens.map(t => K.el('div', { class: 'num', style: 'font-size:13px' }, `${t.token}  ->  ${t.best_passage_token}   ${K.fmt(t.max_cosine, 3)}`)),
-            K.el('div', { class: 'formula' }, `S = ${ex.query_tokens.map(t => K.fmt(t.max_cosine, 2)).join(' + ')} = ${K.fmt(total, 3)}  (stored run: ${K.fmt(a.find(x => x.id === ex.passage).score, 3)})`));
-        } else tokBox.replaceChildren(K.el('div', { class: 'hint' }, 'No per-token table is stored for this question; only the ranking scores are shown. Pick q01 to see the token-level matches.'));
+            K.el('div', { class: 'formula' }, `S = ${ex.query_tokens.map(t => K.fmt(t.max_cosine, 2)).join(' + ')} = ${K.fmt(total, 3)}`));
+        } else tokBox.replaceChildren(K.el('div', { class: 'hint' }, 'Per-token table not loaded (data/algos_real_local.json missing): only the ranking scores are shown. Real example pending for the token level.'));
         const m1 = met.methods.maxsim_minilm, m2 = met.methods.dense_cosine;
         agg.textContent = `Whole set (20 answerable questions), single vector to MaxSim stand-in: MRR ${K.fmt(m2.mrr, 3)} to ${K.fmt(m1.mrr, 3)}, nDCG@5 ${K.fmt(m2['ndcg@5'], 3)} to ${K.fmt(m1['ndcg@5'], 3)}, recall@5 ${K.fmt(m2['recall@5'], 3)} to ${K.fmt(m1['recall@5'], 3)}. Within noise at n = 20.`;
       }
       sel.addEventListener('change', draw);
-      body.replaceChildren(K.el('div', { class: 'row' }, K.el('label', {}, 'question ', sel)), info, summ, cols, tokBox, agg, cav); draw();
+      body.replaceChildren(K.el('div', { class: 'row' }, K.el('label', { style: 'flex:1 1 100%;min-width:0;max-width:100%' }, 'question ', sel)), info, summ, cols, tokBox, agg, cav); draw();
     }).catch(e => { body.textContent = 'could not load the real-example pack (' + e.message + '). Use the toy example.'; });
   }
 

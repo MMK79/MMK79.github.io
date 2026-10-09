@@ -5,8 +5,10 @@
   const SCRIPT_SRC = (typeof document !== 'undefined' && document.currentScript) ? document.currentScript.src : '';
   const defaults = { d: 768, bytesPerComponent: 4, M: 16, n: 1000000 };
 
-  /* PURE. Bytes per vector of a textbook HNSW layout: raw vector + level-0 links (2M links of 4 bytes). */
-  function compute(inp) { return inp.d * inp.bytesPerComponent + 2 * inp.M * 4; }
+  /* PURE. Bytes per vector of the HNSW paper's memory formula: raw vector + (level-0 links 2M + upper-level links mL*M, mL = 1/ln M) x 4 bytes. */
+  /* HNSW paper Sec. 4.2.3: (Mmax0 + mL*Mmax) * b_link with Mmax0 = 2M, Mmax = M, mL = 1/ln M, b_link = 4. */
+  const upperLinks = M => M / Math.log(M);
+  function compute(inp) { return inp.d * inp.bytesPerComponent + (2 * inp.M + upperLinks(inp.M)) * 4; }
 
   const fmtInt = x => Math.round(x).toLocaleString('en-US');
   const fmtB = b => b >= 1e9 ? (b / 1e9).toFixed(2) + ' GB' : b >= 1e6 ? (b / 1e6).toFixed(2) + ' MB' : b >= 1e3 ? (b / 1e3).toFixed(1) + ' kB' : Math.round(b) + ' B';
@@ -25,7 +27,7 @@
   function mountToy(el) {
     const K = root.DemoKit;
     const st = Object.assign({}, defaults, { payload: 0 });
-    const shell = K.shell(el, 'Toy example (break it)', 'Invented sizes: the catalogue example, 1,000,000 vectors of 768 dimensions with float32, HNSW M=16. The link formula is the textbook layout (2M links of 4 bytes on level 0), unverified against any particular database.');
+    const shell = K.shell(el, 'Toy example (break it)', 'Invented sizes: the catalogue example, 1,000,000 vectors of 768 dimensions with float32, HNSW M=16. The link formula is the formula of the HNSW paper (Malkov and Yashunin 2018, Sec. 4.2.3): (2M + M/ln M) links of 4 bytes; not checked against any particular database.');
     const res = K.resultBox(), formula = K.el('div', { class: 'formula', 'aria-live': 'polite' }), note = K.el('p', { class: 'hint' }), vis = K.el('div', {});
     const sD = K.slider('d (dimensions)', 32, 4096, 32, st.d, v => { st.d = v; render(); });
     const sM = K.slider('M (HNSW links)', 2, 64, 1, st.M, v => { st.M = v; render(); });
@@ -38,11 +40,11 @@
     shell.append(K.el('div', { class: 'row' }, btn('Worked example', () => setAll(768, 16, 4, 1e6, 0)), btn('Break it: add a 1 kB payload', () => setAll(768, 16, 4, 1e6, 1000)), btn('Break it: int8 quantised', () => setAll(768, 16, 1, 1e6, 0))),
       K.el('div', { class: 'row' }, sD.node, sM.node, sN.node), K.el('div', { class: 'row' }, K.el('label', {}, 'component ', dt), sP.node), res.node, formula, vis, note);
     function render() {
-      const raw = st.d * st.bytesPerComponent, links = 2 * st.M * 4, v = compute(st), tot = (v + st.payload) * st.n;
+      const raw = st.d * st.bytesPerComponent, links = 2 * st.M * 4, up = upperLinks(st.M) * 4, v = compute(st), tot = (v + st.payload) * st.n;
       res.set(v, 1);
-      formula.textContent = `B_vec = d * b + 2M * 4 = ${st.d} * ${st.bytesPerComponent} + ${2 * st.M} * 4 = ${raw} + ${links} = ${fmtInt(v)} B per vector\nN * B_vec = ${fmtInt(st.n)} * ${fmtInt(v)} = ${fmtB(st.n * v)}` + (st.payload ? `\nwith ${st.payload} B payload per vector: ${fmtInt(v + st.payload)} B each, ${fmtB(tot)} in total (the formula does not include it)` : '');
-      vis.replaceChildren(stack(K, [['raw vector', raw, 'var(--k12)'], ['level-0 links', links, 'var(--ai)']].concat(st.payload ? [['payload', st.payload, 'var(--warn)']] : []), raw + links + st.payload));
-      note.textContent = 'Counts only what the formula names. Payload, replicas, upper-level links, labels and the OS cache change the answer; quantisation cuts the vector part at some recall cost.';
+      formula.textContent = `B_vec = d * b + (2M + M/ln M) * 4 = ${st.d} * ${st.bytesPerComponent} + (${2 * st.M} + ${K.fmt(upperLinks(st.M), 2)}) * 4 = ${raw} + ${links} + ${K.fmt(up, 1)} = ${fmtInt(v)} B per vector\nN * B_vec = ${fmtInt(st.n)} * ${fmtInt(v)} = ${fmtB(st.n * v)}` + (st.payload ? `\nwith ${st.payload} B payload per vector: ${fmtInt(v + st.payload)} B each, ${fmtB(tot)} in total (the formula does not include it)` : '');
+      vis.replaceChildren(stack(K, [['raw vector', raw, 'var(--k12)'], ['level-0 links', links, 'var(--ai)'], ['upper-level links', up, 'var(--he)']].concat(st.payload ? [['payload', st.payload, 'var(--warn)']] : []), raw + links + up + st.payload));
+      note.textContent = 'Counts only what the formula names. Payload, replicas, labels and the OS cache change the answer; quantisation cuts the vector part at some recall cost.';
     }
     render();
   }
@@ -73,11 +75,11 @@
     function render() {
       const { set, M, m } = st, r = D.meas[set].find(x => x.build.M === M), n = r.n;
       // ---- hnsw
-      const raw = d * 4, l0 = 2 * M * 4, cnt = 4, lab = 8, measured = r.bytes_per_vector, upper = measured - raw - l0 - cnt - lab;
+      const raw = d * 4, l0 = 2 * M * 4, paperUp = upperLinks(M) * 4, cnt = 4, lab = 8, measured = r.bytes_per_vector, upper = measured - raw - l0 - cnt - lab;
       res.set(measured, 1);
-      formula.textContent = `measured: ${fmtInt(r.index_file_bytes)} B / ${fmtInt(n)} vectors = ${K.fmt(measured, 1)} B per vector\nexpected from the layout: raw d*4 = ${raw}  +  level-0 links 2M*4 = ${l0}  +  link count ${cnt}  +  label ${lab}  =  ${raw + l0 + cnt + lab} B\nremainder (upper-level links): ${K.fmt(upper, 1)} B per vector`;
+      formula.textContent = `measured: ${fmtInt(r.index_file_bytes)} B / ${fmtInt(n)} vectors = ${K.fmt(measured, 1)} B per vector\npaper formula: raw d*4 = ${raw}  +  level-0 links 2M*4 = ${l0}  +  upper levels mL*M*4 = ${K.fmt(paperUp, 1)}  =  ${K.fmt(compute({ d, bytesPerComponent: 4, M }), 1)} B (the formula has no link-count or label term)\nthis file also stores a link count (${cnt} B) and a label (${lab} B); remainder after those = upper-level links actually allocated: ${K.fmt(upper, 1)} B per vector (paper formula: ${K.fmt(paperUp, 1)} B; the gap is not explained here; probably the formula counts expected links per level while hnswlib allocates upper-level lists only for nodes that reach those levels: inferred, not checked)`;
       hn.replaceChildren(stack(K, [['raw float32 vector', raw, 'var(--k12)'], ['level-0 links', l0, 'var(--ai)'], ['count+label', cnt + lab, 'var(--faint)'], ['upper levels', Math.max(upper, 0), 'var(--he)']], 1700),
-        K.el('p', { class: 'hint' }, `Graph overhead is ${K.fmt((measured - raw) / raw * 100, 1)}% on top of the raw vectors. The vector dominates: with d=${d} the graph (M=${M}) adds only ${K.fmt(measured - raw, 1)} B. Total index: ${fmtB(r.index_file_bytes)} for ${fmtInt(n)} vectors. The same formula with the catalogue's d=768, M=16 gives 3,200 B; here d=384 gives about ${fmtInt(compute({ d: 384, bytesPerComponent: 4, M: 16 }))} B before labels and upper levels.`));
+        K.el('p', { class: 'hint' }, `Graph overhead is ${K.fmt((measured - raw) / raw * 100, 1)}% on top of the raw vectors. The vector dominates: with d=${d} the graph (M=${M}) adds only ${K.fmt(measured - raw, 1)} B. Total index: ${fmtB(r.index_file_bytes)} for ${fmtInt(n)} vectors. The same paper formula with the catalogue's d=768, M=16 gives 3,223 B; here d=384 gives ${fmtInt(compute({ d: 384, bytesPerComponent: 4, M: 16 }))} B before the count and label.`));
       // ---- pq (exact byte counts)
       const run = R.runs[String(m)], bitsPer = Math.log2(R.ks), code = m * bitsPer / 8, cb = m * R.ks * (d / m) * 4, coarse = R.kc * d * 4;
       if (Math.abs(code - run.bytes) > 1e-9) throw new Error('code size mismatch');

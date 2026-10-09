@@ -47,6 +47,15 @@
     const low = arm.map((t, i) => (t.dense_top1 !== null && t.dense_top1 < o.thresh ? i : -1)).filter(i => i >= 0);
     return { spans, trace_total_ms: total, bottleneck: top.name, bottleneck_share_pct: Math.round(1000 * top.ms / total) / 10, cost_usd: r6(cost), p50_ms: p50, p95_ms: p95, mean_ms: lat.reduce((a, b) => a + b, 0) / lat.length, slow, low, arm, lat };
   }
+  /* PURE. Serving path of one request: LOCALLY MEASURED retrieval stages (algos_real_local.json, time.perf_counter, median of 7) + the real answer-call latency. Stages per arm: A none; B embed, BM25, dense, RRF (+ rerank if switched on); C embed, dense, graph expand. */
+  function servingPath(local, qid, arm, answerMs, withRerank) {
+    const t = local.timing.questions.find(x => x.qid === qid);
+    const names = { A: [], B: ['embed', 'bm25', 'dense', 'rrf'], C: ['embed', 'dense', 'graph_expand'] }[arm].slice();
+    if (withRerank && arm !== 'A') names.push('rerank');
+    const sp = names.map(n => ({ name: n, ms: t[n].median_ms, measured: 'local' })); sp.push({ name: 'generate answer', ms: answerMs, measured: 'endpoint' });
+    const total = sp.reduce((a, s) => a + s.ms, 0), top = sp.reduce((a, s) => (s.ms > a.ms ? s : a), sp[0]);
+    return { spans: sp, total_ms: total, bottleneck: top.name, bottleneck_share_pct: Math.round(1000 * top.ms / total) / 10 };
+  }
   // keep the public result shape exactly as in worked_example.result (extra keys start with "_" and are stripped for the check)
   const pub = r => { const o = {}; Object.keys(r).filter(k => k[0] !== '_').forEach(k => { o[k] = r[k]; }); return o; };
   const clone = o => JSON.parse(JSON.stringify(o));
@@ -62,10 +71,11 @@
   function mountReal(el) {
     const K = DemoKit, url = new URL('data/monitoring_tracing.real.json', SRC || location.href).href;
     const shell = K.shell(el, 'Real example: tracing the answer study (36 requests)',
-      'Real data: every span is one real LLM call of the answer study, 2026-10-08 (answer model qwen3.7-plus, judges deepseek-v4.1-flash and glm-5.1): measured latency, input/output tokens, and cost from the provider price rows. Demo scale: one run, no repeats, endpoint in China, shared machine. NOT timed (real: pending): query embedding, vector search, rerank, retrieval-side spans.');
+      'Real data: every span is one real LLM call of the answer study, 2026-10-08 (answer model qwen3.7-plus, judges deepseek-v4.1-flash and glm-5.1): measured latency, input/output tokens, and cost from the provider price rows. Demo scale: one run, no repeats, endpoint in China, shared machine. Retrieval-side stages (query embedding, BM25, dense search, RRF, rerank, graph expand) were timed locally on 2026-10-09 with time.perf_counter (second block below), NOT in the answer study run.');
     const body = K.el('div', {}, 'loading real data...'); shell.append(body);
     fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(data => {
-      const o = { qid: 'q09', arm: 'C', thresh: 0.5, slowFactor: 1.3 };
+      const o = { qid: 'q09', arm: 'C', thresh: 0.5, slowFactor: 1.3, rerank: false }; const sv = K.el('div', {}); let local = null;
+      fetch(new URL('data/algos_real_local.json', SRC || location.href).href).then(r => r.json()).then(d => { local = d; draw(); }).catch(() => { sv.textContent = 'serving-path timings not loaded (real: pending)'; });
       const ctl = K.el('div', { class: 'row' }), wf = K.el('div', {}), res = K.el('div', { 'aria-live': 'polite' }), tbl = K.el('div', {}), thr = K.el('div', { class: 'row' }), note = K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px' });
       const qids = [...new Set(data.traces.map(t => t.qid))];
       const qs = K.el('select', { 'aria-label': 'question' }, ...qids.map(q => K.el('option', { value: q }, q + ' (' + data.traces.find(t => t.qid === q).type + ')')));
@@ -77,6 +87,15 @@
       ctl.append(K.el('label', {}, 'question ', qs), K.el('label', {}, 'arm ', as)); thr.append(sl.node, sf.node);
       function draw() {
         const r = realTraceCompute(data, o), tr = data.traces.find(t => t.qid === o.qid && t.arm === o.arm);
+        if (local) {
+          const sp = servingPath(local, o.qid, o.arm, tr.spans[0].ms, o.rerank), cb = K.el('input', { type: 'checkbox', 'aria-label': 'add cross-encoder rerank' }); cb.checked = o.rerank; cb.addEventListener('change', () => { o.rerank = cb.checked; draw(); });
+          sv.replaceChildren(K.el('b', {}, `Serving path of ${o.qid}, arm ${o.arm}: retrieval stages MEASURED LOCALLY + the real answer call`),
+            K.el('label', { class: 'hint', style: 'margin-left:8px' }, cb, ' add cross-encoder rerank of the top-20 (not part of arms A to C; measured cost if you add it)'),
+            ...sp.spans.map(s => K.el('div', { class: 'row', style: 'gap:8px;margin:2px 0' }, K.el('code', { style: 'width:150px;font-size:12px' }, s.name), K.el('span', { class: 'num', style: 'width:70px' }, K.fmt(s.ms, s.ms < 10 ? 3 : 0) + ' ms'),
+              K.el('div', { style: 'flex:1 1 100px;min-width:60px;background:var(--line);border-radius:2px;height:12px' }, K.el('div', { style: `height:12px;border-radius:2px;min-width:1px;width:${100 * s.ms / sp.total_ms}%;background:${s.name === sp.bottleneck ? 'var(--warn)' : 'var(--k12)'}` })),
+              K.el('span', { class: 'hint', style: 'width:120px' }, s.measured === 'local' ? 'local, median of 7' : 'one real call'))),
+            K.el('div', {}, K.el('span', { class: 'hint' }, 'serving total: '), K.el('b', { class: 'num' }, K.fmt(sp.total_ms, 0) + ' ms'), K.el('span', { class: 'hint' }, `; bottleneck ${sp.bottleneck} (${K.fmt(sp.bottleneck_share_pct, 1)}%). Mixed sources: retrieval on this Mac with a 138-passage corpus, the answer call over the network to a hosted model. The ORDER of cost is the lesson, not the absolute numbers.`)));
+        }
         wf.replaceChildren(K.el('b', {}, `One real request: ${o.qid}, arm ${o.arm}${tr.refused ? ' (the model refused: not in the sources)' : ''}, spans = LLM calls (ms)`),
           ...r.spans.map(s => K.el('div', { class: 'row', style: 'gap:8px;margin:2px 0' }, K.el('code', { style: 'width:150px;font-size:12px' }, s.name), K.el('span', { class: 'num', style: 'width:60px' }, s.ms + ' ms'),
             K.el('div', { style: 'flex:1 1 100px;min-width:60px;background:var(--line);border-radius:2px;height:12px' }, K.el('div', { style: `height:12px;border-radius:2px;width:${100 * s.ms / r.trace_total_ms}%;background:${s.name === r.bottleneck ? 'var(--warn)' : 'var(--k12)'}` })),
@@ -88,9 +107,9 @@
         res.replaceChildren(K.el('div', { style: 'display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:4px 16px;margin-top:8px' }, ...items.map(([k, v]) => K.el('div', {}, K.el('span', { class: 'hint' }, k + ': '), K.el('b', { class: 'num' }, v)))),
           r.arm.some((t, i) => t.refused === false && t.dense_top1 !== null && t.type === 'unanswerable') ? K.el('div', { class: 'bad' }, 'An unanswerable question was answered: latency looks normal, only the answer text shows the problem.') : '',
           r.arm.some(t => t.type === 'unanswerable' && t.dense_top1 !== null && t.dense_top1 >= o.thresh) ? K.el('div', { class: 'bad' }, 'An unanswerable question has a top-1 cosine above the threshold: the retrieval score alone does not flag it. A latency dashboard cannot see this either.') : '');
-        note.textContent = `Measured: latency and tokens per call. Computed: cost (provider price rows; the price of cached tokens is assumed 0.1 x), p50/p95 (nearest-rank, n = 12), flags. Spans after "generate answer" are the EVALUATION judge calls, not serving stages; T sums their latencies as if sequential (the script's real call order was its own). Not timed: embed, vector search, rerank. Arm B's first stage is hybrid RRF, so its top-1 cosine column is the dense run, not what B retrieved. n = 12, one run.`;
+        note.textContent = `Measured: latency and tokens per call. Computed: cost (provider price rows; the price of cached tokens is assumed 0.1 x), p50/p95 (nearest-rank, n = 12), flags. Spans after "generate answer" are the EVALUATION judge calls, not serving stages; T sums their latencies as if sequential (the script's real call order was its own). Retrieval stages: see the serving-path block. Arm B's first stage is hybrid RRF, so its top-1 cosine column is the dense run, not what B retrieved. n = 12, one run.`;
       }
-      body.replaceChildren(ctl, wf, res, thr, tbl, note); draw();
+      body.replaceChildren(ctl, wf, sv, res, thr, tbl, note); draw();
     }).catch(e => { body.textContent = 'could not load the real data (' + e.message + '). Use the toy example.'; });
   }
 
@@ -164,6 +183,6 @@
     bar.append(b1, b2); el.append(bar, real, toy); mountReal(real); mountToy(toy); show(true);
   }
 
-  const api = { defaults, compute: inp => pub(compute(inp)), compute_full: compute, realTraceCompute, mount };
+  const api = { defaults, compute: inp => pub(compute(inp)), compute_full: compute, realTraceCompute, servingPath, mount };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['monitoring_tracing'] = api;
 })(this);

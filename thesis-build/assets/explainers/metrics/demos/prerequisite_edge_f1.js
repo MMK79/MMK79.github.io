@@ -102,15 +102,16 @@
   function loadReal() {
     if (realData) return realData;
     const url = new URL('data/prerequisite_edge_f1.real.json', SCRIPT_SRC || location.href).href;
-    realData = fetch(url).then(r => { if (!r.ok) throw new Error('prerequisite_edge_f1.real.json ' + r.status); return r.json(); });
+    const get = u => fetch(u).then(r => { if (!r.ok) throw new Error(u.split('/').pop() + ' ' + r.status); return r.json(); });
+    realData = Promise.all([get(url), get(new URL('data/prerequisite_gold.real.json', SCRIPT_SRC || location.href).href)]).then(([D, B]) => Object.assign({}, D, { blind: B }));
     return realData;
   }
   const LAB = { correct: ['correct', 'var(--he)'], reversed: ['reversed', 'var(--ai)'], borderline: ['borderline', 'var(--k12)'], unsupported: ['unsupported', 'var(--warn)'] };
 
   function mountReal(el, D) {
-    const K = root.DemoKit, st = { rev: false, bord: false, directed: true, open: null, showAll: false };
+    const K = root.DemoKit, st = { rev: false, bord: false, directed: true, open: null, showAll: false, blind: true };
     const shell = K.shell(el, 'Real example: the 28 "requires" edges of the pack graph',
-      'The pack graph (662 nodes, 762 typed edges, extracted by qwen3.8-flash from 138 Wikipedia passages) has no relation named "prerequisite". The closest is "requires" (28 edges, "X requires Y"; the prerequisite edge is Y to X). We read all 28 against the passage text and labelled each ourselves. Our hand labels, a demo, not a benchmark: one labeller, no inter-annotator check. Real example, n = 28 edges.');
+      'The pack graph (662 nodes, 762 typed edges, extracted by qwen3.8-flash from 138 Wikipedia passages) has no relation named "prerequisite". The closest is "requires" (28 edges, "X requires Y"; the prerequisite edge is Y to X). PRECISION (measured on the pack\'s edges, labelled by an LLM, one labeller, no human check): we read all 28 against the passage text. RECALL (new, 2026-10-09): a BLIND gold list. An LLM (' + D.blind.model + ') read each of the 138 passages without ever seeing the graph and listed explicit precondition statements; code kept only items whose quote occurs word for word in the passage (' + D.blind.n_items_raw + ' raw items, ' + D.blind.n_dropped_quote + ' dropped); we read all of them and kept ' + D.blind.summary.n_valid + ' that use an explicit precondition word (requires, assumes, essential, only if, depends on) and dropped the rest (definitions, "is used when", "based on"). We then matched each of the ' + D.blind.summary.n_valid + ' against the graph by hand. A demo, not a benchmark: n = 28 edges, ' + D.blind.summary.n_valid + ' gold statements, no inter-annotator check. Edges are in-text dependency, not a curriculum prerequisite.');
     const pa = K.el('div'), rb = K.el('div'), list = K.el('div'), note = K.el('p', { class: 'hint' });
     const cb = (txt, key, tip) => { const i = K.el('input', { type: 'checkbox' }); i.checked = st[key]; i.addEventListener('change', () => { st[key] = i.checked; render(); }); return K.el('label', { title: tip || '' }, i, ' ' + txt); };
     shell.append(K.el('h4', {}, 'Precision: how many predicted prerequisite edges are right?'),
@@ -123,15 +124,19 @@
       const right = c.correct + (st.rev ? c.reversed : 0) + (st.bord ? c.borderline : 0);
       pa.replaceChildren(K.el('div', { class: 'result num' }, K.fmt(right / a.length, 3)),
         K.el('div', { class: 'formula' }, `correct ${c.correct}` + (st.rev ? ` + reversed ${c.reversed}` : '') + (st.bord ? ` + borderline ${c.borderline}` : '') + ` = ${right} of ${a.length}   P = ${right} / ${a.length} = ${K.fmt(right / a.length, 3)}\n(not counted: ${a.length - right}: ${c.unsupported} unsupported, ${(st.rev ? 0 : c.reversed)} reversed, ${(st.bord ? 0 : c.borderline)} borderline)`));
-      // recall through the PURE compute(): gold list vs predicted requires edges (prerequisite -> dependent)
-      const gold = D.gold.map(g => [g.prereq, g.dependent]), pred = a.map(x => [x.prereq, x.dependent]);
-      const r = compute({ gold, pred, directed: st.directed });
-      const found = D.gold.filter(g => st.directed ? g.in_requires_directed : (g.in_requires_directed || g.in_requires_reversed));
-      rb.replaceChildren(K.el('div', { class: 'result num' }, K.fmt(r.R, 3)),
-        K.el('div', { class: 'formula' }, `gold pairs found = ${found.length} of ${D.gold.length}   R = ${found.length} / ${D.gold.length} = ${K.fmt(r.R, 3)}`),
-        K.el('div', {}, ...D.gold.map(g => { const f = g.in_requires_directed, rv = g.in_requires_reversed;
+      // recall: the blind gold list (default) or our earlier 11-pair list, which was written after we had seen the 28 edges
+      const G = st.blind ? D.blind.gold : D.gold, gold = D.gold.map(g => [g.prereq, g.dependent]), pred = a.map(x => [x.prereq, x.dependent]);
+      const found = G.filter(g => st.directed ? g.in_requires_directed : (g.in_requires_directed || g.in_requires_reversed));
+      const R = G.length ? found.length / G.length : 0;
+      if (!st.blind) { const r = compute({ gold, pred, directed: st.directed }); if (Math.abs(r.R - R) > 1e-9) console.warn('recall mismatch', r.R, R); }
+      const bsel = K.el('select', { 'aria-label': 'gold list', style: 'max-width:100%' }, K.el('option', { value: 'blind' }, 'Gold = blind pass over all 138 passages, read by us (' + D.blind.summary.n_valid + ' statements)'), K.el('option', { value: 'ours' }, 'Gold = earlier list written after seeing the edges (11 pairs, optimistic)'));
+      bsel.value = st.blind ? 'blind' : 'ours'; bsel.addEventListener('change', () => { st.blind = bsel.value === 'blind'; render(); });
+      rb.replaceChildren(bsel, K.el('div', { class: 'result num' }, K.fmt(R, 3)),
+        K.el('div', { class: 'formula', style: 'white-space:pre-wrap' }, `gold pairs found = ${found.length} of ${G.length}   R = ${found.length} / ${G.length} = ${K.fmt(R, 3)}` + (st.blind ? `\nblind list: found ${D.blind.summary.found_strict} + partly ${D.blind.summary.partial} (lenient R ${D.blind.summary.recall_lenient}); reversed ${D.blind.summary.reversed}; missed ${D.blind.summary.missed}. The blind pass itself was only ${K.fmt(D.blind.summary.blind_pass_precision, 2)} precise (${D.blind.summary.n_valid} of ${D.blind.summary.n_items_raw} items were real preconditions).` : '')),
+        K.el('div', {}, ...G.map(g => { const f = g.in_requires_directed, rv = g.in_requires_reversed;
           return K.el('div', { style: 'margin:2px 0;padding:2px 6px;border-left:4px solid ' + (f ? 'var(--he)' : rv && !st.directed ? 'var(--he)' : 'var(--warn)') },
-            K.el('b', {}, g.prereq + ' → ' + g.dependent + ' '), K.el('span', { class: 'hint' }, g.passage + ': ' + (f ? 'found' : rv ? 'found but REVERSED' + (st.directed ? ' (a miss when direction counts)' : '') : (g.dependent_in_graph ? 'missing as "requires"' + (g.other_relation.length ? ' (graph has it as "' + g.other_relation.join('", "') + '")' : '') : 'node missing from the graph')))); })));
+            K.el('b', {}, g.prereq + ' → ' + g.dependent + ' '), K.el('span', { class: 'hint' }, g.passage + ': ' + (f ? (g.partial ? 'found in part: ' + g.match_edge : 'found') : rv ? 'found but REVERSED' + (st.directed ? ' (a miss when direction counts)' : '') : (st.blind ? 'missing: ' + (g.match_edge || '') : (g.dependent_in_graph ? 'missing as "requires"' : 'entity not in graph')))));
+        })));
       list.replaceChildren(...a.map(x => {
         const [name, col] = LAB[x.label], open = st.open === x.n;
         const row = K.el('div', { style: 'margin:3px 0;padding:3px 8px;border-left:4px solid ' + col });
@@ -141,7 +146,7 @@
         return row;
       }));
       note.className = 'hint bad';
-      note.textContent = 'Read with care. Labels are ours (one labeller, an LLM) and the 11-pair gold list was written from cue words in the passages (requires, assumes, essential ...) but after we had seen the 28 edges, so recall is optimistic and not exhaustive; precision against that list alone would be ' + K.fmt(D.summary.precision_vs_gold_floor, 2) + ', a floor. "requires" is dependency inside the text, not a curriculum prerequisite. Expert prerequisite sets (LectureBank, MOOCCubeX) are not in the pack.';
+      note.textContent = 'Read with care. Precision labels are one LLM labeller. The blind gold list is small (' + D.blind.summary.n_valid + ' statements) and its validity filter is our judgement; matching to the graph was by hand because the entity wording differs. The earlier 11-pair list was written after we had seen the 28 edges, so its recall (0.55) is optimistic; the blind recall is lower (' + K.fmt(D.blind.summary.recall_strict, 2) + ' strict). Precision against the earlier list alone would be ' + K.fmt(D.summary.precision_vs_gold_floor, 2) + ', a floor. "requires" is dependency inside the text, not a curriculum prerequisite. Expert prerequisite sets (LectureBank, MOOCCubeX) are not in the pack.';
     }
     render();
   }

@@ -1,0 +1,229 @@
+{
+ "date": "2026-10-09",
+ "answer_model": "qwen3.7-plus",
+ "judge_model": "deepseek-v4.1-flash",
+ "n": 9,
+ "rows": [
+  {
+   "qid": "q01",
+   "question": "Who first introduced ridge regression, and in which year?",
+   "gold_answer": "Hoerl and Kennard introduced the theory in 1970.",
+   "gold_passages": [
+    "p002"
+   ],
+   "context": [
+    "p004",
+    "p001",
+    "p005",
+    "p016",
+    "p006"
+   ],
+   "answer": "The provided sources state that ridge regression is also known as Tikhonov regularization, which was invented independently in many different contexts and became widely known through the works of Andrey Tikhonov and David L. Phillips [p004]. The finite-dimensional case was expounded by Arthur E. Hoerl, who took a statistical approach, leading to its name in statistical literature [p004]. However, the sources do not specify the exact year when ridge regression or Tikhonov regularization was first introduced. Therefore, the specific year of introduction is not available in the given text.",
+   "refused": false,
+   "score": 0.5,
+   "judge_reason": "It identifies Hoerl but does not provide the year 1970 and omits Kennard.",
+   "check_terms_in_masked_context": false,
+   "outcome": "partly_right",
+   "final": "partly_right",
+   "mine": "partly grounded: names Hoerl from p004 and says the year is not in the sources"
+  },
+  {
+   "qid": "q04",
+   "question": "How does k-fold cross-validation split the data?",
+   "gold_answer": "The sample is randomly partitioned into k equal-sized folds; one fold is kept as validation data and the other k-1 folds are used for training.",
+   "gold_passages": [
+    "p051"
+   ],
+   "context": [
+    "p049",
+    "p054",
+    "p053",
+    "p087",
+    "p052"
+   ],
+   "answer": "In k-fold cross-validation, the total data set is split into k sets [p053]. One by one, a set is selected as the test set and the remaining k - 1 sets are combined into the corresponding training set [p053]. This process is repeated for each of the k sets [p053]. These methods use different portions of the data to test and train a model on different iterations [p049].",
+   "refused": false,
+   "score": 1,
+   "judge_reason": "The candidate correctly describes splitting data into k sets, using one as test/validation and the rest for training, repeated for each set.",
+   "check_terms_in_masked_context": false,
+   "outcome": "lucky_correct",
+   "final": "lucky_correct",
+   "mine": "right answer, but it comes from p053 (a NON-gold passage that also describes the k-fold split; gold labels cover only the necessary passages), not from memory: this is the case 'the answer is still in the context'"
+  },
+  {
+   "qid": "q06",
+   "question": "What goes wrong in gradient descent if the step size is too large?",
+   "gold_answer": "It overshoots and diverges.",
+   "gold_passages": [
+    "p093"
+   ],
+   "context": [
+    "p098",
+    "p096",
+    "p095",
+    "p089",
+    "p091"
+   ],
+   "answer": "The answer is not in the sources.",
+   "refused": true,
+   "score": 0,
+   "judge_reason": "The candidate says it does not know and provides no key facts.",
+   "check_terms_in_masked_context": false,
+   "outcome": "abstained",
+   "final": "abstained",
+   "mine": ""
+  },
+  {
+   "qid": "q08",
+   "question": "Why can the parameters not be estimated under perfect multicollinearity?",
+   "gold_answer": "The design matrix has less than full rank, so the moment matrix cannot be inverted and the system has infinitely many solutions.",
+   "gold_passages": [
+    "p069"
+   ],
+   "context": [
+    "p076",
+    "p075",
+    "p070",
+    "p104",
+    "p077"
+   ],
+   "answer": "Perfect collinearity is typically caused by including redundant variables in a regression, such as when one variable is defined by the sum of others [p070]. Because these variables are linearly dependent, it is incorrect to include all of them in a regression simultaneously [p070]. This redundancy prevents the model from distinguishing the individual effects of the collinear variables.",
+   "refused": false,
+   "score": 0.5,
+   "judge_reason": "Candidate explains redundancy and inability to distinguish effects but omits the key facts about rank deficiency and non-invertible moment matrix.",
+   "check_terms_in_masked_context": false,
+   "outcome": "partly_right",
+   "final": "partly_right",
+   "mine": "grounded in p070 but misses the rank-deficiency reason"
+  },
+  {
+   "qid": "q18",
+   "question": "How do the lasso and the elastic net behave differently on a group of highly correlated variables?",
+   "gold_answer": "The lasso tends to select one variable from the group and ignore the others; the elastic net has a grouping effect that gives correlated features equal weights.",
+   "gold_passages": [
+    "p015",
+    "p026"
+   ],
+   "context": [
+    "p016",
+    "p011",
+    "p017",
+    "p009",
+    "p010"
+   ],
+   "answer": "The provided sources do not explicitly describe the specific behavioral differences between LASSO and elastic net when applied to a group of highly correlated variables. While the text mentions that elastic net includes LASSO as a special case [p016] and that variables can be clustered into highly correlated groups [p011], it does not contrast how the two methods handle such groups differently. Therefore, the answer is not in the sources.",
+   "refused": true,
+   "score": 0,
+   "judge_reason": "The candidate says the answer is not in the sources and does not state the key behavioral difference.",
+   "check_terms_in_masked_context": false,
+   "outcome": "abstained",
+   "final": "abstained",
+   "mine": ""
+  },
+  {
+   "qid": "q20",
+   "question": "How does the holdout method differ from k-fold cross-validation?",
+   "gold_answer": "The holdout method assigns data to one training and one test set and runs once; k-fold cross-validation rotates through k folds and averages multiple runs.",
+   "gold_passages": [
+    "p051",
+    "p052"
+   ],
+   "context": [
+    "p054",
+    "p049",
+    "p055",
+    "p058",
+    "p053"
+   ],
+   "answer": "The provided sources describe cross-validation as a technique involving resampling and sample splitting to assess generalization [p049]. They detail a nested variant where data is split into k sets for an outer loop and further subdivided into l sets for an inner loop [p053]. Additionally, the text mentions using training and validation sets for model fitting and evaluation within hyperparameter selection [p054]. However, the sources do not define the holdout method or explicitly contrast it with k-fold cross-validation.",
+   "refused": false,
+   "score": 0,
+   "judge_reason": "The candidate says the sources do not define the holdout method or contrast it with k-fold cross-validation, so it does not provide the key facts.",
+   "check_terms_in_masked_context": false,
+   "outcome": "hallucination",
+   "final": "abstained",
+   "mine": "the answer says the sources do not define the holdout method or contrast it with k-fold: an abstention in prose, not the fixed sentence"
+  },
+  {
+   "qid": "q09",
+   "question": "Who introduced the regularized regression technique that the multicollinearity article lists beside LASSO and elastic net as less sensitive to useless predictors, and in which year?",
+   "gold_answer": "Ridge regression, introduced by Hoerl and Kennard in 1970.",
+   "gold_passages": [
+    "p002",
+    "p074"
+   ],
+   "context": [
+    "p005",
+    "p016",
+    "p006",
+    "p015",
+    "p017"
+   ],
+   "answer": "The provided sources discuss LASSO and elastic net, noting that elastic net includes ridge regression as a special case [p016]. However, the sources do not mention a \"multicollinearity article\" or explicitly list another technique beside LASSO and elastic net as being less sensitive to useless predictors. Consequently, the specific individual and year requested cannot be identified from the given text. The answer is not in the sources.",
+   "refused": true,
+   "score": 0,
+   "judge_reason": "The candidate says the answer is not in the sources and does not provide the key fact of ridge regression by Hoerl and Kennard in 1970.",
+   "check_terms_in_masked_context": false,
+   "outcome": "abstained",
+   "final": "abstained",
+   "mine": ""
+  },
+  {
+   "qid": "q10",
+   "question": "Which statistician popularised the method that, in the 'large p, small n' case, selects at most n variables before it saturates, and in which year?",
+   "gold_answer": "Robert Tibshirani popularised the lasso in 1996.",
+   "gold_passages": [
+    "p006",
+    "p015"
+   ],
+   "context": [
+    "p131",
+    "p075",
+    "p077",
+    "p084",
+    "p004"
+   ],
+   "answer": "The answer is not in the sources.",
+   "refused": true,
+   "score": 0,
+   "judge_reason": "Candidate says the answer is not in the sources, providing no key facts.",
+   "check_terms_in_masked_context": false,
+   "outcome": "abstained",
+   "final": "abstained",
+   "mine": ""
+  },
+  {
+   "qid": "q16",
+   "question": "Which techniques does the overfitting article list for lessening overfitting, and which of them does the decision tree article call necessary for trees?",
+   "gold_answer": "The overfitting article lists model comparison, cross-validation, regularization, early stopping, pruning, Bayesian priors and dropout; the decision tree article says pruning is necessary for trees.",
+   "gold_passages": [
+    "p031",
+    "p127"
+   ],
+   "context": [
+    "p130",
+    "p131",
+    "p128",
+    "p138",
+    "p120"
+   ],
+   "answer": "The provided sources do not contain an article explicitly titled \"overfitting article\" or \"decision tree article,\" nor do they list general techniques for lessening overfitting alongside a specific designation of which are necessary for decision trees. While [p130] mentions that random forests can avoid overtraining by being restricted to selected feature dimensions, and [p128] discusses decision graphs, the sources do not provide the specific comparative information requested. The answer is not in the sources.",
+   "refused": true,
+   "score": 0,
+   "judge_reason": "The candidate says the answer is not in the sources, missing all key facts from the reference.",
+   "check_terms_in_masked_context": false,
+   "outcome": "abstained",
+   "final": "abstained",
+   "mine": ""
+  }
+ ],
+ "counts": {
+  "abstained": 6,
+  "lucky_correct": 1,
+  "partly_right": 2,
+  "hallucination": 0
+ },
+ "n_overridden": 1,
+ "n_leak": 0,
+ "method": "context = pack hybrid ranking minus the gold passages, top 5; arm-B prompt; judge = pack CORRECT prompt"
+}

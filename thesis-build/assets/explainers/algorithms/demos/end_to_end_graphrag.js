@@ -13,6 +13,19 @@
     return { recall_vector_top5: rec(V), recall_graph_top5: rec(G), recall_concat: rec(C), n_context: C.length };
   }
 
+  /* PURE. Per-stage latency of one request: retrieval stages MEASURED LOCALLY (algos_real_local.json, time.perf_counter, median of 7, CPU, 138 passages) + the real answer-call latency (s) of the answer study. */
+  function stageLatency(local, qid, names, genS) {
+    const t = local.timing.questions.find(x => x.qid === qid); if (!t) return null;
+    const sp = names.map(n => ({ name: n, ms: t[n].median_ms, src: 'local' })); if (genS != null) sp.push({ name: 'generate (answer call)', ms: genS * 1000, src: 'network call' });
+    return { spans: sp, total_ms: sp.reduce((a, s) => a + s.ms, 0) };
+  }
+  function latBlock(K, lat, title, note) {
+    if (!lat) return K.el('p', { class: 'bad' }, 'pending real data. No local timing for this question.');
+    const t = K.el('table', { style: 'font-size:12px' }); t.append(K.el('tr', {}, ...['stage', 'ms', 'how measured', 'share'].map(h => K.el('th', {}, h))));
+    lat.spans.forEach(s => t.append(K.el('tr', {}, K.el('td', {}, s.name), K.el('td', { class: 'num' }, K.fmt(s.ms, s.ms < 10 ? 3 : 0)), K.el('td', { class: 'hint' }, s.src === 'local' ? 'local, median of 7' : 'one real call'), K.el('td', { class: 'num' }, K.fmt(100 * s.ms / lat.total_ms, 1) + '%'))));
+    return K.el('div', {}, K.el('b', {}, title), K.el('div', { style: 'overflow-x:auto' }, t), K.el('p', { class: 'num', style: 'font-size:13px' }, 'total: ' + K.fmt(lat.total_ms, 0) + ' ms'), K.el('p', { class: 'hint' }, note));
+  }
+
   function mount(el) {
     const K = DemoKit;
     const SRC = (document.currentScript && document.currentScript.src) || (Array.from(document.scripts).map(s => s.src).find(s => /end_to_end_graphrag\.js/.test(s)) || '');
@@ -100,11 +113,15 @@
         n.push(K.el('p', { class: 'hint' }, 'C has about 40% more context than B and a different first-stage list, so B versus C does not isolate the graph. Means over 12: faithfulness A 0.47, B 0.94, C 0.97; USD per answer 0.00011, 0.00026, 0.00034; about 3.7 s each.'));
       } else {
         n.push(K.el('p', {}, K.el('b', {}, 'Cache / trace. '), 'Graph extraction is cached by chunk hash, community reports are written once at index time, and the trace gets spans for linking, traversal and pruning.'));
-        n.push(pend('No cache run and no trace exist for this pack. The 3.7 s above is one remote call, not a pipeline latency. Index cost is real: USD 0.0273 extraction + 0.0085 reports for 138 passages.'));
+        n.push(pend('No cache run and no production trace exist for this pack. Index cost is real: USD 0.0273 extraction + 0.0085 reports for 138 passages.'));
+        const ra = D.ans[qid + 'C'];
+        if (LOC) n.push(latBlock(K, stageLatency(LOC, qid, ['embed', 'dense', 'graph_expand'], ra ? ra.latency_s : null), 'Measured per-stage latency of the arm C path (' + qid + '): query embedding, dense search, graph expand (entity seeds and their one-hop neighbours with their passages), generation', 'Local timings (time.perf_counter, median of 7, CPU, 138 passages, 662-node graph; the entity-link string match, PPR power iteration, report lookup and context assembly are NOT timed: real example pending for those stages). The generation call is the answer-study call to a hosted model; the two sources are not from the same run. Generation dominates at this corpus size; the order of cost is the point.'));
+        else n.push(pend('data/algos_real_local.json not loaded.'));
       }
       return K.el('div', {}, ...n);
     }
 
+    let LOC = null; fetch(new URL('data/algos_real_local.json', SRC).href).then(r => r.ok ? r.json() : null).then(d => { LOC = d; if (mode === 'real' && stage === 6) panel.replaceChildren(stagePanel()); }).catch(() => null);
     let resultBox = K.resultBox(), nvS, ngS;
     function draw() {
       bReal.setAttribute('aria-pressed', mode === 'real'); bToy.setAttribute('aria-pressed', mode === 'toy');
@@ -140,6 +157,6 @@
     }).catch(e => { panel.replaceChildren(K.el('p', { class: 'bad' }, 'Cannot load the real pack (' + e.message + '). Serve the Presentations folder (python3 -m http.server) or use the toy preset.')); });
   }
 
-  const api = { defaults, compute, mount };
+  const api = { defaults, compute, stageLatency, mount };
   if (typeof module !== 'undefined') module.exports = api; else (root.DEMOS ||= {})['end_to_end_graphrag'] = api;
 })(this);

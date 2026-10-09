@@ -125,8 +125,8 @@ function card(u) {
     st.revised ? `<span class="ex-tag rev">${rev(st.revised)}</span>` : "",
     (u.superseded || []).length ? `<span class="ex-tag sup">${esc(T("ex.tag_sup", {n: N(u.superseded.length)}))}</span>` : "",
   ].join("");
-  a.innerHTML = `<details><summary><div class="ex-sum-h">${loc("h3", E(u.name), fx(u, "name") && E(fx(u, "name")))}<span class="ex-chev" aria-hidden="true">›</span></div>
-    ${loc("p", E(u.question), fx(u, "question") && E(fx(u, "question")), "ex-q")}<div class="ex-tags">${tags}</div></summary><div class="ex-body"></div></details>`;
+  a.innerHTML = `<details><summary><div class="ex-sum-h">${loc("h3", E(u.name), (fx(u, "name") && E(fx(u, "name"))) || null)}<span class="ex-chev" aria-hidden="true">›</span></div>
+    ${loc("p", E(u.question), (fx(u, "question") && E(fx(u, "question"))) || null, "ex-q")}<div class="ex-tags">${tags}</div></summary><div class="ex-body"></div></details>`;
   const det = a.querySelector("details");
   det.addEventListener("toggle", () => {
     if (!det.open) return;
@@ -178,7 +178,7 @@ function body(u, el) {
     <details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_worked"))}</summary>
       ${wx(u, we)}
     </details>
-    ${u.use_vs_neighbours ? `<details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_use"))}</summary>${loc("p", E(u.use_vs_neighbours), fx(u, "use_vs_neighbours") && E(fx(u, "use_vs_neighbours")))}</details>` : ""}
+    ${u.use_vs_neighbours ? `<details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_use"))}</summary>${loc("p", E(u.use_vs_neighbours), (fx(u, "use_vs_neighbours") && E(fx(u, "use_vs_neighbours"))) || null)}</details>` : ""}
     <a class="ex-link" href="#${esc(u.id)}">#${esc(u.id)}</a>`;
   video(u, el.querySelector(".ex-video"));
   demo(u, el.querySelector(".ex-demo"));
@@ -231,7 +231,7 @@ for (const l of layers) {
   const us = byLayer.get(l.id) || []; if (!us.length) continue;
   const sec = document.createElement("section");
   sec.setAttribute("data-hx-section", ""); sec.id = "layer-" + l.id; sec.dataset.layer = l.id;
-  sec.innerHTML = `<h2>${esc(layerName(l))} <span class="live-count" data-n></span></h2>${l.measures ? loc("p", E(l.measures), FXL[l.id] && FXL[l.id].measures && E(FXL[l.id].measures), "ex-lmeas") : ""}<div class="ex-cards"></div>`;
+  sec.innerHTML = `<h2>${esc(layerName(l))} <span class="live-count" data-n></span></h2>${l.measures ? loc("p", E(l.measures), (I.fa && FXL[l.id] && FXL[l.id].measures && E(FXL[l.id].measures)) || null, "ex-lmeas") : ""}<div class="ex-cards"></div>`;
   us.forEach(u => sec.querySelector(".ex-cards").append(card(u)));
   main.append(sec);
 }

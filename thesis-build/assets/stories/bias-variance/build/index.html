@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bias and Variance, Interactive</title>
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--warn:#FF8A65;--violet:#C28BFF;
+--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:ui-monospace,"JetBrains Mono",Menlo,monospace}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+main{max-width:760px;margin:0 auto;padding:24px 16px 80px}
+h1{font-weight:300;font-size:clamp(30px,7vw,46px);line-height:1.15;margin:12px 0 8px}
+h2{font-weight:400;font-size:24px;margin:56px 0 8px}
+p{margin:0 0 14px;color:#cdd2de}
+.lede{color:var(--muted);font-size:18px}
+.k{font-family:var(--mono);font-size:.9em;color:var(--text)}
+.tag{display:inline-block;font:12px var(--mono);color:var(--faint);border:1px solid var(--line);border-radius:4px;padding:1px 6px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin:16px 0}
+.controls{display:grid;gap:10px}
+.ctl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center}
+.ctl label{color:var(--muted);font-size:14px}
+.ctl output{font-family:var(--mono);color:var(--amber);font-size:14px}
+.ctl input{grid-column:1/-1;width:100%;accent-color:var(--amber);min-height:28px}
+@media(min-width:760px){.sticky{position:sticky;top:0;z-index:5;background:var(--panel)}}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--muted);font:12px var(--body)}
+svg .t-main{fill:var(--text)}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-top:10px}
+.readout div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.readout b{display:block;font:300 22px var(--mono);font-variant-numeric:tabular-nums}
+.readout span{font-size:12px;color:var(--muted)}
+.region{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--amber);background:var(--panel2);border-radius:0 8px 8px 0;font-size:15px;color:var(--text)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--muted);margin:6px 0}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:6px;border-radius:2px}
+.toggle{display:flex;gap:8px;align-items:center;font-size:14px;color:var(--muted);margin-top:8px}
+.toggle input{accent-color:var(--amber);width:18px;height:18px}
+table{border-collapse:collapse;width:100%;font:14px var(--mono);font-variant-numeric:tabular-nums}
+td,th{border-bottom:1px solid var(--line);padding:4px 6px;text-align:right}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:400;color:var(--muted)}
+.small{font-size:13px;color:var(--faint)}
+.wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<main>
+<span class="tag">synthetic data, seeded, computed in this page</span>
+<h1>Bias and variance: why the most flexible model loses</h1>
+<p class="lede">Fit a curve to noisy points. Make it more flexible and it matches the training points better and better. Past some point it gets worse on new points. Move the slider and watch both happen with real numbers.</p>
+<p>Everything below is computed in your browser. The data is synthetic: <span class="k">y = sin(2&pi;x) + noise</span>, with noise drawn from a Gaussian by a seeded random generator (seed 2026 for training and test data, seed 99 for the resampling in the last figure). Each fit is a least-squares polynomial solved by Householder QR in a Chebyshev basis. <span id="n-test"></span></p>
+
+<div class="card controls sticky" id="controls" role="group" aria-label="Controls">
+  <div class="ctl"><label for="deg">Polynomial degree (model flexibility)</label><output id="deg-o"></output>
+    <input id="deg" type="range" min="0" max="15" step="1" value="3"></div>
+  <div class="ctl"><label for="sig">Noise level &sigma; (standard deviation)</label><output id="sig-o"></output>
+    <input id="sig" type="range" min="0.05" max="0.6" step="0.05" value="0.25"></div>
+  <div class="ctl"><label for="ntr">Training set size n</label><output id="ntr-o"></output>
+    <input id="ntr" type="range" min="16" max="80" step="2" value="24"></div>
+</div>
+
+<h2>1. One dataset, one fitted curve</h2>
+<p>Dots are the training points. The amber curve is the polynomial fitted to them. The dashed teal curve is the true function, which the fit never sees.</p>
+<div class="card">
+  <div class="legend"><span><i style="background:var(--blue)"></i>training points</span><span><i style="background:var(--amber)"></i>fitted polynomial</span><span><i style="background:var(--teal)"></i>true function</span><span><i style="background:var(--violet);opacity:.5"></i>fits from other training sets</span></div>
+  <div id="fig1" role="img" aria-label="Training points, fitted polynomial and true function"></div>
+  <label class="toggle"><input type="checkbox" id="ghost"> Also draw 25 fits of this degree, each to a fresh training set of the same size (from the simulation in section 3)</label>
+  <div class="readout" aria-live="polite">
+    <div><b id="r-train"></b><span>training error (MSE)</span></div>
+    <div><b id="r-test"></b><span>test error (MSE, 400 unseen points)</span></div>
+    <div><b id="r-floor"></b><span>noise floor &sigma;&sup2;</span></div>
+  </div>
+  <p class="region" id="region"></p>
+</div>
+
+<h2>2. Training error keeps falling. Test error does not.</h2>
+<p>Training error is measured on the points the curve was fitted to. Test error is measured on 400 other points from the same source. The gap between the two lines is what a flexible model buys by memorising noise. You can also click or tap a degree on the chart.</p>
+<div class="card">
+  <div class="legend"><span><i style="background:var(--blue)"></i>training error</span><span><i style="background:var(--amber)"></i>test error</span><span><i style="background:var(--teal)"></i>noise floor &sigma;&sup2; (no model can go below it on average)</span></div>
+  <div id="fig2" role="img" aria-label="Training and test error against polynomial degree, log scale"></div>
+  <p class="small">The vertical axis is logarithmic and stops at 1e-6; a training error below that (a curve through every point) is drawn on the bottom line, its exact value is in the readout above. A single dataset is noisy, so the lowest test point can move by a degree or two when you change n or &sigma;. That is itself a symptom of variance.</p>
+</div>
+
+<h2>3. Splitting the error: bias&sup2; + variance + noise</h2>
+<p>To see why test error is U-shaped, repeat the experiment many times. Draw 200 fresh training sets of size n, fit every degree to each, and look at the 200 predictions at each of 100 points along x.</p>
+<p><b>Bias&sup2;</b>: how far the <em>average</em> prediction is from the true curve. A curve that is too stiff is wrong on average. <b>Variance</b>: how much predictions move from one training set to the next. A curve that is too flexible chases the noise of whichever set it got. <b>Noise</b>: &sigma;&sup2;, the part nobody can predict.</p>
+<div class="card">
+  <div class="legend"><span><i style="background:var(--blue)"></i>bias&sup2;</span><span><i style="background:var(--warn)"></i>variance</span><span><i style="background:var(--teal)"></i>noise &sigma;&sup2;</span><span><i style="background:var(--amber)"></i>simulated test error</span><span>&#9650; bar continues above the plot (exact values in the table)</span></div>
+  <div id="fig3" role="img" aria-label="Stacked bias squared, variance and noise against degree, with simulated test error"></div>
+  <div class="wrap"><table aria-live="polite">
+    <thead><tr><th>degree <span id="t-deg"></span></th><th>value</th></tr></thead>
+    <tbody id="tbl"></tbody></table></div>
+  <p class="small" id="sim-note"></p>
+</div>
+
+<h2>Read it in plain words</h2>
+<p><b>Left of the sweet spot (underfitting).</b> The curve is too simple. It misses the shape of the data, on training and test points alike. Bias&sup2; is large, variance is small. More flexibility helps.</p>
+<p><b>Right of the sweet spot (overfitting).</b> The curve is flexible enough to follow the noise. Training error is tiny, test error rises, and variance dominates. More data helps (raise n), and so does less flexibility.</p>
+<p><b>Try this.</b> Set the degree to 15 and n to 16: the curve passes through every training point and swings wildly in between. Raise n to 80: the same degree calms down. Raise &sigma;: the noise floor rises and the best degree moves left.</p>
+
+<h2>What is computed and what is not</h2>
+<div class="card">
+<p><b>Computed in this page:</b> the dataset (seeded), every polynomial fit, every error number, bias&sup2; and variance (by simulation, not by formula), the argmin degree and the region text.</p>
+<p><b>Estimated, not exact:</b> bias&sup2; and variance are Monte Carlo estimates from 200 resampled training sets. The simulated test error equals bias&sup2; + variance + &sigma;&sup2; only up to simulation noise; the table prints the gap.</p>
+<p><b>Illustrative choices:</b> the true function (a sine), Gaussian noise, uniform x on [0,1], and the region rule (test error within 10% of the lowest counts as the sweet spot).</p>
+<p class="small">Companion Manim video scene: <span class="k">animations/scenes/concepts/bias_variance.py</span>. Vault note: Bias Variance Tradeoff.</p>
+</div>
+</main>
+
+<script>
+/* ===== CORE (pure, no DOM; extracted by the node check) ===== */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function gaussSource(rand){let spare=null;return function(){if(spare!==null){const s=spare;spare=null;return s}
+  let u=0;while(u===0)u=rand();const v=rand(),r=Math.sqrt(-2*Math.log(u)),a=2*Math.PI*v;spare=r*Math.sin(a);return r*Math.cos(a)}}
+const TRUE=x=>Math.sin(2*Math.PI*x);
+const MAXDEG=15,P=MAXDEG+1,NPOOL=80,NTEST=400,R=200,G=100;
+/* Chebyshev design row for x in [0,1]: t=2x-1, T0..T15 */
+function chebRow(x,k,out){const t=2*x-1;out[0]=1;if(k>1)out[1]=t;for(let j=2;j<k;j++)out[j]=2*t*out[j-1]-out[j-2];return out}
+/* Householder QR least squares for m x p matrix; returns {R (p x p rows), qtb (length p)} */
+function qrFactor(xs,ys){
+  const m=xs.length,A=[];const row=new Array(P);
+  for(let i=0;i<m;i++){A.push(Float64Array.from(chebRow(xs[i],P,row)))}
+  const b=Float64Array.from(ys);
+  for(let k=0;k<P;k++){
+    let nrm=0;for(let i=k;i<m;i++)nrm+=A[i][k]*A[i][k];nrm=Math.sqrt(nrm);
+    if(nrm===0)continue;
+    const alpha=A[k][k]>0?-nrm:nrm;
+    const v=new Float64Array(m);for(let i=k;i<m;i++)v[i]=A[i][k];v[k]-=alpha;
+    let vn=0;for(let i=k;i<m;i++)vn+=v[i]*v[i];
+    if(vn===0)continue;
+    for(let j=k;j<P;j++){let s=0;for(let i=k;i<m;i++)s+=v[i]*A[i][j];s=2*s/vn;for(let i=k;i<m;i++)A[i][j]-=s*v[i]}
+    {let s=0;for(let i=k;i<m;i++)s+=v[i]*b[i];s=2*s/vn;for(let i=k;i<m;i++)b[i]-=s*v[i]}
+  }
+  return {R:A.slice(0,P),qtb:b.slice(0,P)};
+}
+/* coefficients of degree d (d+1 Chebyshev terms) from a factorisation */
+function solveDeg(f,d){const k=d+1,c=new Float64Array(k);
+  for(let i=k-1;i>=0;i--){let s=f.qtb[i];for(let j=i+1;j<k;j++)s-=f.R[i][j]*c[j];c[i]=s/f.R[i][i]}return c}
+function predict(c,x){const k=c.length,r=chebRow(x,k,new Array(k));let s=0;for(let j=0;j<k;j++)s+=c[j]*r[j];return s}
+function mse(c,xs,ys){let s=0;for(let i=0;i<xs.length;i++){const e=predict(c,xs[i])-ys[i];s+=e*e}return s/xs.length}
+/* fixed data: standard-normal noise is drawn once; sigma only scales it */
+function makeData(){
+  const rng=mulberry32(2026),gs=gaussSource(rng);
+  const trX=[],trE=[],teX=[],teE=[];
+  for(let i=0;i<NPOOL;i++){trX.push(rng());trE.push(gs())}
+  for(let i=0;i<NTEST;i++){teX.push(rng());teE.push(gs())}
+  return {trX,trE,teX,teE};
+}
+function fitAll(D,n,sigma){
+  const xs=D.trX.slice(0,n),ys=xs.map((x,i)=>TRUE(x)+sigma*D.trE[i]);
+  const teY=D.teX.map((x,i)=>TRUE(x)+sigma*D.teE[i]);
+  const f=qrFactor(xs,ys),coef=[],train=[],test=[];
+  for(let d=0;d<=MAXDEG;d++){const c=solveDeg(f,d);coef.push(c);train.push(mse(c,xs,ys));test.push(mse(c,D.teX,teY))}
+  return {xs,ys,coef,train,test};
+}
+const GRID=Array.from({length:G},(_,i)=>(i+0.5)/G);
+function simulate(n,sigma,keepCurves){
+  const rng=mulberry32(99),gs=gaussSource(rng);
+  const sumP=[],sumP2=[],sumSE=[];for(let d=0;d<=MAXDEG;d++){sumP.push(new Float64Array(G));sumP2.push(new Float64Array(G));sumSE.push(0)}
+  const curves=keepCurves?Array.from({length:MAXDEG+1},()=>[]):null;
+  const row=new Array(P);
+  for(let r=0;r<R;r++){
+    const xs=[],ys=[];for(let i=0;i<n;i++){const x=rng();xs.push(x);ys.push(TRUE(x)+sigma*gs())}
+    const eg=GRID.map(()=>sigma*gs());
+    const f=qrFactor(xs,ys);
+    for(let d=0;d<=MAXDEG;d++){
+      const c=solveDeg(f,d);let se=0;const pr=keepCurves&&r<25?new Float64Array(G):null;
+      for(let g=0;g<G;g++){const p=predict(c,GRID[g]);sumP[d][g]+=p;sumP2[d][g]+=p*p;const e=TRUE(GRID[g])+eg[g]-p;se+=e*e;if(pr)pr[g]=p}
+      sumSE[d]+=se/G;if(pr)curves[d].push(pr);
+    }
+  }
+  const bias2=[],variance=[],simErr=[];
+  for(let d=0;d<=MAXDEG;d++){let b=0,v=0;
+    for(let g=0;g<G;g++){const m=sumP[d][g]/R,t=TRUE(GRID[g]);b+=(m-t)*(m-t);v+=sumP2[d][g]/R-m*m}
+    bias2.push(b/G);variance.push(v/G);simErr.push(sumSE[d]/R)}
+  return {bias2,variance,simErr,noise:sigma*sigma,curves};
+}
+function argmin(a){let b=0;for(let i=1;i<a.length;i++)if(a[i]<a[b])b=i;return b}
+if(typeof module!=='undefined')module.exports={makeData,fitAll,simulate,TRUE,argmin,chebRow};
+/* ===== END CORE ===== */
+
+/* ===== UI ===== */
+(function(){
+if(typeof document==='undefined')return;
+const $=id=>document.getElementById(id);
+const D=makeData();
+let st={deg:3,sig:0.25,n:24},fit=null,sim=null,raf=0;
+const C={blue:'#7C9CFF',amber:'#F2A93B',teal:'#3CC7B4',warn:'#FF8A65',violet:'#C28BFF',line:'#242B38',faint:'#68707F',text:'#E9ECF2'};
+const fmt=v=>v>=100?v.toFixed(0):v>=10?v.toFixed(1):v>=0.1?v.toFixed(3):v>=0.001?v.toFixed(4):v.toExponential(1);
+$('n-test').textContent='The test set is '+400+' fresh points from the same source.';
+function sizeOf(id){const w=Math.max(280,$(id).clientWidth);return {w,h:Math.round(Math.max(220,Math.min(340,w*0.6)))}}
+function scale(d0,d1,r0,r1){return v=>r0+(v-d0)/(d1-d0)*(r1-r0)}
+function svg(w,h,body){return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" xmlns="http://www.w3.org/2000/svg">'+body+'</svg>'}
+
+function fig1(){
+  const {w,h}=sizeOf('fig1'),m={l:36,r:8,t:8,b:24},X=scale(0,1,m.l,w-m.r),Y=scale(2.2,-2.2,m.t,h-m.b);
+  let s='';
+  for(const v of [-2,-1,0,1,2])s+='<line x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+C.line+'"/><text x="'+(m.l-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+v+'</text>';
+  for(const v of [0,0.5,1])s+='<text x="'+X(v)+'" y="'+(h-6)+'" text-anchor="middle">'+v+'</text>';
+  const pts=[];for(let i=0;i<=200;i++)pts.push(i/200);
+  const path=(f)=>{let d='',pen=false;for(const x of pts){const y=f(x);if(Math.abs(y)>2.2){pen=false;continue}d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(y).toFixed(1);pen=true}return d};
+  if($('ghost').checked&&sim.curves){for(const pr of sim.curves[st.deg]){
+    let d='',pen=false;for(let g=0;g<G;g++){const y=pr[g];if(Math.abs(y)>2.2){pen=false;continue}d+=(pen?'L':'M')+X(GRID[g]).toFixed(1)+' '+Y(y).toFixed(1);pen=true}
+    s+='<path d="'+d+'" fill="none" stroke="'+C.violet+'" stroke-opacity=".28" stroke-width="1"/>'}}
+  s+='<path d="'+path(TRUE)+'" fill="none" stroke="'+C.teal+'" stroke-width="2" stroke-dasharray="5 4"/>';
+  const c=fit.coef[st.deg];
+  s+='<path d="'+path(x=>predict(c,x))+'" fill="none" stroke="'+C.amber+'" stroke-width="2.5"/>';
+  fit.xs.forEach((x,i)=>{s+='<circle cx="'+X(x).toFixed(1)+'" cy="'+Y(fit.ys[i]).toFixed(1)+'" r="3.5" fill="'+C.blue+'" stroke="#0B0D12" stroke-width="1"/>'});
+  s+='<text x="'+(w-m.r)+'" y="'+(m.t+10)+'" text-anchor="end">curve is cut where it leaves the plot (|y| &gt; 2.2)</text>';
+  $('fig1').innerHTML=svg(w,h,s);
+}
+
+function fig2(){
+  const {w,h}=sizeOf('fig2'),m={l:44,r:8,t:18,b:26};
+  const all=fit.train.concat(fit.test,[st.sig*st.sig]);
+  const lo=Math.max(-6,Math.floor(Math.log10(Math.min(...all)))),hi=Math.ceil(Math.log10(Math.max(...all)));
+  const X=scale(0,MAXDEG,m.l+8,w-m.r-8),Y=v=>scale(hi,lo,m.t,h-m.b)(Math.log10(v));
+  const best=argmin(fit.test);let s='';
+  const xl=X(best-0.5<0?0:best-0.5),xr=X(best+0.5>MAXDEG?MAXDEG:best+0.5);
+  s+='<rect x="'+m.l+'" y="'+m.t+'" width="'+Math.max(0,xl-m.l)+'" height="'+(h-m.b-m.t)+'" fill="'+C.blue+'" opacity=".07"/>';
+  s+='<rect x="'+xr+'" y="'+m.t+'" width="'+Math.max(0,w-m.r-xr)+'" height="'+(h-m.b-m.t)+'" fill="'+C.warn+'" opacity=".07"/>';
+  if(best>0)s+='<text x="'+(m.l+4)+'" y="'+(m.t+12)+'">underfitting</text>';
+  if(best<MAXDEG)s+='<text x="'+(w-m.r-4)+'" y="'+(m.t+12)+'" text-anchor="end">overfitting</text>';
+  for(let e=lo;e<=hi;e++){const y=Y(Math.pow(10,e));s+='<line x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+y+'" y2="'+y+'" stroke="'+C.line+'"/><text x="'+(m.l-6)+'" y="'+(y+4)+'" text-anchor="end">1e'+e+'</text>'}
+  for(let d=0;d<=MAXDEG;d+=1)if(d%(w<420?3:1)===0||d===MAXDEG)s+='<text x="'+X(d)+'" y="'+(h-8)+'" text-anchor="middle">'+d+'</text>';
+  const line=(arr,col,dash)=>'<polyline fill="none" stroke="'+col+'" stroke-width="2.2"'+(dash?' stroke-dasharray="5 4"':'')+' points="'+arr.map((v,d)=>X(d).toFixed(1)+','+Y(v).toFixed(1)).join(' ')+'"/>';
+  s+='<line x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(st.sig*st.sig)+'" y2="'+Y(st.sig*st.sig)+'" stroke="'+C.teal+'" stroke-dasharray="5 4"/>';
+  s+=line(fit.train,C.blue)+line(fit.test,C.amber);
+  s+='<line x1="'+X(st.deg)+'" x2="'+X(st.deg)+'" y1="'+m.t+'" y2="'+(h-m.b)+'" stroke="'+C.text+'" stroke-opacity=".5"/>';
+  s+='<circle cx="'+X(st.deg)+'" cy="'+Y(fit.train[st.deg])+'" r="5" fill="'+C.blue+'"/><circle cx="'+X(st.deg)+'" cy="'+Y(fit.test[st.deg])+'" r="5" fill="'+C.amber+'"/>';
+  s+='<circle cx="'+X(best)+'" cy="'+Y(fit.test[best])+'" r="8" fill="none" stroke="'+C.amber+'" stroke-dasharray="2 2"/>';
+  s+='<text x="'+X(best)+'" y="'+(Y(fit.test[best])-12)+'" text-anchor="middle" class="t-main" style="fill:#E9ECF2">lowest test error: degree '+best+'</text>';
+  s+='<rect x="'+m.l+'" y="'+m.t+'" width="'+(w-m.l-m.r)+'" height="'+(h-m.t-m.b)+'" fill="transparent" id="hit2" style="cursor:pointer"/>';
+  $('fig2').innerHTML=svg(w,h,s);
+  $('hit2').addEventListener('click',e=>{const r=$('fig2').querySelector('svg').getBoundingClientRect(),px=(e.clientX-r.left)*(w/r.width);
+    setDeg(Math.max(0,Math.min(MAXDEG,Math.round((px-(m.l+8))/((w-m.r-8)-(m.l+8))*MAXDEG))))});
+}
+
+function fig3(){
+  const {w,h}=sizeOf('fig3'),m={l:44,r:8,t:12,b:26};
+  const tot=sim.bias2.map((b,d)=>b+sim.variance[d]+sim.noise);
+  const ymax=Math.min(Math.max(...tot),6*Math.min(...tot));
+  const X=scale(-0.5,MAXDEG+0.5,m.l,w-m.r),Y=scale(ymax,0,m.t,h-m.b),bw=(X(1)-X(0))*0.7;
+  let s='';
+  const step=ymax>2?0.5:ymax>1?0.25:0.1;
+  for(let v=0;v<=ymax+1e-9;v+=step)s+='<line x1="'+m.l+'" x2="'+(w-m.r)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="'+C.line+'"/><text x="'+(m.l-6)+'" y="'+(Y(v)+4)+'" text-anchor="end">'+(+v.toFixed(2))+'</text>';
+  for(let d=0;d<=MAXDEG;d++){
+    if(d%(w<420?3:1)===0||d===MAXDEG)s+='<text x="'+X(d)+'" y="'+(h-8)+'" text-anchor="middle">'+d+'</text>';
+    let y0=0;const parts=[[sim.noise,C.teal],[sim.bias2[d],C.blue],[sim.variance[d],C.warn]];
+    for(const [v,col] of parts){const y1=Math.min(y0+v,ymax);if(y1>y0)s+='<rect x="'+(X(d)-bw/2)+'" y="'+Y(y1)+'" width="'+bw+'" height="'+(Y(y0)-Y(y1))+'" fill="'+col+'" opacity="'+(d===st.deg?1:.7)+'"/>';y0+=v}
+    if(tot[d]>ymax)s+='<text x="'+X(d)+'" y="'+(m.t+9)+'" text-anchor="middle" style="fill:#FF8A65">&#9650;</text>';
+  }
+  s+='<polyline fill="none" stroke="'+C.amber+'" stroke-width="2" points="'+sim.simErr.map((v,d)=>X(d).toFixed(1)+','+Y(Math.min(v,ymax)).toFixed(1)).join(' ')+'"/>';
+  s+='<rect x="'+(X(st.deg)-bw/2-3)+'" y="'+m.t+'" width="'+(bw+6)+'" height="'+(h-m.t-m.b)+'" fill="none" stroke="'+C.text+'" stroke-opacity=".6"/>';
+  s+='<rect x="'+m.l+'" y="'+m.t+'" width="'+(w-m.l-m.r)+'" height="'+(h-m.t-m.b)+'" fill="transparent" id="hit3" style="cursor:pointer"/>';
+  $('fig3').innerHTML=svg(w,h,s);
+  $('hit3').addEventListener('click',e=>{const r=$('fig3').querySelector('svg').getBoundingClientRect(),px=(e.clientX-r.left)*(w/r.width);
+    setDeg(Math.max(0,Math.min(MAXDEG,Math.round((px-m.l)/(w-m.l-m.r)*(MAXDEG+1)-0.5))))});
+}
+
+function table(){
+  const d=st.deg,b=sim.bias2[d],v=sim.variance[d],nz=sim.noise,sum=b+v+nz,se=sim.simErr[d];
+  $('t-deg').textContent=d;
+  $('tbl').innerHTML=[['bias&sup2;',b],['variance',v],['noise &sigma;&sup2;',nz],['bias&sup2; + variance + noise',sum],['simulated test error',se],['gap (simulation noise)',se-sum]]
+    .map(([k,x])=>'<tr><td>'+k+'</td><td>'+(k.startsWith('gap')&&x>=0?'+':'')+fmt(Math.abs(x)).replace(/^/,x<0?'-':'')+'</td></tr>').join('');
+  const unstable=Math.abs(se-sum)>0.1*sum;
+  $('sim-note').textContent='Estimated from '+R+' training sets of size '+st.n+', predictions at '+G+' points, seed 99; the same 200 sets are used for every degree.'+(unstable?' At this degree a few extreme fits dominate the average, so the estimate is unstable (the gap above is more than 10% of the total). That heavy tail is itself the variance problem.':'');
+}
+
+function readouts(){
+  const d=st.deg,best=argmin(fit.test),floor=st.sig*st.sig;
+  $('r-train').textContent=fmt(fit.train[d]);$('r-test').textContent=fmt(fit.test[d]);$('r-floor').textContent=fmt(floor);
+  let t;
+  if(d<best&&fit.test[d]>1.1*fit.test[best])t='Underfitting (high bias). Degree '+d+' is too simple: training error ('+fmt(fit.train[d])+') and test error ('+fmt(fit.test[d])+') are both high. Test error is lowest at degree '+best+'.';
+  else if(d>best&&fit.test[d]>1.1*fit.test[best])t='Overfitting (high variance). Degree '+d+' fits the training points closely ('+fmt(fit.train[d])+') but does worse on new points ('+fmt(fit.test[d])+') than degree '+best+' does ('+fmt(fit.test[best])+').';
+  else t='Near the sweet spot. Test error ('+fmt(fit.test[d])+') is within 10% of the lowest value ('+fmt(fit.test[best])+', degree '+best+').';
+  $('region').textContent=t;
+}
+
+function recompute(){
+  fit=fitAll(D,st.n,st.sig);
+  sim=simulate(st.n,st.sig,true);
+}
+function draw(){fig1();fig2();fig3();table();readouts();
+  $('deg-o').textContent=st.deg;$('sig-o').textContent=st.sig.toFixed(2);$('ntr-o').textContent=st.n;
+  $('deg').setAttribute('aria-valuetext','degree '+st.deg)}
+function setDeg(d){st.deg=d;$('deg').value=d;draw()}
+function schedule(full){cancelAnimationFrame(raf);raf=requestAnimationFrame(()=>{if(full)recompute();draw()})}
+$('deg').addEventListener('input',e=>{st.deg=+e.target.value;schedule(false)});
+$('sig').addEventListener('input',e=>{st.sig=+e.target.value;schedule(true)});
+$('ntr').addEventListener('input',e=>{st.n=+e.target.value;schedule(true)});
+$('ghost').addEventListener('change',()=>schedule(false));
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(draw,80)});
+window.BV={get state(){return st},get fit(){return fit},get sim(){return sim},setDeg};
+recompute();draw();
+})();
+</script>
+</body>
+</html>

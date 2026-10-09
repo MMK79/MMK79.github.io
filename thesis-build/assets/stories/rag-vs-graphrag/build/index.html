@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAG vs GraphRAG, a scroll story</title>
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+code,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:0 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+/* top bar */
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;gap:6px}
+#nav a{flex:1;text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 40px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
+.fig .cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;min-height:34px}
+button:hover{border-color:var(--faint)}
+button[aria-pressed=true],button.on{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,input:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+input[type=range]{accent-color:var(--amber);flex:1;min-width:120px}
+.q{font-family:var(--display);font-weight:300;font-size:19px;line-height:1.35;margin:6px 0 10px;overflow-wrap:anywhere}
+.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:15px;overflow-wrap:anywhere}
+.ans.warn{border-color:var(--warn)}.ans.good{border-color:var(--teal)}
+.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px}
+.card.gold{border-color:var(--amber)}.card.dim{opacity:.55}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card .hd b{font-family:var(--mono);color:var(--text)}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin:10px 0}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+.stat b{display:block;font:300 26px var(--display);color:var(--amber)}
+.stat span{font-size:12px;color:var(--muted)}
+.bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
+.bridge b{color:var(--text)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
+.chip{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.strip{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;margin:3px 0}
+.strip button{padding:0;min-height:26px;border-radius:3px;font:10px var(--mono);color:var(--faint);background:var(--panel2);border:1px solid var(--line)}
+.strip button.g1{background:var(--amber);color:#111;border-color:var(--amber)}
+.strip button.g2{background:var(--teal);color:#111;border-color:var(--teal)}
+.strip button.out{opacity:.28}
+.strip button.cut{box-shadow:2px 0 0 0 var(--text)}
+.lbl{font-size:12px;color:var(--muted);margin-top:8px}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:110px 1fr 46px;gap:8px;align-items:center;font-size:13px}
+.bar i{display:block;height:14px;border-radius:3px;background:var(--blue);transition:width .5s}
+.bar.graph i{background:var(--teal)}
+.bar .track{background:var(--panel2);border-radius:3px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cmp{display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr));font-size:13px}
+.cmp>div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px}
+.cmp b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.cmp .v{font:300 22px var(--display);color:var(--amber)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:11px var(--body)}
+.legend{font-size:12px;color:var(--muted)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ev b,.ours b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b{color:var(--teal)}.ours b{color:var(--purple)}
+footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.reveal{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
+.reveal.in{opacity:1;transform:none}
+#err{display:none;background:#3a1d17;color:var(--warn);border-radius:8px;padding:10px 12px;margin:16px 0}
+@media(max-width:520px){.bar{grid-template-columns:84px 1fr 42px}.grid2{grid-template-columns:1fr}.cmp{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.bar i{transition:none}}
+</style>
+</head>
+<body>
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Demo scale:</b> 138 passages, 24 questions, 15 Wikipedia articles. This is NOT an evaluation of the thesis system.</p>
+  <nav id="nav" aria-label="Story steps">
+    <a href="#llm">1 LLM</a><a href="#rag">2 RAG</a><a href="#problems">3 Limits</a><a href="#graph">4 Graph</a><a href="#compare">5 Versus</a>
+  </nav>
+</div></div>
+
+<main class="wrap">
+<div id="err"></div>
+<header class="hero">
+  <div class="kicker">A story in five steps</div>
+  <h1>RAG, and why people added a graph</h1>
+  <p class="lead">One small question about ridge regression runs through the whole page. Every passage, score, path and answer below comes from a real run on a small real corpus. Scroll, and click the figures.</p>
+  <p class="small muted">Framing follows Peng et al. 2024, the Graph RAG survey (our canvas notes). Data: <code>Presentations/_real-examples/</code>, Wikipedia text (CC BY-SA 4.0).</p>
+</header>
+
+<!-- 1 -->
+<section class="step" id="llm">
+  <div class="kicker">Step 1 &middot; the problem</div>
+  <h2>A language model answers fluently. You cannot check it.</h2>
+  <p>Peng et al. name three weak points of a plain LLM. It can <b>hallucinate</b> (invent facts). It lacks <b>domain or private knowledge</b>. Its facts can be <b>out of date</b>. Here we test the first one on a small scale: we ask a model with no sources at all.</p>
+  <div class="chips"><span class="chip">hallucination</span><span class="chip">no domain or proprietary knowledge</span><span class="chip">outdated information</span></div>
+  <div class="fig" id="f-llm"></div>
+  <div class="bridge"><b>Why the next idea:</b> the model does not say &quot;I do not know&quot;, and it shows no source. So give it sources: look the facts up first, then answer from them.</div>
+</section>
+
+<!-- 2 -->
+<section class="step" id="rag">
+  <div class="kicker">Step 2 &middot; the first fix</div>
+  <h2>RAG: retrieve passages, then generate</h2>
+  <p>Retrieval-augmented generation looks up passages that match the question and puts them in the prompt. No retraining is needed. The answer can then cite a passage id. Pick a retriever and change <i>k</i> (how many passages go in).</p>
+  <div class="fig" id="f-rag"></div>
+  <div class="bridge"><b>Why the next step:</b> this works well when one passage holds the answer. Ask a harder question and it breaks.</div>
+</section>
+
+<!-- 3 -->
+<section class="step" id="problems">
+  <div class="kicker">Step 3 &middot; where RAG struggles</div>
+  <h2>Chains of facts, whole-corpus questions, and noise</h2>
+  <p>Peng et al. list two weak points of RAG: it <b>neglects relations</b> (passages are treated as isolated; similarity cannot express a link), and it carries <b>redundant text</b> (long prompts, &quot;lost in the middle&quot;). We add a third that shows in the data: questions that need the whole corpus.</p>
+  <div class="row" role="tablist" id="p-tabs"></div>
+  <div class="fig" id="f-prob"></div>
+  <div class="bridge"><b>Why the next idea:</b> the missing piece is a link between two passages. Store that link on purpose, as a graph.</div>
+</section>
+
+<!-- 4 -->
+<section class="step" id="graph">
+  <div class="kicker">Step 4 &middot; the second fix</div>
+  <h2>GraphRAG: keep the links, then retrieve along them</h2>
+  <p>An LLM reads each passage and writes entities and relations. Identical entities from different passages merge into one node. A node now remembers every passage that mentions it, so passages are connected. Retrieval can follow edges, paths or whole communities.</p>
+  <div class="fig" id="f-graph"></div>
+  <h3>Following the real path for the ridge question</h3>
+  <p class="small muted">Question q09 asks who introduced the regularized technique that the multicollinearity article lists beside LASSO and elastic net. The answer is in a different article.</p>
+  <div class="fig" id="f-path"></div>
+  <h3>How far to expand?</h3>
+  <div class="fig" id="f-khop"></div>
+  <h3>A question about the whole corpus</h3>
+  <div class="fig" id="f-global"></div>
+  <div class="bridge"><b>So, does it win?</b> Not automatically. Compare them side by side.</div>
+</section>
+
+<!-- 5 -->
+<section class="step" id="compare">
+  <div class="kicker">Step 5 &middot; the comparison</div>
+  <h2>Side by side, with the honest numbers</h2>
+  <div class="fig" id="f-cmp1"></div>
+  <div class="fig" id="f-cmp2"></div>
+  <h3>What the data says, and what it does not</h3>
+  <div id="reading"></div>
+</section>
+
+<footer>
+  <p><b>Scale.</b> 138 passages (a sample of 15 Wikipedia articles, at most 10 passages each), 24 questions written by Claude, 12 of them answered by an LLM and judged by two LLM judges. One run, temperature 0, no human labels. Intervals are wide. This page explains an idea; it does not rank methods, and it does not evaluate the thesis system.</p>
+  <p>Sources: Peng et al. 2024, <i>Graph Retrieval-Augmented Generation: A Survey</i> (conceptual framing, from our canvas notes). Edge et al. 2024 for local and global search as implemented in the pack. Wikipedia contributors, CC BY-SA 4.0; each passage links to its article revision. Everything numeric is copied from <code>../data/*.json</code>, produced by <code>build/extract.py</code> from the real-example pack.</p>
+</footer>
+</main>
+
+<script>
+(function(){
+'use strict';
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const DATA = new URL('../data/', location.href);
+const $ = (s,r=document)=>r.querySelector(s);
+function h(tag,attrs,...kids){const e=document.createElement(tag);
+  for(const k in (attrs||{})){const v=attrs[k];if(v==null||v===false)continue;
+    if(k==='class')e.className=v;else if(k.startsWith('on'))e.addEventListener(k.slice(2),v);
+    else if(k==='text')e.textContent=v;else e.setAttribute(k,v===true?'':v);}
+  for(const c of kids.flat()){if(c==null||c===false)continue;e.append(c.nodeType?c:document.createTextNode(c));}
+  return e;}
+const pct=(x,d=0)=>(x*100).toFixed(d)+'%';
+const f2=x=>x==null?'n/a':x.toFixed(2);
+const wc=t=>t.split(/\s+/).filter(Boolean).length;
+const CAP={bm25_lucene:'BM25 (keywords)',dense_cosine:'Dense (embeddings)',rrf_bm25_dense:'RRF (BM25 + dense)',ppr_graph:'Graph PPR'};
+
+async function load(){
+  const names=['llm','rag','graph','compare','passages'];
+  const r=await Promise.all(names.map(n=>fetch(new URL(n+'.json',DATA)).then(x=>{if(!x.ok)throw new Error(n+' '+x.status);return x.json();})));
+  return Object.fromEntries(names.map((n,i)=>[n,r[i]]));
+}
+
+function passageCard(D,id,opts={}){
+  const p=D.passages[id]||{};
+  const full=p.text||'';
+  const short=full.length>230&&!opts.full?full.slice(0,230)+'…':full;
+  return h('div',{class:'card'+(opts.gold?' gold':'')+(opts.dim?' dim':'')},
+    h('div',{class:'hd'},h('b',{text:id}),opts.score!=null?h('span',{class:'num',text:opts.scoreLabel+' '+opts.score}):null,
+      opts.rank?h('span',{text:'rank '+opts.rank}):null,
+      h('span',{text:(p.article||'')+(p.section?' / '+p.section:'')}),
+      opts.gold?h('span',{class:'tag gold',text:'gold passage'}):null,
+      opts.note?h('span',{class:'tag '+(opts.noteCls||''),text:opts.note}):null),
+    h('p',{text:short}));
+}
+
+/* ---------- step 1 ---------- */
+function mountLLM(D){
+  const root=$('#f-llm'),L=D.llm;let cur=0,asked=false,checked=false;
+  function draw(){
+    const c=L.cases[cur];root.replaceChildren();
+    root.append(h('div',{class:'row'},...L.cases.map((x,i)=>h('button',{'aria-pressed':String(i===cur),onclick:()=>{cur=i;asked=false;checked=false;draw();}},
+      x.qid+(x.type==='unanswerable'?' (not in corpus)':''))))
+    ,h('div',{class:'q',text:c.question}));
+    if(!asked){root.append(h('button',{class:'on',onclick:()=>{asked=true;draw();}},'Ask the model alone (no sources)'));}
+    else{
+      root.append(h('div',{class:'ans '+(c.type==='unanswerable'?'warn':'')},c.answer),
+        h('p',{class:'small muted'},'Model: '+L.meta.answer_model+', temperature 0. Citations given: ',c.cited.length?c.cited.join(', '):h('b',{text:'none'}),'. Said "I do not know": ',h('b',{text:c.refused?'yes':'no'}),'.'));
+      if(!checked)root.append(h('button',{class:'on',onclick:()=>{checked=true;draw();}},'Check each claim against the corpus'));
+      else{
+        root.append(h('div',{class:'lbl',text:'Claims extracted from the answer, judged against the 138 passages (judge: '+L.meta.judge_A+')'}),
+          ...c.claims.map(k=>h('div',{class:'card'},h('span',{class:'tag '+(k.verdict==='supported'?'ok':'bad'),text:k.verdict==='supported'?'in corpus '+k.passages.join(' '):'not in the corpus'}),' ',k.text)));
+        root.append(h('p',{class:'cap',text:c.type==='unanswerable'
+          ?'"Not in the corpus" is not "false". These may be true statements from world knowledge. The point: the model never refuses, and nothing shows where each claim came from.'
+          :'This answer is correct. The corpus confirms it. The model gave no source, so you could not have known without checking.'}));
+      }
+    }
+    const A=L.arm_A;
+    root.append(h('div',{class:'stats'},
+      h('div',{class:'stat'},h('b',{text:A.claims_unsupported_or_contradicted+' / '+A.claims_total}),h('span',{text:'claims of all 12 no-retrieval answers not supported by the corpus'})),
+      h('div',{class:'stat'},h('b',{text:A.negative_rejection.refused+' / '+A.negative_rejection.n}),h('span',{text:'unanswerable questions where it said "I do not know"'})),
+      h('div',{class:'stat'},h('b',{text:f2(A.answer_correctness_answerable)}),h('span',{text:'answer correctness on the 9 answerable questions'}))));
+    root.append(h('p',{class:'cap',text:'Honest reading: on easy textbook facts the model alone is often right. The risk is not wrong answers in every case. It is answers you cannot trace, and no refusal when it has nothing to go on. n = 12 questions, one run.'}));
+  }
+  draw();
+}
+
+/* ---------- step 2 ---------- */
+function mountRAG(D){
+  const root=$('#f-rag'),R=D.rag;let m='rrf_bm25_dense',k=3,arm='B',showAns=false;
+  const Q=R.questions.q01;
+  function draw(){
+    root.replaceChildren();
+    root.append(h('div',{class:'q',text:Q.question}),
+      h('div',{class:'lbl',text:'Retriever'}),
+      h('div',{class:'row'},...R.methods.map(x=>h('button',{'aria-pressed':String(x===m),onclick:()=>{m=x;draw();}},CAP[x]))));
+    const sl=h('input',{type:'range',min:1,max:6,value:k,'aria-label':'passages retrieved, k'});
+    const out=h('b',{class:'num',text:'k = '+k});
+    root.append(h('div',{class:'row'},h('span',{class:'small muted',text:'Passages in the prompt'}),sl,out));
+    const lab=m==='bm25_lucene'?'BM25':m==='dense_cosine'?'cosine':m==='rrf_bm25_dense'?'RRF':'PPR';
+    const list=h('div');root.append(list);
+    const renderList=()=>{out.textContent='k = '+k;list.replaceChildren(...Q.runs[m].slice(0,k).map((x,i)=>passageCard(D,x.id,{score:x.score,scoreLabel:lab,rank:i+1,gold:Q.gold.includes(x.id)})));};
+    sl.addEventListener('input',()=>{k=+sl.value;renderList();});renderList();
+    root.append(h('p',{class:'cap',text:'Scores are real and not comparable across retrievers (BM25 sums word weights, cosine is in [-1,1], RRF is a fused rank score). Gold = the passage a human marked as necessary.'}));
+    root.append(h('div',{class:'lbl',text:'Then the model writes the answer from the retrieved passages'}),
+      h('div',{class:'row'},
+        h('button',{'aria-pressed':String(arm==='A'),onclick:()=>{arm='A';draw();}},'Without passages'),
+        h('button',{'aria-pressed':String(arm==='B'),onclick:()=>{arm='B';draw();}},'With the RRF top-5 passages')));
+    const a=R.answers.q01[arm];
+    root.append(h('div',{class:'ans '+(arm==='B'?'good':'')},a.answer),
+      h('p',{class:'small muted'},arm==='B'?['Cited: ',...a.cited.map(c=>h('span',{class:'tag ok',text:c})),'  Context ids: ',...a.context_ids.map(c=>h('span',{class:'tag',text:c}))]:'No sources, so nothing to cite.'));
+    root.append(h('p',{class:'cap',text:'The answer pack ran one fixed context (RRF top-5) for arm B, so the answer does not change with the retriever buttons above. Retrieval also changes what the model may say: for a question the corpus cannot answer (q22, Adam default learning rate), the no-source model stated a value, while the RAG model replied "'+R.answers.q22.B.answer+'"'}));
+  }
+  draw();
+}
+
+/* ---------- step 3 ---------- */
+function mountProblems(D){
+  const tabs=$('#p-tabs'),root=$('#f-prob'),R=D.rag;let t='bridge',k=5,pick=null;
+  const T=[['bridge','Chain of facts'],['global','Whole-corpus question'],['noise','Redundant context']];
+  function draw(){
+    tabs.replaceChildren(...T.map(([id,l])=>h('button',{role:'tab','aria-pressed':String(id===t),onclick:()=>{t=id;pick=null;draw();}},l)));
+    root.replaceChildren();
+    if(t==='bridge'){
+      const Q=R.questions.q09,[g1,g2]=Q.gold;
+      root.append(h('div',{class:'q',text:Q.question}),
+        h('p',{class:'small muted'},'This needs two passages: ',h('span',{class:'tag gold',text:g1+' (Multicollinearity)'}),' says which technique, ',h('span',{class:'tag ok',text:g2+' (Ridge regression)'}),' says who introduced it and when. Each row below is one retriever\'s top 20. Click a cell.'));
+      const sl=h('input',{type:'range',min:1,max:20,value:k,'aria-label':'top k'});
+      const kout=h('b',{class:'num',text:'k = '+k});
+      root.append(h('div',{class:'row'},h('span',{class:'small muted',text:'Prompt holds top'}),sl,kout));
+      const rows=h('div');root.append(rows);
+      const renderRows=()=>{kout.textContent='k = '+k;rows.replaceChildren();
+      R.methods.forEach(m=>{
+        const run=Q.runs[m],ids=run.map(x=>x.id);
+        const r1=ids.indexOf(g1)+1,r2=ids.indexOf(g2)+1;
+        const both=r1&&r2&&r1<=k&&r2<=k;
+        rows.append(h('div',{class:'lbl'},CAP[m]+': '+g1+' at rank '+(r1||'>20')+', '+g2+' at rank '+(r2||'>20')+' ',h('span',{class:'tag '+(both?'ok':'bad'),text:both?'both in top '+k:'missing at k = '+k})));
+        rows.append(h('div',{class:'strip'},...run.map((x,i)=>h('button',{class:(x.id===g1?'g1':x.id===g2?'g2':'')+(i>=k?' out':'')+(i===k-1?' cut':''),title:x.id+' score '+x.score,
+          onclick:()=>{pick={m,i};draw();}},String(i+1)))));
+      }); };
+      sl.addEventListener('input',()=>{k=+sl.value;renderRows();});renderRows();
+      if(pick){const x=Q.runs[pick.m][pick.i];root.append(h('div',{class:'lbl',text:CAP[pick.m]+', rank '+(pick.i+1)}),passageCard(D,x.id,{score:x.score,scoreLabel:'score',gold:Q.gold.includes(x.id),full:true}));}
+      const B=R.answers.q09.B;
+      root.append(h('div',{class:'lbl',text:'What the model said with the RRF top-5 in the prompt (context: '+B.context_ids.join(', ')+')'}),h('div',{class:'ans warn',text:B.answer}),
+        h('p',{class:'cap',text:'The first passage was retrieved, the second was not. The model had half the chain and refused the year. Gold passage '+g2+' sits at rank 15 for RRF. Similarity finds the passage that looks like the question, not the passage one hop away.'}));
+    }else if(t==='global'){
+      const G=R.global[0],N=R.corpus_passages;
+      root.append(h('div',{class:'q',text:G.question}),
+        h('p',{class:'small muted',text:'No single passage answers this. The answer is a summary over many passages. A top-k list shows only a few:'}));
+      const sl=h('input',{type:'range',min:1,max:20,value:k,'aria-label':'top k'});
+      const kout=h('b',{class:'num'}),st=h('div',{class:'strip'});
+      const upd=()=>{kout.textContent='k = '+k+' of '+N+' passages = '+pct(k/N,1);st.replaceChildren(...Array.from({length:20},(_,i)=>h('button',{class:i<k?'g1':'out',tabindex:-1,'aria-hidden':'true'},'')));};
+      sl.addEventListener('input',()=>{k=+sl.value;upd();});upd();
+      root.append(h('div',{class:'row'},h('span',{class:'small muted',text:'Top'}),sl,kout),st);
+      root.append(h('p',{class:'cap',text:'This is arithmetic, not a measurement. The pack has no vector-search baseline for the two global questions, so we do not claim how vector RAG answers them. Step 4 shows what the graph side did.'}));
+    }else{
+      root.append(h('p',{class:'small muted',text:'The judge marked which of the five retrieved passages were needed to answer. Dimmed = judged not needed. Words are counted from the passage text.'}));
+      ['q01','q09'].forEach(q=>{
+        const rel=R.context_relevance_B[q],ids=Object.keys(rel);
+        const tot=ids.reduce((s,i)=>s+wc(D.passages[i].text),0),need=ids.filter(i=>rel[i]).reduce((s,i)=>s+wc(D.passages[i].text),0);
+        root.append(h('div',{class:'lbl',text:q+': '+ids.filter(i=>rel[i]).length+' of '+ids.length+' passages needed; '+need+' of '+tot+' words useful'}),
+          ...ids.map(i=>passageCard(D,i,{dim:!rel[i],note:rel[i]?'needed':'not needed',noteCls:rel[i]?'ok':''})));
+      });
+      root.append(h('p',{class:'cap',text:'Across the 9 answerable questions the judge rated mean context precision '+f2(R.context_precision_B)+' for the RRF top-5 context (0 to 1; 95% interval 0.20 to 0.33). Gold labels name only the necessary passages, so this is a lower bound on usefulness. More retrieved text is not free: the graph-augmented context in step 5 is about 50% longer.'}));
+    }
+  }
+  draw();
+}
+
+/* ---------- step 4 ---------- */
+function mountGraph(D){
+  const G=D.graph;
+  // overview
+  const s=G.stats;
+  $('#f-graph').append(h('div',{class:'stats'},
+    h('div',{class:'stat'},h('b',{text:s.n_nodes}),h('span',{text:'nodes after merging duplicates'})),
+    h('div',{class:'stat'},h('b',{text:s.n_edges_typed}),h('span',{text:'typed relations'})),
+    h('div',{class:'stat'},h('b',{text:s.n_passages_with_extraction}),h('span',{text:'passages read by the LLM, one call each'})),
+    h('div',{class:'stat'},h('b',{text:s.n_communities}),h('span',{text:'Leiden communities ('+s.n_summarised+' summarised)'}))),
+    h('p',{class:'cap',text:'Built with '+G.extraction_model+'. The graph is noisy: it has generic nodes like "data" and "model", and most nodes (525 of '+s.n_nodes+') appear in one passage only. It is a sample, not a clean knowledge base.'}));
+  // path
+  const root=$('#f-path');let step=0;
+  const N={};G.nodes.forEach(n=>N[n.id]=n);
+  const ridge='n014',[seed,,hoerl,kenn]=G.path_nodes;
+  const E=(a,b)=>G.edges.find(e=>(e.s===a&&e.t===b)||(e.s===b&&e.t===a));
+  const pos={};const W=360,H=330,cx=W/2,cy=H/2+4;
+  pos[ridge]=[cx,cy];pos[seed]=[70,60];pos[hoerl]=[W-50,50];pos[kenn]=[W-30,130];
+  const others=G.nodes.filter(n=>![ridge,seed,hoerl,kenn].includes(n.id));
+  others.forEach((n,i)=>{const a=(i/others.length)*Math.PI*2+0.5;pos[n.id]=[cx+Math.cos(a)*(120)*1.2,cy+Math.sin(a)*118+ (i%2?0:0)];});
+  const steps=[
+   {t:'Start: the question mentions "regularized regression techniques". Entity linking matches that phrase to a node. That node was extracted from '+seed+'\'s passage, p074.',n:[seed],e:[],p:['p074']},
+   {t:'One edge: ridge regression  is_a  regularized regression techniques. The edge was extracted from p074. So the node we need is ridge regression.',n:[seed,ridge],e:[[ridge,seed]],p:['p074']},
+   {t:'The ridge regression node also remembers other passages: '+N[ridge].passages.join(', ')+'. The graph has just linked two articles (Multicollinearity and Ridge regression) through one shared node.',n:[seed,ridge],e:[[ridge,seed]],p:N[ridge].passages},
+   {t:'Next edges: ridge regression  introduced_by  Hoerl, and  introduced_by  Kennard. Both were extracted from p002, the passage that also holds the year 1970.',n:[seed,ridge,hoerl,kenn],e:[[ridge,seed],[ridge,hoerl],[ridge,kenn]],p:['p074','p002']}];
+  function drawPath(){
+    root.replaceChildren();
+    const S=steps[step];
+    const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');svg.setAttribute('viewBox','0 0 '+W+' '+H);svg.setAttribute('role','img');
+    svg.setAttribute('aria-label','Ego graph of the ridge regression node with the highlighted path');
+    const ns=(t,a)=>{const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+    const hl=new Set(S.e.map(x=>x.join('|')));
+    G.edges.forEach(e=>{const a=pos[e.s],b=pos[e.t];if(!a||!b)return;
+      const on=S.e.some(x=>(x[0]===e.s&&x[1]===e.t)||(x[0]===e.t&&x[1]===e.s));
+      svg.append(ns('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:on?'#F2A93B':'#2d3547','stroke-width':on?2.5:1}));
+      if(on){const t=ns('text',{x:(a[0]+b[0])/2,y:(a[1]+b[1])/2-4,'text-anchor':'middle',fill:'#F2A93B'});t.textContent=e.rel+' ('+e.passages.join(',')+')';t.style.fill='#F2A93B';t.style.fontSize='10px';svg.append(t);}});
+    G.nodes.forEach(n=>{const p=pos[n.id];const on=S.n.includes(n.id);const main=[ridge,seed,hoerl,kenn].includes(n.id);
+      const c=ns('circle',{cx:p[0],cy:p[1],r:on?9:main?6:4,fill:on?(n.id===ridge?'#3CC7B4':'#F2A93B'):'#3a4358',stroke:on?'#fff':'none','stroke-width':1.2,tabindex:0,role:'button','aria-label':n.name});
+      const show=()=>{cap.textContent=n.name+' ('+n.type+'), in passages: '+n.passages.join(', ');};
+      c.addEventListener('click',show);c.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();show();}});c.style.cursor='pointer';
+      svg.append(c);
+      if(on||main&&step===3){const t=ns('text',{x:n.id===seed?p[0]-14:p[0],y:p[1]+(n.id===ridge?22:-13),'text-anchor':n.id===kenn||n.id===hoerl?'end':n.id===seed?'start':'middle'});t.textContent=n.name;svg.append(t);}});
+    const cap=h('p',{class:'cap',text:'Tap a dot to read its name and passages. Small dots are the other '+(G.nodes.length-4)+' neighbours of ridge regression.'});
+    root.append(h('div',{class:'row'},...steps.map((_,i)=>h('button',{'aria-pressed':String(i===step),onclick:()=>{step=i;drawPath();}},'Step '+(i+1)))),
+      svg,h('p',{},S.t),cap,
+      ...S.p.filter((v,i,a)=>a.indexOf(v)===i&&D.passages[v]).slice(0,step===2?6:2).map(id=>passageCard(D,id,{gold:id==='p074'||id==='p002',full:id==='p002'&&step===3})));
+    if(step===3)root.append(h('p',{class:'cap',text:'This walk is our illustration of a path-based retriever. It follows two real edges of the real graph. The retrievers the pack actually measured behaved differently (next figures).'}));
+  }
+  drawPath();
+  // khop
+  const kr=$('#f-khop');let hop=0;
+  function drawK(){
+    kr.replaceChildren();const K=G.khop_q09;
+    const sl=h('input',{type:'range',min:0,max:3,value:hop,'aria-label':'hops'});
+    const dyn=h('div');
+    const upd=()=>{const st=K.steps[hop];dyn.replaceChildren(h('b',{class:'num',text:'hops = '+hop}),
+      h('div',{class:'stats'},h('div',{class:'stat'},h('b',{text:st.cumulative_nodes}),h('span',{text:'nodes reached'})),
+        h('div',{class:'stat'},h('b',{text:st.cumulative_passages}),h('span',{text:'passages attached ('+pct(st.share_of_corpus,1)+' of corpus)'})),
+        h('div',{class:'stat'},h('b',{text:st.gold_found.length+' / 2'}),h('span',{text:'gold passages inside'}))),
+      h('div',{class:'bar graph'},h('span',{text:'share of corpus'}),h('div',{class:'track'},h('i',{style:'width:'+pct(st.share_of_corpus)})),h('span',{class:'num',text:pct(st.share_of_corpus)})));};
+    sl.addEventListener('input',()=>{hop=+sl.value;upd();});upd();
+    kr.append(h('p',{class:'small muted'},'Start from the '+K.seeds.length+' entities linked in the question ('+K.seeds.join('; ')+'). Expand the neighbourhood hop by hop.'),
+      h('div',{class:'row'},h('span',{class:'small muted',text:'Hops'}),sl),dyn,
+      h('p',{class:'cap',text:'The graph reaches both gold passages already at hop 0, because the linked entities themselves point to them. But each hop adds more text: at hop 2 the "neighbourhood" is already 64% of the corpus. A graph does not choose for you; it still needs a ranking.'}));
+  }
+  drawK();
+  // PCST + C answer + global
+  const A=D.rag.answers.q09,P=G.pcst_q09,Cx=G.q09_contexts;
+  kr.append(h('div',{class:'lbl',text:'Two ways to turn the graph into a prompt for q09'}),
+    h('div',{class:'card'},h('b',{text:'Pruned subgraph (PCST): '}),P.n_nodes+' nodes, '+P.n_edges+' edges, '+P.passages+' passages attached. Gold found: '+P.gold_found.join(', ')+'. Contains "ridge regression": '+(P.nodes.includes('ridge regression')?'yes':'no')+'.'),
+    h('div',{class:'card'},h('b',{text:'Top-5 passages by personalized PageRank: '}),Cx.graph_top5.join(', ')+'. Recall of the two gold passages: '+f2(Cx.recall_graph_top5)+'. Passage p002 is at rank 11, outside the top 5.'),
+    h('div',{class:'lbl',text:'Answer from arm C (dense top-5 + the top-5 graph passages not yet included)'}),
+    h('div',{class:'ans warn',text:A.C.answer}),
+    h('p',{class:'cap',text:'This is the real failure on q09. The structure that links the two passages is in the graph, and the pruned subgraph holds it. But the measured graph retrievers cut the list to a top 5 that left p002 out, and the final answer still lacked the year. The graph makes the bridge possible; it does not make this pipeline use it.'}));
+  // global
+  const gr=$('#f-global');let gi=0;
+  function drawG(){
+    gr.replaceChildren();const g=D.rag.global[gi];
+    gr.append(h('div',{class:'row'},...D.rag.global.map((x,i)=>h('button',{'aria-pressed':String(i===gi),onclick:()=>{gi=i;drawG();}},x.id))),
+      h('div',{class:'q',text:g.question}),
+      h('p',{class:'small muted'},'Global search (map-reduce over the 15 LLM-written community reports): '+g.n_map_calls+' map calls produced '+g.n_points+' scored points; the highest-scoring ones go into one final call.'),
+      ...g.kept_points.map(p=>h('div',{class:'card'},h('span',{class:'tag gold',text:'score '+p.score}),' ',p.description)),
+      h('div',{class:'lbl',text:'Final answer (reduce step)'}),h('div',{class:'ans good',text:g.reduce_answer}),
+      h('p',{class:'cap',text:'Real output of one run. It covers the whole corpus because each report summarises a community of linked nodes. We did not score it against a vector baseline, and the answer was not checked by a human. Cost: many LLM calls before the question is asked, plus map calls per question.'}));
+  }
+  drawG();
+}
+
+/* ---------- step 5 ---------- */
+function mountCompare(D){
+  const C=D.compare,r1=$('#f-cmp1'),r2=$('#f-cmp2');let ty='bridge',q9='C';
+  const TY=[['single-hop','Single-hop'],['bridge','Bridge (2 passages)'],['comparison','Comparison']];
+  function d1(){
+    r1.replaceChildren();
+    r1.append(h('h3',{text:'Did the top 5 contain the gold passages? (recall@5)'}),h('div',{class:'row'},...TY.map(([id,l])=>h('button',{'aria-pressed':String(id===ty),onclick:()=>{ty=id;d1();}},l))),
+      h('div',{class:'bars'},...D.rag.methods.map(m=>{const v=C.recall5_by_type[m][ty];return h('div',{class:'bar '+(m==='ppr_graph'?'graph':'')},h('span',{text:CAP[m]}),h('div',{class:'track'},h('i',{style:'width:'+pct(v)})),h('span',{class:'num',text:f2(v)}));})),
+      h('p',{class:'cap',text:'Only '+C.n_by_type[ty]+' questions in this group, so one question moves a bar by several points. The graph retriever (teal) is not ahead of the plain retrievers here. Bridge questions are harder for every method (0.63 to 0.69, against 0.88 to 1.00 on single-hop).'}));
+  }
+  function d2(){
+    r2.replaceChildren();
+    const arms=['A','B','C'];
+    r2.append(h('h3',{text:'Answers, 12 questions, three arms'}),
+      h('div',{class:'cmp'},...arms.map(a=>{const x=C.arms[a];return h('div',{},h('b',{text:a+': '+x.name}),
+        'faithfulness ',h('span',{class:'v',text:f2(x.faithfulness_judgeA)}),h('br'),
+        h('span',{class:'small muted',text:'95% '+x.faithfulness_ci.map(f2).join(' to ')}),h('br'),
+        'correctness ',h('span',{class:'v',text:f2(x.answer_correctness)}),h('br'),
+        h('span',{class:'small muted',text:'95% '+x.answer_correctness_ci.map(f2).join(' to ')}),h('br'),
+        'refused unanswerable: '+x.negative_rejection+' / 3',h('br'),
+        h('span',{class:'small muted',text:C.cost_by_arm[a].prompt_tokens_mean.toFixed(0)+' prompt tokens, USD '+C.cost_by_arm[a].usd_per_answer_mean.toFixed(6)+' per answer'}));})),
+      h('p',{class:'cap',text:'Faithfulness = share of claims supported by the evidence pool (LLM judge A). Both retrieval arms beat no retrieval on faithfulness, which is partly built in: arm A is judged against a corpus it never saw. B versus C differs by 0.04 and its interval contains zero. C gets about 50% more context than B and starts from a different first-stage list, so this does not show that the graph helped.'}),
+      h('div',{class:'lbl',text:'The same question, q09, in each arm'}),
+      h('div',{class:'row'},...arms.map(a=>h('button',{'aria-pressed':String(a===q9),onclick:()=>{q9=a;d2();}},a))),
+      h('div',{class:'ans '+(q9==='A'?'':'warn'),text:D.rag.answers.q09[q9].answer}),
+      h('p',{class:'small muted',text:q9==='A'?'No sources. Correct here, but no way to verify.':'Context ids: '+D.rag.answers.q09[q9].context_ids.join(', ')+(q9==='B'?'. Refused: the year of the technique sits in p002, which was not retrieved.':'. Names ridge regression from p074, and Tikhonov from p001, but gives no year: p002 is still missing.')}));
+  }
+  d1();d2();
+  const E=(cls,t,body)=>h('div',{class:cls},h('b',{text:t}),body);
+  $('#reading').append(
+    E('ev','Evidenced (computed in the pack)','Retrieval makes answers far more grounded in the corpus (faithfulness 0.47 to 0.94 and 0.97; this interval excludes zero for B minus A) and makes the model refuse questions the corpus cannot answer (3 of 3, against 0 of 3).'),
+    E('ev','Evidenced','On this corpus, bridge questions are harder than single-hop ones for every retriever, including the graph one. The graph path for q09 exists and was found (pruned subgraph includes both gold passages).'),
+    E('ev','Evidenced','Context cost grows: arm C used about 957 prompt tokens against 684 for B, and building the graph took 138 LLM calls before any question was asked.'),
+    E('ours','Ours, not proven here','A graph helps most when the question needs a chain of linked facts or a view of the whole corpus, as Peng et al. argue. Here the chain exists in the graph, but our simple top-5 cut-offs did not use it. The pack gives no evidence that GraphRAG beats RAG at this scale.'),
+    E('ours','Not shown','No human labels. No test on the thesis corpus. No vector baseline for global questions. No tuned graph retriever (PCST prizes, PPR restart and community levels were one untuned setting). 12 answered questions, one run.'));
+}
+
+/* ---------- chrome ---------- */
+function chrome(){
+  const links=[...document.querySelectorAll('#nav a')];
+  const secs=links.map(a=>$(a.getAttribute('href')));
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+e.target.id));}});},{rootMargin:'-30% 0px -60% 0px'});
+  secs.forEach(s=>io.observe(s));
+  if(!RM){const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}}),{threshold:.08});
+    document.querySelectorAll('.fig,.bridge').forEach(e=>{e.classList.add('reveal');rv.observe(e);});}
+}
+chrome();
+load().then(D=>{mountLLM(D);mountRAG(D);mountProblems(D);mountGraph(D);mountCompare(D);})
+ .catch(e=>{const el=$('#err');el.style.display='block';el.textContent='Could not load ../data/*.json ('+e.message+'). Serve the folder over HTTP, for example: python3 -m http.server from the story folder, then open /build/index.html.';});
+})();
+</script>
+</body>
+</html>

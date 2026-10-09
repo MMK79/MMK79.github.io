@@ -83,3 +83,5 @@ html[lang=fa] .ex-body h4{text-transform:none;font-size:13px}
 .ex-rel{white-space:normal;text-decoration:none}
 a.ex-rel:hover{border-color:var(--ai);color:var(--ai)}
 .ex-rel.soon{opacity:.65;border-style:dashed}
+
+.ex-sub{font-size:20px;margin:26px 0 0}

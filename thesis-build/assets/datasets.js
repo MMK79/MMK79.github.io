@@ -80,10 +80,11 @@ const has = f => (D.data.datasets || []).includes(f);
 if (has("course_videos.json")) {
   const V = await fetch("/thesis/data/course_videos.json").then(r => r.json());
   const P = has("course_platforms.json") ? await fetch("/thesis/data/course_platforms.json").then(r => r.json()) : [];
+  const NMS = I18N.fa ? {} : (D.en_names || {}), nm = s => NMS[s] ?? s;   // English pages: Persian course titles shown by their English name (i18n/en-names.json)
   const a = (u, k) => /^https?:\/\//.test(u || "") ? `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(k)}</a>` : "";
   const lang = s => /^fa/.test(s || "") ? "fa" : /^en/.test(s || "") ? "en" : "other";
   const R = [
-    ...V.map(x => ({name: x.course, by: [x.university, x.year].filter(Boolean).join(", "), kind: x.kind || "university", country: x.country || "?", lang: lang(x.language),
+    ...V.map(x => ({name: nm(x.course), by: [nm(x.university), x.year].filter(Boolean).join(", "), kind: x.kind || "university", country: x.country || "?", lang: lang(x.language),
       access: x.access, h: typeof x.hours === "number" && x.playlist_url ? x.hours : 0,
       size: x.lectures != null ? `${x.lectures} / ${x.hours} h` : "–", caps: x.captions, fit: x.syllabus_overlap || "", high: /^high/.test(x.syllabus_overlap || ""),
       links: a(x.playlist_url, "playlist") + a(x.official_url, "course page") + a(x.slides_url, "slides")})),

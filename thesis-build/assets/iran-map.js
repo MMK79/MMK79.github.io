@@ -148,7 +148,7 @@ svg.addEventListener("mousemove", e => { const c = e.target.dataset.c; if (!c) {
   const v = value(year(), c); tip.style.display = "block";
   // keep the tooltip inside the window (it flips to the other side of the pointer near the edge)
   const tx = e.clientX + 14 + 270 > innerWidth ? e.clientX - 14 - 260 : e.clientX + 14; tip.style.left = Math.max(4, tx) + "px"; tip.style.top = e.clientY + 14 + "px";
-  tip.innerHTML = `<b>${esc(NM(c))}</b> <span ${I.fa ? 'lang="en" dir="ltr"' : 'lang="fa" style="font-family:Vazirmatn"'}>${esc(I.fa ? NAME[c].name_en : NAME[c].name_fa)}</span><br>${esc(measures()[S.msr])}: <b>${v == null ? esc(t("map.no_data")) : PCT.has(S.msr) ? v.toFixed(1) + "%" : fmt(v)}</b>`; });
+  tip.innerHTML = `<b>${esc(NM(c))}</b>${I.fa ? ` <span lang="en" dir="ltr">${esc(NAME[c].name_en)}</span>` : ""}<br>${esc(measures()[S.msr])}: <b>${v == null ? esc(t("map.no_data")) : PCT.has(S.msr) ? v.toFixed(1) + "%" : fmt(v)}</b>`; });
 svg.addEventListener("mouseleave", () => tip.style.display = "none");
 
 // ---------- small line chart ----------
@@ -354,7 +354,7 @@ $("rank").onclick = e => { const li = e.target.closest("li"); if (li) { S.sel = 
 
 // panel heading: the province in the page language, the other language underneath
 const title = nm => I.fa ? `<h2>${esc(nm.name_fa)}</h2><div class="fa" lang="en" dir="ltr" style="font-family:var(--body)">${esc(nm.name_en)}</div>`
-                         : `<h2>${esc(nm.name_en)}</h2><div class="fa" lang="fa">${esc(nm.name_fa)}</div>`;
+                         : `<h2>${esc(nm.name_en)}</h2>`;   // no Persian text on English pages
 // "Khordad 1402 (June 2023)" -> «خرداد 1402»; the session label is kept short in both languages
 const session = s => { s = String(s).replace(/\(.*?\)/g, "").replace(/\s*DERIVED\s*$/, "").trim(); return I.fa ? s.replace(/^Khordad/, "خرداد").replace(/^Academic year/, "سال تحصیلی") : s; };
 function outPanel(y, ym) {
@@ -408,7 +408,7 @@ function panel(y, ym) {
   if (fl.length) h += `<div class="flags">${[...new Set(fl)].map(f => `<div class="note-box">${esc(FLAG[f])}</div>`).join("")}</div>`;
   const src = PROV.datasets?.[S.ds === "k12" ? "k12" : "he"]?.[y] || [];
   // provenance names the yearbook table (file :: table), never a path on this machine
-  const tbl = s => String(s).replace(/^.*\//, "").replace(/#\d+$/, "");
+  const tbl = s => String(s).normalize("NFC").replace(/^.*\//, "").replace(/#\d+$/, "").replace(I.fa ? /$^/ : /آموزش/g, "Education");   // the yearbook file is named in Persian: English pages show its English title
   h += `<div class="src">${esc(t(src.length === 1 ? "map.src1" : "map.srcn", {n: src.length}))} <span data-latin>${src.slice(0, 4).map(x => esc(tbl(x))).join("; ")}${src.length > 4 ? "; …" : ""}</span></div>`;
   $("panel").innerHTML = h;
 }

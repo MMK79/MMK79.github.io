@@ -4,13 +4,13 @@
  "rule": "used = Semantic Scholar count when S2 resolved the event (title and year checked), else the OpenAlex count (larger of arXiv and published records), else null. split_flag when the two differ by more than 3x.",
  "totals": {
   "events_considered": 103,
-  "matched": 103,
-  "unmatched": 0,
+  "matched": 102,
+  "unmatched": 1,
   "from_s2": 95,
-  "from_openalex": 8,
+  "from_openalex": 7,
   "split_flagged": 50,
   "s2_rejected": 4,
-  "sum_citations": 667145,
+  "sum_citations": 666764,
   "uncertain": 21
  },
  "by_era": {
@@ -703,28 +703,17 @@
    "kind": "paper",
    "retrieved": "2026-10-08",
    "s2": null,
-   "openalex": {
-    "count": 381,
-    "arxiv_count": null,
-    "published_count": 381,
-    "version": "published",
-    "works": [
-     {
-      "id": "W2887107689",
-      "doi": "https://doi.org/10.6028/nist.sp.500-225",
-      "title": "Overview of the third text Retrieval conference (TREC-3)",
-      "year": 1995,
-      "cited_by_count": 381,
-      "arxiv_like": false
-     }
-    ],
-    "matched_by": [
-     "proceedings_doi"
-    ],
-    "source": "OpenAlex cited_by_count"
-   },
-   "used": 381,
-   "used_source": "openalex"
+   "openalex": null,
+   "used": null,
+   "used_source": null,
+   "superseded": [
+    {
+     "field": "citations (openalex/used)",
+     "text": "{\"openalex\": {\"count\": 381, \"arxiv_count\": null, \"published_count\": 381, \"version\": \"published\", \"works\": [{\"id\": \"W2887107689\", \"doi\": \"https://doi.org/10.6028/nist.sp.500-225\", \"title\": \"Overview of the third text Retrieval conference (TREC-3)\", \"year\": 1995, \"cited_by_count\": 381, \"arxiv_like\": false}], \"matched_by\": [\"proceedings_doi\"], \"source\": \"OpenAlex cited_by_count\"}, \"used\": 381, \"used_",
+     "on": "2026-10-09",
+     "reason": "OpenAlex W2887107689 is the TREC-3 overview (Harman, 1995), not 'Okapi at TREC-3'; no OpenAlex or Semantic Scholar record for the Okapi paper."
+    }
+   ]
   },
   "cyc-1995": {
    "title": "CYC: a large-scale investment in knowledge infrastructure",

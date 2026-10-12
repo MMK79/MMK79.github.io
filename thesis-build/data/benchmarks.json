@@ -5,7 +5,7 @@
   "mmlu_pro": "https://www.vals.ai/benchmarks/mmlu_pro",
   "gpqa": "https://www.vals.ai/benchmarks/gpqa"
  },
- "note": "Vault: Notes/Model Benchmarks - CS-ML QA and Text-to-Graph.md. Re-check each row on the source page before citing.",
+ "note": "Vault: Notes/Model Benchmarks - CS-ML QA and Text-to-Graph.md. Re-check each row on the source page before citing. Vals archived both benchmarks (saturated; last update 2026-09-01), so rows are frozen and newer models exist. GPQA nulls for haiku-4-5 72.22, qwen3-235b 70.20, gemini-2.5-flash 81.57, gemini-2.5-pro 80.81, sonnet-4.6 85.61, gemini-3-flash 87.88 exist on Vals but were not collected. qwen3-235b price is Alibaba's; deepseek-v4.1-flash price is off-peak.",
  "models": [
   {
    "model": "gpt-5-nano",
@@ -375,10 +375,18 @@
  ],
  "graph_evidence": [
   {
-   "finding": "GPT-4 F1 9.1 vs fine-tuned 53.2 on SciERC",
+   "finding": "GPT-4 one-shot F1 9.1 (zero-shot 7.2) vs fine-tuned SOTA 53.2 on SciERC",
    "source": "Zhu et al. 2023 (arXiv 2305.13168)",
    "caveat": "20-sample subset, exact match, 2023 models",
-   "url": "https://arxiv.org/abs/2305.13168"
+   "url": "https://arxiv.org/abs/2305.13168",
+   "superseded": [
+    {
+     "field": "finding",
+     "text": "GPT-4 F1 9.1 vs fine-tuned 53.2 on SciERC",
+     "on": "2026-10-09",
+     "reason": "Zhu et al. 2023: 9.1 is one-shot, zero-shot is 7.2 (audit 2026-10-09)"
+    }
+   ]
   },
   {
    "finding": "Exact-match scoring understates LLM extractors; human evaluation puts few-shot GPT-3 near supervised SOTA",
@@ -387,10 +395,18 @@
    "url": "https://aclanthology.org/2023.acl-long.868/"
   },
   {
-   "finding": "Concept-prerequisite extraction: GPT-4o-mini + RAG F1 71.9, LLaMA 3 + RAG 70.2, PREREQ 59.7",
+   "finding": "Concept-prerequisite extraction scores (UNVERIFIED: not found in the cited paper)",
    "source": "MAKE 2025, doi 10.3390/make7030103",
-   "caveat": "from a search snippet; check the paper",
-   "url": "https://doi.org/10.3390/make7030103"
+   "caveat": "Numbers GPT-4o-mini + RAG 71.9, LLaMA 3 + RAG 70.2, PREREQ 59.7 do not appear in MAKE 2025 (doi 10.3390/make7030103), which studies GPT-3.5/4o-mini/4o on concept extraction; source unknown, do not cite",
+   "url": "https://doi.org/10.3390/make7030103",
+   "superseded": [
+    {
+     "field": "finding",
+     "text": "Concept-prerequisite extraction: GPT-4o-mini + RAG F1 71.9, LLaMA 3 + RAG 70.2, PREREQ 59.7",
+     "on": "2026-10-09",
+     "reason": "cited paper does not contain these numbers or a PREREQ baseline (audit 2026-10-09)"
+    }
+   ]
   },
   {
    "finding": "No 2025-26 score found for Claude, Gemini, Qwen or DeepSeek on SciERC or Text2KGBench",
@@ -398,5 +414,13 @@
    "caveat": "a gap, not evidence of equality"
   }
  ],
- "finding": "Public benchmarks shortlist and tier the models: the mid-priced candidates sit within about 13 MMLU-Pro points. No public benchmark covers course-level ML questions in English and Persian, or extracting teaching relations (prerequisite-of, part-of, example-of), so the pilot (50 questions, ~200 gold graph facts) makes the final choice."
+ "finding": "Public benchmarks shortlist and tier the models: the mid-priced candidates sit within about 13 MMLU-Pro points. No public benchmark covers course-level ML questions in English and Persian, or extracting teaching relations (prerequisite-of, part-of, example-of), so the pilot (50 questions, ~200 gold graph facts) makes the final choice.",
+ "superseded": [
+  {
+   "field": "note",
+   "text": "Vault: Notes/Model Benchmarks - CS-ML QA and Text-to-Graph.md. Re-check each row on the source page before citing.",
+   "on": "2026-10-09",
+   "reason": "audit 2026-10-09: archived benchmarks, uncollected GPQA values, price basis"
+  }
+ ]
 }

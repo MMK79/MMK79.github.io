@@ -20,10 +20,13 @@ let missing = false;   // a Persian page that shows an English catalogue field s
 const noteEn = () => { missing = true; const n = document.getElementById("ex-en"); if (n && I.fa) n.hidden = false; };
 
 const getJSON = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + " " + r.status); return r.json(); });
-let cat, status, rel = {};
+let cat, status, rel = {}, PROV = {}, FDB = {}, FDT = {};   // PROV: {kind:id -> origin record} from /data/provenance.json (Sources page data)
 try {
   [cat, status] = await Promise.all([getJSON("/thesis/data/explainers/" + kind + ".json"), getJSON("/thesis/data/explainers/" + kind + "-build-status.json")]);
-  rel = (await getJSON("/thesis/data/explainers/relations.json").catch(() => ({})))[kind] || {};   // related cards of the other page (site.py: relations())
+  rel = (await getJSON("/thesis/data/explainers/relations.json").catch(() => ({})))[kind] || {};
+  FDB = await getJSON("/thesis/data/foundations/backlinks.json").catch(() => ({}));   // existing card id -> Foundations topic ids (Brief M)
+  FDT = await getJSON("/thesis/data/foundations/index.json").then(d => Object.fromEntries(d.families.flatMap(f => f.topics.map(t => [t.id, {...t, fam: f.id}])))).catch(() => ({}));
+  PROV = (await getJSON("/thesis/data/provenance.json").catch(() => ({items: {}}))).items || {};   // related cards of the other page (site.py: relations())
 } catch (e) {
   main.innerHTML = `<p class="ex-none">${esc(T("ex.nodata"))}</p>`; return;
 }
@@ -41,42 +44,7 @@ const layerName = l => tk("ex.layer_" + l.id, l.name);
 const evName = s => tk("ex.ev_" + s, s);
 const rev = d => esc(T("ex.revised", {d: "\u0001"})).replace("\u0001", `<bdi dir="ltr">${esc(d)}</bdi>`);   // dates stay YYYY-MM-DD order on Persian
 
-// LaTeX -> readable Unicode (no math library is vendored on the site; the LaTeX source stays one click away).
-const GREEK = {alpha: "α", beta: "β", gamma: "γ", delta: "δ", epsilon: "ε", varepsilon: "ε", zeta: "ζ", eta: "η", theta: "θ", kappa: "κ", lambda: "λ", mu: "μ", nu: "ν", xi: "ξ", pi: "π", rho: "ρ", sigma: "σ", tau: "τ", phi: "φ", varphi: "φ", chi: "χ", psi: "ψ", omega: "ω",
-  Gamma: "Γ", Delta: "Δ", Theta: "Θ", Lambda: "Λ", Xi: "Ξ", Pi: "Π", Sigma: "Σ", Phi: "Φ", Psi: "Ψ", Omega: "Ω"};
-const OPS = {sum: "Σ", prod: "∏", cdot: "·", times: "×", div: "÷", le: "≤", leq: "≤", ge: "≥", geq: "≥", neq: "≠", ne: "≠", approx: "≈", sim: "∼", equiv: "≡", propto: "∝",
-  in: "∈", notin: "∉", cap: "∩", cup: "∪", bigcup: "⋃", bigcap: "⋂", subseteq: "⊆", subset: "⊂", setminus: "∖", emptyset: "∅", varnothing: "∅", infty: "∞", to: "→", rightarrow: "→", leftarrow: "←",
-  Rightarrow: "⇒", Leftrightarrow: "⇔", iff: "⇔", mapsto: "↦", mid: "|", vert: "|", lvert: "|", rvert: "|", Vert: "‖", lVert: "‖", rVert: "‖", langle: "⟨", rangle: "⟩", lceil: "⌈", rceil: "⌉", lfloor: "⌊", rfloor: "⌋",
-  ldots: "…", dots: "…", cdots: "⋯", forall: "∀", exists: "∃", neg: "¬", land: "∧", lor: "∨", wedge: "∧", vee: "∨", pm: "±", partial: "∂", nabla: "∇", top: "ᵀ", circ: "∘", oplus: "⊕", otimes: "⊗",
-  star: "*", ast: "*", quad: "  ", qquad: "    ", colon: ":", lbrace: "{", rbrace: "}", Pr: "Pr", log: "log", ln: "ln", exp: "exp", max: "max", min: "min", arg: "arg", argmax: "argmax", argmin: "argmin",
-  sqrt: "√", sin: "sin", cos: "cos", lim: "lim", sup: "sup", inf: "inf", det: "det", dim: "dim", mod: "mod", bmod: "mod", deg: "deg", ell: "ℓ", hbar: "ħ", prime: "′", cdotp: "·", bullet: "•", triangleq: "≜", coloneqq: "≔"};
-const SUP = {"0": "⁰", "1": "¹", "2": "²", "3": "³", "4": "⁴", "5": "⁵", "6": "⁶", "7": "⁷", "8": "⁸", "9": "⁹", "+": "⁺", "-": "⁻", "=": "⁼", "(": "⁽", ")": "⁾", n: "ⁿ", i: "ⁱ", T: "ᵀ", k: "ᵏ", t: "ᵗ", "*": "*", "′": "′"};
-const SUB = {"0": "₀", "1": "₁", "2": "₂", "3": "₃", "4": "₄", "5": "₅", "6": "₆", "7": "₇", "8": "₈", "9": "₉", "+": "₊", "-": "₋", "=": "₌", "(": "₍", ")": "₎", a: "ₐ", e: "ₑ", o: "ₒ", x: "ₓ", h: "ₕ", k: "ₖ", l: "ₗ", m: "ₘ", n: "ₙ", p: "ₚ", s: "ₛ", t: "ₜ", i: "ᵢ", j: "ⱼ", r: "ᵣ", u: "ᵤ", v: "ᵥ"};
-const script = (s, map, mark) => { s = s.trim(); return [...s].every(c => c in map) ? [...s].map(c => map[c]).join("") : mark + (s.length > 1 ? "(" + s + ")" : s); };
-function tex(src) {
-  let s = String(src ?? "");
-  s = s.replace(/\\\{/g, "\u0001").replace(/\\\}/g, "\u0002").replace(/\\%/g, "%").replace(/\\#/g, "#").replace(/\\&/g, "&").replace(/\\_/g, "\u0003");
-  s = s.replace(/\\(?:left|right|big|Big|bigg|Bigg)(?=[^A-Za-z])/g, "").replace(/\\displaystyle|\\limits|\\nolimits/g, "");
-  s = s.replace(/\\[,;:!> ]/g, m => (m === "\\!" ? "" : " ")).replace(/~/g, " ");
-  for (let i = 0; i < 8; i++) {   // innermost brace groups first
-    const before = s;
-    s = s.replace(/\\(?:text|textrm|textit|textbf|mathrm|mathit|mathbf|mathsf|mathtt|mathcal|mathbb|boldsymbol|operatorname\*?|mbox|emph)\s*\{([^{}]*)\}/g, "$1");
-    s = s.replace(/\\(?:hat|bar|tilde|vec|overline|underline|widehat|widetilde|dot)\s*\{([^{}]*)\}/g, (m, a) => a + (m.includes("hat") ? "̂" : m.includes("tilde") ? "̃" : m.includes("dot") ? "̇" : m.includes("vec") ? "⃗" : "̄"));
-    s = s.replace(/\\[dt]?frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, (m, a, b) => `${/^[\w.′]+$/.test(a.trim()) ? a.trim() : "(" + a.trim() + ")"}/${/^[\w.′]+$/.test(b.trim()) ? b.trim() : "(" + b.trim() + ")"}`);
-    s = s.replace(/\\binom\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "C($1, $2)");
-    s = s.replace(/\\sqrt\s*\{([^{}]*)\}/g, "√($1)");
-    s = s.replace(/\\x(?:right|left)arrow\s*(?:\[[^\]]*\])?\s*\{([^{}]*)\}/g, (m, a) => ` —${a}→ `);
-    s = s.replace(/\\(?:overset|stackrel)\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "$2[$1]").replace(/\\underset\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, "$2_{$1}");
-    s = s.replace(/\\(?:underbrace|overbrace)\s*\{([^{}]*)\}/g, "$1");
-    s = s.replace(/\^\s*\{([^{}]*)\}/g, (m, a) => script(a, SUP, "^")).replace(/_\s*\{([^{}]*)\}/g, (m, a) => script(a, SUB, "_"));
-    s = s.replace(/(?<![\\\w])\{([^{}]*)\}/g, "$1");
-    if (s === before) break;
-  }
-  s = s.replace(/\\([A-Za-z]+)/g, (m, w) => GREEK[w] ?? OPS[w] ?? w);
-  s = s.replace(/\^([A-Za-z0-9*′])/g, (m, a) => SUP[a] ?? "^" + a).replace(/_([A-Za-z0-9])/g, (m, a) => SUB[a] ?? "_" + a);
-  s = s.replace(/\\\\/g, "\n").replace(/[{}]/g, "").replace(/\u0001/g, "{").replace(/\u0002/g, "}").replace(/\u0003/g, "_").replace(/[ \t]{3,}/g, "   ");
-  return s.trim();
-}
+const {tex} = window.EXS;   // explain-shared.js (LaTeX -> Unicode, Origin block)
 
 const PAGE_RX = /\b(?:PDF\s)?pp?\.\s?\d+(?:\s?[-–]\s?\d+)?|\bSecs?\.\s?\d+(?:\.\d+)*|\bSection\s\d+(?:\.\d+)*|\bEqs?\.\s?\d+(?:\.\d+)*(?:\s?[-–]\s?\d+(?:\.\d+)*)?|\bTable\s\d+|\bAlgorithm\s\d+|\bFig(?:ure|\.)\s?\d+/g;
 const pages = s => [...new Set(String(s ?? "").match(PAGE_RX) || [])];
@@ -174,6 +142,7 @@ function body(u, el) {
         ${list(u.blind_spots, fx(u, "blind_spots"))}
       </div>
     </div>
+    ${foundations(u)}${origin(u)}
     ${related(u)}
     <details class="ex-blk"><summary class="ex-src" style="cursor:pointer">${esc(T("ex.h_worked"))}</summary>
       ${wx(u, we)}
@@ -183,6 +152,12 @@ function body(u, el) {
   video(u, el.querySelector(".ex-video"));
   demo(u, el.querySelector(".ex-demo"));
 }
+
+// Origin: the paper that introduced this metric or algorithm (provenance record, Brief I): badge, authors, year, title, venue, DOI/arXiv links,
+// citation count with its source and date, what exactly the paper introduced, further references. Inferred items say why they have no origin paper.
+const PK = kind === "metrics" ? "metric" : "algorithm";
+const foundations = u => { const ts = (FDB[u.id] || []).filter(x => FDT[x]); return ts.length ? `<div class="ex-blk ex-chips-fd"><h4>${esc(T("fd.h_found"))}</h4>${ts.map(x => (I.fa && FDT[x].title_fa ? `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}">${esc(FDT[x].title_fa)}</a>` : `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}" lang="en" dir="ltr">${esc(FDT[x].title)}</a>`)).join("")}</div>` : ""; };
+const origin = u => { const r = PROV[PK + ":" + u.id]; return r ? window.EXS.originBlock(r, T, N, esc) : ""; };
 
 // Related chips: the other page's cards this unit is measured by / measures. A chip links only when that card exists in this build.
 const OTHER = kind === "metrics" ? "algorithms" : "metrics";

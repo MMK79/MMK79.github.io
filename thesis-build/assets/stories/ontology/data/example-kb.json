@@ -1,0 +1,2831 @@
+{
+ "meta": {
+  "id": "example-kb",
+  "title": "ML courses mini knowledge base",
+  "built": "2026-10-09",
+  "builder": "data/build_example_kb.py",
+  "domain": "ML/AI courses at real universities (6 courses, 4 universities)",
+  "provenance": "Every A-box triple has `src`: a record in universities/exports/site/courses.json (`courses.json#items[N].field`, a passage id from `passages`, or `modelling` for our own topic typing). T-box and R-box are our design (`modelling`), not data.",
+  "data_root": "vault data folder (path omitted)",
+  "caveat": "Prerequisites and topics are not columns in courses.json; they come from the syllabus pages in the crawl cache (cache/raw), quoted verbatim in `passages` (quotes verified as substrings). CPSC 320 and CPSC 221 appear only inside the CPSC 440/340 pages."
+ },
+ "prefixes": {
+  "ex": "https://example.org/mlcourses#",
+  "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+  "owl": "http://www.w3.org/2002/07/owl#",
+  "xsd": "http://www.w3.org/2001/XMLSchema#",
+  "sh": "http://www.w3.org/ns/shacl#"
+ },
+ "tbox": {
+  "classes": [
+   {
+    "id": "Course",
+    "subClassOf": null,
+    "comment": "A university course (offering-independent)."
+   },
+   {
+    "id": "MLCourse",
+    "subClassOf": "Course",
+    "comment": "Course the pipeline flagged topic=ml-core."
+   },
+   {
+    "id": "UndergraduateCourse",
+    "subClassOf": "Course",
+    "comment": "Record level = undergrad."
+   },
+   {
+    "id": "GraduateCourse",
+    "subClassOf": "Course",
+    "comment": "Record level = grad."
+   },
+   {
+    "id": "Topic",
+    "subClassOf": null,
+    "comment": "Something a course covers."
+   },
+   {
+    "id": "MLTopic",
+    "subClassOf": "Topic",
+    "comment": null
+   },
+   {
+    "id": "ClassicalMLTopic",
+    "subClassOf": "MLTopic",
+    "comment": null
+   },
+   {
+    "id": "ProbabilisticModelTopic",
+    "subClassOf": "MLTopic",
+    "comment": null
+   },
+   {
+    "id": "DeepLearningTopic",
+    "subClassOf": "MLTopic",
+    "comment": null
+   },
+   {
+    "id": "NeuralArchitectureTopic",
+    "subClassOf": "DeepLearningTopic",
+    "comment": null
+   },
+   {
+    "id": "ConvolutionalNetworkTopic",
+    "subClassOf": "NeuralArchitectureTopic",
+    "comment": null
+   },
+   {
+    "id": "RecurrentNetworkTopic",
+    "subClassOf": "NeuralArchitectureTopic",
+    "comment": null
+   },
+   {
+    "id": "GraphNetworkTopic",
+    "subClassOf": "NeuralArchitectureTopic",
+    "comment": null
+   },
+   {
+    "id": "TransformerTopic",
+    "subClassOf": "NeuralArchitectureTopic",
+    "comment": null
+   },
+   {
+    "id": "GenerativeModelTopic",
+    "subClassOf": "DeepLearningTopic",
+    "comment": null
+   },
+   {
+    "id": "University",
+    "subClassOf": null,
+    "comment": null
+   },
+   {
+    "id": "Offering",
+    "subClassOf": null,
+    "comment": "One run of a course in a term."
+   },
+   {
+    "id": "Book",
+    "subClassOf": null,
+    "comment": null
+   }
+  ],
+  "disjointWith": [
+   {
+    "a": "Course",
+    "b": "Topic"
+   },
+   {
+    "a": "Course",
+    "b": "Book"
+   },
+   {
+    "a": "UndergraduateCourse",
+    "b": "GraduateCourse"
+   }
+  ],
+  "objectProperties": [
+   {
+    "id": "covers",
+    "domain": "Course",
+    "range": "Topic",
+    "inverseOf": "coveredBy",
+    "transitive": false,
+    "subPropertyOf": null,
+    "irreflexive": false
+   },
+   {
+    "id": "coveredBy",
+    "domain": "Topic",
+    "range": "Course",
+    "inverseOf": "covers",
+    "transitive": false,
+    "subPropertyOf": null,
+    "irreflexive": false
+   },
+   {
+    "id": "hasPrerequisite",
+    "domain": "Course",
+    "range": "Course",
+    "inverseOf": "prerequisiteOf",
+    "transitive": true,
+    "subPropertyOf": null,
+    "irreflexive": true
+   },
+   {
+    "id": "prerequisiteOf",
+    "domain": "Course",
+    "range": "Course",
+    "inverseOf": "hasPrerequisite",
+    "transitive": true,
+    "subPropertyOf": null,
+    "irreflexive": true
+   },
+   {
+    "id": "offeredBy",
+    "domain": "Course",
+    "range": "University",
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": null,
+    "irreflexive": false
+   },
+   {
+    "id": "hasOffering",
+    "domain": "Course",
+    "range": "Offering",
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": null,
+    "irreflexive": false
+   },
+   {
+    "id": "usesBook",
+    "domain": "Course",
+    "range": "Book",
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": null,
+    "irreflexive": false
+   },
+   {
+    "id": "hasTextbook",
+    "domain": null,
+    "range": null,
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": "usesBook",
+    "irreflexive": false
+   },
+   {
+    "id": "recommendsBook",
+    "domain": null,
+    "range": null,
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": "usesBook",
+    "irreflexive": false
+   },
+   {
+    "id": "mentionsBook",
+    "domain": null,
+    "range": null,
+    "inverseOf": null,
+    "transitive": false,
+    "subPropertyOf": "usesBook",
+    "irreflexive": false
+   }
+  ],
+  "datatypeProperties": [
+   {
+    "id": "term",
+    "domain": "Offering",
+    "range": "xsd:string"
+   },
+   {
+    "id": "year",
+    "domain": "Offering",
+    "range": "xsd:integer"
+   },
+   {
+    "id": "country",
+    "domain": "University",
+    "range": "xsd:string"
+   }
+  ]
+ },
+ "tbox_triples": [
+  {
+   "s": "ex:Course",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:MLCourse",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:MLCourse",
+   "p": "rdfs:subClassOf",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:UndergraduateCourse",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:UndergraduateCourse",
+   "p": "rdfs:subClassOf",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GraduateCourse",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GraduateCourse",
+   "p": "rdfs:subClassOf",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:Topic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:MLTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:MLTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:Topic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ClassicalMLTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ClassicalMLTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:MLTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ProbabilisticModelTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ProbabilisticModelTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:MLTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:DeepLearningTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:DeepLearningTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:MLTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:NeuralArchitectureTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:NeuralArchitectureTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:DeepLearningTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ConvolutionalNetworkTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:ConvolutionalNetworkTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:NeuralArchitectureTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:RecurrentNetworkTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:RecurrentNetworkTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:NeuralArchitectureTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GraphNetworkTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GraphNetworkTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:NeuralArchitectureTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:TransformerTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:TransformerTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:NeuralArchitectureTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GenerativeModelTopic",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:GenerativeModelTopic",
+   "p": "rdfs:subClassOf",
+   "o": "ex:DeepLearningTopic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:University",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:Offering",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:Book",
+   "p": "rdf:type",
+   "o": "owl:Class",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:Course",
+   "p": "owl:disjointWith",
+   "o": "ex:Topic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:Course",
+   "p": "owl:disjointWith",
+   "o": "ex:Book",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:UndergraduateCourse",
+   "p": "owl:disjointWith",
+   "o": "ex:GraduateCourse",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:covers",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:covers",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:covers",
+   "p": "rdfs:range",
+   "o": "ex:Topic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:covers",
+   "p": "owl:inverseOf",
+   "o": "ex:coveredBy",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:coveredBy",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:coveredBy",
+   "p": "rdfs:domain",
+   "o": "ex:Topic",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:coveredBy",
+   "p": "rdfs:range",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:coveredBy",
+   "p": "owl:inverseOf",
+   "o": "ex:covers",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasPrerequisite",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasPrerequisite",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasPrerequisite",
+   "p": "rdfs:range",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasPrerequisite",
+   "p": "owl:inverseOf",
+   "o": "ex:prerequisiteOf",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasPrerequisite",
+   "p": "rdf:type",
+   "o": "owl:TransitiveProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:prerequisiteOf",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:prerequisiteOf",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:prerequisiteOf",
+   "p": "rdfs:range",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:prerequisiteOf",
+   "p": "owl:inverseOf",
+   "o": "ex:hasPrerequisite",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:prerequisiteOf",
+   "p": "rdf:type",
+   "o": "owl:TransitiveProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:offeredBy",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:offeredBy",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:offeredBy",
+   "p": "rdfs:range",
+   "o": "ex:University",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasOffering",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasOffering",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasOffering",
+   "p": "rdfs:range",
+   "o": "ex:Offering",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:usesBook",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:usesBook",
+   "p": "rdfs:domain",
+   "o": "ex:Course",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:usesBook",
+   "p": "rdfs:range",
+   "o": "ex:Book",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasTextbook",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:hasTextbook",
+   "p": "rdfs:subPropertyOf",
+   "o": "ex:usesBook",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:recommendsBook",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:recommendsBook",
+   "p": "rdfs:subPropertyOf",
+   "o": "ex:usesBook",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:mentionsBook",
+   "p": "rdf:type",
+   "o": "owl:ObjectProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:mentionsBook",
+   "p": "rdfs:subPropertyOf",
+   "o": "ex:usesBook",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:term",
+   "p": "rdf:type",
+   "o": "owl:DatatypeProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:term",
+   "p": "rdfs:domain",
+   "o": "ex:Offering",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:term",
+   "p": "rdfs:range",
+   "o": "xsd:string",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:year",
+   "p": "rdf:type",
+   "o": "owl:DatatypeProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:year",
+   "p": "rdfs:domain",
+   "o": "ex:Offering",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:year",
+   "p": "rdfs:range",
+   "o": "xsd:integer",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:country",
+   "p": "rdf:type",
+   "o": "owl:DatatypeProperty",
+   "layer": "rbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:country",
+   "p": "rdfs:domain",
+   "o": "ex:University",
+   "layer": "tbox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:country",
+   "p": "rdfs:range",
+   "o": "xsd:string",
+   "layer": "tbox",
+   "src": "modelling"
+  }
+ ],
+ "abox": [
+  {
+   "s": "ex:MIT",
+   "p": "rdf:type",
+   "o": "ex:University",
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:MIT",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Massachusetts Institute of Technology",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:MIT",
+   "p": "ex:country",
+   "o": {
+    "lit": "United States",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:UBC",
+   "p": "rdf:type",
+   "o": "ex:University",
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:UBC",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "University of British Columbia",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:UBC",
+   "p": "ex:country",
+   "o": {
+    "lit": "Canada",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:CUHK",
+   "p": "rdf:type",
+   "o": "ex:University",
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:CUHK",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "The Chinese University of Hong Kong",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:CUHK",
+   "p": "ex:country",
+   "o": {
+    "lit": "Hong Kong",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:TUE",
+   "p": "rdf:type",
+   "o": "ex:University",
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:TUE",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Eberhard-Karls-Universität Tübingen",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:TUE",
+   "p": "ex:country",
+   "o": {
+    "lit": "Germany",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "universities.json"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "rdf:type",
+   "o": "ex:MLCourse",
+   "layer": "abox",
+   "src": "courses.json#items[35].topic"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:offeredBy",
+   "o": "ex:MIT",
+   "layer": "abox",
+   "src": "courses.json#items[35].university"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "rdf:type",
+   "o": "ex:MLCourse",
+   "layer": "abox",
+   "src": "courses.json#items[36].topic"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "ex:offeredBy",
+   "o": "ex:MIT",
+   "layer": "abox",
+   "src": "courses.json#items[36].university"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "rdf:type",
+   "o": "ex:MLCourse",
+   "layer": "abox",
+   "src": "courses.json#items[84].topic"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "rdf:type",
+   "o": "ex:UndergraduateCourse",
+   "layer": "abox",
+   "src": "courses.json#items[84].level"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:offeredBy",
+   "o": "ex:UBC",
+   "layer": "abox",
+   "src": "courses.json#items[84].university"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "rdf:type",
+   "o": "ex:MLCourse",
+   "layer": "abox",
+   "src": "courses.json#items[86].topic"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:offeredBy",
+   "o": "ex:UBC",
+   "layer": "abox",
+   "src": "courses.json#items[86].university"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "rdf:type",
+   "o": "ex:GraduateCourse",
+   "layer": "abox",
+   "src": "courses.json#items[81].level"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:offeredBy",
+   "o": "ex:CUHK",
+   "layer": "abox",
+   "src": "courses.json#items[81].university"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:offeredBy",
+   "o": "ex:TUE",
+   "layer": "abox",
+   "src": "courses.json#items[20].university"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "6.390 Introduction to Machine Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[35].code+title (shortened)"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "6.790 Machine Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[36].code+title (shortened)"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "CPSC 340 Machine Learning and Data Mining",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[84].code+title (shortened)"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "CPSC 440 Advanced Machine Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[86].code+title (shortened)"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "ELEG5491 Introduction to Deep Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[81].code+title (shortened)"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "ML-4103 Deep Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[20].code+title (shortened)"
+  },
+  {
+   "s": "ex:UBC_CPSC_320",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "CPSC 320 Intermediate Algorithm Design and Analysis",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_221",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "CPSC 221",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_320",
+   "p": "ex:offeredBy",
+   "o": "ex:UBC",
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_221",
+   "p": "ex:offeredBy",
+   "o": "ex:UBC",
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:hasOffering",
+   "o": "_:off340",
+   "layer": "abox",
+   "src": "courses.json#items[84].term"
+  },
+  {
+   "s": "_:off340",
+   "p": "rdf:type",
+   "o": "ex:Offering",
+   "layer": "abox",
+   "src": "courses.json#items[84].term"
+  },
+  {
+   "s": "_:off340",
+   "p": "ex:term",
+   "o": {
+    "lit": "Fall 2022",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[84].term"
+  },
+  {
+   "s": "_:off340",
+   "p": "ex:year",
+   "o": {
+    "lit": "2022",
+    "dt": "xsd:integer"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[84].year"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:hasOffering",
+   "o": "_:off390",
+   "layer": "abox",
+   "src": "courses.json#items[35].term"
+  },
+  {
+   "s": "_:off390",
+   "p": "rdf:type",
+   "o": "ex:Offering",
+   "layer": "abox",
+   "src": "courses.json#items[35].term"
+  },
+  {
+   "s": "_:off390",
+   "p": "ex:term",
+   "o": {
+    "lit": "Fall 2023",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[35].term"
+  },
+  {
+   "s": "_:off390",
+   "p": "ex:year",
+   "o": {
+    "lit": "2023",
+    "dt": "xsd:integer"
+   },
+   "layer": "abox",
+   "src": "courses.json#items[35].year"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_regression",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_gradient_descent",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_classification",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_neural_networks",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_cnn",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_390",
+   "p": "ex:covers",
+   "o": "ex:t_transformers",
+   "layer": "abox",
+   "src": "p_mit390_toc"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "ex:covers",
+   "o": "ex:t_generalization",
+   "layer": "abox",
+   "src": "p_mit790_desc"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "ex:covers",
+   "o": "ex:t_model_selection",
+   "layer": "abox",
+   "src": "p_mit790_desc"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_decision_trees",
+   "layer": "abox",
+   "src": "p_ubc340_sched"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_clustering",
+   "layer": "abox",
+   "src": "p_ubc340_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_pca",
+   "layer": "abox",
+   "src": "p_ubc340_sched"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_cnn",
+   "layer": "abox",
+   "src": "p_ubc340_sched"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_neural_networks",
+   "layer": "abox",
+   "src": "p_ubc340_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:covers",
+   "o": "ex:t_deep_learning",
+   "layer": "abox",
+   "src": "p_ubc340_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_deep_learning",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_generative_models",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_latent_variable",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_markov_models",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_pgm",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:covers",
+   "o": "ex:t_bayesian",
+   "layer": "abox",
+   "src": "p_ubc440_topics"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:covers",
+   "o": "ex:t_cnn",
+   "layer": "abox",
+   "src": "p_cuhk_sched"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:covers",
+   "o": "ex:t_rnn",
+   "layer": "abox",
+   "src": "p_cuhk_sched"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:covers",
+   "o": "ex:t_autoencoders",
+   "layer": "abox",
+   "src": "p_cuhk_sched"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:covers",
+   "o": "ex:t_gan",
+   "layer": "abox",
+   "src": "p_cuhk_sched"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:covers",
+   "o": "ex:t_cnn",
+   "layer": "abox",
+   "src": "p_tue_desc"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:covers",
+   "o": "ex:t_gnn",
+   "layer": "abox",
+   "src": "p_tue_desc"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:covers",
+   "o": "ex:t_autoencoders",
+   "layer": "abox",
+   "src": "p_tue_desc"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:covers",
+   "o": "ex:t_gan",
+   "layer": "abox",
+   "src": "p_tue_desc"
+  },
+  {
+   "s": "ex:t_regression",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_regression",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Regression",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_classification",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_classification",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Classification",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gradient_descent",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gradient_descent",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Gradient descent",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_decision_trees",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_decision_trees",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Decision trees",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_clustering",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_clustering",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Clustering",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_pca",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_pca",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Principal component analysis",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_generalization",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_generalization",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Generalization",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_model_selection",
+   "p": "rdf:type",
+   "o": "ex:ClassicalMLTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_model_selection",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Model selection",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_neural_networks",
+   "p": "rdf:type",
+   "o": "ex:NeuralArchitectureTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_neural_networks",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Neural networks",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_cnn",
+   "p": "rdf:type",
+   "o": "ex:ConvolutionalNetworkTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_cnn",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Convolutional neural networks",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_rnn",
+   "p": "rdf:type",
+   "o": "ex:RecurrentNetworkTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_rnn",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Recurrent neural networks",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gnn",
+   "p": "rdf:type",
+   "o": "ex:GraphNetworkTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gnn",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Graph neural networks",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_transformers",
+   "p": "rdf:type",
+   "o": "ex:TransformerTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_transformers",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Transformers",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_deep_learning",
+   "p": "rdf:type",
+   "o": "ex:DeepLearningTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_deep_learning",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Deep learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_autoencoders",
+   "p": "rdf:type",
+   "o": "ex:GenerativeModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_autoencoders",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Auto-encoders",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gan",
+   "p": "rdf:type",
+   "o": "ex:GenerativeModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_gan",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Generative adversarial networks",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_generative_models",
+   "p": "rdf:type",
+   "o": "ex:GenerativeModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_generative_models",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Generative models",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_markov_models",
+   "p": "rdf:type",
+   "o": "ex:ProbabilisticModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_markov_models",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Markov models",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_pgm",
+   "p": "rdf:type",
+   "o": "ex:ProbabilisticModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_pgm",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Probabilistic graphical models",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_bayesian",
+   "p": "rdf:type",
+   "o": "ex:ProbabilisticModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_bayesian",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Bayesian methods",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_latent_variable",
+   "p": "rdf:type",
+   "o": "ex:ProbabilisticModelTopic",
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:t_latent_variable",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Latent-variable models",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "modelling"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:hasPrerequisite",
+   "o": "ex:UBC_CPSC_340",
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:hasPrerequisite",
+   "o": "ex:UBC_CPSC_320",
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_320",
+   "p": "ex:hasPrerequisite",
+   "o": "ex:UBC_CPSC_221",
+   "layer": "abox",
+   "src": "p_ubc440_prereq"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:hasPrerequisite",
+   "o": "ex:UBC_CPSC_221",
+   "layer": "abox",
+   "src": "p_ubc340_prereq"
+  },
+  {
+   "s": "ex:MIT_6_790",
+   "p": "ex:hasPrerequisite",
+   "o": "ex:MIT_6_390",
+   "layer": "abox",
+   "src": "p_mit790_desc"
+  },
+  {
+   "s": "ex:b_dl",
+   "p": "rdf:type",
+   "o": "ex:Book",
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:b_dl",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Deep Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:b_prml",
+   "p": "rdf:type",
+   "o": "ex:Book",
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:b_prml",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Pattern Recognition and Machine Learning",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:b_mlapp",
+   "p": "rdf:type",
+   "o": "ex:Book",
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:b_mlapp",
+   "p": "rdfs:label",
+   "o": {
+    "lit": "Machine Learning: A Probabilistic Perspective",
+    "dt": "xsd:string"
+   },
+   "layer": "abox",
+   "src": "courses.json books[]"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:hasTextbook",
+   "o": "ex:b_dl",
+   "layer": "abox",
+   "src": "courses.json#items[86].books"
+  },
+  {
+   "s": "ex:UBC_CPSC_440",
+   "p": "ex:hasTextbook",
+   "o": "ex:b_prml",
+   "layer": "abox",
+   "src": "courses.json#items[86].books"
+  },
+  {
+   "s": "ex:UBC_CPSC_340",
+   "p": "ex:mentionsBook",
+   "o": "ex:b_mlapp",
+   "layer": "abox",
+   "src": "courses.json#items[84].books"
+  },
+  {
+   "s": "ex:CUHK_ELEG5491",
+   "p": "ex:mentionsBook",
+   "o": "ex:b_dl",
+   "layer": "abox",
+   "src": "courses.json#items[81].books"
+  },
+  {
+   "s": "ex:TUE_ML_4103",
+   "p": "ex:recommendsBook",
+   "o": "ex:b_prml",
+   "layer": "abox",
+   "src": "courses.json#items[20].books"
+  }
+ ],
+ "sources": {
+  "MIT_6_390": {
+   "record": "courses.json#items[35]",
+   "record_value": {
+    "university": "Massachusetts Institute of Technology",
+    "country": "United States",
+    "code": "6.390",
+    "title": "Introduction to Machine Learning",
+    "topic": "ml-core",
+    "level": "unknown",
+    "term": "Fall 2023",
+    "year": 2023,
+    "url": "https://introml.mit.edu/fall23/homework/hw01"
+   }
+  },
+  "MIT_6_790": {
+   "record": "courses.json#items[36]",
+   "record_value": {
+    "university": "Massachusetts Institute of Technology",
+    "country": "United States",
+    "code": "6.790",
+    "title": "Machine Learning",
+    "topic": "ml-core",
+    "level": "unknown",
+    "term": null,
+    "year": null,
+    "url": "https://gradml.mit.edu/"
+   }
+  },
+  "UBC_CPSC_340": {
+   "record": "courses.json#items[84]",
+   "record_value": {
+    "university": "University of British Columbia",
+    "country": "Canada",
+    "code": "CPSC 340",
+    "title": "CPSC 340 - Machine Learning and Data Mining",
+    "topic": "ml-core",
+    "level": "undergrad",
+    "term": "Fall 2022",
+    "year": 2022,
+    "url": "https://www.cs.ubc.ca/~schmidtm/Courses/340-F22/"
+   }
+  },
+  "UBC_CPSC_440": {
+   "record": "courses.json#items[86]",
+   "record_value": {
+    "university": "University of British Columbia",
+    "country": "Canada",
+    "code": "CPSC 440",
+    "title": "CPSC 440 and 540 - Advanced Machine Learning (January-April, 2022)",
+    "topic": "ml-core",
+    "level": "mixed",
+    "term": null,
+    "year": 2022,
+    "url": "https://www.cs.ubc.ca/~schmidtm/Courses/440-W22/"
+   }
+  },
+  "CUHK_ELEG5491": {
+   "record": "courses.json#items[81]",
+   "record_value": {
+    "university": "The Chinese University of Hong Kong",
+    "country": "Hong Kong",
+    "code": "ELEG5491",
+    "title": "ELEG5491: Introduction to Deep Learning",
+    "topic": "ml-related",
+    "level": "grad",
+    "term": null,
+    "year": null,
+    "url": "http://www.ee.cuhk.edu.hk/~xgwang/dl/syllabus.html"
+   }
+  },
+  "TUE_ML_4103": {
+   "record": "courses.json#items[20]",
+   "record_value": {
+    "university": "Eberhard-Karls-Universität Tübingen",
+    "country": "Germany",
+    "code": "ML-4103",
+    "title": "Deep Learning | Universität Tübingen",
+    "topic": "ml-related",
+    "level": "mixed",
+    "term": "WS 2025/26",
+    "year": 2025,
+    "url": "https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/autonomous-vision/lectures/deep-learning/"
+   }
+  }
+ },
+ "passages": [
+  {
+   "id": "p_mit390_toc",
+   "course": "ex:MIT_6_390",
+   "text": "2 Regression 3 Gradient Descent 4 Classification 5 Feature Representation 6 Neural Networks 7 Convolutional Neural Networks 8 Representation Learning 9 Transformers 10 Non-parametric Models",
+   "url": "https://introml.mit.edu/notes/neural_networks.html",
+   "cache_file": "cache/raw/a06f4a417185217a5fa94076645be0eb64722bf4.html",
+   "page_sha1": "c96ea88e0da25e777468bd104a80d61154fb3059",
+   "record": "courses.json#items[35]"
+  },
+  {
+   "id": "p_mit790_desc",
+   "course": "ex:MIT_6_790",
+   "text": "Probabilistic foundations of machine learning; offered in fall semesters; 12 units (3-0-9) Prerequisites: Introductory machine learning (at the level of 6.390 or 6.370 or 6.C01 ) ... Probabilistic thinking is critical to understanding machine learning, in techniques ranging from classic linear models to modern deep networks. We will study model representation, generalization, learning algorithms, and model-selection",
+   "url": "https://gradml.mit.edu/",
+   "cache_file": "cache/raw/fb15306b3d49933eb4522be1a38b6081f3a2d89f.html",
+   "page_sha1": "c9b5efaada8c960fc9cde812ee55495f6f8f2480",
+   "record": "courses.json#items[36]"
+  },
+  {
+   "id": "p_ubc340_topics",
+   "course": "ex:UBC_CPSC_340",
+   "text": "Data clustering, outlier detection, and association rules. Linear prediction, regularization, and kernels. Latent-factor models and collaborative filtering. Neural networks and deep learning.",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/340-F22/",
+   "cache_file": "cache/raw/93e497d4cdec28efb137391180f944636c2d359d.html",
+   "page_sha1": "4a3d1252571ef4e3246c24b7b7df3d68cdf468dd",
+   "record": "courses.json#items[84]"
+  },
+  {
+   "id": "p_ubc340_sched",
+   "course": "ex:UBC_CPSC_340",
+   "text": "Mon Sep 12 Decision Trees ... Wed Nov 16 Principal Component Analysis ... Fri Dec 2 Convolutional Neural Networks",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/340-F22/",
+   "cache_file": "cache/raw/93e497d4cdec28efb137391180f944636c2d359d.html",
+   "page_sha1": "4a3d1252571ef4e3246c24b7b7df3d68cdf468dd",
+   "record": "courses.json#items[84]"
+  },
+  {
+   "id": "p_ubc340_prereq",
+   "course": "ex:UBC_CPSC_340",
+   "text": "Prerequisites : Basic algorithms and data structures (CPSC 221,",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/340-F22/",
+   "cache_file": "cache/raw/93e497d4cdec28efb137391180f944636c2d359d.html",
+   "page_sha1": "4a3d1252571ef4e3246c24b7b7df3d68cdf468dd",
+   "record": "courses.json#items[84]"
+  },
+  {
+   "id": "p_ubc440_topics",
+   "course": "ex:UBC_CPSC_440",
+   "text": "Topics will (roughly) include deep learning, generative models, latent-variable models, Markov models, probabilistic graphical models, and Bayesian methods.",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/440-W22/",
+   "cache_file": "cache/raw/f878eab2d3f8ece928b6671fe4a6e25daf8e07aa.html",
+   "page_sha1": "cba5bda2977667cf5e0d86dd50af05751af4d4ab",
+   "record": "courses.json#items[86]"
+  },
+  {
+   "id": "p_ubc440_prereq",
+   "course": "ex:UBC_CPSC_440",
+   "text": "Prerequisites : CPSC 320: Intermediate Algorithm Design and Analysis. Note that this course itself has the following prerequisites: Basic algorithms and data structures (CPSC 221 or EECE 320). CPSC 340: Machine Learning and Data Mining.",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/440-W22/",
+   "cache_file": "cache/raw/f878eab2d3f8ece928b6671fe4a6e25daf8e07aa.html",
+   "page_sha1": "cba5bda2977667cf5e0d86dd50af05751af4d4ab",
+   "record": "courses.json#items[86]"
+  },
+  {
+   "id": "p_ubc440_cont",
+   "course": "ex:UBC_CPSC_440",
+   "text": "The class is intended as a continuation of CPSC 340 (or 532M)",
+   "url": "https://www.cs.ubc.ca/~schmidtm/Courses/440-W22/",
+   "cache_file": "cache/raw/f878eab2d3f8ece928b6671fe4a6e25daf8e07aa.html",
+   "page_sha1": "cba5bda2977667cf5e0d86dd50af05751af4d4ab",
+   "record": "courses.json#items[86]"
+  },
+  {
+   "id": "p_cuhk_sched",
+   "course": "ex:CUHK_ELEG5491",
+   "text": "Course syllabus ELEG5491: Introduction to Deep Learning ... Convolutional neural networks (CNN) I ... Recurrent Neural Networks (RNN) ... Deep belief net and auto-encoder I ... Generative adversarial network (GAN) I",
+   "url": "http://www.ee.cuhk.edu.hk/~xgwang/dl/syllabus.html",
+   "cache_file": "cache/raw/92f53ce15045754824ef204b6453e3fef9cb4174.html",
+   "page_sha1": "e5d879437da8a3cfb7d08fa9fdf4f73aa8bc0eff",
+   "record": "courses.json#items[81]"
+  },
+  {
+   "id": "p_tue_desc",
+   "course": "ex:TUE_ML_4103",
+   "text": "Lecture: Deep Learning ... including convolutional networks and graph neural networks. The course will also address deep generative models such as auto-encoders, variational auto-encoders and generative adversarial networks.",
+   "url": "https://uni-tuebingen.de/fakultaeten/mathematisch-naturwissenschaftliche-fakultaet/fachbereiche/informatik/lehrstuehle/autonomous-vision/lectures/deep-learning/",
+   "cache_file": "cache/raw/f9d9a145c9cd457a865a48d4c84e06d2b94876ba.html",
+   "page_sha1": "c0fba0842be7c5547f3cbdcc2c8bcf0db7131737",
+   "record": "courses.json#items[20]"
+  }
+ ],
+ "shapes": [
+  {
+   "id": "ex:MLCourseShape",
+   "kind": "node",
+   "targetClass": "ex:MLCourse",
+   "path": "ex:covers",
+   "constraint": "minCount",
+   "value": 1,
+   "message": "An ML course must cover at least one Topic."
+  },
+  {
+   "id": "ex:CoversRangeShape",
+   "kind": "property",
+   "targetSubjectsOf": "ex:covers",
+   "path": "ex:covers",
+   "constraint": "class",
+   "value": "ex:Topic",
+   "message": "Every value of ex:covers must be a Topic."
+  },
+  {
+   "id": "ex:NoSelfPrerequisiteShape",
+   "kind": "sparql",
+   "targetSubjectsOf": "ex:hasPrerequisite",
+   "path": "ex:hasPrerequisite",
+   "constraint": "irreflexive",
+   "sparql": "SELECT $this WHERE { $this ex:hasPrerequisite $this }",
+   "message": "A course must not be its own prerequisite."
+  }
+ ],
+ "llm_extracted": [
+  {
+   "id": "c1",
+   "sentence": "Prerequisites: Introductory machine learning (at the level of 6.390 or 6.370 or 6.C01 )",
+   "passage": "p_mit790_desc",
+   "triple": {
+    "s": "ex:MIT_6_790",
+    "p": "ex:hasPrerequisite",
+    "o": "ex:MIT_6_370"
+   },
+   "expect": "valid",
+   "note": "6.370 is a new individual; the range of hasPrerequisite makes it a Course."
+  },
+  {
+   "id": "c2",
+   "sentence": "The class is intended as a continuation of CPSC 340 (or 532M)",
+   "passage": "p_ubc440_cont",
+   "triple": {
+    "s": "ex:UBC_CPSC_440",
+    "p": "ex:covers",
+    "o": "ex:UBC_CPSC_340"
+   },
+   "expect": "violates range",
+   "note": "An extractor confuses 'continuation of a course' with 'covers a topic'. The object is a Course, not a Topic."
+  },
+  {
+   "id": "c3",
+   "sentence": "The class is intended as a continuation of CPSC 340 (or 532M)",
+   "passage": "p_ubc440_cont",
+   "triple": {
+    "s": "ex:UBC_CPSC_440",
+    "p": "ex:continuationOf",
+    "o": "ex:UBC_CPSC_340"
+   },
+   "expect": "unknown relation",
+   "note": "The relation is not in the T-box vocabulary. A schema-guided extractor would map it to ex:hasPrerequisite or reject it."
+  }
+ ],
+ "graphrag_question": {
+  "text": "Which courses cover any deep-learning topic?",
+  "keywords": [
+   "deep learning"
+  ],
+  "ontology_class": "ex:DeepLearningTopic",
+  "keyword_expected_courses": [
+   "ex:UBC_CPSC_340",
+   "ex:UBC_CPSC_440",
+   "ex:CUHK_ELEG5491",
+   "ex:TUE_ML_4103"
+  ],
+  "ontology_expected_courses": [
+   "ex:MIT_6_390",
+   "ex:UBC_CPSC_340",
+   "ex:UBC_CPSC_440",
+   "ex:CUHK_ELEG5491",
+   "ex:TUE_ML_4103"
+  ],
+  "why_keyword_misses": "ex:MIT_6_390: its notes list 'Convolutional Neural Networks' and 'Transformers' but never the phrase 'deep learning'.",
+  "caveat": "Keyword match = literal phrase 'deep learning' in the stored passage text. The expected answers are computed by rules in this file (see check), not hand-picked; the topic typing (CNN is a DeepLearningTopic) is our modelling choice."
+ },
+ "turtle": "@prefix ex: <https://example.org/mlcourses#> .\n@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .\n@prefix owl: <http://www.w3.org/2002/07/owl#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n# T-box (classes, domain/range, disjointness)\nex:Course a owl:Class .\nex:MLCourse a owl:Class .\nex:MLCourse rdfs:subClassOf ex:Course .\nex:UndergraduateCourse a owl:Class .\nex:UndergraduateCourse rdfs:subClassOf ex:Course .\nex:GraduateCourse a owl:Class .\nex:GraduateCourse rdfs:subClassOf ex:Course .\nex:Topic a owl:Class .\nex:MLTopic a owl:Class .\nex:MLTopic rdfs:subClassOf ex:Topic .\nex:ClassicalMLTopic a owl:Class .\nex:ClassicalMLTopic rdfs:subClassOf ex:MLTopic .\nex:ProbabilisticModelTopic a owl:Class .\nex:ProbabilisticModelTopic rdfs:subClassOf ex:MLTopic .\nex:DeepLearningTopic a owl:Class .\nex:DeepLearningTopic rdfs:subClassOf ex:MLTopic .\nex:NeuralArchitectureTopic a owl:Class .\nex:NeuralArchitectureTopic rdfs:subClassOf ex:DeepLearningTopic .\nex:ConvolutionalNetworkTopic a owl:Class .\nex:ConvolutionalNetworkTopic rdfs:subClassOf ex:NeuralArchitectureTopic .\nex:RecurrentNetworkTopic a owl:Class .\nex:RecurrentNetworkTopic rdfs:subClassOf ex:NeuralArchitectureTopic .\nex:GraphNetworkTopic a owl:Class .\nex:GraphNetworkTopic rdfs:subClassOf ex:NeuralArchitectureTopic .\nex:TransformerTopic a owl:Class .\nex:TransformerTopic rdfs:subClassOf ex:NeuralArchitectureTopic .\nex:GenerativeModelTopic a owl:Class .\nex:GenerativeModelTopic rdfs:subClassOf ex:DeepLearningTopic .\nex:University a owl:Class .\nex:Offering a owl:Class .\nex:Book a owl:Class .\nex:Course owl:disjointWith ex:Topic .\nex:Course owl:disjointWith ex:Book .\nex:UndergraduateCourse owl:disjointWith ex:GraduateCourse .\nex:covers rdfs:domain ex:Course .\nex:covers rdfs:range ex:Topic .\nex:coveredBy rdfs:domain ex:Topic .\nex:coveredBy rdfs:range ex:Course .\nex:hasPrerequisite rdfs:domain ex:Course .\nex:hasPrerequisite rdfs:range ex:Course .\nex:prerequisiteOf rdfs:domain ex:Course .\nex:prerequisiteOf rdfs:range ex:Course .\nex:offeredBy rdfs:domain ex:Course .\nex:offeredBy rdfs:range ex:University .\nex:hasOffering rdfs:domain ex:Course .\nex:hasOffering rdfs:range ex:Offering .\nex:usesBook rdfs:domain ex:Course .\nex:usesBook rdfs:range ex:Book .\nex:term rdfs:domain ex:Offering .\nex:term rdfs:range xsd:string .\nex:year rdfs:domain ex:Offering .\nex:year rdfs:range xsd:integer .\nex:country rdfs:domain ex:University .\nex:country rdfs:range xsd:string .\n\n# R-box (property declarations and characteristics)\nex:covers a owl:ObjectProperty .\nex:covers owl:inverseOf ex:coveredBy .\nex:coveredBy a owl:ObjectProperty .\nex:coveredBy owl:inverseOf ex:covers .\nex:hasPrerequisite a owl:ObjectProperty .\nex:hasPrerequisite owl:inverseOf ex:prerequisiteOf .\nex:hasPrerequisite a owl:TransitiveProperty .\nex:prerequisiteOf a owl:ObjectProperty .\nex:prerequisiteOf owl:inverseOf ex:hasPrerequisite .\nex:prerequisiteOf a owl:TransitiveProperty .\nex:offeredBy a owl:ObjectProperty .\nex:hasOffering a owl:ObjectProperty .\nex:usesBook a owl:ObjectProperty .\nex:hasTextbook a owl:ObjectProperty .\nex:hasTextbook rdfs:subPropertyOf ex:usesBook .\nex:recommendsBook a owl:ObjectProperty .\nex:recommendsBook rdfs:subPropertyOf ex:usesBook .\nex:mentionsBook a owl:ObjectProperty .\nex:mentionsBook rdfs:subPropertyOf ex:usesBook .\nex:term a owl:DatatypeProperty .\nex:year a owl:DatatypeProperty .\nex:country a owl:DatatypeProperty .\n\n# A-box (instance data)\nex:MIT a ex:University .\nex:MIT rdfs:label \"Massachusetts Institute of Technology\" .\nex:MIT ex:country \"United States\" .\nex:UBC a ex:University .\nex:UBC rdfs:label \"University of British Columbia\" .\nex:UBC ex:country \"Canada\" .\nex:CUHK a ex:University .\nex:CUHK rdfs:label \"The Chinese University of Hong Kong\" .\nex:CUHK ex:country \"Hong Kong\" .\nex:TUE a ex:University .\nex:TUE rdfs:label \"Eberhard-Karls-Universität Tübingen\" .\nex:TUE ex:country \"Germany\" .\nex:MIT_6_390 a ex:MLCourse .\nex:MIT_6_390 ex:offeredBy ex:MIT .\nex:MIT_6_790 a ex:MLCourse .\nex:MIT_6_790 ex:offeredBy ex:MIT .\nex:UBC_CPSC_340 a ex:MLCourse .\nex:UBC_CPSC_340 a ex:UndergraduateCourse .\nex:UBC_CPSC_340 ex:offeredBy ex:UBC .\nex:UBC_CPSC_440 a ex:MLCourse .\nex:UBC_CPSC_440 ex:offeredBy ex:UBC .\nex:CUHK_ELEG5491 a ex:GraduateCourse .\nex:CUHK_ELEG5491 ex:offeredBy ex:CUHK .\nex:TUE_ML_4103 ex:offeredBy ex:TUE .\nex:MIT_6_390 rdfs:label \"6.390 Introduction to Machine Learning\" .\nex:MIT_6_790 rdfs:label \"6.790 Machine Learning\" .\nex:UBC_CPSC_340 rdfs:label \"CPSC 340 Machine Learning and Data Mining\" .\nex:UBC_CPSC_440 rdfs:label \"CPSC 440 Advanced Machine Learning\" .\nex:CUHK_ELEG5491 rdfs:label \"ELEG5491 Introduction to Deep Learning\" .\nex:TUE_ML_4103 rdfs:label \"ML-4103 Deep Learning\" .\nex:UBC_CPSC_320 rdfs:label \"CPSC 320 Intermediate Algorithm Design and Analysis\" .\nex:UBC_CPSC_221 rdfs:label \"CPSC 221\" .\nex:UBC_CPSC_320 ex:offeredBy ex:UBC .\nex:UBC_CPSC_221 ex:offeredBy ex:UBC .\nex:UBC_CPSC_340 ex:hasOffering _:off340 .\n_:off340 a ex:Offering .\n_:off340 ex:term \"Fall 2022\" .\n_:off340 ex:year \"2022\"^^xsd:integer .\nex:MIT_6_390 ex:hasOffering _:off390 .\n_:off390 a ex:Offering .\n_:off390 ex:term \"Fall 2023\" .\n_:off390 ex:year \"2023\"^^xsd:integer .\nex:MIT_6_390 ex:covers ex:t_regression .\nex:MIT_6_390 ex:covers ex:t_gradient_descent .\nex:MIT_6_390 ex:covers ex:t_classification .\nex:MIT_6_390 ex:covers ex:t_neural_networks .\nex:MIT_6_390 ex:covers ex:t_cnn .\nex:MIT_6_390 ex:covers ex:t_transformers .\nex:MIT_6_790 ex:covers ex:t_generalization .\nex:MIT_6_790 ex:covers ex:t_model_selection .\nex:UBC_CPSC_340 ex:covers ex:t_decision_trees .\nex:UBC_CPSC_340 ex:covers ex:t_clustering .\nex:UBC_CPSC_340 ex:covers ex:t_pca .\nex:UBC_CPSC_340 ex:covers ex:t_cnn .\nex:UBC_CPSC_340 ex:covers ex:t_neural_networks .\nex:UBC_CPSC_340 ex:covers ex:t_deep_learning .\nex:UBC_CPSC_440 ex:covers ex:t_deep_learning .\nex:UBC_CPSC_440 ex:covers ex:t_generative_models .\nex:UBC_CPSC_440 ex:covers ex:t_latent_variable .\nex:UBC_CPSC_440 ex:covers ex:t_markov_models .\nex:UBC_CPSC_440 ex:covers ex:t_pgm .\nex:UBC_CPSC_440 ex:covers ex:t_bayesian .\nex:CUHK_ELEG5491 ex:covers ex:t_cnn .\nex:CUHK_ELEG5491 ex:covers ex:t_rnn .\nex:CUHK_ELEG5491 ex:covers ex:t_autoencoders .\nex:CUHK_ELEG5491 ex:covers ex:t_gan .\nex:TUE_ML_4103 ex:covers ex:t_cnn .\nex:TUE_ML_4103 ex:covers ex:t_gnn .\nex:TUE_ML_4103 ex:covers ex:t_autoencoders .\nex:TUE_ML_4103 ex:covers ex:t_gan .\nex:t_regression a ex:ClassicalMLTopic .\nex:t_regression rdfs:label \"Regression\" .\nex:t_classification a ex:ClassicalMLTopic .\nex:t_classification rdfs:label \"Classification\" .\nex:t_gradient_descent a ex:ClassicalMLTopic .\nex:t_gradient_descent rdfs:label \"Gradient descent\" .\nex:t_decision_trees a ex:ClassicalMLTopic .\nex:t_decision_trees rdfs:label \"Decision trees\" .\nex:t_clustering a ex:ClassicalMLTopic .\nex:t_clustering rdfs:label \"Clustering\" .\nex:t_pca a ex:ClassicalMLTopic .\nex:t_pca rdfs:label \"Principal component analysis\" .\nex:t_generalization a ex:ClassicalMLTopic .\nex:t_generalization rdfs:label \"Generalization\" .\nex:t_model_selection a ex:ClassicalMLTopic .\nex:t_model_selection rdfs:label \"Model selection\" .\nex:t_neural_networks a ex:NeuralArchitectureTopic .\nex:t_neural_networks rdfs:label \"Neural networks\" .\nex:t_cnn a ex:ConvolutionalNetworkTopic .\nex:t_cnn rdfs:label \"Convolutional neural networks\" .\nex:t_rnn a ex:RecurrentNetworkTopic .\nex:t_rnn rdfs:label \"Recurrent neural networks\" .\nex:t_gnn a ex:GraphNetworkTopic .\nex:t_gnn rdfs:label \"Graph neural networks\" .\nex:t_transformers a ex:TransformerTopic .\nex:t_transformers rdfs:label \"Transformers\" .\nex:t_deep_learning a ex:DeepLearningTopic .\nex:t_deep_learning rdfs:label \"Deep learning\" .\nex:t_autoencoders a ex:GenerativeModelTopic .\nex:t_autoencoders rdfs:label \"Auto-encoders\" .\nex:t_gan a ex:GenerativeModelTopic .\nex:t_gan rdfs:label \"Generative adversarial networks\" .\nex:t_generative_models a ex:GenerativeModelTopic .\nex:t_generative_models rdfs:label \"Generative models\" .\nex:t_markov_models a ex:ProbabilisticModelTopic .\nex:t_markov_models rdfs:label \"Markov models\" .\nex:t_pgm a ex:ProbabilisticModelTopic .\nex:t_pgm rdfs:label \"Probabilistic graphical models\" .\nex:t_bayesian a ex:ProbabilisticModelTopic .\nex:t_bayesian rdfs:label \"Bayesian methods\" .\nex:t_latent_variable a ex:ProbabilisticModelTopic .\nex:t_latent_variable rdfs:label \"Latent-variable models\" .\nex:UBC_CPSC_440 ex:hasPrerequisite ex:UBC_CPSC_340 .\nex:UBC_CPSC_440 ex:hasPrerequisite ex:UBC_CPSC_320 .\nex:UBC_CPSC_320 ex:hasPrerequisite ex:UBC_CPSC_221 .\nex:UBC_CPSC_340 ex:hasPrerequisite ex:UBC_CPSC_221 .\nex:MIT_6_790 ex:hasPrerequisite ex:MIT_6_390 .\nex:b_dl a ex:Book .\nex:b_dl rdfs:label \"Deep Learning\" .\nex:b_prml a ex:Book .\nex:b_prml rdfs:label \"Pattern Recognition and Machine Learning\" .\nex:b_mlapp a ex:Book .\nex:b_mlapp rdfs:label \"Machine Learning: A Probabilistic Perspective\" .\nex:UBC_CPSC_440 ex:hasTextbook ex:b_dl .\nex:UBC_CPSC_440 ex:hasTextbook ex:b_prml .\nex:UBC_CPSC_340 ex:mentionsBook ex:b_mlapp .\nex:CUHK_ELEG5491 ex:mentionsBook ex:b_dl .\nex:TUE_ML_4103 ex:recommendsBook ex:b_prml .\n",
+ "check": {
+  "tools": {
+   "rdflib": "7.6.0",
+   "owlrl": "7.6.2",
+   "pyshacl": "0.40.1"
+  },
+  "command": "uv run --with rdflib --with owlrl --with pyshacl python data/run_reasoner_check.py",
+  "reasoner": "owlrl.DeductiveClosure(RDFS_OWLRL_Semantics, axiomatic_triples=False, datatype_axioms=False)",
+  "turtle_isomorphic_to_triples": true,
+  "asserted_triples": 204,
+  "closure_triples_raw": 1246,
+  "new_triples_raw": 1042,
+  "base_disjointness_clashes": [],
+  "filter": "Inferred triples are kept when the subject is an IRI/bnode in ex: and the object is in ex: or the predicate is rdf:type. Dropped: meta-class typing (owl:Thing, rdfs:Resource, owl:Class ...), owl:sameAs/equivalence, reflexive sub*Of, literal subjects. The JS reasoner is compared with this filtered set.",
+  "inferred": [
+   [
+    "ex:CUHK_ELEG5491",
+    "ex:usesBook",
+    "ex:b_dl"
+   ],
+   [
+    "ex:CUHK_ELEG5491",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:ClassicalMLTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:ConvolutionalNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:ConvolutionalNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:ConvolutionalNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:DeepLearningTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:GenerativeModelTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:GenerativeModelTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:GraphNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:GraphNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:GraphNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:MIT_6_390",
+    "ex:prerequisiteOf",
+    "ex:MIT_6_790"
+   ],
+   [
+    "ex:MIT_6_390",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:MIT_6_790",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:NeuralArchitectureTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:NeuralArchitectureTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:ProbabilisticModelTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:RecurrentNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:RecurrentNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:RecurrentNetworkTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:TUE_ML_4103",
+    "ex:usesBook",
+    "ex:b_prml"
+   ],
+   [
+    "ex:TUE_ML_4103",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:TransformerTopic",
+    "rdfs:subClassOf",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:TransformerTopic",
+    "rdfs:subClassOf",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:TransformerTopic",
+    "rdfs:subClassOf",
+    "ex:Topic"
+   ],
+   [
+    "ex:UBC_CPSC_221",
+    "ex:prerequisiteOf",
+    "ex:UBC_CPSC_320"
+   ],
+   [
+    "ex:UBC_CPSC_221",
+    "ex:prerequisiteOf",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:UBC_CPSC_221",
+    "ex:prerequisiteOf",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:UBC_CPSC_221",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:UBC_CPSC_320",
+    "ex:prerequisiteOf",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:UBC_CPSC_320",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:UBC_CPSC_340",
+    "ex:prerequisiteOf",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:UBC_CPSC_340",
+    "ex:usesBook",
+    "ex:b_mlapp"
+   ],
+   [
+    "ex:UBC_CPSC_340",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:UBC_CPSC_440",
+    "ex:hasPrerequisite",
+    "ex:UBC_CPSC_221"
+   ],
+   [
+    "ex:UBC_CPSC_440",
+    "ex:usesBook",
+    "ex:b_dl"
+   ],
+   [
+    "ex:UBC_CPSC_440",
+    "ex:usesBook",
+    "ex:b_prml"
+   ],
+   [
+    "ex:UBC_CPSC_440",
+    "rdf:type",
+    "ex:Course"
+   ],
+   [
+    "ex:hasTextbook",
+    "rdfs:domain",
+    "ex:Course"
+   ],
+   [
+    "ex:hasTextbook",
+    "rdfs:range",
+    "ex:Book"
+   ],
+   [
+    "ex:mentionsBook",
+    "rdfs:domain",
+    "ex:Course"
+   ],
+   [
+    "ex:mentionsBook",
+    "rdfs:range",
+    "ex:Book"
+   ],
+   [
+    "ex:recommendsBook",
+    "rdfs:domain",
+    "ex:Course"
+   ],
+   [
+    "ex:recommendsBook",
+    "rdfs:range",
+    "ex:Book"
+   ],
+   [
+    "ex:t_autoencoders",
+    "ex:coveredBy",
+    "ex:CUHK_ELEG5491"
+   ],
+   [
+    "ex:t_autoencoders",
+    "ex:coveredBy",
+    "ex:TUE_ML_4103"
+   ],
+   [
+    "ex:t_autoencoders",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_autoencoders",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_autoencoders",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_bayesian",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_bayesian",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_bayesian",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_classification",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_classification",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_classification",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_clustering",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_clustering",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_clustering",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_cnn",
+    "ex:coveredBy",
+    "ex:CUHK_ELEG5491"
+   ],
+   [
+    "ex:t_cnn",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_cnn",
+    "ex:coveredBy",
+    "ex:TUE_ML_4103"
+   ],
+   [
+    "ex:t_cnn",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_cnn",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_cnn",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_cnn",
+    "rdf:type",
+    "ex:NeuralArchitectureTopic"
+   ],
+   [
+    "ex:t_cnn",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_decision_trees",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_decision_trees",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_decision_trees",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_deep_learning",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_deep_learning",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_deep_learning",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_deep_learning",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_gan",
+    "ex:coveredBy",
+    "ex:CUHK_ELEG5491"
+   ],
+   [
+    "ex:t_gan",
+    "ex:coveredBy",
+    "ex:TUE_ML_4103"
+   ],
+   [
+    "ex:t_gan",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_gan",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_gan",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_generalization",
+    "ex:coveredBy",
+    "ex:MIT_6_790"
+   ],
+   [
+    "ex:t_generalization",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_generalization",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_generative_models",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_generative_models",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_generative_models",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_generative_models",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_gnn",
+    "ex:coveredBy",
+    "ex:TUE_ML_4103"
+   ],
+   [
+    "ex:t_gnn",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_gnn",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_gnn",
+    "rdf:type",
+    "ex:NeuralArchitectureTopic"
+   ],
+   [
+    "ex:t_gnn",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_gradient_descent",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_gradient_descent",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_gradient_descent",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_latent_variable",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_latent_variable",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_latent_variable",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_markov_models",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_markov_models",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_markov_models",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_model_selection",
+    "ex:coveredBy",
+    "ex:MIT_6_790"
+   ],
+   [
+    "ex:t_model_selection",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_model_selection",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_neural_networks",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_neural_networks",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_neural_networks",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_neural_networks",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_neural_networks",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_pca",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_340"
+   ],
+   [
+    "ex:t_pca",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_pca",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_pgm",
+    "ex:coveredBy",
+    "ex:UBC_CPSC_440"
+   ],
+   [
+    "ex:t_pgm",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_pgm",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_regression",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_regression",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_regression",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_rnn",
+    "ex:coveredBy",
+    "ex:CUHK_ELEG5491"
+   ],
+   [
+    "ex:t_rnn",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_rnn",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_rnn",
+    "rdf:type",
+    "ex:NeuralArchitectureTopic"
+   ],
+   [
+    "ex:t_rnn",
+    "rdf:type",
+    "ex:Topic"
+   ],
+   [
+    "ex:t_transformers",
+    "ex:coveredBy",
+    "ex:MIT_6_390"
+   ],
+   [
+    "ex:t_transformers",
+    "rdf:type",
+    "ex:DeepLearningTopic"
+   ],
+   [
+    "ex:t_transformers",
+    "rdf:type",
+    "ex:MLTopic"
+   ],
+   [
+    "ex:t_transformers",
+    "rdf:type",
+    "ex:NeuralArchitectureTopic"
+   ],
+   [
+    "ex:t_transformers",
+    "rdf:type",
+    "ex:Topic"
+   ]
+  ],
+  "inferred_count": 127,
+  "shacl_base": {
+   "inference": "none",
+   "conforms": true,
+   "results": []
+  },
+  "shacl_base_rdfs_inference": {
+   "inference": "rdfs",
+   "conforms": true,
+   "results": []
+  },
+  "llm_candidates": {
+   "c1": {
+    "triple": {
+     "s": "ex:MIT_6_790",
+     "p": "ex:hasPrerequisite",
+     "o": "ex:MIT_6_370"
+    },
+    "shacl_conforms": true,
+    "shacl_results": [],
+    "owlrl_disjointness_clash": [],
+    "owlrl_error_messages": [],
+    "predicate_declared_in_tbox": true,
+    "owlrl_types_inferred_for_object": [
+     "ex:Course"
+    ]
+   },
+   "c2": {
+    "triple": {
+     "s": "ex:UBC_CPSC_440",
+     "p": "ex:covers",
+     "o": "ex:UBC_CPSC_340"
+    },
+    "shacl_conforms": false,
+    "shacl_results": [
+     {
+      "focus": "ex:UBC_CPSC_440",
+      "path": "ex:covers",
+      "component": "ClassConstraintComponent",
+      "value": "ex:UBC_CPSC_340",
+      "message": "Every value of ex:covers must be a Topic."
+     }
+    ],
+    "owlrl_disjointness_clash": [
+     {
+      "individual": "ex:UBC_CPSC_340",
+      "classes": [
+       "ex:Course",
+       "ex:Topic"
+      ]
+     }
+    ],
+    "owlrl_error_messages": [
+     "Disjoint classes ex:Course and ex:Topic have a common individual ex:UBC_CPSC_340"
+    ],
+    "predicate_declared_in_tbox": true,
+    "owlrl_types_inferred_for_object": [
+     "ex:Course",
+     "ex:Topic"
+    ]
+   },
+   "c3": {
+    "triple": {
+     "s": "ex:UBC_CPSC_440",
+     "p": "ex:continuationOf",
+     "o": "ex:UBC_CPSC_340"
+    },
+    "shacl_conforms": true,
+    "shacl_results": [],
+    "owlrl_disjointness_clash": [],
+    "owlrl_error_messages": [],
+    "predicate_declared_in_tbox": false,
+    "owlrl_types_inferred_for_object": [
+     "ex:Course"
+    ]
+   }
+  },
+  "open_vs_closed_world": {
+   "question": "Does the KB say ex:MIT_6_790 covers ex:t_deep_learning?",
+   "owl_entails": false,
+   "reading": "Not entailed and not contradicted: under the open-world assumption this is 'unknown', not 'no'.",
+   "shacl_when_covers_removed": {
+    "removed": "all ex:covers triples of ex:MIT_6_790",
+    "conforms": false,
+    "results": [
+     {
+      "focus": "ex:MIT_6_790",
+      "path": "ex:covers",
+      "component": "MinCountConstraintComponent",
+      "value": null,
+      "message": "An ML course must cover at least one Topic."
+     }
+    ]
+   },
+   "owl_when_covers_removed": {
+    "disjointness_clashes": [],
+    "note": "OWL-RL reports nothing: a missing triple is only unknown."
+   }
+  },
+  "graphrag": {
+   "ontology_expanded_courses": [
+    "ex:CUHK_ELEG5491",
+    "ex:MIT_6_390",
+    "ex:TUE_ML_4103",
+    "ex:UBC_CPSC_340",
+    "ex:UBC_CPSC_440"
+   ],
+   "matches_expected": true,
+   "query": "courses c with (c ex:covers t) and (t rdf:type ex:DeepLearningTopic) in the OWL-RL closure"
+  }
+ }
+}

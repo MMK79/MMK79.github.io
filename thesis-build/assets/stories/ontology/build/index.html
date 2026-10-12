@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ontology and knowledge graphs, a scroll story</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+code,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:0 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 40px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
+.fig .cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select,input,textarea{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--faint)}
+button[aria-pressed=true],button.on{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible,[tabindex]:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+input,select{min-width:0}
+textarea{width:100%;font:12px/1.5 var(--mono);min-height:230px;resize:vertical;white-space:pre;overflow:auto}
+.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}
+.tag.iri{border-color:var(--blue);color:var(--blue)}.tag.lit{border-color:var(--amber);color:var(--amber)}.tag.bn{border-color:var(--purple);color:var(--purple)}
+.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:15px;overflow-wrap:anywhere}
+.ans.warn{border-color:var(--warn)}.ans.good{border-color:var(--teal)}.ans.gold{border-color:var(--amber)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
+.card.gold{border-color:var(--amber)}.card.dim{opacity:.55}.card.good{border-color:var(--teal)}.card.bad{border-color:var(--warn)}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
+.bridge b{color:var(--text)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ev b,.ours b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b{color:var(--teal)}.ours b{color:var(--purple)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:11px var(--body)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.t{font-family:var(--mono);font-size:12px}
+.tr{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:baseline;padding:4px 0;border-bottom:1px solid var(--line);font:12px var(--mono);overflow-wrap:anywhere}
+.tr.inf{background:rgba(242,169,59,.10);border-left:3px solid var(--amber);padding-left:6px}
+.tr.sel{outline:1px solid var(--amber)}
+.tr .s{color:var(--blue)}.tr .p{color:var(--muted)}.tr .o{color:var(--text)}
+.lane{border:1px solid var(--line);border-radius:10px;padding:8px;background:var(--panel2);min-width:0}
+.lane h4{margin:0 0 6px;font:600 13px var(--body)}
+.lanes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.lane.T h4{color:var(--blue)}.lane.R h4{color:var(--purple)}.lane.A h4{color:var(--teal)}
+.tt{border:1px solid var(--line);border-radius:6px;padding:4px 6px;margin:4px 0;font:11px/1.45 var(--mono);overflow-wrap:anywhere;background:var(--panel)}
+.tt.T{border-color:var(--blue)}.tt.R{border-color:var(--purple)}.tt.A{border-color:var(--teal)}
+.tt .mv{display:flex;gap:4px;margin-top:3px}
+.tt .mv button{min-height:24px;padding:0 8px;font-size:11px}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cols2>div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;min-width:0}
+.cols2 h3{font-size:17px}
+#err{display:none;background:#3a1d17;color:var(--warn);border-radius:8px;padding:10px 12px;margin:16px 0}
+details{margin:6px 0}summary{cursor:pointer;color:var(--muted);font-size:13px}
+footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+@media(max-width:640px){.grid2,.cols2,.lanes{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    <a href="/thesis/llm-providers.html" data-path="/thesis/llm-providers.html" data-i18n="nav.llm">LLM providers</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=0, src=null, done=false;
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<figure class="sv" id="video"><video controls preload="none" playsinline poster="/thesis/videos/OntologyStory.876cff71.jpg" width="1920" height="1080" aria-label="Video (English, no sound)"><source src="/thesis/videos/OntologyStory.876cff71.mp4" type="video/mp4"></video><figcaption data-i18n="ex.tw_video_cap">Video, English, no sound.</figcaption></figure>
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Scale:</b> 6 real ML courses, 4 universities, about 130 triples. The data is real; the topic typing and the T-box are our own modelling. Illustration, not an evaluation.</p>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap">
+<div id="err"></div>
+<header class="hero">
+  <div class="kicker">An interactive story in eight steps</div>
+  <h1>Ontology, and what a knowledge graph does with it</h1>
+  <p class="lead">One small knowledge base about real machine-learning courses runs through the whole page. You edit triples, run a reasoner, validate extractions and retrieve with it. Every number on this page is computed in your browser, and the reasoner is checked against Python (rdflib, owlrl, pyshacl).</p>
+  <p class="small muted">Data: university ML-course crawl (<code>universities/exports/site/courses.json</code> and the cached syllabus pages). three.js is not used: the ideas are graphs and rules, and 2D SVG shows them well.</p>
+</header>
+
+<section class="step" id="s1"><div class="kicker">Step 1 &middot; the picture</div>
+  <h2>Taxonomy, ontology, knowledge graph: one glance</h2>
+  <p>Your notes say: a taxonomy is a hierarchy, an ontology adds relations, a knowledge graph is the ontology applied to data. That is a good start. Press the three buttons and see what each one adds to the <i>same</i> data.</p>
+  <div class="row" id="s1-btns" role="group" aria-label="Show"></div>
+  <div class="fig"><div id="s1-svg"></div><p class="cap" id="s1-cap"></p></div>
+  <div class="cols2" id="s1-cols"></div>
+  <div class="bridge"><b>Why the next idea:</b> "a graph of facts" needs a concrete data model. The standard one is RDF: everything is a triple.</div>
+</section>
+
+<section class="step" id="s2"><div class="kicker">Step 2 &middot; the data model</div>
+  <h2>RDF: everything is a triple</h2>
+  <p>A triple is <i>subject, predicate, object</i>. Subjects and predicates are IRIs (global names). Objects are IRIs, literals (text, numbers) or blank nodes (things without a name, like one offering of a course). Add or remove triples; the graph follows.</p>
+  <div class="row" id="s2-ctl"></div>
+  <div class="fig"><div id="s2-view"></div><div id="s2-msg" class="small muted" role="status"></div></div>
+  <div class="fig"><div id="s2-svg"></div><p class="cap">Blue = IRI node, amber = literal, purple dashed = blank node. Click a node to highlight its triples in the table.</p></div>
+  <div class="bridge"><b>Why the next idea:</b> some of these triples describe single courses, others describe what a "course" or "covers" <i>means</i>. Mixing them makes reasoning impossible to explain. So we split them into layers.</div>
+</section>
+
+<section class="step" id="s3"><div class="kicker">Step 3 &middot; layers</div>
+  <h2>T-box, R-box and A-box</h2>
+  <p>The <b>T-box</b> states things about classes. The <b>R-box</b> states things about properties (roles). The <b>A-box</b> states facts about individuals. In RDF it is all one graph; the layer is a way of reading a triple. Move triples between lanes, then check yourself.</p>
+  <div class="row"><button id="s3-check">Check my lanes</button><button id="s3-shuffle">Shuffle and quiz me</button><button id="s3-reset">Reset</button><span id="s3-score" class="small muted" role="status"></span></div>
+  <div class="lanes" id="s3-lanes"></div>
+  <div class="ans" id="s3-note"></div>
+  <div class="bridge"><b>Why the next idea:</b> the T-box and R-box are not decoration. A program can read them and derive new A-box triples. That program is a reasoner.</div>
+</section>
+
+<section class="step" id="s4"><div class="kicker">Step 4 &middot; reasoning</div>
+  <h2>A tiny RDFS + OWL-RL reasoner, with reasons</h2>
+  <p>Rules in the reasoner: subclass, subproperty, domain, range, inverse, transitive, and a disjointness check. Press the button. Every new triple shows which rule made it and from which premises.</p>
+  <div class="row"><button id="s4-run">Run reasoner</button><label class="small muted"><input type="checkbox" id="s4-c2"> also add the bad LLM triple (candidate 2, step 5)</label></div>
+  <div id="s4-out"></div>
+  <div class="bridge"><b>Why the next idea:</b> the reasoner trusts every triple it gets. An LLM extractor does not always say true things. We need a check that says "this does not fit the schema".</div>
+</section>
+
+<section class="step" id="s5"><div class="kicker">Step 5 &middot; validation</div>
+  <h2>SHACL-like shapes check what an LLM extracted</h2>
+  <p>Three candidate triples, as an extractor might read them from real syllabus sentences. Check each against the shapes and the T-box.</p>
+  <div id="s5-shapes"></div>
+  <div id="s5-cands"></div>
+  <h3 style="margin-top:22px">Open world versus closed world</h3>
+  <p>OWL assumes the world is <i>open</i>: a missing triple is unknown. SHACL checks the data you have, as if it were <i>closed</i>: a missing triple can be a violation. Pick a course and delete its <code>covers</code> triples.</p>
+  <div class="row"><select id="s5-course" aria-label="Course"></select><button id="s5-del" aria-pressed="false">Delete its covers triples</button></div>
+  <div id="s5-ow"></div>
+  <div class="bridge"><b>Why the next idea:</b> with typed, checked data we can retrieve by meaning, not only by words.</div>
+</section>
+
+<section class="step" id="s6"><div class="kicker">Step 6 &middot; GraphRAG</div>
+  <h2>Retrieval that uses the ontology</h2>
+  <p id="s6-q" class="muted"></p>
+  <div class="row"><label class="small muted">Keywords <input id="s6-kw" size="16" value="deep learning"></label>
+   <label class="small muted">Topic class <select id="s6-cls"></select></label>
+   <label class="small muted"><input type="checkbox" id="s6-exp" checked> expand by subclass</label></div>
+  <div class="grid2"><div><h3>Plain text match</h3><div id="s6-a"></div></div><div><h3>Ontology-guided</h3><div id="s6-b"></div></div></div>
+  <div class="ans gold" id="s6-sum"></div>
+  <div class="bridge"><b>Why the next idea:</b> your notes use the words X-box and C-box. Are they standard?</div>
+</section>
+
+<section class="step" id="s7"><div class="kicker">Step 7 &middot; vocabulary check</div>
+  <h2>What the notes call X-Box, C-Box and R-Box</h2>
+  <table class="tbl" id="s7-tbl"></table>
+  <p class="small muted" id="s7-src"></p>
+</section>
+
+<section class="step" id="s8"><div class="kicker">Step 8 &middot; two meanings of "ontology"</div>
+  <h2>Operational ontology and formal ontology</h2>
+  <div class="cols2" id="s8-cols"></div>
+  <p class="small muted" id="s8-src"></p>
+</section>
+<footer>Built 2026-10-10 for Brief K. Data file: <code>data/example-kb.json</code>. Reasoner test: <code>node data/check_reasoner.mjs</code>.</footer>
+</main>
+
+<script id="core">
+/* ---------- pure logic (no DOM). Tested by data/check_reasoner.mjs ---------- */
+var ONTO = (function () {
+  var RDF_TYPE = 'rdf:type', SUBC = 'rdfs:subClassOf', SUBP = 'rdfs:subPropertyOf', DOM = 'rdfs:domain', RNG = 'rdfs:range',
+      INV = 'owl:inverseOf', DISJ = 'owl:disjointWith', TRANS = 'owl:TransitiveProperty';
+  function termStr(o) { return (o && typeof o === 'object') ? '"' + o.lit + '"' + (o.dt === 'xsd:string' ? '' : '^^' + o.dt) : o; }
+  function isLit(x) { return x.charAt(0) === '"'; }
+  function isBn(x) { return x.slice(0, 2) === '_:'; }
+  function kbTriples(kb) {
+    return kb.tbox_triples.concat(kb.abox).map(function (t) { return { s: t.s, p: t.p, o: termStr(t.o), layer: t.layer, src: t.src }; });
+  }
+  function key(t) { return t[0] + ' ' + t[1] + ' ' + t[2]; }
+  var RULES = {
+    'scm-sco': 'C is a subclass of D and D of E, so C is a subclass of E.',
+    'scm-spo': 'p is a subproperty of q and q of r, so p is a subproperty of r.',
+    'scm-dom1': 'p has domain C and C is a subclass of D, so p has domain D.',
+    'scm-dom2': 'p is a subproperty of q and q has domain C, so p has domain C.',
+    'scm-rng1': 'p has range C and C is a subclass of D, so p has range D.',
+    'scm-rng2': 'p is a subproperty of q and q has range C, so p has range C.',
+    'cax-sco': 'x is of class C and C is a subclass of D, so x is of class D.',
+    'prp-spo1': 'p is a subproperty of q and x p y holds, so x q y holds.',
+    'prp-dom': 'p has domain C and x p y holds, so x is of class C.',
+    'prp-rng': 'p has range C and x p y holds, so y is of class C.',
+    'prp-inv': 'p and q are inverse and x p y holds, so y q x holds.',
+    'prp-trp': 'p is transitive, x p y and y p z hold, so x p z holds.',
+    'cax-dw': 'x belongs to two disjoint classes: the knowledge base is inconsistent.'
+  };
+  // reason(triples) -> {inferred:[{t:[s,p,o],rule,premises}], clashes:[{individual,classes,premises}], all:Map}
+  function reason(triples) {
+    var all = new Map(), order = [];
+    triples.forEach(function (t) { var k = key([t.s, t.p, t.o]); if (!all.has(k)) { all.set(k, { t: [t.s, t.p, t.o], rule: null, premises: [] }); order.push(k); } });
+    var changed = true, guard = 0;
+    function has(s, p, o) { return all.has(s + ' ' + p + ' ' + o); }
+    function add(s, p, o, rule, prem) {
+      if (isLit(s)) return;
+      var k = s + ' ' + p + ' ' + o;
+      if (all.has(k)) return;
+      if ((p === SUBC || p === SUBP) && s === o) return;
+      all.set(k, { t: [s, p, o], rule: rule, premises: prem }); order.push(k); changed = true;
+    }
+    while (changed && guard++ < 50) {
+      changed = false;
+      var by = {};
+      order.forEach(function (k) { var t = all.get(k).t; (by[t[1]] = by[t[1]] || []).push(t); });
+      var G = function (p) { return by[p] || []; };
+      var subc = G(SUBC), subp = G(SUBP), doms = G(DOM), rngs = G(RNG), invs = G(INV), types = G(RDF_TYPE);
+      subc.forEach(function (a) { subc.forEach(function (b) { if (a[2] === b[0]) add(a[0], SUBC, b[2], 'scm-sco', [a, b]); }); });
+      subp.forEach(function (a) { subp.forEach(function (b) { if (a[2] === b[0]) add(a[0], SUBP, b[2], 'scm-spo', [a, b]); }); });
+      doms.forEach(function (d) { subc.forEach(function (c) { if (d[2] === c[0]) add(d[0], DOM, c[2], 'scm-dom1', [d, c]); }); });
+      rngs.forEach(function (d) { subc.forEach(function (c) { if (d[2] === c[0]) add(d[0], RNG, c[2], 'scm-rng1', [d, c]); }); });
+      subp.forEach(function (sp) {
+        doms.forEach(function (d) { if (sp[2] === d[0]) add(sp[0], DOM, d[2], 'scm-dom2', [sp, d]); });
+        rngs.forEach(function (d) { if (sp[2] === d[0]) add(sp[0], RNG, d[2], 'scm-rng2', [sp, d]); });
+      });
+      types.forEach(function (x) { subc.forEach(function (c) { if (x[2] === c[0]) add(x[0], RDF_TYPE, c[2], 'cax-sco', [x, c]); }); });
+      subp.forEach(function (sp) { G(sp[0]).forEach(function (x) { add(x[0], sp[2], x[2], 'prp-spo1', [sp, x]); }); });
+      doms.forEach(function (d) { G(d[0]).forEach(function (x) { add(x[0], RDF_TYPE, d[2], 'prp-dom', [d, x]); }); });
+      rngs.forEach(function (d) { G(d[0]).forEach(function (x) { if (!isLit(x[2])) add(x[2], RDF_TYPE, d[2], 'prp-rng', [d, x]); }); });
+      invs.forEach(function (iv) {
+        G(iv[0]).forEach(function (x) { if (!isLit(x[2])) add(x[2], iv[2], x[0], 'prp-inv', [iv, x]); });
+        G(iv[2]).forEach(function (x) { if (!isLit(x[2])) add(x[2], iv[0], x[0], 'prp-inv', [iv, x]); });
+      });
+      types.forEach(function (tp) {
+        if (tp[2] !== TRANS) return;
+        var ps = G(tp[0]);
+        ps.forEach(function (a) { ps.forEach(function (b) { if (a[2] === b[0]) add(a[0], tp[0], b[2], 'prp-trp', [tp, a, b]); }); });
+      });
+    }
+    var inferred = order.map(function (k) { return all.get(k); }).filter(function (r) { return r.rule; });
+    var clashes = [];
+    var disj = [];
+    order.forEach(function (k) { var t = all.get(k).t; if (t[1] === DISJ) disj.push(t); });
+    disj.forEach(function (d) {
+      order.forEach(function (k) {
+        var t = all.get(k).t;
+        if (t[1] === RDF_TYPE && t[2] === d[0] && has(t[0], RDF_TYPE, d[2]))
+          clashes.push({ individual: t[0], classes: [d[0], d[2]], premises: [d, t, [t[0], RDF_TYPE, d[2]]] });
+      });
+    });
+    return { inferred: inferred, clashes: clashes, all: all };
+  }
+  function exOnly(t) {
+    var f = function (x) { return x.slice(0, 3) === 'ex:' || isBn(x); };
+    return f(t[0]) && (f(t[2]) || t[1] === RDF_TYPE);
+  }
+  // SHACL-like validation on the asserted triples (no inference), shape kinds as in example-kb.json
+  function validate(triples, shapes) {
+    var T = triples.map(function (t) { return Array.isArray(t) ? t : [t.s, t.p, t.o]; });
+    var subs = {};
+    T.forEach(function (t) { if (t[1] === SUBC) (subs[t[2]] = subs[t[2]] || []).push(t[0]); });
+    function down(c) { var seen = {}, st = [c]; seen[c] = 1; while (st.length) { var x = st.pop(); (subs[x] || []).forEach(function (y) { if (!seen[y]) { seen[y] = 1; st.push(y); } }); } return seen; }
+    function instances(c) { var d = down(c), out = {}; T.forEach(function (t) { if (t[1] === RDF_TYPE && d[t[2]]) out[t[0]] = 1; }); return Object.keys(out); }
+    function vals(s, p) { return T.filter(function (t) { return t[0] === s && t[1] === p; }).map(function (t) { return t[2]; }); }
+    function subjectsOf(p) { var o = {}; T.forEach(function (t) { if (t[1] === p) o[t[0]] = 1; }); return Object.keys(o); }
+    function isA(x, c) { var d = down(c); return T.some(function (t) { return t[0] === x && t[1] === RDF_TYPE && d[t[2]]; }); }
+    var res = [];
+    shapes.forEach(function (sh) {
+      if (sh.kind === 'node' && sh.constraint === 'minCount') {
+        instances(sh.targetClass).forEach(function (f) {
+          if (vals(f, sh.path).length < sh.value) res.push({ focus: f, path: sh.path, component: 'MinCountConstraintComponent', value: null, message: sh.message, shape: sh.id });
+        });
+      } else if (sh.kind === 'property' && sh.constraint === 'class') {
+        subjectsOf(sh.path).forEach(function (f) {
+          vals(f, sh.path).forEach(function (v) {
+            if (!isA(v, sh.value)) res.push({ focus: f, path: sh.path, component: 'ClassConstraintComponent', value: v, message: sh.message, shape: sh.id });
+          });
+        });
+      } else if (sh.kind === 'sparql' && sh.constraint === 'irreflexive') {
+        subjectsOf(sh.path).forEach(function (f) {
+          if (vals(f, sh.path).indexOf(f) >= 0) res.push({ focus: f, path: null, component: 'SPARQLConstraintComponent', value: null, message: sh.message, shape: sh.id });
+        });
+      }
+    });
+    res.sort(function (a, b) { return JSON.stringify([a.focus, a.path, a.component, a.value]) < JSON.stringify([b.focus, b.path, b.component, b.value]) ? -1 : 1; });
+    return { conforms: res.length === 0, results: res };
+  }
+  function declaredProps(kb) { var o = {}; kb.tbox.objectProperties.concat(kb.tbox.datatypeProperties).forEach(function (p) { o['ex:' + p.id] = 1; }); return o; }
+  // check one LLM candidate: shapes + vocabulary + disjointness after reasoning
+  function checkCandidate(kb, cand) {
+    var base = kbTriples(kb), t = cand.triple;
+    var withC = base.concat([{ s: t.s, p: t.p, o: t.o, layer: 'abox', src: 'llm' }]);
+    var v = validate(withC, kb.shapes);
+    var r = reason(withC);
+    var reasons = [];
+    if (t.p.slice(0, 3) === 'ex:' && !declaredProps(kb)[t.p]) reasons.push({ kind: 'vocabulary', text: t.p + ' is not in the T-box vocabulary (unknown relation).' });
+    v.results.forEach(function (x) { reasons.push({ kind: 'shacl', text: x.message + ' Focus ' + x.focus + ', value ' + (x.value || '-') + ' (' + x.component + ').' }); });
+    r.clashes.forEach(function (c) { reasons.push({ kind: 'owl', text: 'Reasoner: ' + c.individual + ' would be both ' + c.classes.join(' and ') + ', but the classes are disjoint.' }); });
+    return { ok: reasons.length === 0, reasons: reasons, shacl: v, clashes: r.clashes };
+  }
+  // ---- retrieval ----
+  var STOP = { the: 1, a: 1, of: 1, and: 1, to: 1, in: 1, for: 1, any: 1, which: 1, cover: 1, courses: 1, is: 1, on: 1, or: 1 };
+  function tokens(s) { return (s.toLowerCase().match(/[a-z0-9\-]+/g) || []).filter(function (w) { return !STOP[w]; }); }
+  function keywordHits(passages, phrase) {
+    var p = phrase.trim().toLowerCase();
+    if (!p) return [];
+    return passages.filter(function (x) { return x.text.toLowerCase().indexOf(p) >= 0; }).map(function (x) { return x.id; });
+  }
+  function overlapScores(passages, query) {  // tf-idf cosine on word tokens: a stand-in for vector search, NOT an embedding
+    var docs = passages.map(function (p) { return tokens(p.text); }), N = docs.length, df = {};
+    docs.forEach(function (d) { var seen = {}; d.forEach(function (w) { if (!seen[w]) { seen[w] = 1; df[w] = (df[w] || 0) + 1; } }); });
+    function vec(ws) { var v = {}; ws.forEach(function (w) { v[w] = (v[w] || 0) + 1; }); Object.keys(v).forEach(function (w) { v[w] = v[w] * Math.log(1 + N / (df[w] || 0.5)); }); return v; }
+    function cos(a, b) { var d = 0, na = 0, nb = 0; Object.keys(a).forEach(function (k) { na += a[k] * a[k]; if (b[k]) d += a[k] * b[k]; }); Object.keys(b).forEach(function (k) { nb += b[k] * b[k]; }); return na && nb ? d / Math.sqrt(na * nb) : 0; }
+    var q = vec(tokens(query));
+    return passages.map(function (p, i) { return { id: p.id, score: cos(q, vec(docs[i])) }; }).sort(function (a, b) { return b.score - a.score; });
+  }
+  // courses whose covered topic is of class cls (expand=false: only asserted types)
+  function ontologyCourses(triples, cls, expand) {
+    var src = expand ? Array.from(reason(triples).all.values()).map(function (r) { return r.t; }) : triples.map(function (t) { return [t.s, t.p, t.o]; });
+    var topics = {}; src.forEach(function (t) { if (t[1] === RDF_TYPE && t[2] === cls) topics[t[0]] = 1; });
+    var out = {};
+    src.forEach(function (t) { if (t[1] === 'ex:covers' && topics[t[2]]) (out[t[0]] = out[t[0]] || []).push(t[2]); });
+    return out;
+  }
+  // ---- turtle-lite ----
+  function ttl(x) { return x === RDF_TYPE ? 'a' : x; }
+  function toTurtle(tr) { return tr.map(function (t) { return t[0] + ' ' + ttl(t[1]) + ' ' + t[2] + ' .'; }).join('\n'); }
+  function parseTerm(x, pre) {
+    x = x.trim();
+    if (!x) throw new Error('empty term');
+    if (x.charAt(0) === '"') {
+      var m = /^"([^"]*)"(?:\^\^([A-Za-z]+:[A-Za-z]+))?$/.exec(x);
+      if (!m) throw new Error('bad literal ' + x);
+      if (m[2] && !pre[m[2].split(':')[0]]) throw new Error('unknown prefix in ' + x);
+      return m[2] && m[2] !== 'xsd:string' ? '"' + m[1] + '"^^' + m[2] : '"' + m[1] + '"';
+    }
+    if (x.slice(0, 2) === '_:') { if (!/^_:[A-Za-z0-9_]+$/.test(x)) throw new Error('bad blank node ' + x); return x; }
+    if (x === 'a') return RDF_TYPE;
+    var m2 = /^([A-Za-z]+):([A-Za-z0-9_.\-]+)$/.exec(x);
+    if (!m2) throw new Error('not an IRI, literal or blank node: ' + x);
+    if (!pre[m2[1]]) throw new Error('unknown prefix ' + m2[1] + ':');
+    return x;
+  }
+  function parseTurtle(text, pre) {
+    var out = [];
+    text.split('\n').forEach(function (line, i) {
+      line = line.trim();
+      if (!line || line.charAt(0) === '#' || line.indexOf('@prefix') === 0) return;
+      if (!/\.$/.test(line)) throw new Error('line ' + (i + 1) + ': a triple must end with " ."');
+      line = line.replace(/\s*\.$/, '');
+      var m = /^(\S+)\s+(\S+)\s+(.+)$/.exec(line);
+      if (!m) throw new Error('line ' + (i + 1) + ': need subject predicate object');
+      var s = parseTerm(m[1], pre), p = parseTerm(m[2], pre), o = parseTerm(m[3], pre);
+      if (isLit(s) || isBn(p) || isLit(p)) throw new Error('line ' + (i + 1) + ': a literal cannot be a subject or predicate');
+      out.push([s, p, o]);
+    });
+    return out;
+  }
+  return { RULES: RULES, termStr: termStr, isLit: isLit, isBn: isBn, kbTriples: kbTriples, reason: reason, exOnly: exOnly, validate: validate,
+           checkCandidate: checkCandidate, keywordHits: keywordHits, overlapScores: overlapScores, ontologyCourses: ontologyCourses,
+           toTurtle: toTurtle, parseTurtle: parseTurtle, parseTerm: parseTerm, key: key };
+})();
+</script>
+
+<script id="ui">
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var KB, ALL, LABEL = {}, PRE;
+  function el(tag, attrs, kids) {
+    var e = document.createElement(tag);
+    Object.keys(attrs || {}).forEach(function (k) {
+      if (k === 'text') e.textContent = attrs[k]; else if (k === 'class') e.className = attrs[k];
+      else if (k.slice(0, 2) === 'on') e.addEventListener(k.slice(2), attrs[k]); else e.setAttribute(k, attrs[k]);
+    });
+    (kids || []).forEach(function (c) { e.appendChild(typeof c === 'string' ? document.createTextNode(c) : c); });
+    return e;
+  }
+  function clear(e) { while (e.firstChild) e.removeChild(e.firstChild); return e; }
+  function local(x) { return x.replace(/^ex:/, ''); }
+  function name(x) {
+    if (ONTO.isLit(x)) return x.length > 24 ? x.slice(0, 22) + '...' : x;
+    if (LABEL[x]) { var l = LABEL[x]; return l.length > 24 ? l.slice(0, 22) + '...' : l; }
+    return local(x);
+  }
+  function kind(x) { return ONTO.isLit(x) ? 'lit' : ONTO.isBn(x) ? 'bn' : 'iri'; }
+  function tagFor(x) { return el('span', { class: 'tag ' + kind(x), text: kind(x) === 'lit' ? 'literal' : kind(x) === 'bn' ? 'blank node' : 'IRI' }); }
+  function trow(t, cls) {
+    return el('div', { class: 'tr ' + (cls || '') }, [el('span', { class: 's', text: t[0] }), el('span', { class: 'p', text: t[1] }), el('span', { class: 'o', text: t[2] })]);
+  }
+
+  /* ---------- tiny deterministic force layout + SVG ---------- */
+  function layout(nodes, edges, W, H) {
+    var n = nodes.length, pos = {}, i, j;
+    nodes.forEach(function (id, k) { var a = 2 * Math.PI * k / n; pos[id] = { x: W / 2 + Math.cos(a) * W * 0.32, y: H / 2 + Math.sin(a) * H * 0.32, vx: 0, vy: 0 }; });
+    for (var it = 0; it < 260; it++) {
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
+        var a = pos[nodes[i]], b = pos[nodes[j]], dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy + 0.01, f = 5200 / d2, d = Math.sqrt(d2);
+        a.vx += dx / d * f; a.vy += dy / d * f; b.vx -= dx / d * f; b.vy -= dy / d * f;
+      }
+      edges.forEach(function (e) {
+        var a = pos[e[0]], b = pos[e[1]]; if (!a || !b) return;
+        var dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) + 0.01, f = (d - 95) * 0.04;
+        a.vx += dx / d * f; a.vy += dy / d * f; b.vx -= dx / d * f; b.vy -= dy / d * f;
+      });
+      nodes.forEach(function (id) {
+        var p = pos[id]; p.vx += (W / 2 - p.x) * 0.004; p.vy += (H / 2 - p.y) * 0.004;
+        p.x = Math.min(W - 40, Math.max(40, p.x + p.vx * 0.5)); p.y = Math.min(H - 16, Math.max(16, p.y + p.vy * 0.5)); p.vx *= 0.6; p.vy *= 0.6;
+      });
+    }
+    return pos;
+  }
+  var NS = 'http://www.w3.org/2000/svg';
+  function s(tag, attrs, text) { var e = document.createElementNS(NS, tag); Object.keys(attrs || {}).forEach(function (k) { e.setAttribute(k, attrs[k]); }); if (text != null) e.textContent = text; return e; }
+  function drawGraph(host, triples, opts) {
+    opts = opts || {}; clear(host);
+    var narrow = window.innerWidth < 640, W = narrow ? 380 : 600, H = Math.round((opts.h || 380) * (narrow ? 1.3 : 1)), nodes = [], seen = {}, edges = [];
+    triples.forEach(function (t) { [t[0], t[2]].forEach(function (x) { if (!seen[x]) { seen[x] = 1; nodes.push(x); } }); edges.push([t[0], t[2], t[1]]); });
+    var pos = layout(nodes, edges, W, H), svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': opts.label || 'Graph of the triples' });
+    var defs = s('defs'), mk = s('marker', { id: 'ah' + (opts.id || ''), viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto-start-reverse' });
+    mk.appendChild(s('path', { d: 'M0 0L10 5L0 10z', fill: '#68707F' })); defs.appendChild(mk); svg.appendChild(defs);
+    var nodeEls = {};
+    edges.forEach(function (e) {
+      var a = pos[e[0]], b = pos[e[1]]; if (!a || !b) return;
+      if (e[0] === e[1]) return;
+      var dx = b.x - a.x, dy = b.y - a.y, d = Math.sqrt(dx * dx + dy * dy) || 1, ex = b.x - dx / d * 22, ey = b.y - dy / d * 14;
+      svg.appendChild(s('line', { x1: a.x, y1: a.y, x2: ex, y2: ey, stroke: '#3a4356', 'stroke-width': 1.2, 'marker-end': 'url(#ah' + (opts.id || '') + ')' }));
+      var lbl = e[2] === 'rdf:type' ? 'a' : local(e[2]).replace(/^rdfs:/, '');
+      svg.appendChild(s('text', { x: (a.x + ex) / 2, y: (a.y + ey) / 2 - 2, 'text-anchor': 'middle', fill: '#98A0B0', style: 'font-size:9px;fill:#98A0B0' }, lbl));
+    });
+    nodes.forEach(function (id) {
+      var p = pos[id], k = kind(id), g = s('g', { tabindex: opts.onNode ? '0' : '-1', role: opts.onNode ? 'button' : 'img', 'aria-label': id, style: 'cursor:' + (opts.onNode ? 'pointer' : 'default') });
+      var col = k === 'lit' ? '#F2A93B' : k === 'bn' ? '#C28BFF' : '#7C9CFF', txt = name(id), w = Math.max(34, txt.length * 5.6 + 12);
+      var shape = k === 'lit' ? s('rect', { x: p.x - w / 2, y: p.y - 9, width: w, height: 18, rx: 4, fill: '#171C28', stroke: col })
+        : s('rect', { x: p.x - w / 2, y: p.y - 9, width: w, height: 18, rx: 9, fill: '#171C28', stroke: col, 'stroke-dasharray': k === 'bn' ? '3 2' : '0' });
+      g.appendChild(shape); g.appendChild(s('text', { x: p.x, y: p.y + 3.5, 'text-anchor': 'middle', style: 'font-size:10px' }, txt));
+      if (opts.onNode) { g.addEventListener('click', function () { opts.onNode(id); }); g.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); opts.onNode(id); } }); }
+      svg.appendChild(g); nodeEls[id] = shape;
+    });
+    host.appendChild(svg);
+    return { highlight: function (id) { Object.keys(nodeEls).forEach(function (k) { nodeEls[k].setAttribute('stroke-width', k === id ? 3 : 1); }); } };
+  }
+
+  /* ---------- step 1 ---------- */
+  function step1() {
+    var modes = [
+      { id: 'tax', name: 'Taxonomy', cap: 'Only "is a kind of" edges between classes. Things below inherit from things above. No other relation exists.',
+        tr: function () { return ALL.filter(function (t) { return t.p === 'rdfs:subClassOf' && /Topic$/.test(t.s); }).map(function (t) { return [t.s, 'rdfs:subClassOf', t.o]; }); } },
+      { id: 'ont', name: 'Ontology', cap: 'The same classes plus typed relations with domain and range: courses cover topics, courses have prerequisites. Still no single course.',
+        tr: function () { var r = []; KB.tbox.classes.forEach(function (c) { if (c.subClassOf && /^(Topic|MLTopic|DeepLearningTopic|ClassicalMLTopic|NeuralArchitectureTopic|MLCourse|Course|UndergraduateCourse|GraduateCourse)$/.test(c.id) || c.id === 'ConvolutionalNetworkTopic') r.push(['ex:' + c.id, 'rdfs:subClassOf', 'ex:' + c.subClassOf]); });
+          KB.tbox.objectProperties.forEach(function (p) { if (p.domain && p.range && /^(covers|hasPrerequisite|offeredBy)$/.test(p.id)) r.push(['ex:' + p.domain, 'ex:' + p.id, 'ex:' + p.range]); }); return r; } },
+      { id: 'kg', name: 'Knowledge graph', cap: 'The ontology applied to data: real courses, typed by the classes, linked by the relations. This is the A-box on top of the T-box.',
+        tr: function () { var keep = { 'ex:UBC_CPSC_440': 1, 'ex:UBC_CPSC_340': 1, 'ex:t_deep_learning': 1, 'ex:t_cnn': 1, 'ex:UBC': 1, 'ex:t_bayesian': 1 };
+          return ALL.filter(function (t) { return keep[t.s] && (t.p === 'ex:covers' || t.p === 'ex:hasPrerequisite' || t.p === 'ex:offeredBy' || (t.p === 'rdf:type' && /Course$|Topic$|University/.test(t.o))) && !ONTO.isLit(t.o); }).map(function (t) { return [t.s, t.p, t.o]; }); } }
+    ];
+    var host = $('s1-btns'), cur;
+    function show(m) { cur = m; Array.prototype.forEach.call(host.children, function (b) { b.setAttribute('aria-pressed', b.dataset.id === m.id); });
+      drawGraph($('s1-svg'), m.tr(), { id: 's1', label: m.name + ' view of the example data', h: 330 }); $('s1-cap').textContent = m.cap; }
+    modes.forEach(function (m) { var b = el('button', { text: m.name, 'data-id': m.id, onclick: function () { show(m); } }); host.appendChild(b); });
+    show(modes[0]);
+    var cols = $('s1-cols');
+    cols.appendChild(el('div', {}, [el('h3', { text: 'What your notes already have' }), el('p', { class: 'small', text: 'Taxonomy as hierarchy with inheritance; ontology as taxonomy plus relations; knowledge graph as ontology applied to data; T-box as theory and A-box as assertions; why you may need one (reuse, explanation).' })]));
+    cols.appendChild(el('div', {}, [el('h3', { text: 'What the notes are missing' }), el('ul', { class: 'small', style: 'padding-left:18px;margin:0' }, [
+      el('li', { text: 'The data model: RDF triples, IRIs, literals, blank nodes (step 2).' }),
+      el('li', { text: 'Which rules a reasoner applies, and what it cannot do (step 4).' }),
+      el('li', { text: 'Open world (OWL) versus closed world (SHACL); validation is a different job from reasoning (step 5).' }),
+      el('li', { text: 'How an ontology helps retrieval and LLM extraction (steps 5 and 6).' }),
+      el('li', { text: 'Which box names are standard (step 7).' })])]));
+  }
+
+  /* ---------- step 2 ---------- */
+  var work, orig, fmt = 'table', selNode = null, g2;
+  function step2() {
+    var pick = function (t) { return t.layer === 'abox' && (/UBC_CPSC_(440|340|320|221)|_:off340|t_deep_learning|b_dl/.test(t.s)) && !/rdfs:label|ex:offeredBy|covers.*t_(generative|latent|markov|pgm)|t_(cnn|neural)/.test(t.p + ' ' + t.o) && !(/t_cnn|t_neural/.test(t.o)); };
+    orig = ALL.filter(pick).map(function (t) { return [t.s, t.p, t.o]; });
+    work = orig.slice();
+    var ctl = $('s2-ctl');
+    var sIn = el('input', { id: 's2-s', placeholder: 'subject', size: 16, 'aria-label': 'subject', list: 'dl-iri' }),
+        pIn = el('input', { id: 's2-p', placeholder: 'predicate', size: 14, 'aria-label': 'predicate', list: 'dl-p' }),
+        oIn = el('input', { id: 's2-o', placeholder: 'object  (ex:x, _:b, "text")', size: 22, 'aria-label': 'object', list: 'dl-iri' });
+    var dl1 = el('datalist', { id: 'dl-iri' }), dl2 = el('datalist', { id: 'dl-p' }), seen = {};
+    ALL.forEach(function (t) { [t.s, t.o].forEach(function (x) { if (!seen[x] && !ONTO.isLit(x) && x.slice(0, 3) === 'ex:') { seen[x] = 1; dl1.appendChild(el('option', { value: x })); } }); });
+    ['ex:covers', 'ex:hasPrerequisite', 'ex:offeredBy', 'ex:term', 'ex:year', 'rdf:type', 'rdfs:label'].forEach(function (x) { dl2.appendChild(el('option', { value: x })); });
+    ctl.appendChild(sIn); ctl.appendChild(pIn); ctl.appendChild(oIn); ctl.appendChild(dl1); ctl.appendChild(dl2);
+    ctl.appendChild(el('button', { text: 'Add triple', onclick: function () { try {
+      var t = [ONTO.parseTerm(sIn.value, PRE), ONTO.parseTerm(pIn.value, PRE), ONTO.parseTerm(oIn.value, PRE)];
+      if (ONTO.isLit(t[0]) || ONTO.isLit(t[1])) throw new Error('a literal cannot be a subject or predicate');
+      if (!work.some(function (w) { return ONTO.key(w) === ONTO.key(t); })) work.push(t);
+      msg('Added.', true); render2(); } catch (e) { msg(e.message, false); } } }));
+    ctl.appendChild(el('button', { text: 'Reset', onclick: function () { work = orig.slice(); msg('Reset to the original ' + work.length + ' triples.', true); render2(); } }));
+    ctl.appendChild(el('span', { class: 'row', role: 'group', 'aria-label': 'View' }, [
+      el('button', { id: 's2-vt', text: 'Table', 'aria-pressed': 'true', onclick: function () { fmt = 'table'; render2(); } }),
+      el('button', { id: 's2-vu', text: 'Turtle', 'aria-pressed': 'false', onclick: function () { fmt = 'turtle'; render2(); } })]));
+    render2();
+  }
+  function msg(t, ok) { var m = $('s2-msg'); m.textContent = t; m.style.color = ok ? 'var(--teal)' : 'var(--warn)'; }
+  function render2() {
+    $('s2-vt').setAttribute('aria-pressed', fmt === 'table'); $('s2-vu').setAttribute('aria-pressed', fmt === 'turtle');
+    var v = clear($('s2-view'));
+    if (fmt === 'table') {
+      var tb = el('table', { class: 'tbl' }, [el('tr', {}, ['subject', 'predicate', 'object', 'object kind', ''].map(function (h) { return el('th', { text: h }); }))]);
+      work.forEach(function (t, i) {
+        var hit = selNode && (t[0] === selNode || t[2] === selNode);
+        tb.appendChild(el('tr', hit ? { style: 'background:rgba(242,169,59,.10)' } : {}, [el('td', { class: 't', text: t[0] }), el('td', { class: 't', text: t[1] }), el('td', { class: 't', text: t[2] }), el('td', {}, [tagFor(t[2])]),
+          el('td', {}, [el('button', { text: 'Remove', 'aria-label': 'Remove triple ' + t.join(' '), onclick: function () { work.splice(i, 1); render2(); } })])]));
+      });
+      v.appendChild(tb);
+    } else {
+      var ta = el('textarea', { id: 's2-ta', 'aria-label': 'Turtle text', spellcheck: 'false' }); ta.value = '# prefixes: ex rdf rdfs owl xsd (as in the data file)\n' + ONTO.toTurtle(work);
+      v.appendChild(ta); v.appendChild(el('div', { class: 'row' }, [el('button', { text: 'Apply Turtle', onclick: function () {
+        try { work = ONTO.parseTurtle(ta.value, PRE); msg('Parsed ' + work.length + ' triples.', true); render2(); } catch (e) { msg('Turtle error: ' + e.message, false); } } }),
+        el('span', { class: 'small muted', text: 'One triple per line, ending with " ." ("a" means rdf:type).' })]));
+    }
+    g2 = drawGraph($('s2-svg'), work, { id: 's2', label: 'Graph of the working triples', h: 400, onNode: function (id) { selNode = selNode === id ? null : id; render2(); } });
+    if (selNode) g2.highlight(selNode);
+  }
+
+  /* ---------- step 3 ---------- */
+  var lanes = {}, T3, quiz = false;
+  function step3() {
+    var want = [['ex:MLCourse', 'rdfs:subClassOf', 'ex:Course'], ['ex:DeepLearningTopic', 'rdfs:subClassOf', 'ex:MLTopic'], ['ex:Course', 'owl:disjointWith', 'ex:Topic'],
+      ['ex:covers', 'rdfs:domain', 'ex:Course'], ['ex:covers', 'rdfs:range', 'ex:Topic'], ['ex:hasPrerequisite', 'rdf:type', 'owl:TransitiveProperty'], ['ex:covers', 'owl:inverseOf', 'ex:coveredBy'],
+      ['ex:hasTextbook', 'rdfs:subPropertyOf', 'ex:usesBook'], ['ex:UBC_CPSC_440', 'ex:covers', 'ex:t_deep_learning'], ['ex:UBC_CPSC_440', 'ex:hasPrerequisite', 'ex:UBC_CPSC_340'],
+      ['ex:t_cnn', 'rdf:type', 'ex:ConvolutionalNetworkTopic'], ['ex:MIT_6_790', 'ex:hasPrerequisite', 'ex:MIT_6_390'], ['ex:UBC_CPSC_340', 'rdf:type', 'ex:UndergraduateCourse']];
+    T3 = want.map(function (w) { var f = ALL.filter(function (t) { return t.s === w[0] && t.p === w[1] && t.o === w[2]; })[0]; return { t: w, truth: f ? ({ tbox: 'T', rbox: 'R', abox: 'A' })[f.layer] : 'A' }; });
+    reset3(false);
+  }
+  function reset3(shuffle) {
+    quiz = shuffle; T3.forEach(function (x, i) { x.lane = shuffle ? ['T', 'R', 'A'][(i * 7 + 3) % 3] : x.truth; });
+    if (shuffle) T3.forEach(function (x, i) { x.lane = ['T', 'R', 'A'][(i * 5 + (i > 6 ? 1 : 0)) % 3]; if (x.lane === x.truth) x.lane = ['T', 'R', 'A'][(['T', 'R', 'A'].indexOf(x.truth) + 1) % 3]; });
+    $('s3-score').textContent = ''; $('s3-note').textContent = shuffle ? 'Quiz: every triple starts in a wrong lane. Move each one, then press Check.' : 'The triples start in the lane where they belong. Move one and see what the note says.'; render3();
+  }
+  var LNAME = { T: 'T-box: about classes', R: 'R-box: about properties', A: 'A-box: about individuals' };
+  function render3() {
+    var host = clear($('s3-lanes'));
+    ['T', 'R', 'A'].forEach(function (L) {
+      var lane = el('div', { class: 'lane ' + L }, [el('h4', { text: LNAME[L] })]);
+      T3.forEach(function (x) { if (x.lane !== L) return;
+        var mv = el('div', { class: 'mv' }, ['T', 'R', 'A'].filter(function (m) { return m !== L; }).map(function (m) { return el('button', { text: 'to ' + m, 'aria-label': 'Move to ' + LNAME[m], onclick: function () { x.lane = m; explain3(x); render3(); } }); }));
+        lane.appendChild(el('div', { class: 'tt ' + L }, [x.t.join('  '), mv])); });
+      host.appendChild(lane);
+    });
+  }
+  function explain3(x) {
+    var why = { T: 'it states how classes relate (subclass, disjointness) or what a property links (domain, range). In DL these are the T-box axioms.',
+      R: 'it states a property fact: a declaration, an inverse, a transitivity, a subproperty. In DL these are role (R-box) axioms.',
+      A: 'it states a fact about named individuals: a course, a topic, a book.' };
+    var ok = x.lane === x.truth, n = $('s3-note');
+    n.className = 'ans ' + (ok ? 'good' : 'warn');
+    n.textContent = ok ? 'Correct: ' + x.t.join(' ') + ' sits in the ' + x.truth + '-box because ' + why[x.truth]
+      : 'You moved ' + x.t.join(' ') + ' to ' + x.lane + '. Usual reading: ' + x.truth + '-box, because ' + why[x.truth] + ' Note: the reasoner does not care. It is one graph; the layer is a reading aid. Domain and range are strictly T-box axioms in DL (a general concept inclusion), here shown with the properties they describe.';
+  }
+  function check3() { var right = T3.filter(function (x) { return x.lane === x.truth; }).length; $('s3-score').textContent = right + ' of ' + T3.length + ' in the usual lane.'; }
+
+  /* ---------- step 4 ---------- */
+  var R4;
+  function step4() {
+    $('s4-run').addEventListener('click', run4);
+    $('s4-c2').addEventListener('change', function () { if (R4) run4(); });
+  }
+  function run4() {
+    var tr = ALL.slice();
+    if ($('s4-c2').checked) { var c = KB.llm_extracted[1].triple; tr = tr.concat([{ s: c.s, p: c.p, o: ONTO.termStr(c.o), layer: 'abox', src: 'llm' }]); }
+    R4 = ONTO.reason(tr);
+    var jsSet = {}; R4.inferred.forEach(function (r) { if (ONTO.exOnly(r.t)) jsSet[ONTO.key(r.t)] = 1; });
+    var out = clear($('s4-out'));
+    var pyKeys = {}; KB.check.inferred.forEach(function (t) { pyKeys[t.join(' ')] = 1; });
+    var withC2 = $('s4-c2').checked;
+    var same = !withC2 && Object.keys(jsSet).length === Object.keys(pyKeys).length && Object.keys(jsSet).every(function (k) { return pyKeys[k]; });
+    out.appendChild(el('div', { class: 'ans ' + (R4.clashes.length ? 'warn' : 'good') },
+      [el('b', { text: R4.inferred.length + ' new triples' }), ' derived from ' + tr.length + ' asserted. ',
+       withC2 ? 'The Python run stored in the data file covers the clean knowledge base only, so no comparison here. ' : 'Python (owlrl, filtered to the ex: vocabulary): ' + KB.check.inferred.length + ' triples; this page: ' + Object.keys(jsSet).length + '; ' + (same ? 'identical sets.' : 'DIFFERENT sets.') + ' ',
+       R4.clashes.length ? 'INCONSISTENT: ' + R4.clashes.length + ' disjointness clash(es).' : 'Consistent: no disjointness clash.']));
+    R4.clashes.forEach(function (c) {
+      var box = el('div', { class: 'card bad' }, [el('b', { text: 'Clash: ' + c.individual + ' is both ' + c.classes.join(' and ') }), el('p', { text: ONTO.RULES['cax-dw'] + ' Premises:' })]);
+      c.premises.forEach(function (p) { box.appendChild(trow(p)); }); out.appendChild(box);
+    });
+    var byRule = {}; R4.inferred.forEach(function (r) { (byRule[r.rule] = byRule[r.rule] || []).push(r); });
+    var chips = el('div', { class: 'row' }); out.appendChild(chips);
+    Object.keys(byRule).forEach(function (k) { chips.appendChild(el('span', { class: 'tag gold', text: k + ' x' + byRule[k].length })); });
+    out.appendChild(el('h3', { text: 'Look at one thing', style: 'margin-top:14px' }));
+    var sel = el('select', { id: 's4-focus', 'aria-label': 'Focus' }), foc = ['ex:UBC_CPSC_440', 'ex:MIT_6_390', 'ex:t_cnn', 'ex:UBC_CPSC_221', 'ex:TUE_ML_4103', 'ex:DeepLearningTopic'];
+    foc.forEach(function (f) { sel.appendChild(el('option', { value: f, text: f })); });
+    out.appendChild(sel);
+    var list = el('div', { id: 's4-list' }), why = el('div', { id: 's4-why', class: 'ans', text: 'Click an amber triple to see why it holds.' });
+    out.appendChild(list); out.appendChild(why);
+    function showFocus() {
+      clear(list); var f = sel.value, n = 0;
+      Array.from(R4.all.values()).forEach(function (r) {
+        if (r.t[0] !== f && r.t[2] !== f) return; if (r.t[1] === 'rdfs:label') return; n++; if (n > 60) return;
+        var row = trow(r.t, r.rule ? 'inf' : ''); if (r.rule) { row.setAttribute('tabindex', '0'); row.setAttribute('role', 'button'); row.appendChild(el('span', { class: 'tag gold', text: r.rule }));
+          var open = function () { clear(why); why.className = 'ans gold'; why.appendChild(el('b', { text: r.rule + ': ' })); why.appendChild(document.createTextNode(ONTO.RULES[r.rule] + ' Premises:'));
+            r.premises.forEach(function (p) { var pk = ONTO.key(p), pr = R4.all.get(pk); var rw = trow(p, pr && pr.rule ? 'inf' : ''); rw.appendChild(el('span', { class: 'tag ' + (pr && pr.rule ? 'gold' : 'ok'), text: pr && pr.rule ? 'inferred (' + pr.rule + ')' : 'asserted' })); why.appendChild(rw); }); };
+          row.addEventListener('click', open); row.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }); }
+        list.appendChild(row);
+      });
+      if (n > 60) list.appendChild(el('p', { class: 'small muted', text: 'Showing 60 of ' + n + ' triples.' }));
+    }
+    sel.addEventListener('change', showFocus); showFocus();
+  }
+
+  /* ---------- step 5 ---------- */
+  function step5() {
+    var sh = $('s5-shapes'); sh.appendChild(el('p', { class: 'small muted', text: 'Shapes (the same three as in the data file):' }));
+    KB.shapes.forEach(function (x) { sh.appendChild(el('div', { class: 'card' }, [el('b', { class: 'mono', text: x.id + ' ' }), x.message, el('div', { class: 'small faint', text: x.kind === 'sparql' ? 'SPARQL constraint: ' + x.sparql : x.kind + ' shape on ' + (x.targetClass || ('subjects of ' + x.targetSubjectsOf)) + ', path ' + x.path + ', ' + x.constraint + ' ' + x.value })])); });
+    var host = $('s5-cands');
+    KB.llm_extracted.forEach(function (c) {
+      var out = el('div', {}), card = el('div', { class: 'card' }, [
+        el('div', { class: 'hd' }, [el('b', { text: 'Candidate ' + c.id.slice(1) }), el('span', { class: 'tag', text: 'from passage ' + c.passage })]),
+        el('p', { text: 'Sentence: "' + c.sentence + '"' }), trow([c.triple.s, c.triple.p, c.triple.o]),
+        el('div', { class: 'row' }, [el('button', { text: 'Check this triple', onclick: function () {
+          var r = ONTO.checkCandidate(KB, c), py = KB.check.llm_candidates[c.id]; clear(out);
+          out.appendChild(el('div', { class: 'ans ' + (r.ok ? 'good' : 'warn') }, [el('b', { text: r.ok ? 'Accepted: fits the T-box and the shapes.' : 'Rejected. Reasons:' })]));
+          r.reasons.forEach(function (x) { out.appendChild(el('div', { class: 'ev' }, [el('b', { text: x.kind }), x.text])); });
+          var agree = (py.shacl_conforms === r.shacl.conforms) && ((py.owlrl_disjointness_clash.length > 0) === (r.clashes.length > 0)) && (py.predicate_declared_in_tbox === !r.reasons.some(function (x) { return x.kind === 'vocabulary'; }));
+          out.appendChild(el('p', { class: 'small muted', text: 'pyshacl + owlrl said: SHACL conforms = ' + py.shacl_conforms + ', disjointness clash = ' + (py.owlrl_disjointness_clash.length > 0) + ', property declared = ' + py.predicate_declared_in_tbox + '. This page ' + (agree ? 'agrees.' : 'DISAGREES.') }));
+          if (c.note) out.appendChild(el('p', { class: 'small muted', text: 'Why it happens: ' + c.note })); } })]), out]);
+      host.appendChild(card);
+    });
+    var sel = $('s5-course'); KB.abox.filter(function (t) { return t.p === 'rdf:type' && t.o === 'ex:MLCourse'; }).forEach(function (t) { sel.appendChild(el('option', { value: t.s, text: name(t.s) })); });
+    sel.value = 'ex:MIT_6_790'; sel.addEventListener('change', ow5); $('s5-del').addEventListener('click', function () { var b = $('s5-del'); b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') !== 'true'); ow5(); }); ow5();
+  }
+  function ow5() {
+    var c = $('s5-course').value, del = $('s5-del').getAttribute('aria-pressed') === 'true';
+    var tr = ALL.filter(function (t) { return !(del && t.s === c && t.p === 'ex:covers'); });
+    var R = ONTO.reason(tr), v = ONTO.validate(tr, KB.shapes), n = tr.filter(function (t) { return t.s === c && t.p === 'ex:covers'; }).length;
+    var out = clear($('s5-ow'));
+    out.appendChild(el('div', { class: 'cols2' }, [
+      el('div', {}, [el('h3', { text: 'OWL (open world)' }), el('p', { class: 'small', text: c + ' has ' + n + ' covers triple(s). ' + (n === 0 ? 'Does it cover nothing? The reasoner cannot say: unknown. ' : '') + 'Clashes found: ' + R.clashes.length + '.' }), el('span', { class: 'tag ' + (R.clashes.length ? 'bad' : 'ok'), text: R.clashes.length ? 'inconsistent' : 'no complaint' })]),
+      el('div', {}, [el('h3', { text: 'SHACL (closed world)' }), el('p', { class: 'small', text: v.conforms ? 'Conforms: every ML course covers at least one topic.' : v.results.map(function (x) { return x.focus + ': ' + x.message; }).join(' ') }), el('span', { class: 'tag ' + (v.conforms ? 'ok' : 'bad'), text: v.conforms ? 'conforms' : 'violation' })])]));
+    if (del && c === 'ex:MIT_6_790') { var p = KB.check.open_vs_closed_world; out.appendChild(el('p', { class: 'small muted', text: 'Stored Python result for this case: pyshacl conforms = ' + p.shacl_when_covers_removed.conforms + '; owlrl clashes = ' + p.owl_when_covers_removed.disjointness_clashes.length + '.' })); }
+  }
+
+  /* ---------- step 6 ---------- */
+  function step6() {
+    var q = KB.graphrag_question; $('s6-q').textContent = 'Question: ' + q.text + ' (Passages are real quotes from the syllabus pages; each passage belongs to one course.)';
+    var sel = $('s6-cls'); ['DeepLearningTopic', 'NeuralArchitectureTopic', 'ConvolutionalNetworkTopic', 'GenerativeModelTopic', 'ClassicalMLTopic', 'ProbabilisticModelTopic', 'MLTopic'].forEach(function (c) { sel.appendChild(el('option', { value: 'ex:' + c, text: c })); });
+    ['s6-kw', 's6-cls', 's6-exp'].forEach(function (id) { $(id).addEventListener('input', run6); $(id).addEventListener('change', run6); }); run6();
+  }
+  function run6() {
+    var P = KB.passages, kw = $('s6-kw').value, cls = $('s6-cls').value, exp = $('s6-exp').checked;
+    var hits = ONTO.keywordHits(P, kw), sc = ONTO.overlapScores(P, kw).filter(function (x) { return x.score > 0; });
+    var pc = {}; P.forEach(function (p) { pc[p.id] = p; });
+    var A = clear($('s6-a')), B = clear($('s6-b')), kwC = {};
+    hits.forEach(function (id) { kwC[pc[id].course] = 1; });
+    A.appendChild(el('p', { class: 'small muted', text: 'Exact phrase "' + kw + '": ' + hits.length + ' passage(s).' }));
+    hits.forEach(function (id) { A.appendChild(el('div', { class: 'card good' }, [el('div', { class: 'hd' }, [el('b', { text: name(pc[id].course) }), el('span', { class: 'tag', text: id })]), el('p', { text: pc[id].text.slice(0, 180) + (pc[id].text.length > 180 ? '...' : '') })])); });
+    A.appendChild(el('p', { class: 'small muted', text: 'Word-overlap score (tf-idf cosine, a stand-in for vector search, not a real embedding):' }));
+    sc.slice(0, 4).forEach(function (x) { A.appendChild(el('div', { class: 'small mono', text: x.score.toFixed(2) + '  ' + x.id + '  (' + name(pc[x.id].course) + ')' })); });
+    var oc = ONTO.ontologyCourses(ALL, cls, exp), keys = Object.keys(oc).sort();
+    B.appendChild(el('p', { class: 'small muted', text: 'Courses covering a topic of class ' + cls + (exp ? ' or any subclass' : ' (asserted type only)') + ': ' + keys.length + '.' }));
+    keys.forEach(function (c) { var missed = !kwC[c]; var ps = P.filter(function (p) { return p.course === c; }).map(function (p) { return p.id; });
+      B.appendChild(el('div', { class: 'card ' + (missed ? 'gold' : 'good') }, [el('div', { class: 'hd' }, [el('b', { text: name(c) }), missed ? el('span', { class: 'tag gold', text: 'text match missed it' }) : el('span', { class: 'tag ok', text: 'also in text match' })]),
+        el('p', { text: 'covers ' + oc[c].map(name).join(', ') + '  [evidence: ' + ps.join(', ') + ']' })])); });
+    var miss = keys.filter(function (c) { return !kwC[c]; }), extra = Object.keys(kwC).filter(function (c) { return !oc[c]; });
+    $('s6-sum').textContent = 'Text match found ' + Object.keys(kwC).length + ' course(s); ontology-guided found ' + keys.length + '. Only the ontology finds: ' + (miss.map(name).join(', ') || 'nothing') + '. Only the text finds: ' + (extra.map(name).join(', ') || 'nothing') + '. ' + (exp ? '' : 'Turn on subclass expansion to see the gain. ') + 'The ontology answer depends on our topic typing, which is a modelling choice.';
+  }
+
+  /* ---------- steps 7, 8 ---------- */
+  function step7() {
+    var rows = [
+      ['T-box', 'Schema layer: classes, domain/range, subclass hierarchies; the notes also put shapes and rules here.', 'Standard', 'TBox = "sentences describing concept hierarchies" (Wikipedia, Description logic).'],
+      ['A-box', 'Assertions about individuals.', 'Standard', 'ABox = "ground sentences stating where in the hierarchy, individuals belong" (same article).'],
+      ['R-box', 'Roles: a set of properties.', 'Standard (description logic)', 'RBox = "the DL roles and their axioms" (Keet, Introduction to Ontology Engineering, ch. 4).'],
+      ['X-box', 'TaXonomies.', 'Not standard', 'No source found. A taxonomy is the subclass part of the T-box (we have no source calling it a separate box).'],
+      ['C-box', 'Contextual metadata.', 'Not standard', 'No source for that meaning. One paper (arXiv 2004.00291) defines CBox as "Constraint Box" = TBox + RBox, a local convention.']];
+    var tb = $('s7-tbl'); tb.appendChild(el('tr', {}, ['Box', 'What the notes say', 'Status', 'Evidence'].map(function (h) { return el('th', { text: h }); })));
+    rows.forEach(function (r) { tb.appendChild(el('tr', {}, r.map(function (x, i) { return el('td', {}, [i === 2 ? el('span', { class: 'tag ' + (/^Standard/.test(x) ? 'ok' : 'bad'), text: x }) : x]); }))); });
+    $('s7-src').innerHTML = 'Sources opened 2026-10-09: <a href="https://en.wikipedia.org/wiki/Description_logic">Wikipedia, Description logic</a>; <a href="https://eng.libretexts.org/Bookshelves/Computer_Science/Programming_and_Computation_Fundamentals/An_Introduction_to_Ontology_Engineering_(Keet)/04%3A_Description_Logics/4.01%3A_Prelude_to_Description_Logics">Keet, An Introduction to Ontology Engineering, 4.1</a>; <a href="https://arxiv.org/pdf/2004.00291">arXiv 2004.00291</a>. "Not standard" means: not found in these sources, not a proof that nobody uses the word. Also: SHACL shapes are a separate language run against the data (step 5), not part of a T-box.';
+  }
+  function step8() {
+    var c = $('s8-cols');
+    c.appendChild(el('div', {}, [el('h3', { text: 'Operational ontology (Palantir Foundry docs)' }), el('p', { class: 'small', text: 'The documentation calls the Ontology "an operational layer for the organization", placed over integrated data and linked to real-world counterparts.' }),
+      el('p', { class: 'small', text: 'Semantic elements: objects, properties, links. Kinetic elements: actions, functions, dynamic security.' }), el('p', { class: 'small muted', text: 'Not verified here and left out: any claim about reasoning, open-world semantics or OWL mapping in Foundry.' })]));
+    c.appendChild(el('div', {}, [el('h3', { text: 'Formal ontology (OWL / RDF)' }), el('p', { class: 'small', text: 'T-box: concept hierarchies. A-box: individuals in that hierarchy. A reasoner derives new triples by rules (' + KB.check.inferred_count + ' here, step 4).' }),
+      el('p', { class: 'small', text: 'Validation is a second tool: SHACL shapes check the data (step 5). Both parts of this column were computed on this page and checked against rdflib, owlrl and pyshacl.' })]));
+    $('s8-src').innerHTML = 'Source: <a href="https://palantir.com/docs/foundry/ontology/overview/">Palantir, Ontology overview</a> (public docs, read 2026-10-09; quotes are short). The notes\' claim that LLMs make ontology-based automation possible comes from a video and was not checked.';
+  }
+
+  /* ---------- boot ---------- */
+  function nav() { var n = $('nav'), items = document.querySelectorAll('section.step');
+    Array.prototype.forEach.call(items, function (s0, i) { n.appendChild(el('a', { href: '#' + s0.id, text: String(i + 1), 'aria-label': 'Step ' + (i + 1) })); });
+    if ('IntersectionObserver' in window) { var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) Array.prototype.forEach.call(n.children, function (a) { a.className = a.getAttribute('href') === '#' + e.target.id ? 'on' : ''; }); }); }, { rootMargin: '-30% 0px -60% 0px' }); Array.prototype.forEach.call(items, function (s0) { io.observe(s0); }); } }
+  function fail(m) { var e = $('err'); e.style.display = 'block'; e.textContent = m; }
+  function boot(kb) {
+    KB = kb; PRE = kb.prefixes; ALL = ONTO.kbTriples(kb);
+    ALL.forEach(function (t) { if (t.p === 'rdfs:label') LABEL[t.s] = t.o.replace(/^"|"$/g, ''); });
+    nav(); step1(); step2(); step3(); step4(); step5(); step6(); step7(); step8();
+    $('s3-check').addEventListener('click', check3); $('s3-shuffle').addEventListener('click', function () { reset3(true); }); $('s3-reset').addEventListener('click', function () { reset3(false); });
+    window.__ready = true;
+  }
+  function load() {
+    var base = new URL(new URLSearchParams(location.search).get('data') || '../data/', location.href);
+    fetch(new URL('example-kb.json', base)).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(boot)
+      .catch(function (e) { fail('Could not load ../data/example-kb.json (' + e.message + '). Open this page through a web server, for example: cd the "Ontology and Knowledge Graphs - 2026-10-10" folder, run  python3 -m http.server 8000  and open /build/index.html. Opening the file directly (file://) blocks the data request.'); });
+  }
+  load();
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

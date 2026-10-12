@@ -20,6 +20,23 @@ if (!DATA) DATA = await fetch("/thesis/data/production-stack.json").then(r => r.
 const root = document.getElementById("ps-root");
 if (!DATA) { root.innerHTML = `<p class="note-box">${esc(T("ps.nodata"))}</p>`; return; }
 const NAMES = DATA.names || {algorithms: {}, metrics: {}};
+// Origin (provenance, Brief I2): the paper behind a component or GraphRAG method, from /data/provenance.json (the Sources page data); items without a record show nothing
+const PROV = ((await fetch("/thesis/data/provenance.json").then(r => r.ok ? r.json() : null).catch(() => null)) || {}).items || {};
+// Learn more (Brief I2/M): Foundations topics behind a component, via its algorithm/metric ids -> /data/foundations/backlinks.json
+const FDB = await fetch("/thesis/data/foundations/backlinks.json").then(r => r.ok ? r.json() : {}).catch(() => ({}));
+const FDT = await fetch("/thesis/data/foundations/index.json").then(r => r.ok ? r.json() : null).then(d => Object.fromEntries(((d && d.families) || []).flatMap(f => f.topics.map(t => [t.id, {...t, fam: f.id}])))).catch(() => ({}));
+const learn = c => { const ids = [...new Set([...(c.algorithms || []), ...(c.metrics || [])].flatMap(x => FDB[x] || []))].filter(x => FDT[x]).slice(0, 6);
+  return ids.length ? `<div class="ps-learn"><b>${esc(T("ps.learn"))}</b> ${ids.map(x => (I.fa && FDT[x].title_fa ? `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}">${esc(FDT[x].title_fa)}</a>` : `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}" lang="en" dir="ltr">${esc(FDT[x].title)}</a>`)).join("")}</div>` : ""; };
+const pAu = a => { const n = (a || []).map(x => String(x).split(",")[0]); return n.length > 2 ? n[0] + " et al." : n.join(" & "); };
+const pLink = p => [p.doi && `<a href="https://doi.org/${esc(p.doi)}" target="_blank" rel="noopener">DOI</a>`, p.arxiv && `<a href="https://arxiv.org/abs/${esc(String(p.arxiv).replace(/^arxiv:/i, ""))}" target="_blank" rel="noopener">arXiv</a>`, !p.doi && !p.arxiv && p.url && `<a href="${esc(p.url)}" target="_blank" rel="noopener">link</a>`].filter(Boolean).join(" · ");
+function origin(key, compact) {
+  const r = PROV[key]; if (!r) return "";
+  const p = r.introduced_by, badge = `<span class="ps-pv pv-${esc(r.status)}">${esc(T("so.status_" + r.status))}</span>`;
+  const cites = p && p.citations && p.citations.value != null ? ` · ${esc(T("ex.o_cites", {n: Number(p.citations.value).toLocaleString("en"), src: p.citations.source, date: p.citations.date}))}` : "";
+  const line = p ? `<span lang="en" dir="ltr">${esc(pAu(p.authors))} (${esc(p.year)}). <i>${esc(p.title)}</i>${p.venue ? `, ${esc(p.venue)}` : ""}. ${pLink(p)}${cites}</span>` : `<span>${esc(T("so.no_origin"))}</span>`;
+  if (compact) return ` <span class="ps-origin">${badge} ${line}</span>`;
+  return `<p class="ps-src ps-origin"><b>${esc(T("ex.h_origin"))}:</b> ${badge} ${line}${p && p.why ? `<br><span class="faint" lang="en" dir="ltr">${esc(p.why)}</span>` : r.notes ? `<br><span class="faint" lang="en" dir="ltr">${esc(r.notes)}</span>` : ""} <a href="/thesis/sources.html">${esc(T("ex.o_all"))}</a></p>`;
+}
 const BAND = {offline: "var(--k12)", online: "var(--ai)", across: "var(--he)", later: "var(--both)"};
 
 // ---------- static frame ----------
@@ -204,7 +221,7 @@ function Arch(el, dg) {
     el.querySelectorAll(".ps-meth button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === (st.method || "")));
     const mt = el.querySelector(".ps-mtext");
     if (mt) { const m = st.method && dg.methods.find(x => x.id === st.method);
-      mt.innerHTML = m ? `<b>${en(m.name)}</b> · ${en(m.by)}: ${en(m.text)} <span class="faint ps-small">${srcLine(m.sources)}</span>` : esc(T("ps.method_hint")); }
+      mt.innerHTML = m ? `<b>${en(m.name)}</b> · ${en(m.by)}: ${en(m.text)} <span class="faint ps-small">${srcLine(m.sources)}</span>${origin("method:" + m.id, true)}` : esc(T("ps.method_hint")); }
   }
   function card(id) {
     const c = COMP[id], gm = mode() === "graph";
@@ -226,7 +243,9 @@ function Arch(el, dg) {
         ${a ? `<div><b>${esc(T("ps.alg"))}</b><span>${a}</span></div>` : ""}
         ${m ? `<div><b>${esc(T("ps.met"))}</b><span>${m}</span></div>` : ""}
       </div>
+      ${learn(c)}
       <p class="ps-src"><b>${esc(T("ps.sources"))}:</b> ${srcLine(c.sources)}${c.ours ? `<br><b>${esc(T("ps.ours"))}:</b> ${en(c.ours)}` : ""}</p>
+      ${origin("component:" + id)}
     </article>`;
   }
   function select(id, focus, hash = true) {

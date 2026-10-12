@@ -73,11 +73,11 @@
   "id": "ml-qa-collection",
   "name": "Machine_Learning_QA_Collection (win-wang) and sibling HF ML question sets",
   "group": "qa_cs",
-  "contains": "Community-collected ML question-answer pairs; seed question bank.",
+  "contains": "Merge of 7 HF ML/DS QA datasets (incl. mjphayes and prsdm), pre-formatted as Gemma chat turns; community-collected ML question-answer pairs; seed question bank.",
   "size": "12,358 rows (win-wang, HF datasets-server 2026-10-02); mjphayes/machine_learning_questions and prsdm/Machine-Learning-QA-dataset have no licence declared",
   "cs_ml_fit": 4,
   "graph_structure": "no",
-  "licence": "MIT for win-wang (HF card); the other two: no licence declared",
+  "licence": "MIT declared on the compilation only (win-wang HF card); sources (e.g. prsdm 101 rows, mjphayes 636 rows) have no licence, so redistribution is unclear",
   "access": {
    "hf": "https://huggingface.co/datasets/win-wang/Machine_Learning_QA_Collection",
    "hf2": "https://huggingface.co/datasets/mjphayes/machine_learning_questions",
@@ -85,7 +85,7 @@
   },
   "paper": null,
   "use": "Seed/diversity source for our own question bank; quick open-domain ML QA for the plain-LLM vs RAG comparison.",
-  "caveats": "Provenance and answer quality unknown (no paper); likely LLM-written or scraped, so treat as unvalidated; no source passages, so faithfulness cannot be scored.",
+  "caveats": "Provenance and answer quality unknown (no paper); likely LLM-written or scraped, so treat as unvalidated; no source passages, so faithfulness cannot be scored. Overlaps with its two sibling sets; not independent.",
   "evidence": "size and licence verified; quality not assessed",
   "url_status": {
    "hf": {
@@ -107,14 +107,34 @@
   "zotero": {
    "in_zotero": null
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "contains",
+    "text": "Community-collected ML question-answer pairs; seed question bank.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: the HF set is a merge of 7 datasets; MIT is declared on the compilation only."
+   },
+   {
+    "field": "licence",
+    "text": "MIT for win-wang (HF card); the other two: no licence declared",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: the HF set is a merge of 7 datasets; MIT is declared on the compilation only."
+   },
+   {
+    "field": "caveats",
+    "text": "Provenance and answer quality unknown (no paper); likely LLM-written or scraped, so treat as unvalidated; no source passages, so faithfulness cannot be scored.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: the HF set is a merge of 7 datasets; MIT is declared on the compilation only."
+   }
+  ]
  },
  {
   "id": "stackexchange",
-  "name": "Stack Exchange data dump: stats (CrossValidated), datascience, ai, cs, cstheory, stackoverflow-ML tags",
+  "name": "Stack Exchange data dump: stats (CrossValidated), datascience, ai, cs, cstheory, stackoverflow.com (ML tags inside it)",
   "group": "qa_cs",
   "contains": "Real user questions with community-voted answers; per-site XML dumps with votes, accepted answers, tags, links between questions.",
-  "size": "Full dump about 91.6 GB for 2025-12-31 (archive.org item); per-site sizes not measured (unverified)",
+  "size": "98.3 GB (91.6 GiB) for 2025-12-31; per-site: stats 632 MB, datascience 94 MB, ai 40.5 MB, cs 139 MB, cstheory 47.5 MB, stackoverflow.com 69.0 GB (archive.org item listing, audit 2026-10-09)",
   "cs_ml_fit": 4,
   "graph_structure": "weak (post links, tags)",
   "licence": "CC BY-SA 4.0 per post (licence is embedded per entry; attribution + share-alike apply to derived data)",
@@ -124,7 +144,7 @@
   },
   "paper": null,
   "use": "Realistic student-style questions for open-domain ML QA; accepted answers as weak gold; tags give a topic taxonomy.",
-  "caveats": "Official archive.org upload was disabled in March 2025 and the current items are community uploads (search result, not independently checked); the 2025-06-30 dump had watermarking; answers can be wrong or outdated; share-alike licence propagates to our released benchmark.",
+  "caveats": "Official archive.org uploads stopped in 2025 (README: community release replaces it); exact month unverified; the current items are community uploads; the 2025-06-30 dump had watermarking; ML tags are not a separate file (they are inside the 69 GB stackoverflow.com archive); answers can be wrong or outdated; share-alike licence propagates to our released benchmark.",
   "evidence": "archive.org URLs status-checked; the size is from the item listing found by search",
   "url_status": {
    "archive_2025_12_31": {
@@ -141,7 +161,27 @@
   "zotero": {
    "in_zotero": null
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "name",
+    "text": "Stack Exchange data dump: stats (CrossValidated), datascience, ai, cs, cstheory, stackoverflow-ML tags",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: per-site sizes measured on archive.org item; ML tags are inside the single stackoverflow.com archive; \"disabled March 2025\" not verified."
+   },
+   {
+    "field": "size",
+    "text": "Full dump about 91.6 GB for 2025-12-31 (archive.org item); per-site sizes not measured (unverified)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: per-site sizes measured on archive.org item; ML tags are inside the single stackoverflow.com archive; \"disabled March 2025\" not verified."
+   },
+   {
+    "field": "caveats",
+    "text": "Official archive.org upload was disabled in March 2025 and the current items are community uploads (search result, not independently checked); the 2025-06-30 dump had watermarking; answers can be wrong or outdated; share-alike licence propagates to our released benchmark.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: per-site sizes measured on archive.org item; ML tags are inside the single stackoverflow.com archive; \"disabled March 2025\" not verified."
+   }
+  ]
  },
  {
   "id": "qasper",
@@ -221,7 +261,7 @@
   "size": "21K queries and 160K rubric items across 75 fields (paper abstract); CS slice not measured",
   "cs_ml_fit": 3,
   "graph_structure": "no",
-  "licence": "not checked (unverified)",
+  "licence": "MIT (HF card realliyifei/ResearchQA); unofficial copies differ (CC BY-NC 4.0)",
   "access": {
    "arxiv": "https://arxiv.org/abs/2509.00496"
   },
@@ -229,11 +269,12 @@
    "title": "ResearchQA: Evaluating Scholarly Question Answering at Scale Across 75 Fields with Survey-Mined Questions and Rubrics",
    "year": 2025,
    "doi": "10.1162/TACL.a.732",
-   "arxiv": "2509.00496"
+   "arxiv": "2509.00496",
+   "year_note": "arXiv 2025; TACL 2026"
   },
   "use": "Design precedent for rubric-based grading of long-form answers; possible CS survey questions.",
   "caveats": "Research-level, not course level; rubric items include citing papers.",
-  "evidence": "abstract only; DOI taken from a search result",
+  "evidence": "abstract only; DOI confirmed by Crossref (audit 2026-10-09)",
   "url_status": {
    "arxiv": {
     "url": "https://arxiv.org/abs/2509.00496",
@@ -246,7 +287,21 @@
    "zkey": "",
    "crossref": "200"
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "licence",
+    "text": "not checked (unverified)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: arXiv 2025, TACL 2026; HF card says MIT, unofficial copies differ."
+   },
+   {
+    "field": "evidence",
+    "text": "abstract only; DOI taken from a search result",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: arXiv 2025, TACL 2026; HF card says MIT, unofficial copies differ."
+   }
+  ]
  },
  {
   "id": "sciqa-orkg",
@@ -785,7 +840,7 @@
   "name": "LectureBank (+ LectureBankCD)",
   "group": "graph_education",
   "contains": "Lecture slides and notes from university courses in NLP, ML, AI, DL, IR with a topic taxonomy and expert-annotated concept prerequisite pairs.",
-  "size": "valid resource counts by batch: 1,020 / 308 / 3,564 / 3,136 / 1,321 / 397 (repo README, URL check May 2022); original paper: 1,352 files from 60 courses; 208 prerequisite-annotated topics (vault note); taxonomy 320 topics",
+  "size": "valid resource counts by batch: 1,020 / 308 / 3,564 / 3,136 / 1,321 / 397 (repo README, URL check May 2022); combined alldata.tsv 7,499 valid resources (README); original paper: 1,352 files from 60 courses; 208 concepts with annotated prerequisite pairs (vault note); taxonomy 305 topics in the paper, 320 in the repo release",
   "cs_ml_fit": 4,
   "graph_structure": "yes (prerequisite pairs)",
   "licence": "no licence in repo (unclear; research use, ask authors)",
@@ -819,7 +874,15 @@
    "zkey": "SJQEQRCU",
    "crossref": ""
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "size",
+    "text": "valid resource counts by batch: 1,020 / 308 / 3,564 / 3,136 / 1,321 / 397 (repo README, URL check May 2022); original paper: 1,352 files from 60 courses; 208 prerequisite-annotated topics (vault note); taxonomy 320 topics",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: README totals; taxonomy size differs between paper and repo; 208 are concepts with annotated prerequisite pairs."
+   }
+  ]
  },
  {
   "id": "mooccube",
@@ -873,10 +936,10 @@
   "name": "Computer Science Ontology (CSO) + CSO Classifier",
   "group": "graph_education",
   "contains": "Hierarchical ontology of research topics in computer science (superTopicOf, relatedEquivalent, contributesTo) with a classifier that tags text with CSO topics.",
-  "size": "15K topics and over 166K relationships in CSO 3.5 (CSO homepage text; the vault notes say about 14K and about 26K, so the figure needs a recheck against the download)",
+  "size": "15K topics, 166K relationships (CSO 3.5, portal, 29 Jul 2025; not recounted from the download; download needs sign-up)",
   "cs_ml_fit": 4,
   "graph_structure": "yes (ontology)",
-  "licence": "CC BY 4.0 (vault note; page did not show it explicitly in my fetch, unverified); classifier code Apache-2.0 (GitHub field)",
+  "licence": "CC BY 4.0 (CSO announcement and papers; not stated on portal pages fetched); classifier Apache-2.0 (GitHub field)",
   "access": {
    "home": "https://cso.kmi.open.ac.uk/",
    "downloads": "https://cso.kmi.open.ac.uk/downloads",
@@ -890,7 +953,7 @@
   },
   "use": "KG seed vocabulary and alignment target: map our extracted ML concepts to CSO topics (ML subtree).",
   "caveats": "Research-area granularity (e.g. 'neural networks'), too coarse for lecture-level concepts like 'bias-variance tradeoff'.",
-  "evidence": "homepage fetched; topic count conflicts with earlier notes",
+  "evidence": "homepage fetched; counts from the portal, not recounted",
   "url_status": {
    "home": {
     "url": "https://cso.kmi.open.ac.uk/",
@@ -913,23 +976,48 @@
    "zkey": "XTGDTCKH",
    "crossref": "200"
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "size",
+    "text": "15K topics and over 166K relationships in CSO 3.5 (CSO homepage text; the vault notes say about 14K and about 26K, so the figure needs a recheck against the download)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: CSO 3.5 figures as on the portal (29 Jul 2025); licence statement sourced from announcement and papers."
+   },
+   {
+    "field": "licence",
+    "text": "CC BY 4.0 (vault note; page did not show it explicitly in my fetch, unverified); classifier code Apache-2.0 (GitHub field)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: CSO 3.5 figures as on the portal (29 Jul 2025); licence statement sourced from announcement and papers."
+   },
+   {
+    "field": "evidence",
+    "text": "homepage fetched; topic count conflicts with earlier notes",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: CSO 3.5 figures as on the portal (29 Jul 2025); licence statement sourced from announcement and papers."
+   }
+  ]
  },
  {
   "id": "edukg",
   "name": "EDUKG (Tsinghua)",
   "group": "graph_education",
   "contains": "K-12 heterogeneous educational knowledge graph across subjects.",
-  "size": "not re-measured",
+  "size": "38 KGs, >252M entities, 3.86B triples (README; not checked against the data files)",
   "cs_ml_fit": 1,
   "graph_structure": "yes",
   "licence": "no licence in repo",
   "access": {
    "github": "https://github.com/THU-KEG/EDUKG"
   },
-  "paper": null,
+  "paper": {
+   "title": "EduKG",
+   "year": 2022,
+   "doi": "",
+   "arxiv": "2210.12228"
+  },
   "use": "Flagged K-12; reference for educational KG schema only.",
-  "caveats": "K-12, Chinese.",
+  "caveats": "K-12, Chinese; repo inactive since 2022-07.",
   "evidence": "GitHub status checked only",
   "url_status": {
    "github": {
@@ -941,7 +1029,27 @@
   "zotero": {
    "in_zotero": null
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "size",
+    "text": "not re-measured",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: README gives size; paper is arXiv 2210.12228; repo inactive."
+   },
+   {
+    "field": "caveats",
+    "text": "K-12, Chinese.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: README gives size; paper is arXiv 2210.12228; repo inactive."
+   },
+   {
+    "field": "paper",
+    "text": null,
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: paper is arXiv 2210.12228 (title not re-read; shown as the short name)."
+   }
+  ]
  },
  {
   "id": "cskg",
@@ -966,7 +1074,7 @@
    "arxiv": ""
   },
   "use": "Best match to 'a very big graph of CS papers with an API': extract the ML slice (tasks/methods/metrics) as a concept backbone and cross-check our course KG.",
-  "caveats": "Entities were extracted by NLP from abstracts, so noisy; the SPARQL page loads but I could not run a programmatic query (the page redirects to a Yasgui UI), so the API is unverified; 4.7 GB download for the full RDF.",
+  "caveats": "Entities were extracted by NLP from abstracts, so noisy; the SPARQL page loads but I could not run a programmatic query (the page redirects to a Yasgui UI), so the API is unverified; 4.7 GB download for the full RDF. Zenodo record DOI is 10.5281/zenodo.14167682; 10.5281/zenodo.14167681 is the version DOI, the \"latest\" alias per the paper.",
   "evidence": "paper and Zenodo metadata read; endpoint not queried successfully",
   "url_status": {
    "home": {
@@ -1001,7 +1109,15 @@
    "zkey": "5R7WVU5Z",
    "crossref": "200"
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "caveats",
+    "text": "Entities were extracted by NLP from abstracts, so noisy; the SPARQL page loads but I could not run a programmatic query (the page redirects to a Yasgui UI), so the API is unverified; 4.7 GB download for the full RDF.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: Zenodo DOI clarification."
+   }
+  ]
  },
  {
   "id": "aikg",
@@ -1052,7 +1168,7 @@
   "size": "68,574 papers, 102,188 contributions, 4,211 comparisons, 8,959 problems, 1,284,085 resources (ORKG statistics API, 2026-10-02)",
   "cs_ml_fit": 3,
   "graph_structure": "yes (RDF/Neo4j)",
-  "licence": "CC0 for data (stated on ORKG; not re-read here, unverified)",
+  "licence": "CC0 (stated in a 2024 paper; an older 2023 report says CC BY-SA for dumps: check orkg.org/data before redistributing)",
   "access": {
    "api": "https://orkg.org/api/",
    "triplestore": "https://orkg.org/triplestore",
@@ -1095,14 +1211,22 @@
    "zkey": "",
    "crossref": "200"
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "licence",
+    "text": "CC0 for data (stated on ORKG; not re-read here, unverified)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: licence differs between a 2024 paper and an older 2023 report."
+   }
+  ]
  },
  {
   "id": "openalex",
   "name": "OpenAlex (and SemOpenAlex RDF)",
   "group": "graph_scholarly",
   "contains": "Open index of works, authors, venues, institutions, topics, citations; REST API; monthly snapshot on S3. SemOpenAlex republishes it as RDF with SPARQL.",
-  "size": "327,439,234 works total; 15,481,629 works with primary topic in field Computer Science (22,491,445 counting any topic); 4,419,338 primary in the Artificial Intelligence subfield (8,901,503 any topic) (OpenAlex API, 2026-10-02). SemOpenAlex: over 26 billion triples, 249M publications (paper), 1.7 TB TriG",
+  "size": "327,439,234 works total; 15,481,629 works with primary topic in field Computer Science (22,491,445 counting any topic); 4,419,338 primary in the Artificial Intelligence subfield (8,901,503 any topic) (OpenAlex API, 2026-10-02). SemOpenAlex: over 26 billion triples, 249M publications (paper), 1.7 TB TriG [snapshot 2026-10-02; counts vary by about 5-20% between runs as OpenAlex re-classifies topics; order of magnitude stable. Exact filter strings used were not recorded, so rerun with an explicit filter before quoting.]",
   "cs_ml_fit": 4,
   "graph_structure": "yes (citation graph)",
   "licence": "CC0 (OpenAlex); CC0 (SemOpenAlex, per its abstract)",
@@ -1148,7 +1272,15 @@
    "zkey": "",
    "crossref": ""
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "size",
+    "text": "327,439,234 works total; 15,481,629 works with primary topic in field Computer Science (22,491,445 counting any topic); 4,419,338 primary in the Artificial Intelligence subfield (8,901,503 any topic) (OpenAlex API, 2026-10-02). SemOpenAlex: over 26 billion triples, 249M publications (paper), 1.7 TB TriG",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: counts vary 5-20% between runs as OpenAlex re-classifies topics; filter strings not recorded."
+   }
+  ]
  },
  {
   "id": "dblp",
@@ -1165,10 +1297,10 @@
    "home": "https://dblp.org"
   },
   "paper": {
-   "title": "DBLP-QuAD: A Question Answering Dataset over the DBLP Scholarly Knowledge Graph",
-   "year": 2023,
-   "doi": "",
-   "arxiv": "2303.13351"
+   "title": "The DBLP Computer Science Bibliography: Evolution, Research Issues, Perspectives",
+   "year": 2002,
+   "doi": "10.1007/3-540-45735-6_1",
+   "arxiv": ""
   },
   "use": "Venue-based selection of ML papers (ICML, NeurIPS, ICLR...) and bibliographic KG; paired with DBLP-QuAD.",
   "caveats": "Bibliographic only, no abstracts or content; the web search API sits behind a bot challenge (curl blocked), the SPARQL endpoint worked.",
@@ -1196,7 +1328,20 @@
    "zkey": "",
    "crossref": ""
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "paper",
+    "text": {
+     "title": "DBLP-QuAD: A Question Answering Dataset over the DBLP Scholarly Knowledge Graph",
+     "year": 2023,
+     "doi": "",
+     "arxiv": "2303.13351"
+    },
+    "on": "2026-10-09",
+    "reason": "2303.13351 is DBLP-QuAD (a QA dataset over DBLP), copied from the dblp-quad row; it does not describe DBLP itself"
+   }
+  ]
  },
  {
   "id": "unarxive",
@@ -1206,7 +1351,7 @@
   "size": "1.9M full-text papers, 63M references (28M linked to OpenAlex), 134M citation markers (README)",
   "cs_ml_fit": 5,
   "graph_structure": "yes (citation links)",
-  "licence": "MIT code; data on Zenodo, full set and a permissive subset (per-paper licences; check)",
+  "licence": "code MIT; full data set on Zenodo is restricted access (request needed); open subset CC BY-SA 4.0 (share-alike propagates)",
   "access": {
    "github": "https://github.com/IllDepence/unarXive",
    "zenodo_full": "https://doi.org/10.5281/zenodo.7752754",
@@ -1219,7 +1364,7 @@
    "arxiv": "2303.14957"
   },
   "use": "Full-text corpus of cs.LG/stat.ML papers (filter by arXiv category) for a research-paper GraphRAG; citation edges for free.",
-  "caveats": "No API (dump only); size in the tens of GB (not measured); arXiv licences vary, so use the permissive subset for redistribution.",
+  "caveats": "No API (dump only); size in the tens of GB (not measured); arXiv licences vary, so use the permissive subset for redistribution. The \"download the full dump\" route is not open (restricted access); the cs.LG filter use works on either set.",
   "evidence": "README read; download not attempted",
   "url_status": {
    "github": {
@@ -1245,17 +1390,31 @@
    "zkey": "",
    "crossref": "200"
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "licence",
+    "text": "MIT code; data on Zenodo, full set and a permissive subset (per-paper licences; check)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: full Zenodo data set is restricted access; open subset is CC BY-SA 4.0."
+   },
+   {
+    "field": "caveats",
+    "text": "No API (dump only); size in the tens of GB (not measured); arXiv licences vary, so use the permissive subset for redistribution.",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: full Zenodo data set is restricted access; open subset is CC BY-SA 4.0."
+   }
+  ]
  },
  {
   "id": "s2",
   "name": "Semantic Scholar Academic Graph + S2ORC (Datasets API)",
   "group": "graph_scholarly",
   "contains": "Papers, authors, citations with contexts and intents, abstracts, TLDRs, embeddings, and S2ORC full text; Graph API and bulk Datasets API.",
-  "size": "Release 2026-09-29 lists: abstracts, authors, citations, embeddings-specter_v1/v2, paper-ids, papers, publication-venues, s2orc, s2orc_v2, tldrs (Datasets API, no key needed for listing); about 200M+ papers (not measured)",
+  "size": "Weekly releases (latest 2026-10-06 on 2026-10-09; the 2026-09-29 release listed): abstracts, authors, citations, embeddings-specter_v1/v2, paper-ids, papers, publication-venues, s2orc, s2orc_v2, tldrs (Datasets API, no key needed for listing); about 200M+ papers (not measured)",
   "cs_ml_fit": 4,
   "graph_structure": "yes (citation graph)",
-  "licence": "ODC-By 1.0 for the dataset per S2 terms (unverified); S2ORC full text per source licence",
+  "licence": "ODC-By 1.0 for S2AG datasets per S2 (per-dataset README, not read here; some data CC BY-NC); S2ORC full text per source licence",
   "access": {
    "datasets": "https://api.semanticscholar.org/datasets/v1/release/latest",
    "graph": "https://api.semanticscholar.org/graph/v1",
@@ -1292,14 +1451,28 @@
    "zkey": "",
    "crossref": ""
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "licence",
+    "text": "ODC-By 1.0 for the dataset per S2 terms (unverified); S2ORC full text per source licence",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: ODC-By per S2 dataset READMEs; releases are weekly."
+   },
+   {
+    "field": "size",
+    "text": "Release 2026-09-29 lists: abstracts, authors, citations, embeddings-specter_v1/v2, paper-ids, papers, publication-venues, s2orc, s2orc_v2, tldrs (Datasets API, no key needed for listing); about 200M+ papers (not measured)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: ODC-By per S2 dataset READMEs; releases are weekly."
+   }
+  ]
  },
  {
   "id": "oag",
   "name": "Open Academic Graph (OAG v3.1) and OAG-Bench",
   "group": "graph_scholarly",
   "contains": "Linked MAG and AMiner academic graphs (papers, authors, venues, affiliations) plus a benchmark of 10 tasks including academic question answering.",
-  "size": "OAG v2: 166,192,182 MAG papers + 154,771,162 AMiner papers, 64,639,608 links; v3.1 papers up to Feb 2024 (search results); OAG-Bench: 10 tasks, 20 datasets (abstract)",
+  "size": "OAG v1 (2017): 166,192,182 MAG + 154,771,162 AMiner papers, 64,639,608 links; OAG v2 (2019): 208,915,369 MAG + 172,209,563 AMiner papers, 91,137,597 links; v3.1 (to Feb 2024): counts not verified; OAG-Bench: 10 tasks, 20 datasets (KDD 2024, doi 10.1145/3637528.3672354)",
   "cs_ml_fit": 3,
   "graph_structure": "yes",
   "licence": "not checked (unverified)",
@@ -1310,7 +1483,7 @@
   "paper": {
    "title": "OAG-Bench: A Human-Curated Benchmark for Academic Graph Mining",
    "year": 2024,
-   "doi": "",
+   "doi": "10.1145/3637528.3672354",
    "arxiv": "2402.15810"
   },
   "use": "Alternative large graph, but MAG is discontinued (2021) and OpenAlex is its successor, so prefer OpenAlex.",
@@ -1333,7 +1506,21 @@
    "zkey": "G8JHYQ94",
    "crossref": ""
   },
-  "checked": "2026-10-02"
+  "checked": "2026-10-02",
+  "superseded": [
+   {
+    "field": "size",
+    "text": "OAG v2: 166,192,182 MAG papers + 154,771,162 AMiner papers, 64,639,608 links; v3.1 papers up to Feb 2024 (search results); OAG-Bench: 10 tasks, 20 datasets (abstract)",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: the quoted counts are OAG v1 (2017); v2 (2019) has larger counts. OAG-Bench is KDD 2024."
+   },
+   {
+    "field": "paper.doi",
+    "text": "",
+    "on": "2026-10-09",
+    "reason": "Audit 2026-10-09: OAG-Bench is KDD 2024, doi 10.1145/3637528.3672354."
+   }
+  ]
  },
  {
   "id": "lpwc",

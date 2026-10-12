@@ -840,7 +840,7 @@
   "era": "Roots",
   "title": "Learning deep structured semantic models for web search using clickthrough data",
   "who": "P.-S. Huang, X. He, J. Gao, L. Deng, A. Acero, L. Heck (Microsoft Research)",
-  "one_liner": "First neural two-tower retriever: query and document encoded separately.",
+  "one_liner": "An early neural two-tower ranker: query and document encoded separately.",
   "impact": "",
   "venue": "CIKM 2013",
   "arxiv": null,
@@ -863,7 +863,15 @@
   "significance": 2,
   "verified": true,
   "note": "",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "First neural two-tower retriever: query and document encoded separately.",
+    "on": "2026-10-09",
+    "reason": "'First' is not claimed by the paper (provenance audit 2026-10-09)."
+   }
+  ]
  },
  {
   "id": "webq-2013",
@@ -959,7 +967,7 @@
   "era": "Neural retrieval",
   "title": "Memory Networks",
   "who": "J. Weston, S. Chopra, A. Bordes (Facebook AI Research)",
-  "one_liner": "A neural model that reads from an external memory: first neural 'retrieve then answer' architecture.",
+  "one_liner": "A neural model that reads from an external memory: an early neural 'retrieve then answer' design.",
   "impact": "",
   "venue": "ICLR 2015",
   "arxiv": "1410.3916",
@@ -975,7 +983,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2014-10-15",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "A neural model that reads from an external memory: first neural 'retrieve then answer' architecture.",
+    "on": "2026-10-09",
+    "reason": "'First' is the site's claim, not the paper's."
+   }
+  ]
  },
  {
   "id": "e2e-memnet-2015",
@@ -1049,7 +1065,7 @@
   "era": "Roots",
   "title": "MS MARCO: A Human Generated MAchine Reading COmprehension Dataset",
   "who": "P. Bajaj et al. (Microsoft)",
-  "one_liner": "Large real-query passage ranking data; trains DPR-style and cross-encoder rankers.",
+  "one_liner": "Real Bing queries with human-generated answers; its passage-ranking task became the standard training and evaluation set for neural rankers.",
   "impact": "",
   "venue": "NeurIPS 2016 CoCo workshop",
   "arxiv": "1611.09268",
@@ -1064,7 +1080,15 @@
   "significance": 3,
   "verified": true,
   "note": "first arXiv version 2016-11-28",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "Large real-query passage ranking data; trains DPR-style and cross-encoder rankers.",
+    "on": "2026-10-09",
+    "reason": "The 2016 release was about 100k queries for reading comprehension; passage ranking came later (v2, 2018)."
+   }
+  ]
  },
  {
   "id": "faiss-2017",
@@ -1075,7 +1099,7 @@
   "era": "Neural retrieval",
   "title": "Billion-scale similarity search with GPUs",
   "who": "J. Johnson, M. Douze, H. Jegou (Facebook AI Research)",
-  "one_liner": "FAISS: makes nearest-neighbour search over millions of vectors practical; the engine inside DPR, REALM-style systems.",
+  "one_liner": "FAISS: makes nearest-neighbour search over millions of vectors practical; the engine inside DPR and many later dense retrievers.",
   "impact": "",
   "venue": "IEEE Trans. Big Data 7(3)",
   "arxiv": "1702.08734",
@@ -1091,7 +1115,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2017-02-28",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "FAISS: makes nearest-neighbour search over millions of vectors practical; the engine inside DPR, REALM-style systems.",
+    "on": "2026-10-09",
+    "reason": "DPR states it uses FAISS; REALM uses its own MIPS index and never mentions FAISS."
+   }
+  ]
  },
  {
   "id": "drqa-2017",
@@ -1295,7 +1327,7 @@
   "era": "KG + LMs",
   "title": "ERNIE: Enhanced Representation through Knowledge Integration",
   "who": "Y. Sun et al. (Baidu)",
-  "one_liner": "Masks whole entities/phrases: first 'knowledge-enhanced' pre-training (no explicit KG yet).",
+  "one_liner": "Masks whole entities/phrases: an early 'knowledge-enhanced' pre-training (no explicit KG yet).",
   "impact": "",
   "venue": "arXiv preprint (no peer-reviewed version found, checked 2026-10-07)",
   "arxiv": "1904.09223",
@@ -1317,6 +1349,12 @@
     "now": "arXiv preprint (no peer-reviewed version found, checked 2026-10-07)",
     "checked": "2026-10-07",
     "evidence": "arXiv listing; OpenAlex/Crossref/OpenReview searches 2026-10-07 found no published version"
+   },
+   {
+    "field": "one_liner",
+    "text": "Masks whole entities/phrases: first 'knowledge-enhanced' pre-training (no explicit KG yet).",
+    "on": "2026-10-09",
+    "reason": "'First' is not claimed by the paper; earlier entity-aware work was not searched."
    }
   ],
   "venue_checked": "2026-10-07",
@@ -1395,7 +1433,7 @@
   "era": "Neural retrieval",
   "title": "Latent Retrieval for Weakly Supervised Open Domain Question Answering (ORQA)",
   "who": "K. Lee, M.-W. Chang, K. Toutanova (Google)",
-  "one_liner": "First end-to-end trained neural retriever for open-domain QA (inverse cloze pre-training).",
+  "one_liner": "Trains the retriever end to end together with the reader from question-answer pairs alone, without an IR system (inverse cloze pre-training).",
   "impact": "",
   "venue": "ACL 2019",
   "arxiv": "1906.00300",
@@ -1411,7 +1449,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2019-06-01",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "First end-to-end trained neural retriever for open-domain QA (inverse cloze pre-training).",
+    "on": "2026-10-09",
+    "reason": "'First end-to-end trained neural retriever' is stronger than the paper's own claim (Lee, Chang, Toutanova, ACL 2019: jointly learns retriever and reader from question-answer pairs only)"
+   }
+  ]
  },
  {
   "id": "kagnet-2019",
@@ -1600,7 +1646,7 @@
   "era": "Neural retrieval",
   "title": "REALM: Retrieval-Augmented Language Model Pre-Training",
   "who": "K. Guu, K. Lee, Z. Tung, P. Pasupat, M.-W. Chang (Google Research)",
-  "one_liner": "Retriever and LM trained jointly over Wikipedia; the first 'retrieval-augmented language model'.",
+  "one_liner": "Retriever and LM pre-trained jointly over Wikipedia: first to do so end to end and unsupervised.",
   "impact": "",
   "venue": "ICML 2020",
   "arxiv": "2002.08909",
@@ -1615,7 +1661,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2020-02-10",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "Retriever and LM trained jointly over Wikipedia; the first 'retrieval-augmented language model'.",
+    "on": "2026-10-09",
+    "reason": "Overstated: kNN-LM (2019) already augments an LM with retrieval; REALM's own claim is pre-training the retriever for the first time."
+   }
+  ]
  },
  {
   "id": "hogan-kg-2021",
@@ -1626,7 +1680,7 @@
   "era": "Roots",
   "title": "Knowledge Graphs",
   "who": "A. Hogan et al.",
-  "one_liner": "The standard survey of knowledge graphs; the definitions used by the GraphRAG literature.",
+  "one_liner": "A standard survey of knowledge graphs.",
   "impact": "",
   "venue": "ACM Computing Surveys 54(4)",
   "arxiv": "2003.02320",
@@ -1641,7 +1695,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2020-03-04; arXiv 2020-03-04; journal version 2021",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "The standard survey of knowledge graphs; the definitions used by the GraphRAG literature.",
+    "on": "2026-10-09",
+    "reason": "'Definitions used by the GraphRAG literature' was not checked; no citing GraphRAG paper is named."
+   }
+  ]
  },
  {
   "id": "colbert-2020",
@@ -1652,7 +1714,7 @@
   "era": "Neural retrieval",
   "title": "ColBERT: Efficient and Effective Passage Search via Contextualized Late Interaction over BERT",
   "who": "O. Khattab, M. Zaharia (Stanford)",
-  "one_liner": "Late interaction: per-token vectors with MaxSim; accuracy of cross-encoders at retrieval speed.",
+  "one_liner": "Late interaction: per-token vectors with MaxSim; competitive with BERT cross-encoder rerankers at about two orders of magnitude lower cost (authors' figure).",
   "impact": "",
   "venue": "SIGIR 2020",
   "arxiv": "2004.12832",
@@ -1667,7 +1729,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2020-04-27",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "Late interaction: per-token vectors with MaxSim; accuracy of cross-encoders at retrieval speed.",
+    "on": "2026-10-09",
+    "reason": "The paper claims competitive, not equal, accuracy."
+   }
+  ]
  },
  {
   "id": "dpr-2020",
@@ -1896,7 +1966,7 @@
   "era": "Neural retrieval",
   "title": "WebGPT: Browser-assisted question-answering with human feedback",
   "who": "R. Nakano et al. (OpenAI)",
-  "one_liner": "An LLM that searches the web and cites its sources: the first retrieval-using LLM product prototype.",
+  "one_liner": "A fine-tuned GPT-3 that browses the web and cites its references (research prototype).",
   "impact": "",
   "venue": "arXiv",
   "arxiv": "2112.09332",
@@ -1911,7 +1981,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2021-12-17",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "An LLM that searches the web and cites its sources: the first retrieval-using LLM product prototype.",
+    "on": "2026-10-09",
+    "reason": "It is a research prototype, not a product; earlier retrieval-using LMs exist (REALM, RAG)."
+   }
+  ]
  },
  {
   "id": "greaselm-2022",
@@ -2026,7 +2104,7 @@
   "era": "LLM era",
   "title": "ChatGPT release",
   "who": "OpenAI",
-  "one_liner": "Hundreds of millions of users meet hallucination; 'ground it in your documents' becomes the dominant use of retrieval.",
+  "one_liner": "Mass adoption puts hallucination in front of very many users; 'ground it in your documents' becomes a dominant use of retrieval (our framing, unsourced).",
   "impact": "",
   "venue": "Product launch, 30 Nov 2022",
   "arxiv": null,
@@ -2049,6 +2127,12 @@
     "now": "verified 2026-10-07: Wayback capture 2022-11-30 21:10 UTC of openai.com/blog/chatgpt shows publication timestamp 2022-11-30T18:00Z. Live openai.com/index/chatgpt returns HTTP 403 to scripts. 'Hundreds of millions of users' in one_liner is our claim, not checked.",
     "checked": "2026-10-07",
     "evidence": "see evidence of this entry"
+   },
+   {
+    "field": "one_liner",
+    "text": "Hundreds of millions of users meet hallucination; 'ground it in your documents' becomes the dominant use of retrieval.",
+    "on": "2026-10-09",
+    "reason": "'Hundreds of millions of users' has no source in the entry."
    }
   ],
   "checked": "2026-10-07",
@@ -2203,7 +2287,7 @@
   "era": "LLM era",
   "title": "Toolformer: Language Models Can Teach Themselves to Use Tools",
   "who": "T. Schick et al. (Meta AI)",
-  "one_liner": "LLMs learn when to call a search tool.",
+  "one_liner": "LLMs learn when and how to call tools (search, calculator, QA, ...).",
   "impact": "",
   "venue": "NeurIPS 2023",
   "arxiv": "2302.04761",
@@ -2218,7 +2302,15 @@
   "significance": 3,
   "verified": true,
   "note": "first arXiv version 2023-02-09",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "LLMs learn when to call a search tool.",
+    "on": "2026-10-09",
+    "reason": "The paper covers several APIs, not search alone."
+   }
+  ]
  },
  {
   "id": "flare-2023",
@@ -2300,7 +2392,7 @@
   "kind": "survey",
   "era": "KG + LMs",
   "title": "Unifying Large Language Models and Knowledge Graphs: A Roadmap",
-  "who": "S. Pan, L. Luo, Y. Wang, C. Chen, J. Wang, X. Wu (Griffith; Monash; Nanyang; Chinese Academy of Sciences)",
+  "who": "S. Pan, L. Luo, Y. Wang, C. Chen, J. Wang, X. Wu (Griffith; Monash; Nanyang Technological; Beijing Univ. of Technology; Hefei Univ. of Technology)",
   "one_liner": "Roadmap with three routes: KG-enhanced LLMs, LLM-augmented KGs, synergised LLM + KG.",
   "impact": "",
   "venue": "IEEE TKDE 36(7), 2024",
@@ -2316,7 +2408,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2023-06-14",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "who",
+    "text": "S. Pan, L. Luo, Y. Wang, C. Chen, J. Wang, X. Wu (Griffith; Monash; Nanyang; Chinese Academy of Sciences)",
+    "on": "2026-10-09",
+    "reason": "No Chinese Academy of Sciences affiliation on the paper (PDF checked by the audit)."
+   }
+  ]
  },
  {
   "id": "lost-middle-2023",
@@ -2326,7 +2426,7 @@
   "kind": "paper",
   "era": "LLM era",
   "title": "Lost in the Middle: How Language Models Use Long Contexts",
-  "who": "N. F. Liu et al. (Stanford)",
+  "who": "N. F. Liu et al. (Stanford; UC Berkeley; Samaya AI)",
   "one_liner": "Models ignore the middle of long contexts: where retrieved passages sit matters.",
   "impact": "",
   "venue": "TACL 2024",
@@ -2342,7 +2442,15 @@
   "significance": 2,
   "verified": true,
   "note": "first arXiv version 2023-07-06",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "who",
+    "text": "N. F. Liu et al. (Stanford)",
+    "on": "2026-10-09",
+    "reason": "Affiliation list was incomplete."
+   }
+  ]
  },
  {
   "id": "tog-2023",
@@ -2352,7 +2460,7 @@
   "kind": "paper",
   "era": "KG + LMs",
   "title": "Think-on-Graph: Deep and Responsible Reasoning of Large Language Model on Knowledge Graph",
-  "who": "J. Sun et al. (IDEA Research; Tsinghua; Microsoft Research Asia)",
+  "who": "J. Sun et al. (IDEA Research; Xiamen Univ.; USC; HKUST; Microsoft Research Asia)",
   "one_liner": "The LLM explores the KG with beam search, step by step: 'LLM x KG' reasoning, plug-and-play.",
   "impact": "",
   "venue": "ICLR 2024",
@@ -2368,7 +2476,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2023-07-15",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "who",
+    "text": "J. Sun et al. (IDEA Research; Tsinghua; Microsoft Research Asia)",
+    "on": "2026-10-09",
+    "reason": "No Tsinghua affiliation on the paper (PDF first page checked by the audit)."
+   }
+  ]
  },
  {
   "id": "nebula-2023",
@@ -2583,7 +2699,7 @@
   "era": "LLM era",
   "title": "Retrieval-Augmented Generation for Large Language Models: A Survey",
   "who": "Y. Gao et al. (Tongji; Fudan)",
-  "one_liner": "Defines Naive / Advanced / Modular RAG; the most cited RAG survey.",
+  "one_liner": "Defines Naive / Advanced / Modular RAG; one of the most cited RAG surveys.",
   "impact": "",
   "venue": "arXiv",
   "arxiv": "2312.10997",
@@ -2598,7 +2714,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2023-12-18",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "Defines Naive / Advanced / Modular RAG; the most cited RAG survey.",
+    "on": "2026-10-09",
+    "reason": "Superlative 'the most cited' was not compared with other RAG surveys."
+   }
+  ]
  },
  {
   "id": "crag-2024",
@@ -2671,7 +2795,7 @@
   "era": "GraphRAG",
   "title": "G-Retriever: Retrieval-Augmented Generation for Textual Graph Understanding and Question Answering",
   "who": "X. He, Y. Tian, Y. Sun, N. Chawla, T. Laurent, Y. LeCun, X. Bresson, B. Hooi (NUS; Notre Dame; Loyola Marymount; Meta; NYU)",
-  "one_liner": "RAG over textual graphs: prize-collecting Steiner tree subgraph + GNN soft prompt; first systematic 'RAG on graphs'.",
+  "one_liner": "RAG over textual graphs: prize-collecting Steiner tree subgraph + GNN soft prompt; the first RAG approach for general textual graphs (authors' claim).",
   "impact": "",
   "venue": "NeurIPS 2024",
   "arxiv": "2402.07630",
@@ -2686,7 +2810,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2024-02-12",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "RAG over textual graphs: prize-collecting Steiner tree subgraph + GNN soft prompt; first systematic 'RAG on graphs'.",
+    "on": "2026-10-09",
+    "reason": "'First systematic' was ours; the abstract claims 'first RAG approach for general textual graphs'."
+   }
+  ]
  },
  {
   "id": "msft-blog-2024",
@@ -2794,7 +2926,7 @@
   "kind": "paper",
   "era": "GraphRAG",
   "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
-  "who": "D. Edge, H. Trinh, N. Cheng, J. Bradley, A. Chao, A. Mody, S. Truitt, J. Larson (Microsoft Research)",
+  "who": "D. Edge, H. Trinh, N. Cheng, J. Bradley, A. Chao, A. Mody, S. Truitt, D. Metropolitansky, R. O. Ness, J. Larson (Microsoft Research)",
   "one_liner": "Names Graph RAG as a method: entity graph + Leiden communities + community summaries for global sensemaking questions.",
   "impact": "",
   "venue": "arXiv (v2 Feb 2025)",
@@ -2810,7 +2942,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2024-04-24",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "who",
+    "text": "D. Edge, H. Trinh, N. Cheng, J. Bradley, A. Chao, A. Mody, S. Truitt, J. Larson (Microsoft Research)",
+    "on": "2026-10-09",
+    "reason": "The current arXiv version lists 10 authors; two were missing."
+   }
+  ]
  },
  {
   "id": "gnnrag-2024",
@@ -3028,7 +3168,7 @@
   "era": "GraphRAG",
   "title": "Graph Retrieval-Augmented Generation: A Survey",
   "who": "B. Peng, Y. Zhu, Y. Liu, X. Bo, H. Shi, C. Hong, Y. Zhang, S. Tang (Peking University; Zhejiang University; Ant Group)",
-  "one_liner": "First survey of GraphRAG: query processor, retriever, organiser, generator, data source; the canvas on this vault.",
+  "one_liner": "First survey of GraphRAG: graph-based indexing, graph-guided retrieval, graph-enhanced generation; the canvas on this vault.",
   "impact": "",
   "venue": "ACM TOIS (2025)",
   "arxiv": "2408.08921",
@@ -3043,7 +3183,15 @@
   "significance": 1,
   "verified": true,
   "note": "first arXiv version 2024-08-15",
-  "side": "research"
+  "side": "research",
+  "superseded": [
+   {
+    "field": "one_liner",
+    "text": "First survey of GraphRAG: query processor, retriever, organiser, generator, data source; the canvas on this vault.",
+    "on": "2026-10-09",
+    "reason": "The component list (query processor, retriever, organiser, generator, data source) belongs to the Han et al. survey."
+   }
+  ]
  },
  {
   "id": "kag-2024",
@@ -3126,7 +3274,7 @@
   "era": "GraphRAG",
   "title": "Simple Is Effective: The Roles of Graphs and Large Language Models in Knowledge-Graph-Based Retrieval-Augmented Generation (SubgraphRAG)",
   "who": "M. Li, S. Miao, P. Li (Georgia Tech; Rensselaer)",
-  "one_liner": "A light MLP-based triple scorer: shows the retriever, not the LLM, is the bottleneck.",
+  "one_liner": "A lightweight MLP triple scorer for flexible-size subgraph retrieval; small LLMs become competitive.",
   "impact": "",
   "venue": "ICLR 2025",
   "arxiv": "2410.20724",
@@ -3148,6 +3296,12 @@
     "now": "ICLR 2025",
     "checked": "2026-10-07",
     "evidence": "https://arxiv.org/abs/2410.20724 (arXiv comment 'Accepted by ICLR 2025' (author statement; OpenReview page not opened), checked 2026-10-07)"
+   },
+   {
+    "field": "one_liner",
+    "text": "A light MLP-based triple scorer: shows the retriever, not the LLM, is the bottleneck.",
+    "on": "2026-10-09",
+    "reason": "'The retriever, not the LLM, is the bottleneck' is not stated in the abstract (interpretive)."
    }
   ],
   "venue_checked": "2026-10-07",
@@ -3233,7 +3387,7 @@
   "kind": "survey",
   "era": "LLM era",
   "title": "Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG",
-  "who": "A. Singh, A. Ehtesham, S. Kumar, T. T. Khoei",
+  "who": "A. Singh, A. Ehtesham, S. Kumar, T. T. Khoei, A. V. Vasilakos",
   "one_liner": "Names and surveys Agentic RAG: agents plan, reflect, use tools and multiple retrievers.",
   "impact": "",
   "venue": "arXiv preprint (no peer-reviewed version found, checked 2026-10-07)",
@@ -3256,6 +3410,12 @@
     "now": "arXiv preprint (no peer-reviewed version found, checked 2026-10-07)",
     "checked": "2026-10-07",
     "evidence": "arXiv listing; no published version found (OpenAlex, Crossref, OpenReview, 2026-10-07)"
+   },
+   {
+    "field": "who",
+    "text": "A. Singh, A. Ehtesham, S. Kumar, T. T. Khoei",
+    "on": "2026-10-09",
+    "reason": "arXiv lists 5 authors; Vasilakos was missing."
    }
   ],
   "venue_checked": "2026-10-07",
@@ -3501,7 +3661,7 @@
   "kind": "paper",
   "era": "LLM era",
   "title": "Search-R1: Training LLMs to Reason and Leverage Search Engines with Reinforcement Learning",
-  "who": "B. Jin et al. (UIUC; UMass)",
+  "who": "B. Jin et al. (UIUC; UMass; Google Cloud AI Research)",
   "one_liner": "Reinforcement learning trains the model to issue its own search queries.",
   "impact": "",
   "venue": "COLM 2025 (arXiv 2025)",
@@ -3524,6 +3684,12 @@
     "now": "COLM 2025 (arXiv 2025)",
     "checked": "2026-10-07",
     "evidence": "https://openreview.net/forum?id=Search-R1 (OpenReview search 2026-10-07: venue 'COLM 2025'; forum id not recorded) (OpenReview venue field, checked 2026-10-07)"
+   },
+   {
+    "field": "who",
+    "text": "B. Jin et al. (UIUC; UMass)",
+    "on": "2026-10-09",
+    "reason": "Yoon and Arik are at Google Cloud AI Research (PDF header checked 2026-10-09)."
    }
   ],
   "venue_checked": "2026-10-07",

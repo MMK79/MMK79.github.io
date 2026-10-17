@@ -38,9 +38,9 @@ if (!fam) {   // ---------------- hub ----------------
   const ORDER = IDX.families;
   main.innerHTML = `<ol class="fd-flow">${ORDER.map(f => {
     const fid = new Set(f.topics.map(t => t.id)), start = f.topics.filter(t => !t.prerequisites.some(p => fid.has(p))).slice(0, 3);
-    return `<li class="fd-fam"><h2><a href="/foundations/${f.id}.html">${esc(FNAME(f))}</a></h2><p>${esc(T(f.label + "_d"))}</p>
+    return `<li class="fd-fam"><h2><a href="/thesis/foundations/${f.id}.html">${esc(FNAME(f))}</a></h2><p>${esc(T(f.label + "_d"))}</p>
       <p class="fd-meta">${esc(T("fd.n_topics", {n: N(f.n)}))} · ${stat(f)}</p>
-      <p class="fd-start"><b>${esc(T("fd.start"))}:</b> ${start.map(t => ttl(t, "a", ` href="/foundations/${f.id}.html#${esc(t.id)}"`)).join(" · ")}</p>
+      <p class="fd-start"><b>${esc(T("fd.start"))}:</b> ${start.map(t => ttl(t, "a", ` href="/thesis/foundations/${f.id}.html#${esc(t.id)}"`)).join(" · ")}</p>
       ${f.id === "ont" ? `<p><a href="/thesis/assets/stories/ontology/build/index.html">${esc(T("fd.ont_page"))}</a></p>` : ""}</li>`; }).join("")}</ol>
     <p class="ex-note">${esc(T("fd.how"))}</p>`;
   return;
@@ -60,7 +60,7 @@ const kv = (o, d = 0) => {   // a worked example or an inputs/outputs block of a
   return `<dl class="fd-kv">${Object.entries(o).filter(([, v]) => v != null && v !== "").map(([k, v]) => `<dt>${esc(k.replace(/_/g, " "))}</dt><dd>${kv(v, d + 1)}</dd>`).join("")}</dl>`;
 };
 const symRows = s => !s ? [] : Array.isArray(s) ? s.map(x => typeof x === "object" ? [x.symbol ?? x.name ?? "", x.meaning ?? x.text ?? ""] : ["", String(x)]) : typeof s === "object" ? Object.entries(s) : [["", String(s)]];
-const link = id => TOP[id] ? ttl(TOP[id], "a", ` href="/foundations/${TOP[id].fam}.html#${esc(id)}"`) : ALG[id] ? `<a href="/thesis/algorithms.html#${esc(id)}">${esc(ALG[id])}</a>` : MET[id] ? `<a href="/thesis/metrics.html#${esc(id)}">${esc(MET[id])}</a>` : esc(id);
+const link = id => TOP[id] ? ttl(TOP[id], "a", ` href="/thesis/foundations/${TOP[id].fam}.html#${esc(id)}"`) : ALG[id] ? `<a href="/thesis/algorithms.html#${esc(id)}">${esc(ALG[id])}</a>` : MET[id] ? `<a href="/thesis/metrics.html#${esc(id)}">${esc(MET[id])}</a>` : esc(id);
 function body(t0) {
   const f0 = I.fa && FA[t0.id], t = f0 ? {...t0, ...f0, io: Object.fromEntries(Object.entries(f0.io || {}).map(([k, v]) => [({input: "ورودی", inputs: "ورودی", output: "خروجی", outputs: "خروجی"})[k] || k, v]))} : t0;
   const loc = (tag, html) => f0 ? `<${tag}>${html}</${tag}>` : en(tag, html);   // Persian blocks are not lang=en

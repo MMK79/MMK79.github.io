@@ -156,7 +156,7 @@ function body(u, el) {
 // Origin: the paper that introduced this metric or algorithm (provenance record, Brief I): badge, authors, year, title, venue, DOI/arXiv links,
 // citation count with its source and date, what exactly the paper introduced, further references. Inferred items say why they have no origin paper.
 const PK = kind === "metrics" ? "metric" : "algorithm";
-const foundations = u => { const ts = (FDB[u.id] || []).filter(x => FDT[x]); return ts.length ? `<div class="ex-blk ex-chips-fd"><h4>${esc(T("fd.h_found"))}</h4>${ts.map(x => (I.fa && FDT[x].title_fa ? `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}">${esc(FDT[x].title_fa)}</a>` : `<a href="/foundations/${FDT[x].fam}.html#${esc(x)}" lang="en" dir="ltr">${esc(FDT[x].title)}</a>`)).join("")}</div>` : ""; };
+const foundations = u => { const ts = (FDB[u.id] || []).filter(x => FDT[x]); return ts.length ? `<div class="ex-blk ex-chips-fd"><h4>${esc(T("fd.h_found"))}</h4>${ts.map(x => (I.fa && FDT[x].title_fa ? `<a href="/thesis/foundations/${FDT[x].fam}.html#${esc(x)}">${esc(FDT[x].title_fa)}</a>` : `<a href="/thesis/foundations/${FDT[x].fam}.html#${esc(x)}" lang="en" dir="ltr">${esc(FDT[x].title)}</a>`)).join("")}</div>` : ""; };
 const origin = u => { const r = PROV[PK + ":" + u.id]; return r ? window.EXS.originBlock(r, T, N, esc) : ""; };
 
 // Related chips: the other page's cards this unit is measured by / measures. A chip links only when that card exists in this build.

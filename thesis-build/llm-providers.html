@@ -97,6 +97,9 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
 .site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
 .site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
 .site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
 .site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
 html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
@@ -163,7 +166,12 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
       <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
       <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
       <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
@@ -232,6 +240,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
   ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
     if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
     if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
     if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
     at=performance.now(); src=e.target; done=false; },true));
@@ -358,7 +367,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   </section>
 </main>
 <footer class="site-foot"><p data-i18n="llm.foot">Data: vault file data/llm-providers.json, read at build time; account balances and keys are never published. Persian text is a machine draft, not reviewed.</p></footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "provenance": 280, "stories": ["rag-vs-graphrag", "bias-variance", "ontology"]}};</script>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology"]}};</script>
 <script src="/thesis/assets/llm-providers.js"></script>
 <script src="/thesis/assets/layout.js"></script>
 </body>

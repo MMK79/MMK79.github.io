@@ -5,7 +5,7 @@ const $ = id => document.getElementById(id), t = window.t, I = window.I18N, esc 
 let P = {items: {}};
 try { P = await fetch("/thesis/data/provenance.json").then(r => r.json()); } catch (e) {}
 const rows = Object.entries(P.items).map(([key, r]) => ({key, ...r}));
-const tb = $("src").tBodies[0], ST = ["evidenced", "textbook-only", "inferred", "unverified"], KD = ["metric", "algorithm", "method", "component", "topic"];
+const tb = $("src").tBodies[0], ST = ["evidenced", "textbook-only", "inferred", "unverified"], KD = ["metric", "algorithm", "method", "component", "topic", "project"];
 const short = a => { const n = (a || []).map(x => String(x).split(",")[0]); return n.length > 2 ? n[0] + " et al." : n.join(" & "); };
 const link = (u, k) => u ? `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(k)}</a>` : "";
 const links = p => !p ? "" : link(p.doi && "https://doi.org/" + p.doi, "DOI") + link(p.arxiv && "https://arxiv.org/abs/" + String(p.arxiv).replace(/^arxiv:/i, ""), "arXiv") + (!p.doi && !p.arxiv ? link(p.url, "link") : "");

@@ -1,0 +1,1885 @@
+{
+ "id": "lesson-layers",
+ "built": "2026-10-17",
+ "brief": "T",
+ "about": "One SVM mini-domain shown as a taxonomy, an ontology (T-box) and a knowledge graph (A-box). The tree, the classes and the relation names are OUR modelling; the edges' evidence quotes are real and checked by build_lesson.py.",
+ "taxonomy": [
+  {
+   "id": "t_ml",
+   "label": "Machine learning",
+   "parent": null,
+   "maps_to": {
+    "class": "Method"
+   }
+  },
+  {
+   "id": "t_sup",
+   "label": "Supervised learning",
+   "parent": "t_ml",
+   "maps_to": {
+    "class": "SupervisedMethod"
+   }
+  },
+  {
+   "id": "t_cls",
+   "label": "Classification",
+   "parent": "t_sup",
+   "maps_to": {
+    "class": "Classifier"
+   }
+  },
+  {
+   "id": "t_svm",
+   "label": "SVM",
+   "parent": "t_cls",
+   "maps_to": {
+    "individual": "svm"
+   }
+  },
+  {
+   "id": "t_pla",
+   "label": "Perceptron",
+   "parent": "t_cls",
+   "maps_to": {
+    "individual": "perceptron"
+   }
+  },
+  {
+   "id": "t_reg",
+   "label": "Regression",
+   "parent": "t_sup",
+   "maps_to": {
+    "class": "Regressor"
+   }
+  },
+  {
+   "id": "t_kern",
+   "label": "Kernel methods",
+   "parent": "t_ml",
+   "maps_to": {
+    "class": "KernelMethod"
+   }
+  },
+  {
+   "id": "t_math",
+   "label": "Math foundations",
+   "parent": null,
+   "maps_to": {
+    "class": "MathConcept"
+   }
+  },
+  {
+   "id": "t_dot",
+   "label": "Dot product",
+   "parent": "t_math",
+   "maps_to": {
+    "individual": "dotProduct"
+   }
+  },
+  {
+   "id": "t_kf",
+   "label": "Kernel function",
+   "parent": "t_math",
+   "maps_to": {
+    "individual": "kernel"
+   }
+  }
+ ],
+ "tree_limits": [
+  {
+   "id": "one_parent",
+   "text": "SVM is a classifier AND a kernel method, but in a tree each node has one parent, so here it sits under Classification only. (Z39.19 allows several parents, a polyhierarchy.)"
+  },
+  {
+   "id": "no_relations",
+   "text": "Our tree records only broader/narrower placement, without saying which kind of hierarchy (kind-of, instance-of, part-of: Z39.19 Sec. 8.3 can say this; our tree does not). It cannot say that SVM uses a kernel function, or that the dot product comes first."
+  },
+  {
+   "id": "no_place",
+   "text": "Linear separability is a property of data. Our tree has no branch for it (a bigger tree could add one, e.g. under classification theory)."
+  }
+ ],
+ "tbox": {
+  "classes": [
+   {
+    "id": "Concept",
+    "label": "Concept",
+    "sub": null
+   },
+   {
+    "id": "Method",
+    "label": "Method",
+    "sub": "Concept",
+    "from_tree": "t_ml"
+   },
+   {
+    "id": "SupervisedMethod",
+    "label": "Supervised method",
+    "sub": "Method",
+    "from_tree": "t_sup"
+   },
+   {
+    "id": "Classifier",
+    "label": "Classifier",
+    "sub": "SupervisedMethod",
+    "from_tree": "t_cls"
+   },
+   {
+    "id": "Regressor",
+    "label": "Regressor",
+    "sub": "SupervisedMethod",
+    "from_tree": "t_reg"
+   },
+   {
+    "id": "KernelMethod",
+    "label": "Kernel method",
+    "sub": "Method",
+    "from_tree": "t_kern",
+    "some": {
+     "prop": "uses",
+     "cls": "KernelFunction"
+    }
+   },
+   {
+    "id": "MathConcept",
+    "label": "Math concept",
+    "sub": "Concept",
+    "from_tree": "t_math"
+   },
+   {
+    "id": "KernelFunction",
+    "label": "Kernel function",
+    "sub": "MathConcept"
+   },
+   {
+    "id": "Assumption",
+    "label": "Assumption",
+    "sub": "Concept"
+   },
+   {
+    "id": "LearningResource",
+    "label": "Learning resource",
+    "sub": null
+   },
+   {
+    "id": "Passage",
+    "label": "Passage",
+    "sub": "LearningResource"
+   },
+   {
+    "id": "Lecture",
+    "label": "Lecture",
+    "sub": "LearningResource"
+   },
+   {
+    "id": "Example",
+    "label": "Example",
+    "sub": "LearningResource"
+   },
+   {
+    "id": "Dataset",
+    "label": "Dataset",
+    "sub": null
+   }
+  ],
+  "disjoint": [
+   [
+    "Concept",
+    "LearningResource"
+   ],
+   [
+    "Concept",
+    "Dataset"
+   ],
+   [
+    "LearningResource",
+    "Dataset"
+   ]
+  ],
+  "properties": [
+   {
+    "id": "uses",
+    "label": "uses",
+    "domain": "Method",
+    "range": "Concept",
+    "kind": "domain"
+   },
+   {
+    "id": "prerequisiteOf",
+    "label": "prerequisite-of",
+    "domain": "Concept",
+    "range": "Concept",
+    "kind": "pedagogical",
+    "transitive": true,
+    "acyclic": true
+   },
+   {
+    "id": "assumes",
+    "label": "assumes",
+    "domain": "Method",
+    "range": "Assumption",
+    "kind": "domain"
+   },
+   {
+    "id": "defines",
+    "label": "defines",
+    "domain": "Passage",
+    "range": "Concept",
+    "kind": "pedagogical"
+   },
+   {
+    "id": "exampleOf",
+    "label": "example-of",
+    "domain": "Example",
+    "range": "Concept",
+    "kind": "pedagogical"
+   },
+   {
+    "id": "covers",
+    "label": "covers",
+    "domain": "Lecture",
+    "range": "Concept",
+    "kind": "pedagogical"
+   },
+   {
+    "id": "usesDataset",
+    "label": "uses-dataset",
+    "domain": "Example",
+    "range": "Dataset",
+    "kind": "domain"
+   }
+  ],
+  "shapes": [
+   {
+    "id": "evidence",
+    "text": "Every A-box edge carries evidence (a passage, dataset file or lecture note)."
+   },
+   {
+    "id": "covered_method_defined",
+    "text": "Every Method that a lecture covers has at least one Passage that defines it."
+   },
+   {
+    "id": "acyclic",
+    "text": "prerequisite-of has no cycle (a learning order must exist)."
+   },
+   {
+    "id": "disjoint",
+    "text": "No node is both a Concept and a Learning resource (or a Dataset)."
+   }
+  ]
+ },
+ "abox": {
+  "individuals": [
+   {
+    "id": "svm",
+    "label": "SVM",
+    "type": "Classifier"
+   },
+   {
+    "id": "perceptron",
+    "label": "Perceptron",
+    "type": "Classifier"
+   },
+   {
+    "id": "kernel",
+    "label": "Kernel function",
+    "type": "KernelFunction"
+   },
+   {
+    "id": "dotProduct",
+    "label": "Dot product",
+    "type": "MathConcept"
+   },
+   {
+    "id": "linSep",
+    "label": "Linear separability",
+    "type": "Assumption"
+   },
+   {
+    "id": "p109",
+    "label": "Passage p109",
+    "type": "Passage"
+   },
+   {
+    "id": "lec01",
+    "label": "Lecture 1",
+    "type": "Lecture"
+   },
+   {
+    "id": "lec14",
+    "label": "Lecture 14",
+    "type": "Lecture"
+   },
+   {
+    "id": "lec15",
+    "label": "Lecture 15",
+    "type": "Lecture"
+   },
+   {
+    "id": "irisSetosa",
+    "label": "Iris: setosa vs rest",
+    "type": "Example"
+   },
+   {
+    "id": "iris",
+    "label": "Iris data set",
+    "type": "Dataset"
+   }
+  ],
+  "edges": [
+   {
+    "s": "p109",
+    "p": "defines",
+    "o": "svm",
+    "evidence": {
+     "kind": "passage",
+     "ref": "p109",
+     "quote": "a support vector machine (SVM) or support vector network is a supervised max-margin model with associated learning algorithms that analyze data for classification and regression analysis",
+     "source": "Wikipedia, \"Support vector machine\" (Lead), oldid 1377218945",
+     "url": "https://en.wikipedia.org/wiki/Support_vector_machine?oldid=1377218945",
+     "licence": "CC BY-SA 4.0",
+     "verified": true,
+     "reading": "The passage states what an SVM is (a kind + what makes it different)"
+    }
+   },
+   {
+    "s": "svm",
+    "p": "uses",
+    "o": "kernel",
+    "evidence": {
+     "kind": "passage",
+     "ref": "p109",
+     "quote": "SVMs can efficiently perform non-linear classification using the kernel trick",
+     "source": "Wikipedia, \"Support vector machine\" (Lead), oldid 1377218945",
+     "url": "https://en.wikipedia.org/wiki/Support_vector_machine?oldid=1377218945",
+     "licence": "CC BY-SA 4.0",
+     "verified": true,
+     "reading": "OUR reading: the quote says SVMs can use the kernel trick (kernelised SVM); 'uses' is our relation"
+    }
+   },
+   {
+    "s": "dotProduct",
+    "p": "prerequisiteOf",
+    "o": "kernel",
+    "evidence": {
+     "kind": "passage",
+     "ref": "p086",
+     "quote": "these inner products are simply given by the values of the kernel function",
+     "source": "Wikipedia, \"Principal component regression\" (Generalization to kernel settings), oldid 1376493042",
+     "url": "https://en.wikipedia.org/wiki/Principal_component_regression?oldid=1376493042",
+     "licence": "CC BY-SA 4.0",
+     "verified": true,
+     "reading": "OUR reading: a proposed, course-specific dependency (the quote shows a link, not that B cannot be learned without A); needs instructor review"
+    }
+   },
+   {
+    "s": "dotProduct",
+    "p": "prerequisiteOf",
+    "o": "perceptron",
+    "evidence": {
+     "kind": "note",
+     "ref": "caltech-lec01-note",
+     "quote": "you will be having the inner product between a vector $w$, a column vector, and vector $x$",
+     "source": "Lecture 1, perceptron; Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note",
+     "url": "Notes/Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01.md",
+     "verified": true,
+     "reading": "OUR reading: a proposed, course-specific dependency (the quote shows a link, not that B cannot be learned without A); needs instructor review"
+    }
+   },
+   {
+    "s": "perceptron",
+    "p": "prerequisiteOf",
+    "o": "svm",
+    "evidence": {
+     "kind": "passage",
+     "ref": "p110",
+     "quote": "the linear classifier it defines is known as a maximum-margin classifier; or equivalently, the perceptron of optimal stability",
+     "source": "Wikipedia, \"Support vector machine\" (Lead), oldid 1377218945",
+     "url": "https://en.wikipedia.org/wiki/Support_vector_machine?oldid=1377218945",
+     "licence": "CC BY-SA 4.0",
+     "verified": true,
+     "reading": "OUR reading: a proposed, course-specific dependency (the quote shows a link, not that B cannot be learned without A); needs instructor review"
+    }
+   },
+   {
+    "s": "perceptron",
+    "p": "assumes",
+    "o": "linSep",
+    "evidence": {
+     "kind": "note",
+     "ref": "caltech-lec01-note",
+     "quote": "let's assume that the data that you are working with is linearly separable",
+     "source": "Lecture 1, perceptron; Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note",
+     "url": "Notes/Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01.md",
+     "verified": true,
+     "reading": "OUR reading: the lecture assumes it for the perceptron (its convergence guarantee), not for every perceptron variant"
+    }
+   },
+   {
+    "s": "lec01",
+    "p": "covers",
+    "o": "perceptron",
+    "evidence": {
+     "kind": "note",
+     "ref": "caltech-lec01-note",
+     "quote": "Simple Hypothesis set - The Perceptron",
+     "source": "Lecture 1 section heading; Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note",
+     "url": "Notes/Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01.md",
+     "verified": true,
+     "reading": "From the course outline: the lecture title names the topic"
+    }
+   },
+   {
+    "s": "lec14",
+    "p": "covers",
+    "o": "svm",
+    "evidence": {
+     "kind": "note",
+     "ref": "caltech-lec01-note",
+     "quote": "Lecture 14: [**Support Vector Machines**]",
+     "source": "course outline; Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note",
+     "url": "Notes/Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01.md",
+     "verified": true,
+     "reading": "From the course outline: the lecture title names the topic"
+    }
+   },
+   {
+    "s": "lec15",
+    "p": "covers",
+    "o": "kernel",
+    "evidence": {
+     "kind": "note",
+     "ref": "caltech-lec01-note",
+     "quote": "Lecture 15: [**Kernel Methods**]",
+     "source": "course outline; Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note",
+     "url": "Notes/Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01.md",
+     "verified": true,
+     "reading": "From the course outline: the lecture title names the topic"
+    }
+   },
+   {
+    "s": "irisSetosa",
+    "p": "exampleOf",
+    "o": "linSep",
+    "evidence": {
+     "kind": "dataset",
+     "ref": "uci-iris",
+     "quote": "One class is linearly separable from the other 2; the latter are NOT linearly separable from each other.",
+     "source": "UCI ML Repository, Iris (iris.names, section 4)",
+     "url": "https://archive.ics.uci.edu/dataset/53/iris",
+     "licence": "CC BY 4.0",
+     "verified": true,
+     "reading": "The quote says one class is separable; that it is setosa is computed (LP test in build_lesson.py)"
+    }
+   },
+   {
+    "s": "irisSetosa",
+    "p": "usesDataset",
+    "o": "iris",
+    "evidence": {
+     "kind": "dataset",
+     "ref": "uci-iris",
+     "quote": "The data set contains 3 classes of 50 instances each, where each class refers to a type of iris plant.",
+     "source": "UCI ML Repository, Iris (iris.names, section 4)",
+     "url": "https://archive.ics.uci.edu/dataset/53/iris",
+     "licence": "CC BY 4.0",
+     "verified": true,
+     "reading": "Authoring fact: we built the example on this data set; the quote only describes the data set"
+    }
+   }
+  ]
+ },
+ "candidates": [
+  {
+   "id": "c_cycle",
+   "s": "svm",
+   "p": "prerequisiteOf",
+   "o": "dotProduct",
+   "evidence": {
+    "kind": "llm",
+    "quote": "(no source: an extractor guessed it)",
+    "verified": false
+   },
+   "caught_by": [
+    "acyclic",
+    "evidence"
+   ],
+   "text": "SVM prerequisite-of dot product (makes a loop)"
+  },
+  {
+   "id": "c_type",
+   "s": "p109",
+   "p": "uses",
+   "o": "kernel",
+   "evidence": {
+    "kind": "passage",
+    "ref": "p109",
+    "quote": "using a kernel function",
+    "source": "Wikipedia, \"Support vector machine\" (Lead), oldid 1377218945",
+    "url": "https://en.wikipedia.org/wiki/Support_vector_machine?oldid=1377218945",
+    "licence": "CC BY-SA 4.0",
+    "verified": true
+   },
+   "caught_by": [
+    "disjoint"
+   ],
+   "text": "Passage p109 uses kernel function (a passage is not a method)"
+  },
+  {
+   "id": "c_noev",
+   "s": "irisSetosa",
+   "p": "exampleOf",
+   "o": "svm",
+   "evidence": null,
+   "caught_by": [
+    "evidence"
+   ],
+   "text": "Iris example example-of SVM, with no evidence"
+  }
+ ],
+ "lesson_sources": [
+  {
+   "id": "gruber",
+   "cite": "Gruber 1993, A translation approach to portable ontology specifications, Knowledge Acquisition 5(2):199-220",
+   "url": "https://tomgruber.org/writing/ontolingua-kaj-1993.pdf",
+   "used_for": "'an explicit specification of a conceptualization'",
+   "locator": "Sec. 1, p.2 of the KSL 92-71 report (revised Apr 1993); journal pages not mapped",
+   "verified": true,
+   "note": "Zotero L3QDSNPN"
+  },
+  {
+   "id": "studer",
+   "cite": "Studer, Benjamins, Fensel 1998, Knowledge engineering: principles and methods, DKE 25",
+   "url": "https://doi.org/10.1016/S0169-023X(97)00056-6",
+   "used_for": "'formal, explicit specification of a shared conceptualisation' + meaning of formal/explicit/shared",
+   "locator": "Sec. 6, p.25",
+   "verified": true,
+   "note": "Zotero XK63BYRM"
+  },
+  {
+   "id": "guarino",
+   "cite": "Guarino 1998, Formal Ontology and Information Systems, FOIS'98, IOS Press, pp.3-15",
+   "url": "http://www.loa.istc.cnr.it/old/Papers/FOIS98.pdf",
+   "used_for": "ontology = logical axioms that account for the intended meaning; only approximates a conceptualisation; ontological commitment",
+   "locator": "Sec. 2.1-2.2, PDF p.2 and p.4 (author's amended version)",
+   "verified": true,
+   "note": "Zotero ELCAEXGX (imported 2026-10-17)"
+  },
+  {
+   "id": "noy",
+   "cite": "Noy & McGuinness 2001, Ontology Development 101, Stanford KSL-01-05",
+   "url": "https://protege.stanford.edu/publications/ontology_development/ontology101.pdf",
+   "used_for": "classes, slots, facets; ontology + instances = knowledge base; competency questions (Step 1); 'no one correct way'",
+   "locator": "Sec. 2 p.3; Sec. 3 Step 1 p.5; Rule 1 p.4",
+   "verified": true,
+   "note": "Zotero PDJG6RGG"
+  },
+  {
+   "id": "hogan",
+   "cite": "Hogan et al. 2021, Knowledge Graphs, ACM Computing Surveys 54(4)",
+   "url": "https://doi.org/10.1145/3447772",
+   "used_for": "KG definition (and that it is contentious); schema optional; semantic vs validating schema; OWA; property graph vs RDF",
+   "locator": "Sec. 1 p.2; Sec. 3.1 p.12; 3.1.1 p.12-13; 3.1.2 p.14; 2.1.3 p.7 (arXiv PDF pages, not CSUR pages)",
+   "verified": true,
+   "note": "Zotero VT5DMTVQ"
+  },
+  {
+   "id": "ehrlinger",
+   "cite": "Ehrlinger & Woess 2016, Towards a Definition of Knowledge Graphs, SEMANTiCS (CEUR 1695)",
+   "url": "https://ceur-ws.org/Vol-1695/paper4.pdf",
+   "used_for": "'acquires and integrates information into an ontology and applies a reasoner'",
+   "locator": "Sec. 4, PDF p.3",
+   "verified": true,
+   "note": "Zotero YBNRB5FN"
+  },
+  {
+   "id": "kroetzsch",
+   "cite": "Kroetzsch, Simancik, Horrocks 2012, A Description Logic Primer",
+   "url": "https://arxiv.org/abs/1201.4089",
+   "used_for": "ABox/TBox/RBox are a customary split; 'no deeper logical meaning'; no X-Box or C-Box",
+   "locator": "Sec. 1 p.2 (1.1-1.3); Sec. 2.3 p.7; string search for CBox/XBox: 0 hits",
+   "verified": true,
+   "note": "Zotero M9AZMYUC"
+  },
+  {
+   "id": "baader",
+   "cite": "Baader et al., The Description Logic Handbook (CUP)",
+   "url": "",
+   "used_for": "TBox/ABox (classic reference)",
+   "locator": "not checked: no copy in Calibre, bsearch or Zotero",
+   "verified": false,
+   "note": "Zotero QNW5RQEQ, metadata only; Serles & Fensel 2024 p.211 used as the textbook check"
+  },
+  {
+   "id": "skos",
+   "cite": "W3C SKOS Reference (2009) and SKOS Primer",
+   "url": "https://www.w3.org/TR/skos-reference/",
+   "used_for": "SKOS is for thesauri, taxonomies, classification schemes; 'not a formal knowledge representation language'; skos:broader not transitive",
+   "locator": "Ref. Sec. 1.2, 1.3, 1.5, 8.6.6; Primer Sec. 1, 2.3.1, 5.2",
+   "verified": true,
+   "note": "'broader is not subClassOf' is OUR reading (Primer 5.2: SKOS concepts are individuals), tested with owlrl 2026-10-09"
+  },
+  {
+   "id": "owl",
+   "cite": "W3C OWL 2 Primer (2nd ed., 2012)",
+   "url": "https://www.w3.org/TR/owl2-primer/",
+   "used_for": "classes, properties, individuals; open-world assumption; 'not a schema language for syntax conformance'",
+   "locator": "Sec. 2, Sec. 3, Abstract",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "rdf",
+   "cite": "W3C RDF 1.1 Primer (2014)",
+   "url": "https://www.w3.org/TR/rdf11-primer/",
+   "used_for": "triples; IRIs in all three positions",
+   "locator": "Sec. 3.1, 3.2",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "shacl",
+   "cite": "W3C SHACL Recommendation (2017)",
+   "url": "https://www.w3.org/TR/shacl/",
+   "used_for": "shapes graph validates a data graph",
+   "locator": "Abstract; Sec. 1.5",
+   "verified": true,
+   "note": "W3C does not use the words 'closed world'; that contrast is Hogan Sec. 3.1.2"
+  },
+  {
+   "id": "z3919",
+   "cite": "ANSI/NISO Z39.19-2005 (R2010), Monolingual Controlled Vocabularies",
+   "url": "https://groups.niso.org/higherlogic/ws/public/download/12591/z39-19-2005r2010.pdf",
+   "used_for": "controlled vocabulary, taxonomy, thesaurus definitions",
+   "locator": "Sec. 4 p.5; glossary p.9; Sec. 5.4.3-5.4.4 p.18 (printed = PDF - 12)",
+   "verified": true,
+   "note": "Zotero X3E5BN9J (imported 2026-10-17)"
+  },
+  {
+   "id": "garshol",
+   "cite": "Garshol 2004, Metadata? Thesauri? Taxonomies? Topic Maps!, J. Inf. Sci. 30(4)",
+   "url": "https://doi.org/10.1177/0165551504045856",
+   "used_for": "the ladder as a teaching device",
+   "locator": "not read (no PDF in Zotero); title and abstract level",
+   "verified": false,
+   "note": "Zotero NTQEJUTU"
+  },
+  {
+   "id": "cagle-boxes",
+   "cite": "Cagle, A-Box, T-Box, R-Box, C-Box, The Ontologist (blog), 2026-03-05",
+   "url": "https://ontologist.substack.com/p/a-box-t-box-r-box-c-box",
+   "used_for": "source of X-Box and C-Box in the user's note; 'tentative', 'more of a memetic device'",
+   "locator": "read in full (defuddle)",
+   "verified": true,
+   "note": "blog, not peer reviewed"
+  },
+  {
+   "id": "metro",
+   "cite": "arXiv 2004.00291 (ontology recommendation for metrology, in French)",
+   "url": "https://arxiv.org/abs/2004.00291",
+   "used_for": "CBox = TBox + RBox in some papers",
+   "locator": "definition paragraph (text read)",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "v-palantir",
+   "cite": "Palantir, Ontology Overview (YouTube, 2025-11-17)",
+   "url": "https://www.youtube.com/watch?v=YDAxITCNcko",
+   "used_for": "nouns and verbs; data, logic, actions; digital twin",
+   "locator": "00:07, 00:44, 02:38 (auto-captions)",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "v-hart-tok",
+   "cite": "Casey Hart, Taxonomy, Ontology, Knowledge Graph, and Semantics (YouTube, 2024-10-18)",
+   "url": "https://www.youtube.com/watch?v=sr257blfdY8",
+   "used_for": "taxonomy + inheritance; n-tuples / web of concepts; KG vs ontology usage; TBox vs ABox; syntax vs interpretation",
+   "locator": "00:39, 01:14, 02:14, 02:39, 03:28, 03:47, 03:59, 05:30",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "v-hart-what",
+   "cite": "Casey Hart, What is ontology? (YouTube, 2024-10-06)",
+   "url": "https://www.youtube.com/watch?v=UW57RW-4kWs",
+   "used_for": "Quine, Sider; web of concepts",
+   "locator": "01:15, 02:00, 05:04",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "v-hart-three",
+   "cite": "Casey Hart, Three Signs You Need Ontology (YouTube, 2024-10-29)",
+   "url": "https://www.youtube.com/watch?v=qWfdBtgP33A",
+   "used_for": "understanding, reusability, explainability",
+   "locator": "00:16",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "b-stanford",
+   "cite": "Chaudhri, Chittar, Genesereth, An Introduction to Knowledge Graphs (Stanford AI Lab blog, 2021-05-10)",
+   "url": "https://ai.stanford.edu/blog/introduction-to-knowledge-graphs/",
+   "used_for": "beginner reading: taxonomy = subclass graph; ontology = formal specification",
+   "locator": "section 'Knowledge Graph Definition' (user bookmark)",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "b-dew",
+   "cite": "Packkildurai, What an Ontology for AI Agents Actually Needs (Data Engineering Weekly, 2026-08-14)",
+   "url": "https://www.dataengineeringweekly.com/p/an-ontology-for-ai-agents-is-a-system",
+   "used_for": "'The ontology defines the grammar; the graph provides the evidence.'",
+   "locator": "opening section (user bookmark)",
+   "verified": true,
+   "note": ""
+  },
+  {
+   "id": "b-palantir-docs",
+   "cite": "Palantir docs, Why create an Ontology?",
+   "url": "https://www.palantir.com/docs/foundry/ontology/why-ontology",
+   "used_for": "operational meaning: objects are nouns, actions are verbs",
+   "locator": "section 'Logic' (user bookmark)",
+   "verified": true,
+   "note": "vendor documentation"
+  },
+  {
+   "id": "uci-iris",
+   "cite": "UCI ML Repository, Iris (Fisher 1936, The use of multiple measurements in taxonomic problems)",
+   "url": "https://archive.ics.uci.edu/dataset/53/iris",
+   "used_for": "setosa is linearly separable from the other two; the other two are not",
+   "locator": "iris.names, section 4; LP test in build_lesson.py",
+   "verified": true,
+   "note": "CC BY 4.0"
+  },
+  {
+   "id": "corpus",
+   "cite": "Demo corpus: Wikipedia 'Support vector machine' (oldid 1377218945) and 'Principal component regression' (oldid 1376493042)",
+   "url": "https://en.wikipedia.org/wiki/Support_vector_machine?oldid=1377218945",
+   "used_for": "passages p109, p110, p086 used as edge evidence",
+   "locator": "passage ids; quotes checked by build_lesson.py",
+   "verified": true,
+   "note": "CC BY-SA 4.0"
+  },
+  {
+   "id": "course",
+   "cite": "Caltech CS 156 Learning from Data (Abu-Mostafa): outline and Lecture 1 in the user's lecture note",
+   "url": "https://work.caltech.edu/telecourse",
+   "used_for": "Lecture 1 perceptron, Lecture 14 SVM, Lecture 15 kernel methods",
+   "locator": "vault note 'Machine Learning - Yaser Abu-Mostafa - Caltech - Lecture 01'",
+   "verified": true,
+   "note": "course URL from general knowledge, not opened"
+  }
+ ],
+ "competency_questions": [
+  {
+   "id": "cq1",
+   "q": "What must a student know before SVM, and which lecture covers each?",
+   "run": "prereq_walk",
+   "target": "svm"
+  },
+  {
+   "id": "cq2",
+   "q": "Which passage defines SVM?",
+   "pattern": "?p defines svm"
+  },
+  {
+   "id": "cq3",
+   "q": "Which example shows linear separability, and on which data set?",
+   "pattern": "?e exampleOf linSep . ?e usesDataset ?d"
+  },
+  {
+   "id": "cq4",
+   "q": "Which methods are kernel methods?",
+   "pattern": "?m a KernelMethod (needs the reasoner)"
+  },
+  {
+   "id": "cq5",
+   "q": "Which methods that a lecture covers have no defining passage yet?",
+   "pattern": "closed-world check covered_method_defined"
+  }
+ ],
+ "iris": {
+  "n": 150,
+  "features": [
+   "sepal length",
+   "sepal width",
+   "petal length",
+   "petal width"
+  ],
+  "rows": [
+   [
+    5.1,
+    3.5,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.9,
+    3.0,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.7,
+    3.2,
+    1.3,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.6,
+    3.1,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.6,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.4,
+    3.9,
+    1.7,
+    0.4,
+    "setosa"
+   ],
+   [
+    4.6,
+    3.4,
+    1.4,
+    0.3,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.4,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.4,
+    2.9,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.9,
+    3.1,
+    1.5,
+    0.1,
+    "setosa"
+   ],
+   [
+    5.4,
+    3.7,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.8,
+    3.4,
+    1.6,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.8,
+    3.0,
+    1.4,
+    0.1,
+    "setosa"
+   ],
+   [
+    4.3,
+    3.0,
+    1.1,
+    0.1,
+    "setosa"
+   ],
+   [
+    5.8,
+    4.0,
+    1.2,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.7,
+    4.4,
+    1.5,
+    0.4,
+    "setosa"
+   ],
+   [
+    5.4,
+    3.9,
+    1.3,
+    0.4,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.5,
+    1.4,
+    0.3,
+    "setosa"
+   ],
+   [
+    5.7,
+    3.8,
+    1.7,
+    0.3,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.8,
+    1.5,
+    0.3,
+    "setosa"
+   ],
+   [
+    5.4,
+    3.4,
+    1.7,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.7,
+    1.5,
+    0.4,
+    "setosa"
+   ],
+   [
+    4.6,
+    3.6,
+    1.0,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.3,
+    1.7,
+    0.5,
+    "setosa"
+   ],
+   [
+    4.8,
+    3.4,
+    1.9,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.0,
+    1.6,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.4,
+    1.6,
+    0.4,
+    "setosa"
+   ],
+   [
+    5.2,
+    3.5,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.2,
+    3.4,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.7,
+    3.2,
+    1.6,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.8,
+    3.1,
+    1.6,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.4,
+    3.4,
+    1.5,
+    0.4,
+    "setosa"
+   ],
+   [
+    5.2,
+    4.1,
+    1.5,
+    0.1,
+    "setosa"
+   ],
+   [
+    5.5,
+    4.2,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.9,
+    3.1,
+    1.5,
+    0.1,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.2,
+    1.2,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.5,
+    3.5,
+    1.3,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.9,
+    3.1,
+    1.5,
+    0.1,
+    "setosa"
+   ],
+   [
+    4.4,
+    3.0,
+    1.3,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.4,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.5,
+    1.3,
+    0.3,
+    "setosa"
+   ],
+   [
+    4.5,
+    2.3,
+    1.3,
+    0.3,
+    "setosa"
+   ],
+   [
+    4.4,
+    3.2,
+    1.3,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.5,
+    1.6,
+    0.6,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.8,
+    1.9,
+    0.4,
+    "setosa"
+   ],
+   [
+    4.8,
+    3.0,
+    1.4,
+    0.3,
+    "setosa"
+   ],
+   [
+    5.1,
+    3.8,
+    1.6,
+    0.2,
+    "setosa"
+   ],
+   [
+    4.6,
+    3.2,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.3,
+    3.7,
+    1.5,
+    0.2,
+    "setosa"
+   ],
+   [
+    5.0,
+    3.3,
+    1.4,
+    0.2,
+    "setosa"
+   ],
+   [
+    7.0,
+    3.2,
+    4.7,
+    1.4,
+    "versicolor"
+   ],
+   [
+    6.4,
+    3.2,
+    4.5,
+    1.5,
+    "versicolor"
+   ],
+   [
+    6.9,
+    3.1,
+    4.9,
+    1.5,
+    "versicolor"
+   ],
+   [
+    5.5,
+    2.3,
+    4.0,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.5,
+    2.8,
+    4.6,
+    1.5,
+    "versicolor"
+   ],
+   [
+    5.7,
+    2.8,
+    4.5,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.3,
+    3.3,
+    4.7,
+    1.6,
+    "versicolor"
+   ],
+   [
+    4.9,
+    2.4,
+    3.3,
+    1.0,
+    "versicolor"
+   ],
+   [
+    6.6,
+    2.9,
+    4.6,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.2,
+    2.7,
+    3.9,
+    1.4,
+    "versicolor"
+   ],
+   [
+    5.0,
+    2.0,
+    3.5,
+    1.0,
+    "versicolor"
+   ],
+   [
+    5.9,
+    3.0,
+    4.2,
+    1.5,
+    "versicolor"
+   ],
+   [
+    6.0,
+    2.2,
+    4.0,
+    1.0,
+    "versicolor"
+   ],
+   [
+    6.1,
+    2.9,
+    4.7,
+    1.4,
+    "versicolor"
+   ],
+   [
+    5.6,
+    2.9,
+    3.6,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.7,
+    3.1,
+    4.4,
+    1.4,
+    "versicolor"
+   ],
+   [
+    5.6,
+    3.0,
+    4.5,
+    1.5,
+    "versicolor"
+   ],
+   [
+    5.8,
+    2.7,
+    4.1,
+    1.0,
+    "versicolor"
+   ],
+   [
+    6.2,
+    2.2,
+    4.5,
+    1.5,
+    "versicolor"
+   ],
+   [
+    5.6,
+    2.5,
+    3.9,
+    1.1,
+    "versicolor"
+   ],
+   [
+    5.9,
+    3.2,
+    4.8,
+    1.8,
+    "versicolor"
+   ],
+   [
+    6.1,
+    2.8,
+    4.0,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.3,
+    2.5,
+    4.9,
+    1.5,
+    "versicolor"
+   ],
+   [
+    6.1,
+    2.8,
+    4.7,
+    1.2,
+    "versicolor"
+   ],
+   [
+    6.4,
+    2.9,
+    4.3,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.6,
+    3.0,
+    4.4,
+    1.4,
+    "versicolor"
+   ],
+   [
+    6.8,
+    2.8,
+    4.8,
+    1.4,
+    "versicolor"
+   ],
+   [
+    6.7,
+    3.0,
+    5.0,
+    1.7,
+    "versicolor"
+   ],
+   [
+    6.0,
+    2.9,
+    4.5,
+    1.5,
+    "versicolor"
+   ],
+   [
+    5.7,
+    2.6,
+    3.5,
+    1.0,
+    "versicolor"
+   ],
+   [
+    5.5,
+    2.4,
+    3.8,
+    1.1,
+    "versicolor"
+   ],
+   [
+    5.5,
+    2.4,
+    3.7,
+    1.0,
+    "versicolor"
+   ],
+   [
+    5.8,
+    2.7,
+    3.9,
+    1.2,
+    "versicolor"
+   ],
+   [
+    6.0,
+    2.7,
+    5.1,
+    1.6,
+    "versicolor"
+   ],
+   [
+    5.4,
+    3.0,
+    4.5,
+    1.5,
+    "versicolor"
+   ],
+   [
+    6.0,
+    3.4,
+    4.5,
+    1.6,
+    "versicolor"
+   ],
+   [
+    6.7,
+    3.1,
+    4.7,
+    1.5,
+    "versicolor"
+   ],
+   [
+    6.3,
+    2.3,
+    4.4,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.6,
+    3.0,
+    4.1,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.5,
+    2.5,
+    4.0,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.5,
+    2.6,
+    4.4,
+    1.2,
+    "versicolor"
+   ],
+   [
+    6.1,
+    3.0,
+    4.6,
+    1.4,
+    "versicolor"
+   ],
+   [
+    5.8,
+    2.6,
+    4.0,
+    1.2,
+    "versicolor"
+   ],
+   [
+    5.0,
+    2.3,
+    3.3,
+    1.0,
+    "versicolor"
+   ],
+   [
+    5.6,
+    2.7,
+    4.2,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.7,
+    3.0,
+    4.2,
+    1.2,
+    "versicolor"
+   ],
+   [
+    5.7,
+    2.9,
+    4.2,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.2,
+    2.9,
+    4.3,
+    1.3,
+    "versicolor"
+   ],
+   [
+    5.1,
+    2.5,
+    3.0,
+    1.1,
+    "versicolor"
+   ],
+   [
+    5.7,
+    2.8,
+    4.1,
+    1.3,
+    "versicolor"
+   ],
+   [
+    6.3,
+    3.3,
+    6.0,
+    2.5,
+    "virginica"
+   ],
+   [
+    5.8,
+    2.7,
+    5.1,
+    1.9,
+    "virginica"
+   ],
+   [
+    7.1,
+    3.0,
+    5.9,
+    2.1,
+    "virginica"
+   ],
+   [
+    6.3,
+    2.9,
+    5.6,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.5,
+    3.0,
+    5.8,
+    2.2,
+    "virginica"
+   ],
+   [
+    7.6,
+    3.0,
+    6.6,
+    2.1,
+    "virginica"
+   ],
+   [
+    4.9,
+    2.5,
+    4.5,
+    1.7,
+    "virginica"
+   ],
+   [
+    7.3,
+    2.9,
+    6.3,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.7,
+    2.5,
+    5.8,
+    1.8,
+    "virginica"
+   ],
+   [
+    7.2,
+    3.6,
+    6.1,
+    2.5,
+    "virginica"
+   ],
+   [
+    6.5,
+    3.2,
+    5.1,
+    2.0,
+    "virginica"
+   ],
+   [
+    6.4,
+    2.7,
+    5.3,
+    1.9,
+    "virginica"
+   ],
+   [
+    6.8,
+    3.0,
+    5.5,
+    2.1,
+    "virginica"
+   ],
+   [
+    5.7,
+    2.5,
+    5.0,
+    2.0,
+    "virginica"
+   ],
+   [
+    5.8,
+    2.8,
+    5.1,
+    2.4,
+    "virginica"
+   ],
+   [
+    6.4,
+    3.2,
+    5.3,
+    2.3,
+    "virginica"
+   ],
+   [
+    6.5,
+    3.0,
+    5.5,
+    1.8,
+    "virginica"
+   ],
+   [
+    7.7,
+    3.8,
+    6.7,
+    2.2,
+    "virginica"
+   ],
+   [
+    7.7,
+    2.6,
+    6.9,
+    2.3,
+    "virginica"
+   ],
+   [
+    6.0,
+    2.2,
+    5.0,
+    1.5,
+    "virginica"
+   ],
+   [
+    6.9,
+    3.2,
+    5.7,
+    2.3,
+    "virginica"
+   ],
+   [
+    5.6,
+    2.8,
+    4.9,
+    2.0,
+    "virginica"
+   ],
+   [
+    7.7,
+    2.8,
+    6.7,
+    2.0,
+    "virginica"
+   ],
+   [
+    6.3,
+    2.7,
+    4.9,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.7,
+    3.3,
+    5.7,
+    2.1,
+    "virginica"
+   ],
+   [
+    7.2,
+    3.2,
+    6.0,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.2,
+    2.8,
+    4.8,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.1,
+    3.0,
+    4.9,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.4,
+    2.8,
+    5.6,
+    2.1,
+    "virginica"
+   ],
+   [
+    7.2,
+    3.0,
+    5.8,
+    1.6,
+    "virginica"
+   ],
+   [
+    7.4,
+    2.8,
+    6.1,
+    1.9,
+    "virginica"
+   ],
+   [
+    7.9,
+    3.8,
+    6.4,
+    2.0,
+    "virginica"
+   ],
+   [
+    6.4,
+    2.8,
+    5.6,
+    2.2,
+    "virginica"
+   ],
+   [
+    6.3,
+    2.8,
+    5.1,
+    1.5,
+    "virginica"
+   ],
+   [
+    6.1,
+    2.6,
+    5.6,
+    1.4,
+    "virginica"
+   ],
+   [
+    7.7,
+    3.0,
+    6.1,
+    2.3,
+    "virginica"
+   ],
+   [
+    6.3,
+    3.4,
+    5.6,
+    2.4,
+    "virginica"
+   ],
+   [
+    6.4,
+    3.1,
+    5.5,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.0,
+    3.0,
+    4.8,
+    1.8,
+    "virginica"
+   ],
+   [
+    6.9,
+    3.1,
+    5.4,
+    2.1,
+    "virginica"
+   ],
+   [
+    6.7,
+    3.1,
+    5.6,
+    2.4,
+    "virginica"
+   ],
+   [
+    6.9,
+    3.1,
+    5.1,
+    2.3,
+    "virginica"
+   ],
+   [
+    5.8,
+    2.7,
+    5.1,
+    1.9,
+    "virginica"
+   ],
+   [
+    6.8,
+    3.2,
+    5.9,
+    2.3,
+    "virginica"
+   ],
+   [
+    6.7,
+    3.3,
+    5.7,
+    2.5,
+    "virginica"
+   ],
+   [
+    6.7,
+    3.0,
+    5.2,
+    2.3,
+    "virginica"
+   ],
+   [
+    6.3,
+    2.5,
+    5.0,
+    1.9,
+    "virginica"
+   ],
+   [
+    6.5,
+    3.0,
+    5.2,
+    2.0,
+    "virginica"
+   ],
+   [
+    6.2,
+    3.4,
+    5.4,
+    2.3,
+    "virginica"
+   ],
+   [
+    5.9,
+    3.0,
+    5.1,
+    1.8,
+    "virginica"
+   ]
+  ],
+  "lp": {
+   "setosa_vs_rest": {
+    "points": 150,
+    "separable": true,
+    "solver_status": 0,
+    "message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)"
+   },
+   "versicolor_vs_virginica": {
+    "points": 100,
+    "separable": false,
+    "solver_status": 2,
+    "message": "The problem is infeasible. (HiGHS Status 8: model_status is Infeasible; primal_status is None)"
+   },
+   "method": "LP feasibility (scipy.optimize.linprog, HiGHS): exists w, b with y_i (w.x_i + b) >= 1 for all points, 4 features. Infeasible = not linearly separable."
+  }
+ },
+ "sources": {
+  "corpus": "Presentations/_real-examples/data/corpus.json (Wikipedia, CC BY-SA 4.0, retrieved 2026-10-08)",
+  "iris": "UCI ML Repository Iris, https://archive.ics.uci.edu/dataset/53/iris (CC BY 4.0); Fisher 1936, 'The use of multiple measurements in taxonomic problems', Annals of Eugenics 7(2):179-188",
+  "course": "Caltech CS 156 Learning from Data (Abu-Mostafa), outline copied in the user's lecture note. Brief T asked for 'Lecture 7 defines SVM'; in this course Lecture 7 is The VC Dimension and SVM is Lecture 14, so Lecture 14 is used."
+ }
+}

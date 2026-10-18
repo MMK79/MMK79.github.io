@@ -89,7 +89,7 @@
       const s = solve(st), b = s.best, inB = new Set(b.set);
       eg.replaceChildren(); ng.replaceChildren();
       EDGES.forEach(e => { const [a, c] = e.split('-'), on = inB.has(a) && inB.has(c);
-        eg.append(K.svg('line', { x1: TOY_POS[a][0], y1: TOY_POS[a][1], x2: TOY_POS[c][0], y2: TOY_POS[c][1], stroke: on ? 'var(--ai)' : 'var(--line)', 'stroke-width': on ? 4 : 2 })); });
+        eg.append(K.svg('line', { x1: TOY_POS[a][0], y1: TOY_POS[a][1], x2: TOY_POS[c][0], y2: TOY_POS[c][1], stroke: on ? 'var(--ai)' : '#3A4458', 'stroke-width': on ? 4 : 2 })); });
       NODES.forEach(n => {
         const [x, y] = TOY_POS[n], p = s.prizes[n];
         ng.append(K.svg('circle', { cx: x, cy: y, r: 11 + 2 * p, fill: inB.has(n) ? 'var(--ai)' : 'var(--panel2)', stroke: p > 0 ? 'var(--he)' : 'var(--faint)', 'stroke-width': 2 }));

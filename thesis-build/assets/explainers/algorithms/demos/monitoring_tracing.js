@@ -71,7 +71,7 @@
   function mountReal(el) {
     const K = DemoKit, url = new URL('data/monitoring_tracing.real.json', SRC || location.href).href;
     const shell = K.shell(el, 'Real example: tracing the answer study (36 requests)',
-      'Real data: every span is one real LLM call of the answer study, 2026-10-08 (answer model qwen3.7-plus, judges deepseek-v4.1-flash and glm-5.1): measured latency, input/output tokens, and cost from the provider price rows. Demo scale: one run, no repeats, endpoint in China, shared machine. Retrieval-side stages (query embedding, BM25, dense search, RRF, rerank, graph expand) were timed locally on 2026-10-09 with time.perf_counter (second block below), NOT in the answer study run.');
+      'Real data: every span is one real LLM call of the answer study (answer model qwen3.7-plus, judges deepseek-v4.1-flash and glm-5.1): measured latency, input/output tokens, and cost from the provider price rows. Demo scale: one run, no repeats, endpoint in China, shared machine. Retrieval-side stages (query embedding, BM25, dense search, RRF, rerank, graph expand) were timed locally with time.perf_counter (second block below), NOT in the answer study run.');
     const body = K.el('div', {}, 'loading real data...'); shell.append(body);
     fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(data => {
       const o = { qid: 'q09', arm: 'C', thresh: 0.5, slowFactor: 1.3, rerank: false }; const sv = K.el('div', {}); let local = null;

@@ -62,6 +62,6 @@ for (const b of $("bseg").querySelectorAll("button")) b.onclick = () => { st.b =
 for (const b of $("lseg").querySelectorAll("button")) b.onclick = () => { st.l = b.dataset.l; draw(); };
 $("ranked").oninput = () => { st.r = $("ranked").checked ? "1" : "0"; draw(); };
 $("cls").oninput = () => { st.c = [...$("cls").querySelectorAll("input:checked")].map(i => i.value).join(","); draw(); };
-$("foot").textContent = t("rq.foot", {asof: R.meta.as_of});
+$("foot").textContent = t("rq.foot");
 draw();
 })();

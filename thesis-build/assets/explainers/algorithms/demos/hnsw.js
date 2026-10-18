@@ -130,7 +130,7 @@
       for (const i in g.nb[view]) for (const j of g.nb[view][i]) if (+i < j) el2.push(K.svg('line', { x1: S(PTS[i][0]), y1: S(PTS[i][1]), x2: S(PTS[j][0]), y2: S(PTS[j][1]), stroke: 'var(--line)', 'stroke-width': 1.2 }));
       // the walk so far, all layers, drawn in the colour of the layer it ran in
       const lc = ['var(--k12)', 'var(--both)', 'var(--he)', 'var(--ai)'];
-      shown.forEach(s => { if (s.from !== undefined) el2.push(K.svg('line', { x1: S(PTS[s.from][0]), y1: S(PTS[s.from][1]), x2: S(PTS[s.node][0]), y2: S(PTS[s.node][1]), stroke: s.kind === 'beam' ? 'var(--faint)' : lc[Math.min(s.l, 3)], 'stroke-width': s.kind === 'beam' ? 1.5 : 3, 'stroke-linecap': 'round' })); });
+      shown.forEach(s => { if (s.from !== undefined) el2.push(K.arrow(null, S(PTS[s.from][0]), S(PTS[s.from][1]), S(PTS[s.node][0]), S(PTS[s.node][1]), { color: s.kind === 'beam' ? 'var(--faint)' : lc[Math.min(s.l, 3)], width: s.kind === 'beam' ? 1.5 : 3, head: s.kind === 'beam' ? 7 : 10, r1: 5, r2: 6 })); });
       const visit = new Set(shown.map(s => s.node));
       for (let i = 0; i < N; i++) {
         const inL = g.lvl[i] >= view;

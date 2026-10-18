@@ -70,7 +70,7 @@
       const seen = new Set();
       nodes.forEach(a => adj[a].forEach(b => { const key = [a, b].sort().join(); if (seen.has(key)) return; seen.add(key);
         const lit = a in d && b in d, r = lit ? Math.max(d[a], d[b]) : -1;
-        eg.append(K.svg('line', { x1: POS[a][0], y1: POS[a][1], x2: POS[b][0], y2: POS[b][1], stroke: lit ? RC[Math.min(r, 4)] : 'var(--line)', 'stroke-width': lit ? 3 : 2 })); }));
+        eg.append(K.svg('line', { x1: POS[a][0], y1: POS[a][1], x2: POS[b][0], y2: POS[b][1], stroke: lit ? RC[Math.min(r, 4)] : '#3A4458', 'stroke-width': lit ? 3 : 2 })); }));
       nodes.forEach(v => {
         const [x, y] = POS[v], inside = v in d, isSeed = st.seeds.includes(v), leaf = v[0] === 'L';
         const g = K.svg('g', { tabindex: 0, role: 'button', 'aria-label': `node ${v}${isSeed ? ', seed' : ''}${inside ? ', ring ' + d[v] : ', outside'}`, 'aria-pressed': isSeed, style: 'cursor:pointer;outline:none' });
@@ -150,7 +150,7 @@
       function draw() {
         const q = Q[qid], kq = KQ[qid], r = run(qid), gold = q.gold, answerable = gold.length > 0;
         qbox.replaceChildren(K.el('b', {}, qid + ' '), q.question, K.el('span', { class: 'hint' }, `   [${q.type}; gold passages: ${gold.join(', ') || 'none (unanswerable)'}]`));
-        seedBox.replaceChildren(K.el('span', { class: 'hint' }, 'real seeds (linked entities, hop 0): '), kq.seeds.length ? kq.seeds.map(s => K.el('span', { class: 'num', style: 'margin-right:8px;border:1px solid var(--ai);border-radius:10px;padding:0 6px' }, `${s.name} (${r.deg[s.id]} links)`)) : K.el('b', { class: 'bad' }, 'no entity linked: nothing to expand from (the expansion is empty, so this question is a miss for graph retrieval)'));
+        seedBox.replaceChildren(K.el('span', { class: 'hint' }, 'real seeds (linked entities, hop 0): '), kq.seeds.length ? K.el('span', {}, kq.seeds.map(s => K.el('span', { class: 'num', style: 'margin-right:8px;border:1px solid var(--ai);border-radius:10px;padding:0 6px' }, `${s.name} (${r.deg[s.id]} links)`))) : K.el('b', { class: 'bad' }, 'no entity linked: nothing to expand from (the expansion is empty, so this question is a miss for graph retrieval)'));
         if (!kq.seeds.length) { verdict.replaceChildren(); bars.replaceChildren(); tbl.replaceChildren(); goldBox.replaceChildren(); return; }
         const H = r.hops, cur = H[hop], reachedAt = p => { const i = H.findIndex(h => h.passages.has(p)); return i; };
         const goldIn = gold.filter(p => cur.passages.has(p)), noise = cur.passages.size - goldIn.length;

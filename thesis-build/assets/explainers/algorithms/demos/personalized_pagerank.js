@@ -83,7 +83,7 @@
       eg.replaceChildren();
       ALL.forEach(e => { const k = e.join('-'), on = st.edges.includes(k), vis = e[0] < n && e[1] < n;
         chipEls[k].style.display = vis ? '' : 'none'; chipEls[k].setAttribute('aria-pressed', on);
-        if (vis && on) eg.append(K.svg('line', { x1: POS[e[0]][0], y1: POS[e[0]][1], x2: POS[e[1]][0], y2: POS[e[1]][1], stroke: e[0] === 6 ? 'var(--warn)' : 'var(--k12)', 'stroke-width': 2.5 })); });
+        if (vis && on) { const dx = POS[e[1]][0] - POS[e[0]][0], dy = POS[e[1]][1] - POS[e[0]][1], L = Math.hypot(dx, dy) || 1, ux = dx / L * 18.5, uy = dy / L * 18.5; eg.append(K.svg('line', { x1: POS[e[0]][0] + ux, y1: POS[e[0]][1] + uy, x2: POS[e[1]][0] - ux, y2: POS[e[1]][1] - uy, stroke: e[0] === 6 ? 'var(--warn)' : 'var(--k12)', 'stroke-width': 2.5 })); } });
       for (let i = 0; i < 7; i++) {
         const ne = nodeEls[i], vis = i < n, seed = st.seeds.includes(i) && vis;
         ne.g.style.display = vis ? '' : 'none'; if (!vis) { barEls[i].b.style.display = 'none'; continue; }

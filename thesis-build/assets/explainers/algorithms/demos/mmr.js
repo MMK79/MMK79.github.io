@@ -48,7 +48,7 @@
     const svg = K.svg('svg', { viewBox: `0 0 ${W} ${W}`, role: 'img', 'aria-label': 'chunks on a circle around the query', style: 'width:100%;max-width:360px;touch-action:none;display:block;margin:0 auto' });
     const pt = a => [C + R * Math.cos(rad(a)), C - R * Math.sin(rad(a))];
     svg.append(K.svg('circle', { cx: C, cy: C, r: R, fill: 'none', stroke: 'var(--line)', 'stroke-width': 2 }));
-    svg.append(K.svg('line', { x1: C, y1: C, x2: C + R * 0.82, y2: C, stroke: 'var(--k12)', 'stroke-width': 3 }));
+    K.arrow(svg, C, C, C + R * 0.82, C, { color: 'var(--k12)', width: 3, head: 12 });   /* Q is a vector: it needs a head */
     svg.append(K.svg('text', { x: C + R * 0.82 - 4, y: C + 18, 'text-anchor': 'end', fill: 'var(--k12)' }, 'Q'));
     const lines = K.svg('g', {}), dots = K.svg('g', {});
     svg.append(lines, dots);

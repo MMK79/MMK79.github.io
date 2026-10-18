@@ -10,7 +10,7 @@ const rows = DATA.projects, vk = v => v.replace(" ideas", "");
 const lic = g => !g ? "—" : g.license && g.license !== "NOASSERTION" ? g.license : T(g.license ? "rp.lic_file" : "rp.lic_none");
 const paper = (p, extra) => !p ? "" : `<p class="gx-paper"${extra ? ' data-extra="1"' : ""}>${extra ? esc(T("rp.also_paper")) + " " : ""}<a href="${esc(p.url)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(p.title)}</a>
   <span lang="en" dir="ltr">(${esc(p.first_author || "")}${p.n_authors > 1 ? " et al." : ""}, ${esc(p.year)})</span> ·
-  ${p.citations != null ? esc(T("rp.cites", {n: num(p.citations), src: p.citations_source || "Semantic Scholar", date: day(p.citations_date)})) : esc(T("rp.cites_none"))}</p>`;
+  ${p.citations != null ? esc(T("rp.cites", {n: num(p.citations), src: p.citations_source || "Semantic Scholar"})) : esc(T("rp.cites_none"))}</p>`;
 const card = (r, i) => { const g = r.github, p = r.paper;
   return `<article class="gx-card" id="${esc(r.id)}" data-i="${i}">
   <div class="gx-head">${logo(r)}<div><h3 lang="en" dir="ltr">${r.repo ? `<a href="${esc(r.repo)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</h3>
@@ -26,12 +26,12 @@ const card = (r, i) => { const g = r.github, p = r.paper;
     ${r.graph_build ? `<div><h4>${esc(T("rp.h_graph"))}</h4>${en("p", esc(r.graph_build))}</div>` : ""}
     ${(r.retrieval || []).length ? `<div><h4>${esc(T("rp.h_retrieval"))}</h4>${list(r.retrieval)}</div>` : ""}
     ${r.requirements ? `<div><h4>${esc(T("rp.h_req"))}</h4>${en("p", esc(r.requirements))}</div>` : ""}
-    <div><h4>${esc(T("gx.h_evidence"))}</h4>${en("p", esc(r.evidence || "—"))}<p class="ex-src">${esc(T("rp.measured", {date: day(g && g.measured)}))}</p></div>
+    <div><h4>${esc(T("gx.h_evidence"))}</h4>${en("p", esc(r.evidence || "—"))}</div>
   </div></details>
   <div class="gx-links">${ext(r.repo, T("gx.repo"))}${p ? ext(p.url, T("rp.paper")) : ""}${p && p.hf_papers && p.hf_papers.listed ? ext("https://huggingface.co/papers/" + p.arxiv, T("rp.hf")) : ""}${p ? `<a href="/thesis/sources.html">${esc(T("rp.in_sources"))}</a>` : ""}</div>
 </article>`; };
 const R = DATA.radar;
-const radar = !R ? "" : `<section class="gx-sec" id="radar"><h2>${esc(T("rp.radar_h"))}</h2><p class="gx-sd">${esc(T("rp.radar_p", {date: day(R.checked)}))}</p>
+const radar = !R ? "" : `<section class="gx-sec" id="radar"><h2>${esc(T("rp.radar_h"))}</h2><p class="gx-sd">${esc(T("rp.radar_p"))}</p>
   <div class="gx-radar">${R.sources.map(s => `<div id="radar-${esc(s.id)}"><h3 lang="en" dir="ltr"><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></h3><dl>
     <dt>${esc(T("rp.r_offers"))}</dt><dd lang="en" dir="ltr">${esc(s.offers)}</dd><dt>${esc(T("rp.r_api"))}</dt><dd lang="en" dir="ltr">${esc(s.api)}</dd>
     ${s.vs_old ? `<dt>${esc(T("rp.r_vs"))}</dt><dd lang="en" dir="ltr">${esc(s.vs_old)}</dd>` : ""}${s.not_read ? `<dt>${esc(T("rp.r_notread"))}</dt><dd class="gx-nr" lang="en" dir="ltr">${esc(s.not_read)}</dd>` : ""}</dl>

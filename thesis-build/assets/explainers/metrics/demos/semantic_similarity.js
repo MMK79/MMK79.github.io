@@ -40,7 +40,7 @@
       const a = [st.lenA * Math.cos(st.angA * TAU), st.lenA * Math.sin(st.angA * TAU)], b = [st.lenB * Math.cos(st.angB * TAU), st.lenB * Math.sin(st.angB * TAU)];
       const c = compute({ a, b });
       res.set(c, 4);
-      const arrow = (v, col, t) => { const g = K.svg('g'); g.append(K.svg('line', { x1: 0, y1: 0, x2: v[0], y2: -v[1], stroke: col, 'stroke-width': 0.03, 'stroke-linecap': 'round' }), K.svg('circle', { cx: v[0], cy: -v[1], r: 0.05, fill: col }));
+      const arrow = (v, col, t) => { const g = K.svg('g'); g.append(K.arrow(null, 0, 0, v[0], -v[1], { color: col, width: 0.03, head: 0.11 }));
         const tx = K.svg('text', { x: v[0] * 1.08 + 0.04, y: -v[1] * 1.08, fill: col, 'font-size': 0.13 }); tx.textContent = t; g.append(tx); return g; };
       const half = K.svg('path', { d: 'M -1.6 0 L 1.6 0', stroke: 'rgba(128,128,128,.4)', 'stroke-width': 0.01 });
       const d = Math.abs(st.angA - st.angB), arc = K.svg('path', { d: `M ${0.35 * Math.cos(st.angA * TAU)} ${-0.35 * Math.sin(st.angA * TAU)} A 0.35 0.35 0 0 ${st.angA > st.angB ? 1 : 0} ${0.35 * Math.cos(st.angB * TAU)} ${-0.35 * Math.sin(st.angB * TAU)}`, fill: 'none', stroke: '#f2a93b', 'stroke-width': 0.02 });

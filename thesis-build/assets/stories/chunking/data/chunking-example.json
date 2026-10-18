@@ -1,0 +1,3740 @@
+{
+ "about": "Built by data/build_example.py from the Caltech CS 156 Lecture 14 captions and the bge-m3 vectors of the thesis batch pipeline (run 'chunking-strategies'). Rule-based chunks are computed; semantic chunks use real bge-m3 distances; propositions are LLM output (unchecked by a human); the demo questions and their answer quotes are ours.",
+ "lecture": {
+  "id": "L14",
+  "title": "Lecture 14 - Support Vector Machines",
+  "course": "Learning from Data (CS 156), Caltech, Yaser Abu-Mostafa",
+  "video": "https://www.youtube.com/watch?v=eHsErlPJWUU",
+  "licence": "YouTube lists the lecture videos under Creative Commons Attribution (reuse allowed); captions are the uploaded English captions.",
+  "chars": 70420,
+  "paragraphs": 120
+ },
+ "embedder": {
+  "model": "BAAI/bge-m3",
+  "revision": "5617a9f61b028005a4858fdac845db406aefb181",
+  "max_tokens_used": 1024,
+  "similarity": "cosine, dense only"
+ },
+ "proposition_model": "deepseek/deepseek-v4-flash",
+ "passage": {
+  "text": "And finally, we are going to expand from the linear case to the nonlinear case in the usual way, thus expanding all of the machinery to a case where you can deal with nonlinear surfaces, instead of just a line in a separable case, which is the main case we are going to handle. So now let's talk about linear separation. Let's say I have a linearly separable data set.\n\nJust take four, for example. There are lines that will separate the red from the blue. Now, when you apply perceptron, you will get a line. When you apply any algorithm, you will get a line, and separate-- you get 0 training error. And everything is fine. And now there is a curious point when you ask yourself: I can get different lines. Is there any advantage of choosing one of the lines over the other? That is the new addition to the problem. So let's look at it. Here is a line. So I chose this line to separate the two. You may not think that this is the best line. And we'll try to take our intuition and understand why this is not the best line.\n\nSo I'm going to think of a margin, that is, if this line moves a little bit, when is it going to cross over? When is it going to start making an error? So in this case, let's put it as a yellow region around it. That's the margin you have. So if you choose this line, this is the margin of error. Sort of informal notion. Now you can look at this line. And it does seem to have a better margin. And you can now look at the problem closely and say: let me try to get the best possible margin. And then you get this line, which has this margin, that is exactly right for\n\nthe blue and red points. Now, let us ask ourselves the following question. Which is the best line for classification? As far as the in-sample error is concerned, all of them give in-sample error 0. As far as generalization questions are concerned, as far as our previous analysis has done, all of them are dealing with linear model with four points. So generalization, as an estimate, will be the same. Nonetheless, I think you will agree with me that if you had your choice, you will choose the fat margin.\n\nSomehow it's intuitive. So let's ask two questions. The first one is: why is a bigger margin better? Second one. If we are convinced that a bigger margin is better, then you ask yourself: can I solve for w that maximizes the margin?\n\nNow it is quite intuitive that the bigger margin is better, because think of a process that is generating the data. And let's say that there is noise in it. If you have the bigger margin, the chances are the new point will still be on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic that indeed, the bigger margin is better. And now we're going to argue that the bigger margin is better for a reason that relates to our VC analysis before.\n\nSo anybody remember the growth function from ages ago? What was that? So we take the dichotomies of the line on points in the plane.\n\nAnd let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by varying where the line is, I can get all possible 2 to the 3 equals 8 dichotomies here. So you know that the growth function is big. And we know that the growth function being big is bad news for generalization. That was our take-home lesson. So now let's see if this is affected by the margin. So now we are taking dichotomies, not only the line, but also requiring that the dichotomies have a fat margin. Let's look at dichotomies, and their margin.\n\nNow in this case, I'm putting the same three points. And I'm putting a line that has the biggest possible margin for the constellation of points I have. So you can see here. I put it. It sandwiched them. Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And this is a hugely fat one, but that's the constant one. That's not a big deal. Now let's say that I told you that you are allowed to use a classifier, but you have to have at least that margin for me to accept it.\n\nSo now I'm requiring the margin to be at least something. All of a sudden, these guys that used to be legitimate dichotomies using my model, are no longer allowed. So effectively by requiring the margin to be at least something, I'm putting a restriction on the growth function. Fat margins imply fewer dichotomies possible. And therefore, if we manage to separate the points with a fat dichotomy, we can say that fat dichotomies have a smaller VC dimension, smaller growth function than if I didn't restrict them at all. And, although this is all informal, we will come at the end of the lecture to a result that estimates the out-of- sample error based on the margin.\n\nAnd we will find out that indeed, when you have a bigger margin, you will be able to achieve better out-of-sample performance. So now that I completely and irrevocably convinced you that the fat margins are good, let us try to solve for them. That is, find the w that not only classifies the points correctly, but achieves so with the biggest possible margin. So how are we going to do that? Well the margin is just the distance from the plane to a point. So I'm going to take from the data set the point x_n, which happens to be the nearest data point to the line, that we have used in the previous example.",
+  "lecture_start": 5102,
+  "lecture_end": 10751,
+  "paragraphs": [
+   {
+    "start": 0,
+    "end": 368,
+    "ts": "00:05:15"
+   },
+   {
+    "start": 370,
+    "end": 1024,
+    "ts": "00:05:42"
+   },
+   {
+    "start": 1026,
+    "end": 1594,
+    "ts": "00:06:24"
+   },
+   {
+    "start": 1596,
+    "end": 2103,
+    "ts": "00:07:02"
+   },
+   {
+    "start": 2105,
+    "end": 2337,
+    "ts": "00:07:42"
+   },
+   {
+    "start": 2339,
+    "end": 2964,
+    "ts": "00:08:07"
+   },
+   {
+    "start": 2966,
+    "end": 3098,
+    "ts": "00:08:48"
+   },
+   {
+    "start": 3100,
+    "end": 3713,
+    "ts": "00:09:02"
+   },
+   {
+    "start": 3715,
+    "end": 4368,
+    "ts": "00:09:45"
+   },
+   {
+    "start": 4370,
+    "end": 5039,
+    "ts": "00:10:29"
+   },
+   {
+    "start": 5041,
+    "end": 5649,
+    "ts": "00:11:13"
+   }
+  ],
+  "section_boundaries": [
+   {
+    "at": 3919,
+    "label": "00:10:00",
+    "why": "start of the third 5-minute window of the video"
+   }
+  ]
+ },
+ "semantic": {
+  "lecture_distances": [
+   0.2268,
+   0.1351,
+   0.0545,
+   0.213,
+   0.0948,
+   0.136,
+   0.0743,
+   0.0602,
+   0.1815,
+   0.1787,
+   0.0674,
+   0.1355,
+   0.2662,
+   0.1965,
+   0.1332,
+   0.0464,
+   0.1274,
+   0.0986,
+   0.2323,
+   0.2722,
+   0.0493,
+   0.0401,
+   0.223,
+   0.0967,
+   0.2297,
+   0.0645,
+   0.1165,
+   0.1896,
+   0.1989,
+   0.0839,
+   0.1084,
+   0.1051,
+   0.2004,
+   0.1141,
+   0.0647,
+   0.0919,
+   0.1737,
+   0.1616,
+   0.1357,
+   0.0604,
+   0.2735,
+   0.1416,
+   0.0249,
+   0.0815,
+   0.2374,
+   0.1501,
+   0.1735,
+   0.2984,
+   0.0714,
+   0.0255,
+   0.2349,
+   0.1777,
+   0.1362,
+   0.066,
+   0.1968,
+   0.0837,
+   0.0871,
+   0.1799,
+   0.1633,
+   0.2596,
+   0.1483,
+   0.0695,
+   0.1111,
+   0.2726,
+   0.1067,
+   0.0959,
+   0.1979,
+   0.2015,
+   0.0955,
+   0.0961,
+   0.2189,
+   0.0348,
+   0.1496,
+   0.1281,
+   0.0994,
+   0.106,
+   0.0345,
+   0.1662,
+   0.2091,
+   0.049,
+   0.1131,
+   0.1424,
+   0.2236,
+   0.3384,
+   0.1195,
+   0.1035,
+   0.26,
+   0.0934,
+   0.1297,
+   0.1738,
+   0.0491,
+   0.1444,
+   0.0709,
+   0.0593,
+   0.1368,
+   0.1554,
+   0.0501,
+   0.1681,
+   0.4494,
+   0.1075,
+   0.1044,
+   0.0599,
+   0.3251,
+   0.2129,
+   0.1238,
+   0.1881,
+   0.0851,
+   0.1537,
+   0.1619,
+   0.21,
+   0.1184,
+   0.2677,
+   0.0507,
+   0.0828,
+   0.17,
+   0.0955,
+   0.0658,
+   0.3602,
+   0.2063,
+   0.1552,
+   0.2046,
+   0.1319,
+   0.2311,
+   0.1841,
+   0.1127,
+   0.2012,
+   0.165,
+   0.127,
+   0.1468,
+   0.0958,
+   0.127,
+   0.076,
+   0.0577,
+   0.1472,
+   0.1125,
+   0.0812,
+   0.2095,
+   0.2112,
+   0.0603,
+   0.1944,
+   0.2431,
+   0.1681,
+   0.1184,
+   0.1893,
+   0.1504,
+   0.0502,
+   0.2261,
+   0.1906,
+   0.2256,
+   0.1367,
+   0.253,
+   0.2121,
+   0.062,
+   0.1498,
+   0.204,
+   0.189,
+   0.1796,
+   0.1238,
+   0.2441,
+   0.2442,
+   0.2149,
+   0.0528,
+   0.0839,
+   0.2507,
+   0.2774,
+   0.054,
+   0.1555,
+   0.2223,
+   0.1164,
+   0.292,
+   0.2408,
+   0.064,
+   0.0804,
+   0.2746,
+   0.1249,
+   0.1528,
+   0.2077,
+   0.1054,
+   0.1208,
+   0.1176,
+   0.162,
+   0.04,
+   0.1391,
+   0.1415,
+   0.0821,
+   0.266,
+   0.1988,
+   0.1666,
+   0.1252,
+   0.2419,
+   0.1788,
+   0.1638,
+   0.1521,
+   0.304,
+   0.0602,
+   0.1423,
+   0.1985,
+   0.0852,
+   0.1492,
+   0.0627,
+   0.1598,
+   0.1742,
+   0.2742,
+   0.1109,
+   0.0635,
+   0.1586,
+   0.1935,
+   0.1597,
+   0.101,
+   0.1198,
+   0.3013,
+   0.1861,
+   0.1551,
+   0.3026,
+   0.0999,
+   0.0493,
+   0.1381,
+   0.1124,
+   0.0413,
+   0.0696,
+   0.1733,
+   0.1888,
+   0.1356,
+   0.2921,
+   0.1244,
+   0.0575,
+   0.151,
+   0.1279,
+   0.0534,
+   0.1554,
+   0.1451,
+   0.2425,
+   0.1872,
+   0.103,
+   0.2742,
+   0.083,
+   0.2953,
+   0.1459,
+   0.1237,
+   0.0495,
+   0.0557,
+   0.3988,
+   0.0808,
+   0.1794,
+   0.3793,
+   0.0508,
+   0.1004,
+   0.1539,
+   0.1503,
+   0.2341,
+   0.0519,
+   0.251,
+   0.3705,
+   0.0532,
+   0.0613,
+   0.2486,
+   0.0886,
+   0.1839,
+   0.1755,
+   0.0825,
+   0.0806,
+   0.1483,
+   0.0907,
+   0.2264,
+   0.1386,
+   0.0613,
+   0.1636,
+   0.1637,
+   0.337,
+   0.2398,
+   0.1748,
+   0.1406,
+   0.0514,
+   0.1433,
+   0.1754,
+   0.0516,
+   0.1173,
+   0.0883,
+   0.048,
+   0.2243,
+   0.1079,
+   0.2609,
+   0.0791,
+   0.0961,
+   0.2158,
+   0.0501,
+   0.1073,
+   0.0627,
+   0.3228,
+   0.0904,
+   0.2137,
+   0.1617,
+   0.0406,
+   0.0921,
+   0.1895,
+   0.1224,
+   0.1461,
+   0.0881,
+   0.1342,
+   0.1052,
+   0.2169,
+   0.0826,
+   0.0499,
+   0.1912,
+   0.1135,
+   0.1493,
+   0.1036,
+   0.082,
+   0.0846,
+   0.3823,
+   0.1283,
+   0.1551,
+   0.2625,
+   0.1113,
+   0.0991,
+   0.3697,
+   0.1419,
+   0.071,
+   0.0972,
+   0.1691,
+   0.1221,
+   0.1441,
+   0.1459,
+   0.2291,
+   0.0723,
+   0.2076,
+   0.2656,
+   0.1214,
+   0.1312,
+   0.18,
+   0.0968,
+   0.1176,
+   0.2151,
+   0.1339,
+   0.1927,
+   0.0933,
+   0.0735,
+   0.2432,
+   0.043,
+   0.337,
+   0.1262,
+   0.1585,
+   0.1484,
+   0.091,
+   0.1982,
+   0.2437,
+   0.1156,
+   0.1823,
+   0.0848,
+   0.0369,
+   0.1839,
+   0.1115,
+   0.2023,
+   0.1039,
+   0.0503,
+   0.2756,
+   0.1418,
+   0.0356,
+   0.2468,
+   0.2604,
+   0.3449,
+   0.1118,
+   0.067,
+   0.2759,
+   0.1021,
+   0.1307,
+   0.1715,
+   0.2189,
+   0.1769,
+   0.1312,
+   0.1071,
+   0.0555,
+   0.2112,
+   0.2748,
+   0.2283,
+   0.0137,
+   0.1023,
+   0.2792,
+   0.0371,
+   0.2248,
+   0.1757,
+   0.0937,
+   0.2888,
+   0.1614,
+   0.0712,
+   0.1518,
+   0.1692,
+   0.1263,
+   0.0682,
+   0.2138,
+   0.165,
+   0.2519,
+   0.1794,
+   0.0882,
+   0.1575,
+   0.1698,
+   0.1368,
+   0.3032,
+   0.0948,
+   0.0201,
+   0.2281,
+   0.2172,
+   0.0548,
+   0.2322,
+   0.2233,
+   0.0804,
+   0.1101,
+   0.2532,
+   0.068,
+   0.0767,
+   0.1304,
+   0.1146,
+   0.0913,
+   0.1086,
+   0.203,
+   0.119,
+   0.104,
+   0.0795,
+   0.1615,
+   0.1364,
+   0.0932,
+   0.1174,
+   0.0773,
+   0.1094,
+   0.3302,
+   0.188,
+   0.0539,
+   0.1878,
+   0.2008,
+   0.0299,
+   0.1704,
+   0.2647,
+   0.1567,
+   0.0693,
+   0.098,
+   0.4151,
+   0.211,
+   0.0427,
+   0.2347,
+   0.2333,
+   0.145,
+   0.1123,
+   0.0487,
+   0.1284,
+   0.2921,
+   0.0519,
+   0.0716,
+   0.221,
+   0.121,
+   0.0634,
+   0.3881,
+   0.2699,
+   0.1735,
+   0.0476,
+   0.1259,
+   0.1922,
+   0.235,
+   0.0986,
+   0.3202,
+   0.2703,
+   0.0798,
+   0.0242,
+   0.2489,
+   0.1583,
+   0.0498,
+   0.1544,
+   0.2798,
+   0.1758,
+   0.0287,
+   0.0962,
+   0.1938,
+   0.1275,
+   0.1602,
+   0.1192,
+   0.1049,
+   0.1041,
+   0.3197,
+   0.1911,
+   0.0514,
+   0.2652,
+   0.1828,
+   0.0253,
+   0.1583,
+   0.2605,
+   0.1315,
+   0.1231,
+   0.1823,
+   0.1192,
+   0.1087,
+   0.1067,
+   0.1972,
+   0.1736,
+   0.0894,
+   0.3041,
+   0.1075,
+   0.2556,
+   0.2145,
+   0.082,
+   0.1794,
+   0.3924,
+   0.1011,
+   0.079,
+   0.2144,
+   0.2475,
+   0.1451,
+   0.2017,
+   0.0936,
+   0.1897,
+   0.1841,
+   0.0328,
+   0.1815,
+   0.2733,
+   0.1628,
+   0.1238,
+   0.0334,
+   0.3031,
+   0.3434,
+   0.0612,
+   0.1413,
+   0.086,
+   0.1931,
+   0.3019,
+   0.1193,
+   0.2849,
+   0.1649,
+   0.0576,
+   0.1914,
+   0.2485,
+   0.1118,
+   0.061,
+   0.2045,
+   0.2005,
+   0.0176,
+   0.0837,
+   0.2686,
+   0.2934,
+   0.0758,
+   0.0469,
+   0.1334,
+   0.1685,
+   0.275,
+   0.1751,
+   0.0809,
+   0.1215,
+   0.0571,
+   0.158,
+   0.1266,
+   0.1215,
+   0.4185,
+   0.1236,
+   0.1238,
+   0.2775,
+   0.1981,
+   0.1435,
+   0.1039,
+   0.0729,
+   0.1528,
+   0.2257,
+   0.3195,
+   0.218,
+   0.1472,
+   0.0933,
+   0.3083,
+   0.2062,
+   0.1445,
+   0.1826,
+   0.0974,
+   0.0778,
+   0.1339,
+   0.2481,
+   0.1765,
+   0.1035,
+   0.1686,
+   0.2547,
+   0.1916,
+   0.1425,
+   0.1217,
+   0.2289,
+   0.2469,
+   0.0423,
+   0.1563,
+   0.2485,
+   0.1229,
+   0.1075,
+   0.1775,
+   0.2511,
+   0.0236,
+   0.0911,
+   0.0887,
+   0.057,
+   0.1997,
+   0.3019,
+   0.1375,
+   0.0405,
+   0.0526,
+   0.1363,
+   0.1006,
+   0.3694,
+   0.0871,
+   0.1326,
+   0.1369,
+   0.0722,
+   0.0686,
+   0.1236,
+   0.2014,
+   0.1112,
+   0.148,
+   0.1501,
+   0.1823,
+   0.2103,
+   0.1777,
+   0.1482,
+   0.0578,
+   0.135,
+   0.1695,
+   0.1245,
+   0.1786,
+   0.1276,
+   0.1154,
+   0.1427,
+   0.1137,
+   0.0648,
+   0.2397,
+   0.191,
+   0.1443,
+   0.0388,
+   0.2636,
+   0.4516,
+   0.1517,
+   0.0798,
+   0.1307,
+   0.2864,
+   0.164,
+   0.1071,
+   0.1081,
+   0.2,
+   0.0815,
+   0.088,
+   0.2475,
+   0.1605,
+   0.1471,
+   0.2638,
+   0.1236,
+   0.0315,
+   0.2061,
+   0.1442,
+   0.0834,
+   0.2167,
+   0.1915,
+   0.0581,
+   0.0837,
+   0.2257,
+   0.1842,
+   0.0964,
+   0.2011,
+   0.0641,
+   0.1155,
+   0.3044,
+   0.1714,
+   0.1137,
+   0.2928,
+   0.1421,
+   0.4065,
+   0.1548,
+   0.1404,
+   0.1425,
+   0.0823,
+   0.0969,
+   0.1599,
+   0.0922,
+   0.2414,
+   0.2181,
+   0.0808,
+   0.1688,
+   0.2171,
+   0.1092,
+   0.1128,
+   0.1926,
+   0.1002,
+   0.0986,
+   0.2652,
+   0.0694,
+   0.1326,
+   0.2689,
+   0.1563,
+   0.402,
+   0.2013,
+   0.1332,
+   0.2372,
+   0.1386,
+   0.0752,
+   0.1786,
+   0.1869,
+   0.0953,
+   0.098,
+   0.1735,
+   0.126,
+   0.2295,
+   0.1854,
+   0.0555,
+   0.1216,
+   0.1499,
+   0.08,
+   0.1386,
+   0.2517,
+   0.0379,
+   0.1465,
+   0.4287,
+   0.1846,
+   0.2119,
+   0.1359,
+   0.1911,
+   0.2287,
+   0.2253,
+   0.1181,
+   0.0893,
+   0.232,
+   0.1133,
+   0.1111,
+   0.1117,
+   0.2039,
+   0.2037,
+   0.0392,
+   0.123,
+   0.228,
+   0.238,
+   0.2249,
+   0.0938,
+   0.0936,
+   0.2169,
+   0.205,
+   0.0532,
+   0.1421,
+   0.0971,
+   0.2022,
+   0.1335,
+   0.1098,
+   0.1917,
+   0.1559,
+   0.1736,
+   0.1506,
+   0.1391,
+   0.123,
+   0.1493,
+   0.384,
+   0.2238,
+   0.0414,
+   0.1155,
+   0.487,
+   0.1673,
+   0.1259,
+   0.1715,
+   0.1753,
+   0.0664,
+   0.116,
+   0.2987,
+   0.2066,
+   0.0411,
+   0.1601,
+   0.1137,
+   0.1225,
+   0.2118,
+   0.1307,
+   0.2482,
+   0.0435,
+   0.314,
+   0.1783,
+   0.0422,
+   0.1797,
+   0.3252,
+   0.0668,
+   0.112,
+   0.2145,
+   0.1568,
+   0.2102,
+   0.1096,
+   0.13,
+   0.183,
+   0.1441,
+   0.2094,
+   0.1344,
+   0.1281,
+   0.1948,
+   0.1255,
+   0.2133,
+   0.1649,
+   0.0511,
+   0.1951,
+   0.1406,
+   0.2291,
+   0.189,
+   0.0811,
+   0.1457,
+   0.1046,
+   0.1332,
+   0.1328,
+   0.1486,
+   0.1145,
+   0.1045,
+   0.2802,
+   0.3269,
+   0.3468,
+   0.1213,
+   0.033,
+   0.2472,
+   0.1008,
+   0.1445,
+   0.3089,
+   0.1031,
+   0.2083,
+   0.1295,
+   0.172,
+   0.1446,
+   0.0709,
+   0.1755,
+   0.2757,
+   0.057,
+   0.0623,
+   0.2968,
+   0.1343,
+   0.1645,
+   0.2221,
+   0.058,
+   0.1033,
+   0.4034,
+   0.1733,
+   0.184,
+   0.1333,
+   0.1948,
+   0.2712,
+   0.1762,
+   0.1379,
+   0.1334,
+   0.1169,
+   0.3368,
+   0.1881,
+   0.0701,
+   0.2537,
+   0.0984,
+   0.1577,
+   0.1993,
+   0.19,
+   0.0543,
+   0.277,
+   0.3027,
+   0.2283,
+   0.0297,
+   0.2287,
+   0.2277,
+   0.1242,
+   0.1554,
+   0.0933,
+   0.1843,
+   0.1534,
+   0.2435,
+   0.0917,
+   0.266,
+   0.1698,
+   0.1325,
+   0.1061,
+   0.1361,
+   0.1925,
+   0.1044,
+   0.1676,
+   0.2998,
+   0.0365,
+   0.1805,
+   0.2795,
+   0.1002,
+   0.0739,
+   0.1211,
+   0.1799,
+   0.2339,
+   0.158,
+   0.1733,
+   0.0464,
+   0.1262,
+   0.0709,
+   0.0531,
+   0.1217,
+   0.2744,
+   0.0729,
+   0.1261,
+   0.3083,
+   0.1564,
+   0.1608,
+   0.0853,
+   0.2854,
+   0.0998,
+   0.175,
+   0.2068,
+   0.1754,
+   0.1226,
+   0.104,
+   0.2043,
+   0.0503,
+   0.1925,
+   0.1151,
+   0.0572,
+   0.0743,
+   0.1689,
+   0.2747,
+   0.1418,
+   0.0697,
+   0.0383,
+   0.1889,
+   0.169,
+   0.0827,
+   0.231,
+   0.1414,
+   0.0408,
+   0.1541,
+   0.207,
+   0.0568,
+   0.2268,
+   0.1395,
+   0.0966,
+   0.1309,
+   0.1735,
+   0.1143,
+   0.2517,
+   0.1751,
+   0.2439,
+   0.1203,
+   0.0549,
+   0.1357,
+   0.1854,
+   0.1823,
+   0.0853,
+   0.1366,
+   0.2616,
+   0.1832,
+   0.1257,
+   0.07,
+   0.2241,
+   0.0329,
+   0.1685,
+   0.157,
+   0.0769,
+   0.3646,
+   0.0679,
+   0.1505,
+   0.2506,
+   0.0755,
+   0.063,
+   0.157,
+   0.1469,
+   0.0373,
+   0.339,
+   0.142,
+   0.0602,
+   0.3033,
+   0.1041,
+   0.2035,
+   0.227,
+   0.0971,
+   0.0499,
+   0.1027,
+   0.1647,
+   0.195,
+   0.0993,
+   0.1081,
+   0.171,
+   0.065,
+   0.2292,
+   0.125,
+   0.0512,
+   0.2333,
+   0.2011,
+   0.1527,
+   0.1469,
+   0.1268,
+   0.4045,
+   0.2094,
+   0.0214,
+   0.1141,
+   0.4658,
+   0.3233,
+   0.217,
+   0.0603,
+   0.2138,
+   0.2472,
+   0.0933,
+   0.2518,
+   0.1108,
+   0.0799,
+   0.1629,
+   0.2273,
+   0.1175,
+   0.1549,
+   0.1609,
+   0.0877,
+   0.2232,
+   0.1378,
+   0.2797,
+   0.2298,
+   0.0697,
+   0.1371,
+   0.1875,
+   0.1443,
+   0.1137,
+   0.2417,
+   0.2243,
+   0.2765,
+   0.1125,
+   0.0586,
+   0.3579,
+   0.2029,
+   0.0671,
+   0.1497,
+   0.0803,
+   0.213,
+   0.0651,
+   0.1099,
+   0.1596,
+   0.2559,
+   0.2467,
+   0.064,
+   0.0957,
+   0.2267,
+   0.1368,
+   0.1802,
+   0.0625,
+   0.0471,
+   0.2617,
+   0.1364,
+   0.0175,
+   0.4088,
+   0.3988,
+   0.1446,
+   0.0386,
+   0.1942,
+   0.1415,
+   0.1726,
+   0.1068,
+   0.1114,
+   0.1917,
+   0.135,
+   0.0396,
+   0.1559,
+   0.1744,
+   0.1487,
+   0.1853,
+   0.0738,
+   0.0852,
+   0.2834,
+   0.2228,
+   0.0387,
+   0.047,
+   0.212,
+   0.0711,
+   0.055,
+   0.2532,
+   0.1421,
+   0.181,
+   0.1352,
+   0.0981,
+   0.1723,
+   0.0486,
+   0.1117,
+   0.112,
+   0.1622,
+   0.1392,
+   0.0211,
+   0.2562,
+   0.1364,
+   0.1688,
+   0.2346,
+   0.0842,
+   0.3374,
+   0.1612,
+   0.1381,
+   0.1455,
+   0.1592,
+   0.1305,
+   0.0579,
+   0.2298,
+   0.1675,
+   0.2117,
+   0.2369,
+   0.0926,
+   0.096,
+   0.3214,
+   0.1244,
+   0.0473
+  ],
+  "threshold_95": 0.3027,
+  "passage_sentences": [
+   {
+    "i": 56,
+    "start": 0,
+    "end": 277,
+    "d_next": 0.0871
+   },
+   {
+    "i": 57,
+    "start": 278,
+    "end": 320,
+    "d_next": 0.1799
+   },
+   {
+    "i": 58,
+    "start": 321,
+    "end": 368,
+    "d_next": 0.1633
+   },
+   {
+    "i": 59,
+    "start": 370,
+    "end": 398,
+    "d_next": 0.2596
+   },
+   {
+    "i": 60,
+    "start": 399,
+    "end": 456,
+    "d_next": 0.1483
+   },
+   {
+    "i": 61,
+    "start": 457,
+    "end": 509,
+    "d_next": 0.0695
+   },
+   {
+    "i": 62,
+    "start": 510,
+    "end": 601,
+    "d_next": 0.1111
+   },
+   {
+    "i": 63,
+    "start": 602,
+    "end": 625,
+    "d_next": 0.2726
+   },
+   {
+    "i": 64,
+    "start": 626,
+    "end": 708,
+    "d_next": 0.1067
+   },
+   {
+    "i": 65,
+    "start": 709,
+    "end": 776,
+    "d_next": 0.0959
+   },
+   {
+    "i": 66,
+    "start": 777,
+    "end": 817,
+    "d_next": 0.1979
+   },
+   {
+    "i": 67,
+    "start": 818,
+    "end": 838,
+    "d_next": 0.2015
+   },
+   {
+    "i": 68,
+    "start": 839,
+    "end": 854,
+    "d_next": 0.0955
+   },
+   {
+    "i": 69,
+    "start": 855,
+    "end": 896,
+    "d_next": 0.0961
+   },
+   {
+    "i": 70,
+    "start": 897,
+    "end": 942,
+    "d_next": 0.2189
+   },
+   {
+    "i": 71,
+    "start": 943,
+    "end": 1024,
+    "d_next": 0.0348
+   },
+   {
+    "i": 72,
+    "start": 1026,
+    "end": 1134,
+    "d_next": 0.1496
+   },
+   {
+    "i": 73,
+    "start": 1135,
+    "end": 1177,
+    "d_next": 0.1281
+   },
+   {
+    "i": 74,
+    "start": 1178,
+    "end": 1237,
+    "d_next": 0.0994
+   },
+   {
+    "i": 75,
+    "start": 1238,
+    "end": 1265,
+    "d_next": 0.106
+   },
+   {
+    "i": 76,
+    "start": 1266,
+    "end": 1322,
+    "d_next": 0.0345
+   },
+   {
+    "i": 77,
+    "start": 1323,
+    "end": 1347,
+    "d_next": 0.1662
+   },
+   {
+    "i": 78,
+    "start": 1348,
+    "end": 1378,
+    "d_next": 0.2091
+   },
+   {
+    "i": 79,
+    "start": 1379,
+    "end": 1420,
+    "d_next": 0.049
+   },
+   {
+    "i": 80,
+    "start": 1421,
+    "end": 1517,
+    "d_next": 0.1131
+   },
+   {
+    "i": 81,
+    "start": 1518,
+    "end": 1594,
+    "d_next": 0.1424
+   },
+   {
+    "i": 82,
+    "start": 1596,
+    "end": 1620,
+    "d_next": 0.2236
+   },
+   {
+    "i": 83,
+    "start": 1621,
+    "end": 1670,
+    "d_next": 0.3384
+   },
+   {
+    "i": 84,
+    "start": 1671,
+    "end": 1713,
+    "d_next": 0.1195
+   },
+   {
+    "i": 85,
+    "start": 1714,
+    "end": 1793,
+    "d_next": 0.1035
+   },
+   {
+    "i": 86,
+    "start": 1794,
+    "end": 1945,
+    "d_next": 0.26
+   },
+   {
+    "i": 87,
+    "start": 1946,
+    "end": 1998,
+    "d_next": 0.0934
+   },
+   {
+    "i": 88,
+    "start": 1999,
+    "end": 2103,
+    "d_next": 0.1297
+   },
+   {
+    "i": 89,
+    "start": 2105,
+    "end": 2128,
+    "d_next": 0.1738
+   },
+   {
+    "i": 90,
+    "start": 2129,
+    "end": 2156,
+    "d_next": 0.0491
+   },
+   {
+    "i": 91,
+    "start": 2157,
+    "end": 2205,
+    "d_next": 0.1444
+   },
+   {
+    "i": 92,
+    "start": 2206,
+    "end": 2217,
+    "d_next": 0.0709
+   },
+   {
+    "i": 93,
+    "start": 2218,
+    "end": 2337,
+    "d_next": 0.0593
+   },
+   {
+    "i": 94,
+    "start": 2339,
+    "end": 2454,
+    "d_next": 0.1368
+   },
+   {
+    "i": 95,
+    "start": 2455,
+    "end": 2495,
+    "d_next": 0.1554
+   },
+   {
+    "i": 96,
+    "start": 2496,
+    "end": 2599,
+    "d_next": 0.0501
+   },
+   {
+    "i": 97,
+    "start": 2600,
+    "end": 2712,
+    "d_next": 0.1681
+   },
+   {
+    "i": 98,
+    "start": 2713,
+    "end": 2746,
+    "d_next": 0.4494
+   },
+   {
+    "i": 99,
+    "start": 2747,
+    "end": 2785,
+    "d_next": 0.1075
+   },
+   {
+    "i": 100,
+    "start": 2786,
+    "end": 2849,
+    "d_next": 0.1044
+   },
+   {
+    "i": 101,
+    "start": 2850,
+    "end": 2964,
+    "d_next": 0.0599
+   },
+   {
+    "i": 102,
+    "start": 2966,
+    "end": 3020,
+    "d_next": 0.3251
+   },
+   {
+    "i": 103,
+    "start": 3021,
+    "end": 3035,
+    "d_next": 0.2129
+   },
+   {
+    "i": 104,
+    "start": 3036,
+    "end": 3098,
+    "d_next": 0.1238
+   },
+   {
+    "i": 105,
+    "start": 3100,
+    "end": 3136,
+    "d_next": 0.1881
+   },
+   {
+    "i": 106,
+    "start": 3137,
+    "end": 3204,
+    "d_next": 0.0851
+   },
+   {
+    "i": 107,
+    "start": 3205,
+    "end": 3237,
+    "d_next": 0.1537
+   },
+   {
+    "i": 108,
+    "start": 3238,
+    "end": 3349,
+    "d_next": 0.1619
+   },
+   {
+    "i": 109,
+    "start": 3350,
+    "end": 3394,
+    "d_next": 0.21
+   },
+   {
+    "i": 110,
+    "start": 3395,
+    "end": 3473,
+    "d_next": 0.1184
+   },
+   {
+    "i": 111,
+    "start": 3474,
+    "end": 3504,
+    "d_next": 0.2677
+   },
+   {
+    "i": 112,
+    "start": 3505,
+    "end": 3556,
+    "d_next": 0.0507
+   },
+   {
+    "i": 113,
+    "start": 3557,
+    "end": 3668,
+    "d_next": 0.0828
+   },
+   {
+    "i": 114,
+    "start": 3669,
+    "end": 3713,
+    "d_next": 0.17
+   },
+   {
+    "i": 115,
+    "start": 3715,
+    "end": 3767,
+    "d_next": 0.0955
+   },
+   {
+    "i": 116,
+    "start": 3768,
+    "end": 3867,
+    "d_next": 0.0658
+   },
+   {
+    "i": 117,
+    "start": 3868,
+    "end": 3888,
+    "d_next": 0.3602
+   },
+   {
+    "i": 118,
+    "start": 3889,
+    "end": 3898,
+    "d_next": 0.2063
+   },
+   {
+    "i": 119,
+    "start": 3899,
+    "end": 3918,
+    "d_next": 0.1552
+   },
+   {
+    "i": 120,
+    "start": 3919,
+    "end": 3957,
+    "d_next": 0.2046
+   },
+   {
+    "i": 121,
+    "start": 3958,
+    "end": 4025,
+    "d_next": 0.1319
+   },
+   {
+    "i": 122,
+    "start": 4026,
+    "end": 4103,
+    "d_next": 0.2311
+   },
+   {
+    "i": 123,
+    "start": 4104,
+    "end": 4132,
+    "d_next": 0.1841
+   },
+   {
+    "i": 124,
+    "start": 4133,
+    "end": 4151,
+    "d_next": 0.1127
+   },
+   {
+    "i": 125,
+    "start": 4152,
+    "end": 4210,
+    "d_next": 0.2012
+   },
+   {
+    "i": 126,
+    "start": 4211,
+    "end": 4233,
+    "d_next": 0.165
+   },
+   {
+    "i": 127,
+    "start": 4234,
+    "end": 4368,
+    "d_next": 0.127
+   },
+   {
+    "i": 128,
+    "start": 4370,
+    "end": 4427,
+    "d_next": 0.1468
+   },
+   {
+    "i": 129,
+    "start": 4428,
+    "end": 4533,
+    "d_next": 0.0958
+   },
+   {
+    "i": 130,
+    "start": 4534,
+    "end": 4648,
+    "d_next": 0.127
+   },
+   {
+    "i": 131,
+    "start": 4649,
+    "end": 4694,
+    "d_next": 0.076
+   },
+   {
+    "i": 132,
+    "start": 4695,
+    "end": 4891,
+    "d_next": 0.0577
+   },
+   {
+    "i": 133,
+    "start": 4892,
+    "end": 5039,
+    "d_next": 0.1472
+   },
+   {
+    "i": 134,
+    "start": 5041,
+    "end": 5167,
+    "d_next": 0.1125
+   },
+   {
+    "i": 135,
+    "start": 5168,
+    "end": 5283,
+    "d_next": 0.0812
+   },
+   {
+    "i": 136,
+    "start": 5284,
+    "end": 5400,
+    "d_next": 0.2095
+   },
+   {
+    "i": 137,
+    "start": 5401,
+    "end": 5432,
+    "d_next": 0.2112
+   },
+   {
+    "i": 138,
+    "start": 5433,
+    "end": 5496,
+    "d_next": 0.0603
+   },
+   {
+    "i": 139,
+    "start": 5497,
+    "end": 5649,
+    "d_next": 0.1944
+   }
+  ]
+ },
+ "strategies": [
+  {
+   "id": "fixed",
+   "name": "Fixed-size",
+   "rule": "Cut every 800 characters; the next chunk starts 100 characters back (overlap).",
+   "kind": "rule",
+   "params": {
+    "size": 800,
+    "overlap": 100
+   },
+   "lecture_stats": {
+    "n": 101,
+    "median_chars": 800,
+    "max_chars": 800,
+    "indexed_chars": 80420,
+    "index_vs_text": 1.14,
+    "median_tokens": 204,
+    "max_tokens": 246,
+    "over_embedder_limit": 0
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 598,
+     "n_chars": 800,
+     "cut_left": true,
+     "cut_right": false,
+     "id": "fixed:L14:4900:5700"
+    },
+    {
+     "start": 498,
+     "end": 1298,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:5600:6400"
+    },
+    {
+     "start": 1198,
+     "end": 1998,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:6300:7100"
+    },
+    {
+     "start": 1898,
+     "end": 2698,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:7000:7800"
+    },
+    {
+     "start": 2598,
+     "end": 3398,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:7700:8500"
+    },
+    {
+     "start": 3298,
+     "end": 4098,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:8400:9200"
+    },
+    {
+     "start": 3998,
+     "end": 4798,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:9100:9900"
+    },
+    {
+     "start": 4698,
+     "end": 5498,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "fixed:L14:9800:10600"
+    },
+    {
+     "start": 5398,
+     "end": 5649,
+     "n_chars": 800,
+     "cut_left": false,
+     "cut_right": true,
+     "id": "fixed:L14:10500:11300"
+    }
+   ],
+   "passage_stats": {
+    "n": 9,
+    "median_chars": 800,
+    "overlap_chars": 800,
+    "returns": "the 800-character chunk",
+    "sizes": [
+     598,
+     800,
+     800,
+     800,
+     800,
+     800,
+     800,
+     800,
+     251
+    ]
+   }
+  },
+  {
+   "id": "recursive",
+   "name": "Recursive",
+   "rule": "Try a paragraph break first, then a line break, a space, a character; merge pieces up to 800 characters, keeping up to 100 characters of overlap.",
+   "kind": "rule",
+   "params": {
+    "size": 800,
+    "overlap": 100
+   },
+   "lecture_stats": {
+    "n": 117,
+    "median_chars": 680,
+    "max_chars": 799,
+    "indexed_chars": 71321,
+    "index_vs_text": 1.01,
+    "median_tokens": 172,
+    "max_tokens": 222,
+    "over_embedder_limit": 0
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 368,
+     "n_chars": 368,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:5102:5470"
+    },
+    {
+     "start": 370,
+     "end": 1024,
+     "n_chars": 654,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:5472:6126"
+    },
+    {
+     "start": 1026,
+     "end": 1594,
+     "n_chars": 568,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:6128:6696"
+    },
+    {
+     "start": 1596,
+     "end": 2337,
+     "n_chars": 741,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:6698:7439"
+    },
+    {
+     "start": 2339,
+     "end": 3098,
+     "n_chars": 759,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:7441:8200"
+    },
+    {
+     "start": 3100,
+     "end": 3713,
+     "n_chars": 613,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:8202:8815"
+    },
+    {
+     "start": 3715,
+     "end": 4368,
+     "n_chars": 653,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:8817:9470"
+    },
+    {
+     "start": 4370,
+     "end": 5039,
+     "n_chars": 669,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:9472:10141"
+    },
+    {
+     "start": 5041,
+     "end": 5649,
+     "n_chars": 608,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "recursive:L14:10143:10751"
+    }
+   ],
+   "passage_stats": {
+    "n": 9,
+    "median_chars": 653,
+    "overlap_chars": 0,
+    "returns": "the chunk (up to 800 characters)",
+    "sizes": [
+     368,
+     654,
+     568,
+     741,
+     759,
+     613,
+     653,
+     669,
+     608
+    ]
+   }
+  },
+  {
+   "id": "sentence",
+   "name": "Sentence",
+   "rule": "Pack whole sentences while the chunk stays at or under 800 characters (a longer sentence stays whole as its own chunk).",
+   "kind": "rule",
+   "params": {
+    "size": 800
+   },
+   "lecture_stats": {
+    "n": 94,
+    "median_chars": 771,
+    "max_chars": 800,
+    "indexed_chars": 70316,
+    "index_vs_text": 1.0,
+    "median_tokens": 192,
+    "max_tokens": 234,
+    "over_embedder_limit": 0
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 776,
+     "n_chars": 776,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:5102:5878"
+    },
+    {
+     "start": 777,
+     "end": 1517,
+     "n_chars": 740,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:5879:6619"
+    },
+    {
+     "start": 1518,
+     "end": 2217,
+     "n_chars": 699,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:6620:7319"
+    },
+    {
+     "start": 2218,
+     "end": 2964,
+     "n_chars": 746,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:7320:8066"
+    },
+    {
+     "start": 2966,
+     "end": 3713,
+     "n_chars": 747,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:8068:8815"
+    },
+    {
+     "start": 3715,
+     "end": 4427,
+     "n_chars": 712,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:8817:9529"
+    },
+    {
+     "start": 4428,
+     "end": 5167,
+     "n_chars": 739,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "sentence:L14:9530:10269"
+    },
+    {
+     "start": 5168,
+     "end": 5649,
+     "n_chars": 720,
+     "cut_left": false,
+     "cut_right": true,
+     "id": "sentence:L14:10270:10990"
+    }
+   ],
+   "passage_stats": {
+    "n": 8,
+    "median_chars": 739,
+    "overlap_chars": 0,
+    "returns": "the sentence pack (up to 800 characters)",
+    "sizes": [
+     776,
+     740,
+     699,
+     746,
+     747,
+     712,
+     739,
+     481
+    ]
+   }
+  },
+  {
+   "id": "semantic",
+   "name": "Semantic",
+   "rule": "Embed each sentence with its neighbours; cut where the cosine distance to the next window is above the 95th percentile of the lecture's distances.",
+   "kind": "embedding",
+   "params": {
+    "buffer": 1,
+    "percentile": 95
+   },
+   "lecture_stats": {
+    "n": 56,
+    "median_chars": 896,
+    "max_chars": 6772,
+    "indexed_chars": 70360,
+    "index_vs_text": 1.0,
+    "median_tokens": 233,
+    "max_tokens": 1656,
+    "over_embedder_limit": 2
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 1670,
+     "n_chars": 6772,
+     "cut_left": true,
+     "cut_right": false,
+     "id": "semantic:L14:0:6772"
+    },
+    {
+     "start": 1671,
+     "end": 2746,
+     "n_chars": 1075,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "semantic:L14:6773:7848"
+    },
+    {
+     "start": 2747,
+     "end": 3020,
+     "n_chars": 273,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "semantic:L14:7849:8122"
+    },
+    {
+     "start": 3021,
+     "end": 3888,
+     "n_chars": 867,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "semantic:L14:8123:8990"
+    },
+    {
+     "start": 3889,
+     "end": 5649,
+     "n_chars": 5333,
+     "cut_left": false,
+     "cut_right": true,
+     "id": "semantic:L14:8991:14324"
+    }
+   ],
+   "passage_stats": {
+    "n": 5,
+    "median_chars": 1075,
+    "overlap_chars": 0,
+    "returns": "the whole semantic chunk (any length)",
+    "sizes": [
+     1670,
+     1075,
+     273,
+     867,
+     1760
+    ]
+   }
+  },
+  {
+   "id": "section",
+   "name": "Section-bound (ours)",
+   "rule": "Our pipeline rule: at most 1,600 characters, 200 overlap inside a section, never across a 5-minute window of the video.",
+   "kind": "rule (ours)",
+   "params": {
+    "max_chars": 1600,
+    "overlap": 200,
+    "window_s": 300
+   },
+   "lecture_stats": {
+    "n": 56,
+    "median_chars": 1594,
+    "max_chars": 1599,
+    "indexed_chars": 78304,
+    "index_vs_text": 1.11,
+    "median_tokens": 392,
+    "max_tokens": 461,
+    "over_embedder_limit": 0
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 1364,
+     "n_chars": 1597,
+     "cut_left": true,
+     "cut_right": false,
+     "id": "a1b4b4a314b03921bb9eb0311bd6bbbc34b1c5aa"
+    },
+    {
+     "start": 1168,
+     "end": 2769,
+     "n_chars": 1598,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 2571,
+     "end": 3918,
+     "n_chars": 1344,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 3919,
+     "end": 5517,
+     "n_chars": 1596,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 5318,
+     "end": 5649,
+     "n_chars": 1597,
+     "cut_left": false,
+     "cut_right": true,
+     "id": "3e0b43832090fcf7c1c2e9b33f919756abd99c4a"
+    }
+   ],
+   "passage_stats": {
+    "n": 5,
+    "median_chars": 1597,
+    "overlap_chars": 593,
+    "returns": "the 1,600-character chunk",
+    "sizes": [
+     1364,
+     1601,
+     1347,
+     1598,
+     331
+    ]
+   }
+  },
+  {
+   "id": "parent_child",
+   "name": "Parent-child",
+   "rule": "Search small children (sentences packed to 400 characters); return the 1,600-character parent chunk.",
+   "kind": "rule + hierarchy",
+   "params": {
+    "child_size": 400,
+    "parent": "section"
+   },
+   "lecture_stats": {
+    "n": 202,
+    "median_chars": 357,
+    "max_chars": 400,
+    "indexed_chars": 70199,
+    "index_vs_text": 1.0,
+    "median_tokens": 90,
+    "max_tokens": 128,
+    "over_embedder_limit": 0
+   },
+   "passage_chunks": [
+    {
+     "start": 0,
+     "end": 398,
+     "n_chars": 398,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:5102:5500",
+     "parent": "a1b4b4a314b03921bb9eb0311bd6bbbc34b1c5aa"
+    },
+    {
+     "start": 399,
+     "end": 776,
+     "n_chars": 377,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:5501:5878",
+     "parent": "a1b4b4a314b03921bb9eb0311bd6bbbc34b1c5aa"
+    },
+    {
+     "start": 777,
+     "end": 1177,
+     "n_chars": 400,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:5879:6279",
+     "parent": "a1b4b4a314b03921bb9eb0311bd6bbbc34b1c5aa"
+    },
+    {
+     "start": 1178,
+     "end": 1517,
+     "n_chars": 339,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:6280:6619",
+     "parent": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 1518,
+     "end": 1793,
+     "n_chars": 275,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:6620:6895",
+     "parent": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 1794,
+     "end": 2156,
+     "n_chars": 362,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:6896:7258",
+     "parent": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 2157,
+     "end": 2495,
+     "n_chars": 338,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:7259:7597",
+     "parent": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 2496,
+     "end": 2849,
+     "n_chars": 353,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:7598:7951",
+     "parent": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 2850,
+     "end": 3237,
+     "n_chars": 387,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:7952:8339",
+     "parent": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 3238,
+     "end": 3556,
+     "n_chars": 318,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:8340:8658",
+     "parent": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 3557,
+     "end": 3957,
+     "n_chars": 400,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:8659:9059",
+     "parent": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 3958,
+     "end": 4233,
+     "n_chars": 275,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:9060:9335",
+     "parent": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 4234,
+     "end": 4533,
+     "n_chars": 299,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:9336:9635",
+     "parent": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 4534,
+     "end": 4891,
+     "n_chars": 357,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:9636:9993",
+     "parent": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 4892,
+     "end": 5283,
+     "n_chars": 391,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:9994:10385",
+     "parent": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 5284,
+     "end": 5649,
+     "n_chars": 365,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "child:L14:10386:10751",
+     "parent": "3e0b43832090fcf7c1c2e9b33f919756abd99c4a"
+    }
+   ],
+   "passage_stats": {
+    "n": 16,
+    "median_chars": 359,
+    "overlap_chars": 0,
+    "returns": "matches a 400-character child, returns its 1,600-character parent",
+    "sizes": [
+     398,
+     377,
+     400,
+     339,
+     275,
+     362,
+     338,
+     353,
+     387,
+     318,
+     400,
+     275,
+     299,
+     357,
+     391,
+     365
+    ]
+   },
+   "parents": [
+    {
+     "start": 0,
+     "end": 1364,
+     "n_chars": 1597,
+     "cut_left": true,
+     "cut_right": false,
+     "id": "a1b4b4a314b03921bb9eb0311bd6bbbc34b1c5aa"
+    },
+    {
+     "start": 1168,
+     "end": 2769,
+     "n_chars": 1598,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "cad72e0ab2bb94525cb05ed3642771c8c1601929"
+    },
+    {
+     "start": 2571,
+     "end": 3918,
+     "n_chars": 1344,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "cdccf329801457fa9525dc6e58a806f32457ea7f"
+    },
+    {
+     "start": 3919,
+     "end": 5517,
+     "n_chars": 1596,
+     "cut_left": false,
+     "cut_right": false,
+     "id": "81bd60272d95b7ddd33adc11f0f6138d9c40224f"
+    },
+    {
+     "start": 5318,
+     "end": 5649,
+     "n_chars": 1597,
+     "cut_left": false,
+     "cut_right": true,
+     "id": "3e0b43832090fcf7c1c2e9b33f919756abd99c4a"
+    }
+   ]
+  },
+  {
+   "id": "proposition",
+   "name": "Proposition",
+   "rule": "An LLM rewrites each paragraph into short self-contained statements; each statement is a unit.",
+   "kind": "LLM",
+   "params": {
+    "model": "deepseek/deepseek-v4-flash",
+    "paras_per_call": 4
+   },
+   "lecture_stats": {
+    "n": 1024,
+    "median_chars": 58,
+    "max_chars": 309,
+    "indexed_chars": 67233,
+    "index_vs_text": 0.95,
+    "median_tokens": 16,
+    "max_tokens": 86,
+    "over_embedder_limit": 0,
+    "paragraphs": 120
+   },
+   "passage_chunks": [],
+   "passage_stats": {
+    "n": 83,
+    "median_chars": 53,
+    "overlap_chars": 0,
+    "returns": "one short rewritten statement (not the original words)",
+    "sizes": [
+     83,
+     135,
+     59,
+     39,
+     47,
+     30,
+     57,
+     47,
+     50,
+     25,
+     19,
+     74,
+     67,
+     40,
+     20,
+     15,
+     38,
+     45,
+     77,
+     31,
+     64,
+     42,
+     62,
+     27,
+     53,
+     30,
+     37,
+     40,
+     43,
+     97,
+     44,
+     42,
+     84,
+     156,
+     49,
+     119,
+     26,
+     53,
+     125,
+     55,
+     47,
+     58,
+     107,
+     103,
+     27,
+     39,
+     60,
+     111,
+     88,
+     21,
+     64,
+     51,
+     107,
+     41,
+     74,
+     30,
+     48,
+     108,
+     44,
+     60,
+     100,
+     42,
+     44,
+     73,
+     52,
+     31,
+     21,
+     58,
+     23,
+     148,
+     66,
+     100,
+     111,
+     45,
+     118,
+     97,
+     21,
+     110,
+     114,
+     123,
+     116,
+     58,
+     161
+    ]
+   },
+   "propositions": [
+    {
+     "para_start": 0,
+     "ts": "00:05:15",
+     "text": "We are going to expand from the linear case to the nonlinear case in the usual way."
+    },
+    {
+     "para_start": 0,
+     "ts": "00:05:15",
+     "text": "Expanding from the linear case to the nonlinear case expands all of the machinery to a case where you can deal with nonlinear surfaces."
+    },
+    {
+     "para_start": 0,
+     "ts": "00:05:15",
+     "text": "The main case we are going to handle is the separable case."
+    },
+    {
+     "para_start": 0,
+     "ts": "00:05:15",
+     "text": "Now let's talk about linear separation."
+    },
+    {
+     "para_start": 0,
+     "ts": "00:05:15",
+     "text": "Let's say I have a linearly separable data set."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "Take four points, for example."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "There are lines that will separate the red from the blue."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "When you apply perceptron, you will get a line."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "When you apply any algorithm, you will get a line."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "You get 0 training error."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "Everything is fine."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "There is a curious point when you ask yourself: I can get different lines."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "Is there any advantage of choosing one of the lines over the other?"
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "That is the new addition to the problem."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "So let's look at it."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "Here is a line."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "I chose this line to separate the two."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "You may not think that this is the best line."
+    },
+    {
+     "para_start": 370,
+     "ts": "00:05:42",
+     "text": "We'll try to take our intuition and understand why this is not the best line."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "I'm going to think of a margin."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "If this line moves a little bit, when is it going to cross over?"
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "When is it going to start making an error?"
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "In this case, let's put it as a yellow region around the line."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "That's the margin you have."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "If you choose this line, this is the margin of error."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "Now you can look at this line."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "It does seem to have a better margin."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "You can now look at the problem closely."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "Let me try to get the best possible margin."
+    },
+    {
+     "para_start": 1026,
+     "ts": "00:06:24",
+     "text": "Then you get this line, which has this margin, that is exactly right for the blue and red points."
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "Let us ask ourselves the following question."
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "Which is the best line for classification?"
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "As far as the in-sample error is concerned, all of the lines give in-sample error 0."
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "As far as generalization questions are concerned, as far as our previous analysis has done, all of the lines are dealing with linear model with four points."
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "Generalization, as an estimate, will be the same."
+    },
+    {
+     "para_start": 1596,
+     "ts": "00:07:02",
+     "text": "Nonetheless, I think you will agree with me that if you had your choice, you will choose the line with the best margin."
+    },
+    {
+     "para_start": 2105,
+     "ts": "00:07:42",
+     "text": "A bigger margin is better."
+    },
+    {
+     "para_start": 2105,
+     "ts": "00:07:42",
+     "text": "The first question is: why is a bigger margin better?"
+    },
+    {
+     "para_start": 2105,
+     "ts": "00:07:42",
+     "text": "The second question is: if we are convinced that a bigger margin is better, then can I solve for w that maximizes the margin?"
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "It is quite intuitive that the bigger margin is better."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "Think of a process that is generating the data."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "There is noise in the process that is generating the data."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "If you have the bigger margin, the chances are the new point will still be on the correct side of the line."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "If I use this one, there's a chance that the next red point will be here, and it will be misclassified."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "I am not giving any proofs."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "I am just giving you an intuition here."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "It stands to logic that indeed, the bigger margin is better."
+    },
+    {
+     "para_start": 2339,
+     "ts": "00:08:07",
+     "text": "Now we are going to argue that the bigger margin is better for a reason that relates to our VC analysis before."
+    },
+    {
+     "para_start": 2966,
+     "ts": "00:08:48",
+     "text": "The growth function from ages ago is the dichotomies of the line on points in the plane."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "We take three points."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "On three points, you can get all possible dichotomies by a line."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "The blue versus not-blue region is the dichotomies."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "You can see that by varying where the line is, I can get all possible 2 to the 3 equals 8 dichotomies here."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "You know that the growth function is big."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "We know that the growth function being big is bad news for generalization."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "That was our take-home lesson."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "Now let's see if this is affected by the margin."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "Now we are taking dichotomies, not only the line, but also requiring that the dichotomies have a fat margin."
+    },
+    {
+     "para_start": 3100,
+     "ts": "00:09:02",
+     "text": "Let's look at dichotomies, and their margin."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "In this case, the lecturer is putting the same three points."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "The lecturer is putting a line that has the biggest possible margin for the constellation of points."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "The line is sandwiched between the points."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "Every time, the line touches all the points."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "The line cannot extend any further because it will get beyond the points."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "This is a thin margin for this particular dichotomy."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "This is an intermediate margin."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "This is a fat margin."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "This is a hugely fat margin, but that is the constant one."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "That is not a big deal."
+    },
+    {
+     "para_start": 3715,
+     "ts": "00:09:45",
+     "text": "The lecturer says that the listener is allowed to use a classifier, but the listener has to have at least that margin for the lecturer to accept it."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "Now the lecturer is requiring the margin to be at least something."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "All of a sudden, these dichotomies that used to be legitimate using the model are no longer allowed."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "By requiring the margin to be at least something, the lecturer is putting a restriction on the growth function."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "Fat margins imply fewer dichotomies possible."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "If we manage to separate the points with a fat dichotomy, we can say that fat dichotomies have a smaller VC dimension."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "Fat dichotomies have a smaller growth function than if the lecturer did not restrict them at all."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "This is all informal."
+    },
+    {
+     "para_start": 4370,
+     "ts": "00:10:29",
+     "text": "We will come at the end of the lecture to a result that estimates the out-of-sample error based on the margin."
+    },
+    {
+     "para_start": 5041,
+     "ts": "00:11:13",
+     "text": "We will find out that when you have a bigger margin, you will be able to achieve better out-of-sample performance."
+    },
+    {
+     "para_start": 5041,
+     "ts": "00:11:13",
+     "text": "Now that the lecturer completely and irrevocably convinced you that the fat margins are good, let us try to solve for them."
+    },
+    {
+     "para_start": 5041,
+     "ts": "00:11:13",
+     "text": "That is, find the w that not only classifies the points correctly, but achieves so with the biggest possible margin."
+    },
+    {
+     "para_start": 5041,
+     "ts": "00:11:13",
+     "text": "The margin is just the distance from the plane to a point."
+    },
+    {
+     "para_start": 5041,
+     "ts": "00:11:13",
+     "text": "The lecturer is going to take from the data set the point x_n, which happens to be the nearest data point to the line, that we have used in the previous example."
+    }
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "id": "D1",
+   "question": "Why is a bigger margin better for generalization?",
+   "why": "The answer has two parts in two places: the noise intuition (00:08:07) and the growth-function argument (00:10:29). A small chunk holds one part only.",
+   "gold": [
+    {
+     "start": 2496,
+     "end": 2599,
+     "quote": "If you have the bigger margin, the chances are the new point will still be on correct side of the line."
+    },
+    {
+     "start": 4649,
+     "end": 4694,
+     "quote": "Fat margins imply fewer dichotomies possible."
+    }
+   ],
+   "results": {
+    "fixed": {
+     "top3": [
+      {
+       "score": 0.6614,
+       "ts": "00:07:02",
+       "start": 7000,
+       "end": 7800,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "are dealing with linear model with four points. So generalization, as an estimate, will be the same. Nonetheless, I think you will agree with me that if you had your choice, you will choose the fat margin. Somehow it's intuitive. So let's …"
+      },
+      {
+       "score": 0.6296,
+       "ts": "00:08:07",
+       "start": 7700,
+       "end": 8500,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": ". Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic that indeed, the bigger …"
+      },
+      {
+       "score": 0.6197,
+       "ts": "01:00:22",
+       "start": 57400,
+       "end": 58200,
+       "n_chars": 800,
+       "in_passage": false,
+       "snippet": "lots of snakes that can go around and mess up the generalization. This one will be the best of them. And you have a handle on how good the generalization is, just by counting the number of support vectors. And that will get us-- Yeah, this …"
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 2400
+    },
+    "recursive": {
+     "top3": [
+      {
+       "score": 0.6668,
+       "ts": "00:08:07",
+       "start": 7441,
+       "end": 8200,
+       "n_chars": 759,
+       "in_passage": true,
+       "snippet": "Now it is quite intuitive that the bigger margin is better, because think of a process that is generating the data. And let's say that there is noise in it. If you have the bigger margin, the chances are the new point will still be on …"
+      },
+      {
+       "score": 0.6503,
+       "ts": "00:07:02",
+       "start": 6698,
+       "end": 7439,
+       "n_chars": 741,
+       "in_passage": true,
+       "snippet": "the blue and red points. Now, let us ask ourselves the following question. Which is the best line for classification? As far as the in-sample error is concerned, all of them give in-sample error 0. As far as generalization questions are …"
+      },
+      {
+       "score": 0.6295,
+       "ts": "01:10:51",
+       "start": 67298,
+       "end": 67918,
+       "n_chars": 620,
+       "in_passage": false,
+       "snippet": "MODERATOR: Is there any advantage in considering the margin, but using a different norm? PROFESSOR: So there are variations of this. And indeed, some of the aggregation methods, like boosting, has a margin of its own. And then you can …"
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 2120
+    },
+    "sentence": {
+     "top3": [
+      {
+       "score": 0.6748,
+       "ts": "00:07:42",
+       "start": 7320,
+       "end": 8066,
+       "n_chars": 746,
+       "in_passage": true,
+       "snippet": "If we are convinced that a bigger margin is better, then you ask yourself: can I solve for w that maximizes the margin? Now it is quite intuitive that the bigger margin is better, because think of a process that is generating the data. And …"
+      },
+      {
+       "score": 0.6724,
+       "ts": "00:06:24",
+       "start": 6620,
+       "end": 7319,
+       "n_chars": 699,
+       "in_passage": true,
+       "snippet": "And then you get this line, which has this margin, that is exactly right for the blue and red points. Now, let us ask ourselves the following question. Which is the best line for classification? As far as the in-sample error is concerned, …"
+      },
+      {
+       "score": 0.6423,
+       "ts": "01:00:22",
+       "start": 57501,
+       "end": 58288,
+       "n_chars": 787,
+       "in_passage": false,
+       "snippet": "And you have a handle on how good the generalization is, just by counting the number of support vectors. And that will get us-- Yeah, this is a good point I forgot to mention. So the distance between the support vectors and the surface …"
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 2232
+    },
+    "semantic": {
+     "top3": [
+      {
+       "score": 0.6704,
+       "ts": "00:07:02",
+       "start": 6773,
+       "end": 7848,
+       "n_chars": 1075,
+       "in_passage": true,
+       "snippet": "Which is the best line for classification? As far as the in-sample error is concerned, all of them give in-sample error 0. As far as generalization questions are concerned, as far as our previous analysis has done, all of them are dealing …"
+      },
+      {
+       "score": 0.6626,
+       "ts": "00:08:07",
+       "start": 7849,
+       "end": 8122,
+       "n_chars": 273,
+       "in_passage": true,
+       "snippet": "I'm just giving you an intuition here. So it stands to logic that indeed, the bigger margin is better. And now we're going to argue that the bigger margin is better for a reason that relates to our VC analysis before. So anybody remember …"
+      },
+      {
+       "score": 0.5906,
+       "ts": "00:08:48",
+       "start": 8123,
+       "end": 8990,
+       "n_chars": 867,
+       "in_passage": true,
+       "snippet": "What was that? So we take the dichotomies of the line on points in the plane. And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by …"
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 2215
+    },
+    "section": {
+     "top3": [
+      {
+       "score": 0.6552,
+       "ts": "00:05:00",
+       "start": 6270,
+       "end": 7871,
+       "n_chars": 1598,
+       "in_passage": true,
+       "snippet": "an error? So in this case, let's put it as a yellow region around it. That's the margin you have. So if you choose this line, this is the margin of error. Sort of informal notion. Now you can look at this line. And it does seem to have a …"
+      },
+      {
+       "score": 0.6156,
+       "ts": "01:05:00",
+       "start": 61706,
+       "end": 63304,
+       "n_chars": 1593,
+       "in_passage": false,
+       "snippet": "But that will open another set of possibilities of working in a set of spaces we never imagined touching, and still getting not only the computation being the same, but also the generalization being dependent on something that we can …"
+      },
+      {
+       "score": 0.6088,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …"
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 4535
+    },
+    "parent_child": {
+     "top3": [
+      {
+       "score": 0.6531,
+       "ts": "00:05:00",
+       "start": 6270,
+       "end": 7871,
+       "n_chars": 1598,
+       "in_passage": true,
+       "snippet": "an error? So in this case, let's put it as a yellow region around it. That's the margin you have. So if you choose this line, this is the margin of error. Sort of informal notion. Now you can look at this line. And it does seem to have a …",
+       "child": {
+        "ts": "00:07:02",
+        "n_chars": 362,
+        "snippet": "As far as generalization questions are concerned, as far as our previous analysis has done, all of them are dealing with linear model with four points. So …"
+       }
+      },
+      {
+       "score": 0.6452,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …",
+       "child": {
+        "ts": "00:08:07",
+        "n_chars": 353,
+        "snippet": "If you have the bigger margin, the chances are the new point will still be on correct side of the line. Whereas, if I use this one, there's a chance that the …"
+       }
+      },
+      {
+       "score": 0.6249,
+       "ts": "00:20:00",
+       "start": 19492,
+       "end": 21094,
+       "n_chars": 1599,
+       "in_passage": false,
+       "snippet": "a solution for it. Now we can write the distance as-- this is the formula. Now I multiply it by w hat. I know what the formula for w hat is. I write it down. And now I have it in this form. Now this can be simplified if I add the missing …",
+       "child": {
+        "ts": "00:21:53",
+        "n_chars": 320,
+        "snippet": "And you end up with the formula for the distance, given that normalization, being simply 1 over the norm. That's a pretty easy thing to do. So if you take the …"
+       }
+      }
+     ],
+     "answer_coverage": 0.696,
+     "answer_paragraph_hits": null,
+     "context_chars": 4541
+    },
+    "proposition": {
+     "top3": [
+      {
+       "score": 0.781,
+       "ts": "00:07:42",
+       "start": 7207,
+       "end": 7439,
+       "n_chars": 53,
+       "in_passage": true,
+       "snippet": "The first question is: why is a bigger margin better?"
+      },
+      {
+       "score": 0.7614,
+       "ts": "00:07:42",
+       "start": 7207,
+       "end": 7439,
+       "n_chars": 26,
+       "in_passage": true,
+       "snippet": "A bigger margin is better."
+      },
+      {
+       "score": 0.7382,
+       "ts": "00:08:07",
+       "start": 7441,
+       "end": 8066,
+       "n_chars": 55,
+       "in_passage": true,
+       "snippet": "It is quite intuitive that the bigger margin is better."
+      }
+     ],
+     "answer_coverage": null,
+     "answer_paragraph_hits": 1,
+     "context_chars": 134
+    }
+   }
+  },
+  {
+   "id": "D2",
+   "question": "What does requiring a minimum margin do to the growth function?",
+   "why": "One local answer (00:10:29), just after the 00:10:00 window boundary of our pipeline rule.",
+   "gold": [
+    {
+     "start": 4549,
+     "end": 4648,
+     "quote": "by requiring the margin to be at least something, I'm putting a restriction on the growth function."
+    },
+    {
+     "start": 4649,
+     "end": 4694,
+     "quote": "Fat margins imply fewer dichotomies possible."
+    }
+   ],
+   "results": {
+    "fixed": {
+     "top3": [
+      {
+       "score": 0.587,
+       "ts": "00:09:45",
+       "start": 9100,
+       "end": 9900,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And this is a hugely fat one, but that's the constant one. That's not a big deal. Now …"
+      },
+      {
+       "score": 0.5815,
+       "ts": "00:09:02",
+       "start": 8400,
+       "end": 9200,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "all possible 2 to the 3 equals 8 dichotomies here. So you know that the growth function is big. And we know that the growth function being big is bad news for generalization. That was our take-home lesson. So now let's see if this is …"
+      },
+      {
+       "score": 0.5578,
+       "ts": "00:08:07",
+       "start": 7700,
+       "end": 8500,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": ". Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic that indeed, the bigger …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 2400
+    },
+    "recursive": {
+     "top3": [
+      {
+       "score": 0.629,
+       "ts": "00:10:29",
+       "start": 9472,
+       "end": 10141,
+       "n_chars": 669,
+       "in_passage": true,
+       "snippet": "So now I'm requiring the margin to be at least something. All of a sudden, these guys that used to be legitimate dichotomies using my model, are no longer allowed. So effectively by requiring the margin to be at least something, I'm …"
+      },
+      {
+       "score": 0.5493,
+       "ts": "00:09:02",
+       "start": 8202,
+       "end": 8815,
+       "n_chars": 613,
+       "in_passage": true,
+       "snippet": "And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by varying where the line is, I can get all possible 2 to the 3 equals 8 …"
+      },
+      {
+       "score": 0.5332,
+       "ts": "00:22:51",
+       "start": 20545,
+       "end": 21148,
+       "n_chars": 603,
+       "in_passage": false,
+       "snippet": "1 over the norm of w you used. This I can use, in order now to choose what combination of w's will give me the best possible margin, which is the next one. So let's now formulate the problem. Here is the optimization problem that resulted. …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 1885
+    },
+    "sentence": {
+     "top3": [
+      {
+       "score": 0.5907,
+       "ts": "00:10:29",
+       "start": 9530,
+       "end": 10269,
+       "n_chars": 739,
+       "in_passage": true,
+       "snippet": "All of a sudden, these guys that used to be legitimate dichotomies using my model, are no longer allowed. So effectively by requiring the margin to be at least something, I'm putting a restriction on the growth function. Fat margins imply …"
+      },
+      {
+       "score": 0.5876,
+       "ts": "00:08:48",
+       "start": 8068,
+       "end": 8815,
+       "n_chars": 747,
+       "in_passage": true,
+       "snippet": "So anybody remember the growth function from ages ago? What was that? So we take the dichotomies of the line on points in the plane. And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. …"
+      },
+      {
+       "score": 0.5848,
+       "ts": "00:47:20",
+       "start": 44470,
+       "end": 45249,
+       "n_chars": 779,
+       "in_passage": false,
+       "snippet": "And the margin touches on the nearest point. And that is what defines the margin. Then there are interior points, where the slack is bigger than 1. At those points, the slack is exactly 1. No, not the slack. The slack is 0. The value is 1. …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 2265
+    },
+    "semantic": {
+     "top3": [
+      {
+       "score": 0.5704,
+       "ts": "00:08:07",
+       "start": 7849,
+       "end": 8122,
+       "n_chars": 273,
+       "in_passage": true,
+       "snippet": "I'm just giving you an intuition here. So it stands to logic that indeed, the bigger margin is better. And now we're going to argue that the bigger margin is better for a reason that relates to our VC analysis before. So anybody remember …"
+      },
+      {
+       "score": 0.5554,
+       "ts": "00:08:48",
+       "start": 8123,
+       "end": 8990,
+       "n_chars": 867,
+       "in_passage": true,
+       "snippet": "What was that? So we take the dichotomies of the line on points in the plane. And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by …"
+      },
+      {
+       "score": 0.5459,
+       "ts": "00:09:45",
+       "start": 8991,
+       "end": 14324,
+       "n_chars": 5333,
+       "in_passage": true,
+       "snippet": "I put it. It sandwiched them. Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 6473
+    },
+    "section": {
+     "top3": [
+      {
+       "score": 0.584,
+       "ts": "00:10:00",
+       "start": 9021,
+       "end": 10619,
+       "n_chars": 1596,
+       "in_passage": true,
+       "snippet": "Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And …"
+      },
+      {
+       "score": 0.5408,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …"
+      },
+      {
+       "score": 0.5237,
+       "ts": "00:45:00",
+       "start": 44804,
+       "end": 46399,
+       "n_chars": 1592,
+       "in_passage": false,
+       "snippet": "that the corresponding Lagrange multiplier will be 0. OK? I claim that we saw this before, again in the regularization case. Remember this fellow? We had a constraint which is to be within the red circle. And we're trying to optimize a …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 4532
+    },
+    "parent_child": {
+     "top3": [
+      {
+       "score": 0.6306,
+       "ts": "00:10:00",
+       "start": 9021,
+       "end": 10619,
+       "n_chars": 1596,
+       "in_passage": true,
+       "snippet": "Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And …",
+       "child": {
+        "ts": "00:10:29",
+        "n_chars": 357,
+        "snippet": "So effectively by requiring the margin to be at least something, I'm putting a restriction on the growth function. Fat margins imply fewer dichotomies …"
+       }
+      },
+      {
+       "score": 0.5746,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …",
+       "child": {
+        "ts": "00:09:02",
+        "n_chars": 318,
+        "snippet": "And you can see that by varying where the line is, I can get all possible 2 to the 3 equals 8 dichotomies here. So you know that the growth function is big. …"
+       }
+      },
+      {
+       "score": 0.5314,
+       "ts": "00:45:00",
+       "start": 44804,
+       "end": 46399,
+       "n_chars": 1592,
+       "in_passage": false,
+       "snippet": "that the corresponding Lagrange multiplier will be 0. OK? I claim that we saw this before, again in the regularization case. Remember this fellow? We had a constraint which is to be within the red circle. And we're trying to optimize a …",
+       "child": {
+        "ts": "00:48:01",
+        "n_chars": 354,
+        "snippet": "So this is the absolute minimum. And it grows and grows and grows. And because we are in the constraint, we couldn't get the absolute minimum when we went …"
+       }
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 4532
+    },
+    "proposition": {
+     "top3": [
+      {
+       "score": 0.7238,
+       "ts": "00:10:29",
+       "start": 9472,
+       "end": 10141,
+       "n_chars": 111,
+       "in_passage": true,
+       "snippet": "By requiring the margin to be at least something, the lecturer is putting a restriction on the growth function."
+      },
+      {
+       "score": 0.6707,
+       "ts": "00:23:32",
+       "start": 21150,
+       "end": 21853,
+       "n_chars": 39,
+       "in_passage": false,
+       "snippet": "Minimum is not a nice function to have."
+      },
+      {
+       "score": 0.6132,
+       "ts": "00:07:42",
+       "start": 7207,
+       "end": 7439,
+       "n_chars": 53,
+       "in_passage": true,
+       "snippet": "The first question is: why is a bigger margin better?"
+      }
+     ],
+     "answer_coverage": null,
+     "answer_paragraph_hits": 1,
+     "context_chars": 203
+    }
+   }
+  },
+  {
+   "id": "D3",
+   "question": "With three points in the plane, which dichotomies are lost when we demand a fat margin?",
+   "why": "The setup (three points, all eight dichotomies) comes before the 00:10:00 window boundary of our pipeline rule; the answer (the thin-margin dichotomy is no longer allowed) comes after it.",
+   "gold": [
+    {
+     "start": 4026,
+     "end": 4103,
+     "quote": "And when you look at it, this is a thin margin for this particular dichotomy."
+    },
+    {
+     "start": 4445,
+     "end": 4533,
+     "quote": "these guys that used to be legitimate dichotomies using my model, are no longer allowed."
+    }
+   ],
+   "results": {
+    "fixed": {
+     "top3": [
+      {
+       "score": 0.7075,
+       "ts": "00:09:45",
+       "start": 9100,
+       "end": 9900,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And this is a hugely fat one, but that's the constant one. That's not a big deal. Now …"
+      },
+      {
+       "score": 0.691,
+       "ts": "00:09:02",
+       "start": 8400,
+       "end": 9200,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "all possible 2 to the 3 equals 8 dichotomies here. So you know that the growth function is big. And we know that the growth function being big is bad news for generalization. That was our take-home lesson. So now let's see if this is …"
+      },
+      {
+       "score": 0.6786,
+       "ts": "00:10:29",
+       "start": 9800,
+       "end": 10600,
+       "n_chars": 800,
+       "in_passage": true,
+       "snippet": "therefore, if we manage to separate the points with a fat dichotomy, we can say that fat dichotomies have a smaller VC dimension, smaller growth function than if I didn't restrict them at all. And, although this is all informal, we will …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 2400
+    },
+    "recursive": {
+     "top3": [
+      {
+       "score": 0.6948,
+       "ts": "00:10:29",
+       "start": 9472,
+       "end": 10141,
+       "n_chars": 669,
+       "in_passage": true,
+       "snippet": "So now I'm requiring the margin to be at least something. All of a sudden, these guys that used to be legitimate dichotomies using my model, are no longer allowed. So effectively by requiring the margin to be at least something, I'm …"
+      },
+      {
+       "score": 0.672,
+       "ts": "00:09:02",
+       "start": 8202,
+       "end": 8815,
+       "n_chars": 613,
+       "in_passage": true,
+       "snippet": "And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by varying where the line is, I can get all possible 2 to the 3 equals 8 …"
+      },
+      {
+       "score": 0.6452,
+       "ts": "00:09:45",
+       "start": 8817,
+       "end": 9470,
+       "n_chars": 653,
+       "in_passage": true,
+       "snippet": "Now in this case, I'm putting the same three points. And I'm putting a line that has the biggest possible margin for the constellation of points I have. So you can see here. I put it. It sandwiched them. Every time, it touches all the …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 1935
+    },
+    "sentence": {
+     "top3": [
+      {
+       "score": 0.6898,
+       "ts": "00:08:48",
+       "start": 8068,
+       "end": 8815,
+       "n_chars": 747,
+       "in_passage": true,
+       "snippet": "So anybody remember the growth function from ages ago? What was that? So we take the dichotomies of the line on points in the plane. And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. …"
+      },
+      {
+       "score": 0.6755,
+       "ts": "00:10:29",
+       "start": 9530,
+       "end": 10269,
+       "n_chars": 739,
+       "in_passage": true,
+       "snippet": "All of a sudden, these guys that used to be legitimate dichotomies using my model, are no longer allowed. So effectively by requiring the margin to be at least something, I'm putting a restriction on the growth function. Fat margins imply …"
+      },
+      {
+       "score": 0.6674,
+       "ts": "00:09:45",
+       "start": 8817,
+       "end": 9529,
+       "n_chars": 712,
+       "in_passage": true,
+       "snippet": "Now in this case, I'm putting the same three points. And I'm putting a line that has the biggest possible margin for the constellation of points I have. So you can see here. I put it. It sandwiched them. Every time, it touches all the …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 2198
+    },
+    "semantic": {
+     "top3": [
+      {
+       "score": 0.711,
+       "ts": "00:09:45",
+       "start": 8991,
+       "end": 14324,
+       "n_chars": 5333,
+       "in_passage": true,
+       "snippet": "I put it. It sandwiched them. Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate …"
+      },
+      {
+       "score": 0.7086,
+       "ts": "00:08:48",
+       "start": 8123,
+       "end": 8990,
+       "n_chars": 867,
+       "in_passage": true,
+       "snippet": "What was that? So we take the dichotomies of the line on points in the plane. And let's say, we take three points. So on three points, you can get all possible dichotomies by a line. The blue versus not-blue region. And you can see that by …"
+      },
+      {
+       "score": 0.5669,
+       "ts": "00:21:07",
+       "start": 19650,
+       "end": 20891,
+       "n_chars": 1241,
+       "in_passage": false,
+       "snippet": "And now I have it in this form. Now this can be simplified if I add the missing term, plus b minus b. Why is that? Can someone tell me what is w^T x plus b, which is this quantity being subtracted here? This is the value of the equation of …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 7441
+    },
+    "section": {
+     "top3": [
+      {
+       "score": 0.7134,
+       "ts": "00:10:00",
+       "start": 9021,
+       "end": 10619,
+       "n_chars": 1596,
+       "in_passage": true,
+       "snippet": "Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And …"
+      },
+      {
+       "score": 0.6459,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …"
+      },
+      {
+       "score": 0.5569,
+       "ts": "00:45:00",
+       "start": 46200,
+       "end": 46614,
+       "n_chars": 414,
+       "in_passage": false,
+       "snippet": "because it's a maximum margin, it touched on some of the +1 and some of the -1 points. Those points support the plane, so to speak. And they're called support vectors. And the other guys are interior points. And the mathematics of it tells …"
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 3354
+    },
+    "parent_child": {
+     "top3": [
+      {
+       "score": 0.6952,
+       "ts": "00:05:00",
+       "start": 7673,
+       "end": 9020,
+       "n_chars": 1344,
+       "in_passage": true,
+       "snippet": "on correct side of the line. Whereas, if I use this one, there's a chance that the next red point will be here, and it will be misclassified. Again, I'm not giving any proofs. I'm just giving you an intuition here. So it stands to logic …",
+       "child": {
+        "ts": "00:09:02",
+        "n_chars": 400,
+        "snippet": "So now we are taking dichotomies, not only the line, but also requiring that the dichotomies have a fat margin. Let's look at dichotomies, and their margin. …"
+       }
+      },
+      {
+       "score": 0.6756,
+       "ts": "00:10:00",
+       "start": 9021,
+       "end": 10619,
+       "n_chars": 1596,
+       "in_passage": true,
+       "snippet": "Every time, it touches all the points. It cannot extend any further because it will get beyond the points. And when you look at it, this is a thin margin for this particular dichotomy. This is an intermediate one. This is a fat one. And …",
+       "child": {
+        "ts": "00:10:29",
+        "n_chars": 357,
+        "snippet": "So effectively by requiring the margin to be at least something, I'm putting a restriction on the growth function. Fat margins imply fewer dichotomies …"
+       }
+      },
+      {
+       "score": 0.5883,
+       "ts": "00:05:00",
+       "start": 6270,
+       "end": 7871,
+       "n_chars": 1598,
+       "in_passage": true,
+       "snippet": "an error? So in this case, let's put it as a yellow region around it. That's the margin you have. So if you choose this line, this is the margin of error. Sort of informal notion. Now you can look at this line. And it does seem to have a …",
+       "child": {
+        "ts": "00:07:02",
+        "n_chars": 362,
+        "snippet": "As far as generalization questions are concerned, as far as our previous analysis has done, all of them are dealing with linear model with four points. So …"
+       }
+      }
+     ],
+     "answer_coverage": 1.0,
+     "answer_paragraph_hits": null,
+     "context_chars": 4538
+    },
+    "proposition": {
+     "top3": [
+      {
+       "score": 0.7154,
+       "ts": "00:09:02",
+       "start": 8202,
+       "end": 8815,
+       "n_chars": 108,
+       "in_passage": true,
+       "snippet": "Now we are taking dichotomies, not only the line, but also requiring that the dichotomies have a fat margin."
+      },
+      {
+       "score": 0.7125,
+       "ts": "00:10:29",
+       "start": 9472,
+       "end": 10141,
+       "n_chars": 45,
+       "in_passage": true,
+       "snippet": "Fat margins imply fewer dichotomies possible."
+      },
+      {
+       "score": 0.6743,
+       "ts": "00:09:02",
+       "start": 8202,
+       "end": 8815,
+       "n_chars": 44,
+       "in_passage": true,
+       "snippet": "Let's look at dichotomies, and their margin."
+      }
+     ],
+     "answer_coverage": null,
+     "answer_paragraph_hits": 1,
+     "context_chars": 197
+    }
+   }
+  }
+ ]
+}

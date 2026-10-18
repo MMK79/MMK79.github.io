@@ -168,6 +168,14 @@ function Arch(el, dg) {
         else d = `M${acx},${A.y} C${acx},${A.y - 26} ${bcx},${B.y - 26} ${bcx},${B.y - 4}`;
       } else if (B.y > A.y) { const k2 = Math.min(70, (B.y - A.y - A.h) / 2 + 20);
         d = `M${acx},${A.y + A.h} C${acx},${A.y + A.h + k2} ${bcx},${B.y - k2} ${bcx},${B.y - 4}`;
+        // a long curve that would pass behind another box (and hide its own arrowhead) is routed down the free column, then along the gap above the target
+        const inBox = (px, py) => Object.entries(geo).some(([id, g]) => id !== a && id !== b && px > g.x - 4 && px < g.x + g.w + 4 && py > g.y - 4 && py < g.y + g.h + 4);
+        const bez = t => { const u = 1 - t, y0 = A.y + A.h, y1 = y0 + k2, y2 = B.y - k2, y3 = B.y - 4;
+          return [u * u * u * acx + 3 * u * u * t * acx + 3 * u * t * t * bcx + t * t * t * bcx, u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3]; };
+        let hit = false; for (let t = 0.04; t < 0.97; t += 0.04) { const [px, py] = bez(t); if (inBox(px, py)) { hit = true; break; } }
+        const yc = B.y - 20; let freeCol = true; for (let py = A.y + A.h; py <= yc; py += 6) if (inBox(acx, py)) { freeCol = false; break; }
+        if (hit && freeCol && Math.abs(bcx - acx) > 24) { const dir = bcx > acx ? 1 : -1, r = Math.max(4, Math.min(12, Math.abs(bcx - acx) / 2, yc - (A.y + A.h)));
+          d = `M${acx},${A.y + A.h} L${acx},${yc - r} Q${acx},${yc} ${acx + dir * r},${yc} L${bcx - dir * r},${yc} Q${bcx},${yc} ${bcx},${yc + r} L${bcx},${B.y - 5}`; }
       } else { // upward (a loop or a read from a lower store): orthogonal route through the side margin, so it never cuts a box
         const side = isEnd(b, 1) && !isEnd(b, 0) ? 1 : isEnd(b, 0) && !isEnd(b, 1) ? 0 : ((acx + bcx) / 2 >= W / 2 ? 1 : 0);
         const o = Math.min(2, used[side]++) * 9, sx = side ? maxR + 14 + o : minL - 14 - o, acy = A.y + A.h / 2, bcy = B.y + B.h / 2;
@@ -187,12 +195,13 @@ function Arch(el, dg) {
         <rect x="${g.x}" y="${g.y}" width="${g.w}" height="${g.h}" rx="12" class="ps-box" style="--c:${col}"${c.when === "across" ? ' stroke-dasharray="6 4"' : ""}/>
         <rect x="${g.x}" y="${g.y + 10}" width="4" height="${g.h - 20}" rx="2" fill="${col}"/>
         ${t.map((line, i) => `<text x="${g.x + g.w / 2}" y="${g.y + ty + 18 * i}" text-anchor="middle" class="ps-t ps-at">${esc(line)}</text>`).join("")}${sub}${logos}${tag}</g>`; }).join("");
-    svg.innerHTML = `<defs><marker id="ps-am-${dg.id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
-      <g>${lanes}</g><g class="ps-edges">${edges}</g><g class="ps-elabels"></g><g>${titles}</g><g>${nodes}</g>`;
+    svg.innerHTML = `<defs><marker id="ps-am-${dg.id}" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0,1 L10,5 L0,9 z" fill="var(--muted)" class="ps-ah"/></marker></defs>
+      <g>${lanes}</g><g>${titles}</g><g class="ps-edges">${edges}</g><g>${nodes}</g><g class="ps-elabels"></g>`;
     // edge labels for the special arrows, at the middle of the path
     const lab = svg.querySelector(".ps-elabels");
     svg.querySelectorAll(".ps-e[data-k]").forEach(p => { const k = p.dataset.k; if (!k || k === "read") return;
-      try { const L = p.getTotalLength(); if (L < 70) return; const pt = p.getPointAtLength(L / 2), s = T("ps.e_" + k), w = s.length * 6.4 + 10;
+      try { const L = p.getTotalLength(); if (L < 70) return; const s = T("ps.e_" + k), w = s.length * 6.4 + 10, free = q => !Object.values(geo).some(g => q.x > g.x - w / 2 - 3 && q.x < g.x + g.w + w / 2 + 3 && q.y > g.y - 12 && q.y < g.y + g.h + 12);
+        const pt = [.5, .4, .6, .3, .7, .2, .8].map(f => p.getPointAtLength(L * f)).find(free) || p.getPointAtLength(L / 2);
         lab.insertAdjacentHTML("beforeend", `<g class="ps-el" data-a="${p.dataset.a}" data-b="${p.dataset.b}"><rect x="${pt.x - w / 2}" y="${pt.y - 9}" width="${w}" height="18" rx="9"/><text x="${pt.x}" y="${pt.y + 4}" text-anchor="middle">${esc(s)}</text></g>`); } catch (e) {} });
     const kinds = [...new Set(Object.keys(geo).map(id => COMP[id].kind))];
     el.querySelector(".ps-legend").innerHTML = kinds.map(k => `<span><i style="background:${KIND[k]}"></i>${esc(T("ps.kind_" + k))}</span>`).join("");
@@ -332,9 +341,9 @@ function Flow(el, keys) {
     let edges = "";
     for (let i = 1; i < S.length; i++) {
       const a = geo[i - 1], b = geo[i]; let d;
-      if (a.r === b.r) { const fw = b.x > a.x; const x1 = fw ? a.x + a.w : a.x, x2 = fw ? b.x - 3 : b.x + b.w + 3, yy = a.y + a.h / 2;
+      if (a.r === b.r) { const fw = b.x > a.x; const x1 = fw ? a.x + a.w : a.x, x2 = fw ? b.x - 5 : b.x + b.w + 5, yy = a.y + a.h / 2;
         d = `M${x1},${yy} L${x2},${yy}`; }
-      else { const xx = a.x + a.w / 2; d = `M${xx},${a.y + a.h} L${xx},${b.y - 3}`; }
+      else { const xx = a.x + a.w / 2; d = `M${xx},${a.y + a.h} L${xx},${b.y - 5}`; }
       const dash = S[i].band === "across" || S[i - 1].band === "across" ? ' stroke-dasharray="5 5"' : "";
       edges += `<path class="ps-edge" data-e="${i}" d="${d}"${dash} marker-end="url(#ps-ar-${el.id})"/>`;
     }
@@ -351,7 +360,7 @@ function Flow(el, keys) {
         <rect x="${g.x}" y="${g.y}" width="${g.w}" height="${g.h}" rx="12" class="ps-box" style="--c:${col}"${s.band === "across" ? ' stroke-dasharray="6 4"' : ""}/>
         <text x="${g.x + 12}" y="${g.y + 16}" class="ps-n">${i + 1}</text>${badge}
         <text x="${g.x + g.w / 2}" y="${g.y + 40}" text-anchor="middle" class="ps-t">${name}</text>${br}</g>`; }).join("");
-    svg.innerHTML = `<defs><marker id="ps-ar-${el.id}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker></defs>
+    svg.innerHTML = `<defs><marker id="ps-ar-${el.id}" viewBox="0 0 10 10" refX="7" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M0,1 L10,5 L0,9 z" fill="var(--muted)" class="ps-ah"/></marker></defs>
       <g>${edges}</g><g>${nodes}</g><circle class="ps-dot" r="6" cx="-20" cy="-20"/>`;
     const bands = [...new Set(S.map(s => s.band))];
     el.querySelector(".ps-legend").innerHTML = bands.map(b => `<span><i style="background:${BAND[b]}"></i>${esc(T("ps.band_" + b))}</span>`).join("");

@@ -158,7 +158,7 @@
           const sim = pp.matches.map(t => [t.cos]);
           const total = compute({ docs: [{ name: pp.id, sim, cos: 0 }] }).maxsim[0], stored = (a.find(x => x.id === pp.id) || {}).score;
           tokBox.replaceChildren(K.el('b', {}, `Inside the score: ${q.id} against `), ps,
-            K.el('div', { class: 'hint' }, `Measured locally on 2026-10-09 from the real MiniLM token vectors (stand-in for ColBERT weights, not trained for late interaction): each query token keeps only its best match in the passage. Stopwords and punctuation also find a partner. ${cb.n_query_tokens} query tokens.`),
+            K.el('div', { class: 'hint' }, `Measured locally from the real MiniLM token vectors (stand-in for ColBERT weights, not trained for late interaction): each query token keeps only its best match in the passage. Stopwords and punctuation also find a partner. ${cb.n_query_tokens} query tokens.`),
             ...pp.matches.map(t => K.el('div', { class: 'row', style: 'gap:8px;margin:1px 0;flex-wrap:nowrap' }, K.el('code', { class: 'num', style: 'width:42%;font-size:12px;overflow-wrap:anywhere' }, `${t.q} -> ${t.d}`), K.el('span', { class: 'num', style: 'width:44px;font-size:12px' }, K.fmt(t.cos, 3)), K.el('div', { style: 'flex:1 1 40px;background:var(--line);height:8px;border-radius:2px' }, K.el('div', { style: `height:8px;border-radius:2px;width:${Math.max(0, 100 * t.cos)}%;background:${t.cos < 0.5 ? 'var(--warn)' : 'var(--he)'}` })))),
             K.el('div', { class: 'formula' }, `S = ${pp.matches.map(t => K.fmt(t.cos, 2)).join(' + ')} = ${K.fmt(total, 3)}  (stored run: ${stored === undefined ? 'outside stored top-20' : K.fmt(stored, 3)}; recomputed here from the vectors: ${K.fmt(pp.maxsim, 3)})`));
         } else if (q.id === ex.qid) {

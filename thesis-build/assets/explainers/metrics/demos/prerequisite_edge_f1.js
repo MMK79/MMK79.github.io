@@ -36,11 +36,9 @@
     const K = root.DemoKit, W = 560, H = 190, x = { A: 60, B: 200, C: 360, D: 500 }, y = 100;
     const gold = new Set(st.gold.map(pk)), cl = closureOf(st.gold);
     const svg = K.svg('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: 'max-width:600px', role: 'img', 'aria-label': 'gold and predicted prerequisite edges between four concepts' });
-    svg.append(K.svg('defs', {}, ...[['g', '#3CC7B4'], ['r', '#FF8A65'], ['a', '#F2A93B'], ['k', '#68707F']].map(([id, c]) =>
-      K.svg('marker', { id: 'ah' + id, viewBox: '0 0 10 10', refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto-start-reverse' }, K.svg('path', { d: 'M0,0 L10,5 L0,10 z', fill: c })))));
     const arc = (a, b, off, col, id, dash) => {
-      const x1 = x[a] + (x[b] > x[a] ? 16 : -16), x2 = x[b] + (x[b] > x[a] ? -16 : 16), mx = (x1 + x2) / 2, span = Math.abs(x2 - x1);
-      return K.svg('path', { d: `M${x1},${y} Q${mx},${y + off * (0.35 + span / 600)} ${x2},${y}`, fill: 'none', stroke: col, 'stroke-width': 2.5, 'stroke-dasharray': dash || '', 'marker-end': `url(#ah${id})` });
+      const span = Math.abs(x[b] - x[a]), dir = x[b] > x[a] ? 1 : -1;   /* control point sits off*(0.35+span/600) below (+) or above (-) the chord */
+      return K.arrow(null, x[a], y, x[b], y, { color: col, width: 2.5, head: 11, r1: 17, r2: 18, dash, curve: dir * off * (0.35 + span / 600) / span });
     };
     st.gold.forEach(e => svg.append(arc(e[0], e[1], -70, '#68707F', 'k', '5 4')));
     st.pred.forEach(e => {
@@ -111,7 +109,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit, st = { rev: false, bord: false, directed: true, open: null, showAll: false, blind: true };
     const shell = K.shell(el, 'Real example: the 28 "requires" edges of the pack graph',
-      'The pack graph (662 nodes, 762 typed edges, extracted by qwen3.8-flash from 138 Wikipedia passages) has no relation named "prerequisite". The closest is "requires" (28 edges, "X requires Y"; the prerequisite edge is Y to X). PRECISION (measured on the pack\'s edges, labelled by an LLM, one labeller, no human check): we read all 28 against the passage text. RECALL (new, 2026-10-09): a BLIND gold list. An LLM (' + D.blind.model + ') read each of the 138 passages without ever seeing the graph and listed explicit precondition statements; code kept only items whose quote occurs word for word in the passage (' + D.blind.n_items_raw + ' raw items, ' + D.blind.n_dropped_quote + ' dropped); we read all of them and kept ' + D.blind.summary.n_valid + ' that use an explicit precondition word (requires, assumes, essential, only if, depends on) and dropped the rest (definitions, "is used when", "based on"). We then matched each of the ' + D.blind.summary.n_valid + ' against the graph by hand. A demo, not a benchmark: n = 28 edges, ' + D.blind.summary.n_valid + ' gold statements, no inter-annotator check. Edges are in-text dependency, not a curriculum prerequisite.');
+      'The pack graph (662 nodes, 762 typed edges, extracted by qwen3.8-flash from 138 Wikipedia passages) has no relation named "prerequisite". The closest is "requires" (28 edges, "X requires Y"; the prerequisite edge is Y to X). PRECISION (measured on the pack\'s edges, labelled by an LLM, one labeller, no human check): we read all 28 against the passage text. RECALL: a BLIND gold list. An LLM (' + D.blind.model + ') read each of the 138 passages without ever seeing the graph and listed explicit precondition statements; code kept only items whose quote occurs word for word in the passage (' + D.blind.n_items_raw + ' raw items, ' + D.blind.n_dropped_quote + ' dropped); we read all of them and kept ' + D.blind.summary.n_valid + ' that use an explicit precondition word (requires, assumes, essential, only if, depends on) and dropped the rest (definitions, "is used when", "based on"). We then matched each of the ' + D.blind.summary.n_valid + ' against the graph by hand. A demo, not a benchmark: n = 28 edges, ' + D.blind.summary.n_valid + ' gold statements, no inter-annotator check. Edges are in-text dependency, not a curriculum prerequisite.');
     const pa = K.el('div'), rb = K.el('div'), list = K.el('div'), note = K.el('p', { class: 'hint' });
     const cb = (txt, key, tip) => { const i = K.el('input', { type: 'checkbox' }); i.checked = st[key]; i.addEventListener('change', () => { st[key] = i.checked; render(); }); return K.el('label', { title: tip || '' }, i, ' ' + txt); };
     shell.append(K.el('h4', {}, 'Precision: how many predicted prerequisite edges are right?'),

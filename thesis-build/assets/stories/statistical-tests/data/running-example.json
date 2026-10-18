@@ -1,0 +1,94 @@
+{
+ "about": "Paired 2x2 tables from the chunking pilot (Presentations/Chunking Strategies, data/pilot.py): 40 questions, outcome 1 = LLM judge grade 2 for the retrieved context. Real data, retrieval-context grades, not answer correctness; one judge, no human check.",
+ "n": 40,
+ "judge": "deepseek/deepseek-v4-flash",
+ "base": "section",
+ "contrasts": [
+  {
+   "arm": "fixed",
+   "both": 8,
+   "b_section_only": 4,
+   "c_arm_only": 4,
+   "neither": 24,
+   "p_section": 0.3,
+   "p_arm": 0.3,
+   "p_exact_one_sided_section_better": 0.63671875,
+   "p_two_sided": 1.0,
+   "boot95_section_minus_arm": [
+    0.0,
+    -0.15,
+    0.15
+   ],
+   "psi_hat": 0.2
+  },
+  {
+   "arm": "recursive",
+   "both": 6,
+   "b_section_only": 6,
+   "c_arm_only": 4,
+   "neither": 24,
+   "p_section": 0.3,
+   "p_arm": 0.25,
+   "p_exact_one_sided_section_better": 0.376953125,
+   "p_two_sided": 0.75390625,
+   "boot95_section_minus_arm": [
+    0.05,
+    -0.1,
+    0.2
+   ],
+   "psi_hat": 0.25
+  },
+  {
+   "arm": "sentence",
+   "both": 7,
+   "b_section_only": 5,
+   "c_arm_only": 2,
+   "neither": 26,
+   "p_section": 0.3,
+   "p_arm": 0.225,
+   "p_exact_one_sided_section_better": 0.2265625,
+   "p_two_sided": 0.453125,
+   "boot95_section_minus_arm": [
+    0.075,
+    -0.05,
+    0.2
+   ],
+   "psi_hat": 0.175
+  },
+  {
+   "arm": "semantic",
+   "both": 6,
+   "b_section_only": 6,
+   "c_arm_only": 4,
+   "neither": 24,
+   "p_section": 0.3,
+   "p_arm": 0.25,
+   "p_exact_one_sided_section_better": 0.376953125,
+   "p_two_sided": 0.75390625,
+   "boot95_section_minus_arm": [
+    0.05,
+    -0.1,
+    0.2
+   ],
+   "psi_hat": 0.25
+  },
+  {
+   "arm": "parent_child",
+   "both": 7,
+   "b_section_only": 5,
+   "c_arm_only": 5,
+   "neither": 23,
+   "p_section": 0.3,
+   "p_arm": 0.3,
+   "p_exact_one_sided_section_better": 0.623046875,
+   "p_two_sided": 1.0,
+   "boot95_section_minus_arm": [
+    0.0,
+    -0.15,
+    0.15
+   ],
+   "psi_hat": 0.25
+  }
+ ],
+ "power_at_n40_observed": 0.16525384384943206
+}

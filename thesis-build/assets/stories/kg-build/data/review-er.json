@@ -1,0 +1,212 @@
+{
+ "reviewer": "agent review (Claude Opus read each sentence; not a human rater, not a gold standard)",
+ "rule": "same extension in this course = accept; broader, narrower, related or an adjective = reject (ER note: when in doubt keep apart)",
+ "verdicts": [
+  {
+   "mention": "data set",
+   "to": "new:dataset",
+   "verdict": "accept",
+   "reason": "spelling variant"
+  },
+  {
+   "mention": "validation error",
+   "to": "validation",
+   "verdict": "reject",
+   "reason": "an error estimate is not the validation method"
+  },
+  {
+   "mention": "validation set",
+   "to": "validation",
+   "verdict": "reject",
+   "reason": "a data subset is not the method that uses it"
+  },
+  {
+   "mention": "linear separation",
+   "to": "linear-separability",
+   "verdict": "accept",
+   "reason": "the sentence goes on to 'a linearly separable data set'"
+  },
+  {
+   "mention": "training error",
+   "to": "in-sample-error",
+   "verdict": "accept",
+   "reason": "CS 156 uses E_in for the error on the training data"
+  },
+  {
+   "mention": "vc analysis",
+   "to": "vc-dimension",
+   "verdict": "reject",
+   "reason": "the analysis uses VC theory; it is not the dimension (related, not same)"
+  },
+  {
+   "mention": "plane",
+   "to": "separating-hyperplane",
+   "verdict": "accept",
+   "reason": "in this lecture 'the plane' is the separating plane"
+  },
+  {
+   "mention": "equation for the plane",
+   "to": "separating-hyperplane",
+   "verdict": "reject",
+   "reason": "an equation of a plane is a representation of it, not the concept"
+  },
+  {
+   "mention": "condition",
+   "to": "kkt-conditions",
+   "verdict": "reject",
+   "reason": "the sentence means the margin constraints of the geometry, not KKT"
+  },
+  {
+   "mention": "x space",
+   "to": "new:input space x",
+   "verdict": "accept",
+   "reason": "X space is the input space"
+  },
+  {
+   "mention": "input space x",
+   "to": "new:x space",
+   "verdict": "accept",
+   "reason": "X space is the input space"
+  },
+  {
+   "mention": "quadratic",
+   "to": "quadratic-programming",
+   "verdict": "reject",
+   "reason": "an adjective, not the optimisation method"
+  },
+  {
+   "mention": "inequality constraint",
+   "to": "new:inequality constraint",
+   "verdict": "accept",
+   "reason": "plural variant"
+  },
+  {
+   "mention": "linear",
+   "to": "linear-model",
+   "verdict": "reject",
+   "reason": "an adjective, not the model"
+  },
+  {
+   "mention": "optimization",
+   "to": "new:optimization problem",
+   "verdict": "accept",
+   "reason": "same use in the sentence"
+  },
+  {
+   "mention": "data point",
+   "to": "new:n point",
+   "verdict": "reject",
+   "reason": "'N points' was dropped as a quantity; a data point is its own concept"
+  },
+  {
+   "mention": "quadratic form",
+   "to": "quadratic-programming",
+   "verdict": "reject",
+   "reason": "a quadratic expression is not the optimisation method"
+  },
+  {
+   "mention": "quadratic optimization",
+   "to": "quadratic-programming",
+   "verdict": "accept",
+   "reason": "wording variant of quadratic programming"
+  },
+  {
+   "mention": "quadratic term",
+   "to": "new:quadratic",
+   "verdict": "reject",
+   "reason": "a term of an expression is not 'quadratic'"
+  },
+  {
+   "mention": "training data",
+   "to": "new:training",
+   "verdict": "reject",
+   "reason": "the data is not the act of training"
+  },
+  {
+   "mention": "linear term",
+   "to": "new:linear",
+   "verdict": "reject",
+   "reason": "a term of an expression is not 'linear'"
+  },
+  {
+   "mention": "weight vector",
+   "to": "new:vector w",
+   "verdict": "accept",
+   "reason": "w is the weight vector"
+  },
+  {
+   "mention": "outlier",
+   "to": "new:outlier",
+   "verdict": "accept",
+   "reason": "plural variant"
+  },
+  {
+   "mention": "hard margin",
+   "to": "new:hard margin",
+   "verdict": "accept",
+   "reason": "plural or spelling variant"
+  },
+  {
+   "mention": "infinite dimensional space",
+   "to": "new:infinite-dimensional space",
+   "verdict": "accept",
+   "reason": "hyphen variant"
+  },
+  {
+   "mention": "infinite dimensional nonlinear transform",
+   "to": "new:infinite-dimensional nonlinear transform",
+   "verdict": "accept",
+   "reason": "hyphen variant"
+  },
+  {
+   "mention": "violation",
+   "to": "in-sample-error",
+   "verdict": "reject",
+   "reason": "the judge's own reason says 'margin violation' but it chose in-sample error: an inconsistent answer"
+  },
+  {
+   "mention": "feasible solution",
+   "to": "new:feasible point",
+   "verdict": "accept",
+   "reason": "the same thing in optimisation"
+  },
+  {
+   "mention": "dual form",
+   "to": "dual-problem",
+   "verdict": "accept",
+   "reason": "wording variant"
+  },
+  {
+   "mention": "dimension",
+   "to": "vc-dimension",
+   "verdict": "reject",
+   "reason": "the sentence means the input dimension d, not the VC dimension"
+  }
+ ],
+ "queue_verdicts": [
+  {
+   "mention": "constrained optimization problem",
+   "to": "quadratic-programming",
+   "verdict": "reject",
+   "reason": "broader: quadratic programming is one kind of constrained optimisation"
+  },
+  {
+   "mention": "optimization problem",
+   "to": "quadratic-programming",
+   "verdict": "reject",
+   "reason": "broader, as above"
+  },
+  {
+   "mention": "surface",
+   "to": "separating-hyperplane",
+   "verdict": "reject",
+   "reason": "a curved surface in X space is not the hyperplane"
+  },
+  {
+   "mention": "quadratic term",
+   "to": "new:quadratic",
+   "verdict": "reject",
+   "reason": "see merge review"
+  }
+ ]
+}

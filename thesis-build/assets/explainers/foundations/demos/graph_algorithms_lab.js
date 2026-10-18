@@ -136,6 +136,7 @@
       const m = { degree: full.degree_norm, closeness: full.closeness, betweenness: full.betweenness, pagerank: full.pagerank }; return { s: m[algo], nodes: null };
     }
     function draw() {
+      if (st.scope === 'hub' && st.algo === 'leiden') st.algo = 'degree';   /* Leiden has no scores on the 12-hub graph: fall back instead of throwing */
       scopeB.textContent = ''; scopeB.append(E('span', { class: 'hint' }, 'graph:'),
         E('button', { 'aria-pressed': String(st.scope === 'full'), onclick: () => { st.scope = 'full'; st.sel = -1; draw(); } }, 'full graph (662 nodes, 516 drawn)'), E('button', { 'aria-pressed': String(st.scope === 'hub'), onclick: () => { st.scope = 'hub'; st.sel = -1; draw(); } }, '12-hub graph (the J4 records)'));
       algoB.textContent = ''; algoB.append(E('span', { class: 'hint' }, 'algorithm:'), ...ALGOS.map(([k, l]) => E('button', { 'aria-pressed': String(st.algo === k), onclick: () => { st.algo = k; draw(); } }, l)));

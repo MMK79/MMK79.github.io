@@ -45,7 +45,7 @@ const au = a => { const n = (a || []).map(x => String(x).split(",")[0]); return 
 
 function originBlock(r, T, N, esc) {
   const p = r.introduced_by, badge = `<span class="ex-tag ex-pv pv-${esc(r.status)}">${esc(T("so.status_" + r.status))}</span>`;
-  const cites = p && p.citations && p.citations.value != null ? ` · ${esc(T("ex.o_cites", {n: N(Number(p.citations.value).toLocaleString("en")), src: p.citations.source, date: p.citations.date}))}` : "";
+  const cites = p && p.citations && p.citations.value != null ? ` · ${esc(T("ex.o_cites", {n: N(Number(p.citations.value).toLocaleString("en")), src: p.citations.source}))}` : "";
   const body = p ? `<p lang="en" dir="ltr">${esc(au(p.authors))} (${esc(p.year)}). <i>${esc(p.title)}</i>${p.venue ? `, ${esc(p.venue)}` : ""}. ${pl(p)}${cites}</p>${p.why ? `<p class="ex-src" lang="en" dir="ltr">${esc(p.why)}</p>` : ""}`
     : `<p class="ex-src">${esc(T("so.no_origin"))}</p>`;
   const also = (r.also_cite || []).slice(0, 4).map(a => `<li lang="en" dir="ltr">${[au(a.authors), a.year && `(${a.year})`].filter(Boolean).map(esc).join(" ")}${au(a.authors) || a.year ? ". " : ""}<i>${esc(a.title)}</i>${a.venue ? `, ${esc(a.venue)}` : ""} ${pl(a)}</li>`).join("");

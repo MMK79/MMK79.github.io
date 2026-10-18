@@ -82,7 +82,7 @@
   function mountAgent(el, A) {
     const K = root.DemoKit, st = { cap: A.cap, q: 0 };
     const shell = K.shell(el, 'Real example: a small search agent, 24 questions',
-      'Our own run on 2026-10-09: ' + A.model + ' (temperature 0, JSON replies) may search or answer; the tool is BM25 over the 138 public Wikipedia passages of the pack (top 3, 90-word excerpts). One search = one step. Cap n_max = ' + A.cap + ': a 9th search request would be stopped and recorded as capped. 24 questions (20 answerable, 4 unanswerable), ONE run, ' + A.llm_calls + ' LLM calls, USD ' + A.usd + ' (public text only). Demo scale: a toy agent with one tool, not the thesis tutor; lowering the cap with the slider only RE-CAPS the recorded steps; the agent is not re-run.');
+      'Our own run: ' + A.model + ' (temperature 0, JSON replies) may search or answer; the tool is BM25 over the 138 public Wikipedia passages of the pack (top 3, 90-word excerpts). One search = one step. Cap n_max = ' + A.cap + ': a 9th search request would be stopped and recorded as capped. 24 questions (20 answerable, 4 unanswerable), ONE run, ' + A.llm_calls + ' LLM calls, USD ' + A.usd + ' (public text only). Demo scale: a toy agent with one tool, not the thesis tutor; lowering the cap with the slider only RE-CAPS the recorded steps; the agent is not re-run.');
     const capS = K.slider('cap n_max (re-caps the recorded steps)', 1, A.cap, 1, st.cap, v => { st.cap = v; render(); });
     const res = K.resultBox(), res2 = K.resultBox();
     const out = K.el('div', { class: 'row' }, res.node, K.el('span', { class: 'hint' }, ' mean steps (recorded)'), res2.node, K.el('span', { class: 'hint' }, ' FTS'));

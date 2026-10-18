@@ -42,7 +42,7 @@
     function render() {
       const gen = st.ang.map(a => [Math.cos(a * TAU), Math.sin(a * TAU)]), q = [1, 0], v = compute({ q, gen });
       res.set(v, 4);
-      const arrow = (p, col, t) => { const g = K.svg('g'); g.append(K.svg('line', { x1: 0, y1: 0, x2: p[0] * 1.2, y2: -p[1] * 1.2, stroke: col, 'stroke-width': 0.025, 'stroke-linecap': 'round' }));
+      const arrow = (p, col, t) => { const g = K.svg('g'); g.append(root.DemoKit.arrow(null, 0, 0, p[0] * 1.2, -p[1] * 1.2, { color: col, width: 0.025, head: 0.09 }));
         const tx = K.svg('text', { x: p[0] * 1.2 + 0.03, y: -p[1] * 1.2, fill: col, 'font-size': 0.1 }); tx.textContent = t; g.append(tx); return g; };
       svg.replaceChildren(arrow(q, '#f2a93b', 'q'), ...gen.map((p, i) => arrow(p, '#7c9cff', 'q' + (i + 1))));
       const cs = gen.map(p => cosine(q, p));

@@ -89,7 +89,7 @@
       const posOf = n => POS[n] || [40 + (hubN.indexOf(n) + 0.5) * (130 / Math.max(1, hubN.length)) - 20, 12];
       const drawn = new Set(); const E = st.edges.concat(hubN.map(n => ['s', n]));
       E.forEach(([x, y]) => { const [x1, y1] = posOf(x), [x2, y2] = posOf(y); const on1 = pairIn(p1.nodes, x, y), on2 = pairIn(p2.nodes, x, y);
-        kids.push(K.svg('line', { x1, y1, x2, y2, stroke: on1 ? C1 : on2 ? C2 : 'var(--line)', 'stroke-width': on1 || on2 ? 4 : 2, opacity: hubN.includes(y) ? 0.5 : 1 })); });
+        const hot = on1 || on2; kids.push(K.arrow(null, x1, y1, x2, y2, { color: on1 ? C1 : on2 ? C2 : 'var(--line)', width: hot ? 4 : 2, head: hot ? 13 : 9, r1: hubN.includes(x) ? 4 : 14, r2: (hubN.includes(y) ? 4 : 14) + 1, opacity: hubN.includes(y) ? 0.5 : 1 })); });
       Object.keys(POS).concat(hubN).forEach(n => { const [x, y] = posOf(n), v = S[n] || 0, leaf = n[0] === 'L', pr = a.alive[n] === false;
         kids.push(K.svg('circle', { cx: x, cy: y, r: leaf ? 4 : 14, fill: leaf ? 'var(--faint)' : 'var(--panel2)', stroke: pr ? 'var(--warn)' : 'var(--text)', 'stroke-width': pr ? 3 : 1.5 }));
         if (!leaf) { kids.push(K.svg('text', { x, y: y + 4, 'text-anchor': 'middle', 'font-size': 13 }, n));

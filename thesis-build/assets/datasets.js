@@ -54,7 +54,7 @@ draw();
 // which model, and why (benchmarks.json, vault note "Model Benchmarks - CS-ML QA and Text-to-Graph")
 if ((D.data.datasets || []).includes("benchmarks.json")) {
   const B = await fetch("/thesis/data/benchmarks.json").then(r => r.json());
-  $("bm-finding").innerHTML = `${en(B.finding)} <span class="faint">${tt("bm.asof", {d: B.as_of})}</span>`;
+  $("bm-finding").innerHTML = `${en(B.finding)}`;
   const ext = (u, label) => `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(label)}</a>`;
   const M = B.models, W = 860, rh = 30, top = 10, left = 190, right = 120, H = top + M.length * rh + 26;
   const x = v => left + (W - left - right) * (v - 60) / 40;  // axis 60–100

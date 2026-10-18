@@ -9,7 +9,7 @@ const tb = $("src").tBodies[0], ST = ["evidenced", "textbook-only", "inferred", 
 const short = a => { const n = (a || []).map(x => String(x).split(",")[0]); return n.length > 2 ? n[0] + " et al." : n.join(" & "); };
 const link = (u, k) => u ? `<a href="${esc(u)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(k)}</a>` : "";
 const links = p => !p ? "" : link(p.doi && "https://doi.org/" + p.doi, "DOI") + link(p.arxiv && "https://arxiv.org/abs/" + String(p.arxiv).replace(/^arxiv:/i, ""), "arXiv") + (!p.doi && !p.arxiv ? link(p.url, "link") : "");
-const cites = c => c && c.value != null ? `${nf(c.value.toLocaleString("en"))}<span class="sub" lang="en" dir="ltr">${esc(c.source)}, ${esc(c.date)}</span>` : "—";
+const cites = c => c && c.value != null ? `${nf(c.value.toLocaleString("en"))}<span class="sub" lang="en" dir="ltr">${esc(c.source)}</span>` : "—";
 window.PROV_LINKS = links;
 tb.innerHTML = rows.map((r, i) => { const p = r.introduced_by || null, nm = I.fa && r.name_fa ? r.name_fa : r.name;
   return `<tr data-i="${i}"><td data-sort="${esc(nm)}"><a href="${esc(r.href)}">${esc(nm)}</a><span class="kind">${esc(t("so.kind_" + r.kind))}</span></td>

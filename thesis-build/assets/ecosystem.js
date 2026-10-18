@@ -2,6 +2,7 @@
 // (Presentations/AI in Education Ecosystem - 2026-10-01/data, copied to /data/ecosystem/ by site.py).
 // Data text stays English (lang="en"); the UI around it comes from i18n. Iran is its own tab, never mixed in.
 (async () => {
+const ownDate = d => /^2026-(0[89]|1[0-2])/.test(String(d || "")) ? "" : String(d || "");   // a figure's own date stays; the day we looked it up (2026-08 on) is not shown (undate.py)
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const tt = (k, o) => esc(t(k, o));
@@ -70,7 +71,7 @@ const I = X.investment;
       const links = Object.entries(L).filter(([, u]) => typeof u === "string").map(([k, u]) => a(u, t("eco.l." + k) === "eco.l." + k ? k : t("eco.l." + k), S[u])).join("");
       return `<tr data-r><td><b lang="en" dir="ltr">${esc(p.name)}</b>${sub(p.maker)}<span class="sub">${esc(p.kind || "")}${p.launch ? " · " + esc(p.launch) : ""}</span></td>
         <td>${en(p.ai_does)}${p.student_price ? sub(p.student_price) : ""}</td>
-        <td>${where}${sc ? `<span class="sub" lang="en" dir="ltr">${esc(sc.value)} (${esc(sc.as_of || "")})</span>${badge(sc.basis)}` : ""}</td>
+        <td>${where}${sc ? `<span class="sub" lang="en" dir="ltr">${esc(sc.value)}${ownDate(sc.as_of) ? ` (${esc(ownDate(sc.as_of))})` : ""}</span>${badge(sc.basis)}` : ""}</td>
         <td>${en(ev.summary)}${ev.independent != null ? `<span class="ind ${ev.independent === true || /^yes/i.test(ev.independent) ? "yes" : "no"}">${tt(ev.independent === true || /^yes/i.test(ev.independent) ? "eco.indep" : "eco.notindep")}</span>` : ""}${ev.link ? " " + a(ev.link, t("eco.study")) : ""}</td>
         <td class="links">${links}</td></tr>`; }).join("") + `</table></div>`).join("");
   for (const g of groups) reg("he", $("he-" + g));
@@ -81,7 +82,7 @@ const I = X.investment;
   const P = X.products_market.products || X.products_market;
   $("schools").innerHTML = `<tr><th>${tt("eco.th_product")}</th><th>${tt("eco.th_ai")}</th><th>${tt("eco.th_price")}</th><th>${tt("eco.th_scale")}</th><th>${tt("eco.th_evidence")}</th><th>${tt("eco.th_links")}</th></tr>` +
     P.map(p => `<tr data-r><td><b lang="en" dir="ltr">${esc(p.name)}</b>${sub(p.maker)}${sub(`${p.segment || ""}${p.launch ? " · " + p.launch : ""}`)}</td><td>${en(p.what)}</td><td>${en(p.price)}</td>
-      <td>${p.scale_claim ? `${en(p.scale_claim)}${sub(p.as_of)}<span class="basis claimed">${tt("eco.b_claimed")}</span>` : "—"}</td>
+      <td>${p.scale_claim ? `${en(p.scale_claim)}${sub(ownDate(p.as_of))}<span class="basis claimed">${tt("eco.b_claimed")}</span>` : "—"}</td>
       <td>${en(p.evidence) || "—"} ${a(p.evidence_link, t("eco.study"), p.evidence_link_status)}</td><td class="links">${a(p.product_link, host(p.product_link), p.product_link_status)}</td></tr>`).join("");
   reg("schools", $("schools"));
 })();
@@ -90,7 +91,7 @@ const I = X.investment;
 const orgRows = (L, iran) => `<tr><th>${tt("eco.th_org")}</th><th>${tt("eco.th_feat")}</th><th>${tt("eco.th_scale")}</th><th>${tt("eco.th_evidence")}</th><th>${tt("eco.th_links")}</th></tr>` + L.map(o => {
   const feats = (o.ai_features || []).map(f => `<li><b lang="en" dir="ltr">${esc(f.name)}</b>${f.launched ? ` <span class="faint num">${esc(f.launched)}</span>` : ""}${sub(f.what)}</li>`).join("");
   const integ = o.integration ? `<li>${Object.entries(o.integration).map(([k, v]) => `<span class="sub" lang="en" dir="ltr"><b>${esc(k.replace(/_/g, " "))}</b>: ${esc(v)}</span>`).join("")}</li>` : "";
-  const scale = (o.scale || []).map(s => `<li>${en(s.value)} ${badge(s.basis)}${sub(`${s.metric || ""}${s.as_of ? " · " + s.as_of : ""}`)}</li>`).join("");
+  const scale = (o.scale || []).map(s => `<li>${en(s.value)} ${badge(s.basis)}${sub(`${s.metric || ""}${ownDate(s.as_of) ? " · " + ownDate(s.as_of) : ""}`)}</li>`).join("");
   const ev = (o.evidence || []).map(e => `<li>${en(e.finding)}<span class="ind ${e.independent ? "yes" : "no"}">${tt(e.independent ? "eco.indep" : "eco.notindep")}</span>${sub(`${e.study || ""}${e.design ? " — " + e.design : ""}`)} ${a(e.doi_or_url, t("eco.study"))}</li>`).join("");
   return `<tr data-r><td><b lang="en" dir="ltr">${esc(o.name)}</b>${sub(`${o.type || ""} · ${o.country || ""}${o.founded ? " · " + o.founded : ""}`)}${iran && o.quality ? ` <span class="q">${tt("eco.quality")}: ${esc(o.quality)}</span>` : ""}${o.verified === false ? `<span class="sub">${tt("eco.unverified")}</span>` : ""}</td>
     <td><ul>${feats || `<li class="faint">${tt("eco.noai")}</li>`}${integ}</ul></td><td><ul>${scale || "—"}</ul></td><td><ul>${ev || `<li class="faint">${tt("eco.noev")}</li>`}</ul></td>

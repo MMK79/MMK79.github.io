@@ -1,0 +1,838 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Statistical tests</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;--red:#FF5D5D;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+code,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:22px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+ul,ol{padding-left:22px}li{margin:0 0 6px}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;font:600 11px var(--mono);letter-spacing:.06em;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:middle}
+.who{font-size:13px;color:var(--faint);margin:-6px 0 14px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.tldr{background:var(--panel);border:1px solid var(--amber);border-radius:12px;padding:14px 16px;margin:18px 0}
+.tldr h3{margin:0 0 8px;font-size:18px;color:var(--amber);font-family:var(--body);font-weight:600;letter-spacing:.04em}
+.tldr ul{margin:0;padding-left:20px}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0;min-width:0}
+.fig .cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.fig h3{margin-top:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select,input{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+input[type=range]{padding:0;min-height:0;accent-color:var(--amber);width:min(240px,100%)}
+input[type=number]{width:5.2em;font-family:var(--mono)}
+label.sl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:4px 0}
+label.sl b{font:600 13px var(--mono);color:var(--text);min-width:4.5em}
+label.sl span.nm{min-width:9.5em}
+.tag{display:inline-block;white-space:nowrap;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}.tag.gold{border-color:var(--amber);color:var(--amber)}
+.take{background:var(--panel);border:1px solid var(--amber);border-radius:10px;padding:12px 14px;margin:16px 0;font-size:16px}
+.bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
+.bridge b{color:var(--text)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
+.contra{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
+.ev b.h,.ours b.h,.contra b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}.contra b.h{color:var(--warn)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:11px var(--body)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.n{font-family:var(--mono);font-size:13px;text-align:right;white-space:nowrap}
+.hscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* the 2x2 table */
+.t22{border-collapse:separate;border-spacing:6px;margin:6px auto;font-size:14px}
+.t22 th{font-weight:500;color:var(--muted);font-size:12px;padding:2px 6px;text-align:center}
+.t22 td{background:var(--panel2);border:1px solid var(--line);border-radius:8px;text-align:center;padding:8px 10px;min-width:96px}
+.t22 td.disc{border-color:var(--amber)}
+.t22 td.conc{opacity:.6}
+.t22 td b{display:block;font:600 22px var(--mono)}
+.t22 td small{color:var(--muted);font-size:11px}
+.t22 input{width:4.6em;text-align:center;font:600 18px var(--mono)}
+.out{font:14px/1.6 var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:10px 0;overflow-wrap:anywhere}
+.out b{color:var(--text)}
+.verdict{font:600 15px var(--body);margin:8px 0}
+.verdict.rej{color:var(--teal)}.verdict.no{color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:8px 0 0}
+.legend i{display:inline-block;width:16px;height:10px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.dots{display:flex;flex-wrap:wrap;gap:3px;margin:8px 0}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.h1{background:var(--amber)}.dots i.both{background:var(--teal)}
+.gate{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:10px 0}
+.gate>div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.gate h4{margin:0 0 4px;font:600 13px var(--body);color:var(--amber)}
+.gate p{margin:0;font-size:13px;color:var(--muted)}
+.strip3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.strip3>div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.strip3 h3{font-size:16px;margin:4px 0}.strip3 p{font-size:14px;color:var(--muted);margin:0}
+details{margin:6px 0}summary{cursor:pointer;color:var(--muted);font-size:13px}
+footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.cite{font:11px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.cite:hover{text-decoration:underline}
+.cite.unv::after{content:" (unverified)";color:var(--warn)}
+.lesson-video:empty::before{content:"Video: McNemarTest (English, silent). Final render pending; it appears here once encoded.";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+.quiz .q{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
+.quiz .q p{margin:0 0 6px}
+.quiz .opts{display:flex;flex-direction:column;gap:6px}
+.quiz .opts button{text-align:left;white-space:normal;line-height:1.4;padding:8px 10px}
+.quiz .opts button.right{border-color:var(--teal);color:var(--teal)}.quiz .opts button.wrong{border-color:var(--warn);color:var(--warn)}
+.quiz .fb{font-size:13px;color:var(--muted);margin-top:6px;display:none}
+.eq{font:15px var(--mono);background:var(--panel2);border-radius:8px;padding:8px 12px;margin:10px 0;overflow-x:auto;white-space:nowrap}
+#src-list li{font-size:13px;color:var(--muted)}
+@media(max-width:640px){.strip3,.gate{grid-template-columns:1fr}.t22 td{min-width:70px;padding:6px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>What is real here:</b> the running example is real data from our chunking pilot (40 homework questions, two retrieval rules, one LLM judge that graded the retrieved text). The thesis numbers (270, 269, power) are planning calculations; the thesis has no main result yet. The judge-agreement numbers are illustrative.</p>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap">
+<header class="hero" id="top">
+  <div class="kicker">Evaluation &middot; a layered lesson</div>
+  <h1>Statistical tests</h1>
+  <p class="lead">How do you decide that one retrieval system answers more questions correctly than another, and not by luck? This page explains the tests our thesis uses, four times over: as a picture, for a student, with the research, and as the rules in our thesis. One real example runs through all of it: two ways to cut a lecture into chunks, compared on the same 40 questions (an LLM judge graded whether the retrieved text was enough to answer).</p>
+  <div class="tldr" id="tldr">
+    <h3>TL;DR</h3>
+    <ul>
+      <li>In a <b>paired design</b> every system answers the <i>same</i> questions. So we compare the systems question by question, not two separate averages.</li>
+      <li><b>McNemar's test</b> looks only at the questions where the two systems <b>disagree</b>: <i>b</i> = only the first is right, <i>c</i> = only the second is right. If the systems were equally good (and the questions independent), then, given the number of disagreements, each one would go either way like a fair coin toss.</li>
+      <li>In our example, <i>b</i> = 5 and <i>c</i> = 2. For teaching, we take the direction that favours our rule (chosen after seeing the data; the pilot fixed no test in advance): the exact one-sided tail is 29/128 &asymp; 0.23, above 0.05. With 40 questions this is <b>inconclusive, not "no difference"</b>: such a small sample has little power for modest effects.</li>
+      <li>For a given test, &alpha; and number of questions, <b>power</b> depends on how often the systems disagree (&psi;) and on the true difference (&delta;). For &psi; = 0.30 and &delta; = 0.10 the exact minimum is 269 questions for power 0.90; the thesis target is 270.</li>
+      <li>The thesis claim needs two tests in a <b>fixed order</b> (graph vs text first, then typed vs collapsed labels). The claim holds only if both reject, so neither test needs a smaller &alpha;. If the first test does not reject, the second is not tested.</li>
+      <li><b>Bootstrap intervals</b> show how big the difference may be; they are reported but never decide. <b>Cohen's &kappa;</b> checks how well the LLM judge agrees with a human.</li>
+    </ul>
+  </div>
+</header>
+
+<!-- ===================== Level 0 ===================== -->
+<section class="step" id="l0" data-nav="L0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div>
+  <h2>Two librarians, the same 40 questions</h2>
+  <p class="who">For anyone. No technical words.</p>
+  <p>Two librarians each get the same 40 questions. For each question, each one brings back a pile of pages, and a referee says whether the pile holds the answer. You want to know: is one librarian really better?</p>
+  <div class="strip3">
+    <div><h3>Both succeed, or both fail</h3><p>33 questions. Here the two librarians got the same result, so these questions do not enter the test.</p></div>
+    <div><h3>Only one succeeds</h3><p>7 questions. Librarian A won 5, librarian B won 2. Only these 7 "duels" can show a difference.</p></div>
+    <div><h3>Is 5 to 2 a real lead?</h3><p>Toss a fair coin 7 times. You get 5 or more heads about 1 time in 4. So a 5-to-2 lead for A can easily happen by luck.</p></div>
+  </div>
+  <div class="fig"><div id="l0-svg"></div><p class="cap">The 40 questions as dots. Grey: both librarians agree. Amber: only A succeeds. Blue: only B succeeds. The test reads the coloured dots only.</p></div>
+  <div class="take"><b>Takeaway:</b> the test counts only the duels. A small lead from a few duels can be luck. "We could not see a difference" is not the same as "there is no difference": with only 7 duels, a modest real difference would usually go unseen.</div>
+</section>
+
+<!-- ===================== Level 1 ===================== -->
+<section class="step" id="l1" data-nav="L1"><div class="kicker"><span class="lv">Level 1</span>for a student</div>
+  <h2>Paired data, one table, one coin</h2>
+  <p class="who">For a student who knows what a proportion and a probability are.</p>
+  <h3>Paired designs</h3>
+  <p>In our thesis every arm (system variant) answers every question in the locked set. Each question then gives a <b>pair</b> of outcomes: (arm 1 correct?, arm 2 correct?). The two outcomes on one question are related, so the two accuracy rates are <b>not independent</b>, and a test for two independent proportions is the wrong tool. When the arms tend to succeed and fail on the same questions, the paired comparison is also more precise.</p>
+  <h3>The 2&times;2 table of the running example</h3>
+  <p>In our chunking pilot, 40 homework questions of Caltech CS 156 were sent to two retrieval rules: our <b>section</b> rule (chunks never cross a 5-minute window of a lecture) and a <b>sentence</b>-packing rule. An LLM judge graded each retrieved text; "correct" here means grade 2, "the text holds what the question needs".</p>
+  <div class="fig">
+    <table class="t22" id="ex-table" aria-label="Paired outcomes of the running example"></table>
+    <p class="cap" id="ex-cap"></p>
+  </div>
+  <p>The accuracy of the section rule is (7 + 5)/40 = 30%; of the sentence rule, (7 + 2)/40 = 22.5%. The difference is (<i>b</i> &minus; <i>c</i>)/<i>n</i> = (5 &minus; 2)/40 = 7.5 points. The concordant cells (7 and 26) appear in both rates and cancel in the numerator of the difference; they still count in <i>n</i>, in the estimate and in its uncertainty, but not in McNemar's test.</p>
+  <h3>McNemar's idea</h3>
+  <p>If the two rules are equally good (the null hypothesis H<sub>0</sub>) and the questions are independent, a disagreement is equally likely to go either way. So, given that there are <i>b</i> + <i>c</i> = 7 disagreements, <i>b</i> behaves like the number of heads in 7 fair coin tosses. The <b>exact one-sided p-value</b> is the chance of 5 or more heads: (21 + 7 + 1)/128 = 29/128 &asymp; 0.227. That is above &alpha; = 0.05. A caution: the pilot fixed no test in advance, and we chose the direction after seeing the counts, so this number is a teaching example, not a confirmatory test.</p>
+  <h3>What a p-value is, and is not</h3>
+  <div class="ev"><b class="h">It is</b>the probability, computed as if H<sub>0</sub> and the test's model were true, of a result at least as extreme as the one observed. Here: "if the rules were equally good, then, given 7 disagreements, 5 or more of them favour our rule 23% of the time" (one direction; in either direction, 45%).</div>
+  <div class="contra"><b class="h">It is not</b>the probability that H<sub>0</sub> is true; not the size or the importance of the effect; and a p above 0.05 is not evidence that the effect is zero <a class="cite" data-c="wasserstein2016|principles 2, 5, 6"></a>.</div>
+  <h3>Power, &psi; and &delta;</h3>
+  <p><b>Power</b> is the probability that the test rejects H<sub>0</sub> when a real difference exists. For a given test, &alpha; and number of questions <i>n</i> (independent questions), McNemar's power depends on two numbers: the <b>discordance rate</b> &psi; (the share of questions on which the arms disagree) and the <b>true difference</b> &delta;. Our pilot observed &psi; &asymp; 7/40 = 0.175 and a difference of 0.075. <i>If</i> those were the true values, the exact power with 40 questions would be only about 0.17: about 5 of 6 such studies would miss the difference. The pilot does not establish these values; the point is that a sample this small has little power, so a non-rejection here is <b>inconclusive</b>.</p>
+  <h3>Confidence intervals: how big could it be?</h3>
+  <p>A <b>bootstrap</b> resamples the 40 questions with replacement many times, keeps each question's pair together, and recomputes the difference each time. The middle 95% of those differences is a <b>percentile interval</b>. For our example it runs from &minus;5 to +20 points: a wide range, from a small negative to a large positive difference. With only 40 questions, its real coverage can differ from the nominal 95%. The thesis reports such intervals as estimates; it never uses them to decide.</p>
+  <h3>Do the judge and a human agree?</h3>
+  <p>Our "correct" labels come from an LLM judge, so we must check the judge. <b>Cohen's &kappa;</b> compares the observed agreement between the judge and a human with the agreement that two independent raters with the same label rates would reach. When it is defined, &kappa; = 1 is perfect agreement and 0 is that chance level.</p>
+  <div class="bridge"><b>Next:</b> touch the numbers. Change <i>b</i> and <i>c</i> and watch the p-value; change the agreements and see that it does not move.</div>
+</section>
+
+<!-- ===================== Touch ===================== -->
+<section class="step" id="lt" data-nav="Touch"><div class="kicker"><span class="lv">Touch</span>compute it yourself</div>
+  <h2>Touch: four calculators</h2>
+  <p class="who">All numbers below are computed in your browser with the same formulas as our Python reference (4,920 cases checked against it; the Python values agree with SciPy to 10<sup>&minus;12</sup>).</p>
+
+  <div class="fig" id="mc">
+    <h3>1. McNemar's test, live</h3>
+    <div class="row" id="mc-pre"></div>
+    <table class="t22" aria-label="Editable paired 2x2 table">
+      <tr><th></th><th>sentence rule correct</th><th>sentence rule wrong</th></tr>
+      <tr><th>our rule correct</th><td class="conc"><input id="mc-a" type="number" min="0" max="400" aria-label="both correct"><small>both</small></td><td class="disc"><input id="mc-b" type="number" min="0" max="400" aria-label="b: only the first arm correct"><small><i>b</i>: only ours</small></td></tr>
+      <tr><th>our rule wrong</th><td class="disc"><input id="mc-c" type="number" min="0" max="400" aria-label="c: only the second arm correct"><small><i>c</i>: only sentence</small></td><td class="conc"><input id="mc-d" type="number" min="0" max="400" aria-label="both wrong"><small>neither</small></td></tr>
+    </table>
+    <div id="mc-svg"></div>
+    <div class="legend"><span><i style="background:var(--amber)"></i>outcomes at least as extreme as <em>b</em> (the one-sided p)</span><span><i style="background:var(--line)"></i>other outcomes under H<sub>0</sub></span></div>
+    <div class="out" id="mc-out" aria-live="polite"></div>
+    <p class="verdict" id="mc-verdict"></p>
+    <p class="cap">Change the "both" or "neither" cells: every p-value stays the same, because McNemar's test reads only <i>b</i> and <i>c</i>. The bootstrap interval can change, because the total <i>n</i> and the resampling distribution change. Try <b>4 vs 0</b>: the interval excludes 0 while the exact test does not reject. In the thesis the test decides.</p>
+  </div>
+
+  <div class="fig" id="pw">
+    <h3>2. Power and sample size</h3>
+    <label class="sl"><span class="nm">discordance &psi;</span><input id="pw-psi" type="range" min="0.05" max="0.6" step="0.01"><b id="pw-psi-v"></b></label>
+    <label class="sl"><span class="nm">true difference &delta;</span><input id="pw-del" type="range" min="0.01" max="0.3" step="0.005"><b id="pw-del-v"></b></label>
+    <label class="sl"><span class="nm">questions <i>n</i></span><input id="pw-n" type="range" min="10" max="600" step="1"><b id="pw-n-v"></b></label>
+    <div class="row" id="pw-pre"></div>
+    <div id="pw-svg"></div>
+    <div class="out" id="pw-out" aria-live="polite"></div>
+    <p class="cap">Exact power of the one-sided exact test at &alpha; = 0.05, assuming independent questions: the number of disagreements <i>D</i> is Binomial(<i>n</i>, &psi;), <i>b</i> given <i>D</i> is Binomial(<i>D</i>, (&psi; + &delta;)/(2&psi;)), and the rejection probability is averaged over every <i>D</i>. |&delta;| can never exceed &psi;. The curve is not perfectly smooth: the exact test is discrete.</p>
+  </div>
+
+  <div class="fig" id="fs">
+    <h3>3. Two tests in a fixed order</h3>
+    <div class="gate">
+      <div><h4>Step 1: H1</h4><p>Graph (H) vs text retriever (R), exact one-sided test at &alpha; = 0.05.</p></div>
+      <div><h4>Step 2: H2, only if H1 rejected</h4><p>Typed graph (H) vs the same graph with labels collapsed (Hc), also at &alpha; = 0.05.</p></div>
+      <div><h4>The claim</h4><p>Holds only if both reject. If H1 does not reject, H2 is not tested (its estimate is still reported).</p></div>
+    </div>
+    <label class="sl"><span class="nm">questions <i>n</i></span><input id="fs-n" type="range" min="20" max="500" step="1"><b id="fs-n-v"></b></label>
+    <label class="sl"><span class="nm">discordance &psi;</span><input id="fs-psi" type="range" min="0.1" max="0.5" step="0.01"><b id="fs-psi-v"></b></label>
+    <label class="sl"><span class="nm">true &delta; for H1</span><input id="fs-d1" type="range" min="0" max="0.2" step="0.01"><b id="fs-d1-v"></b></label>
+    <label class="sl"><span class="nm">true &delta; for H2</span><input id="fs-d2" type="range" min="0" max="0.2" step="0.01"><b id="fs-d2-v"></b></label>
+    <div class="row"><button id="fs-run" type="button">Run 2,000 simulated studies</button><button id="fs-null" type="button">Set H2's true &delta; to 0</button></div>
+    <div class="dots" id="fs-dots" aria-hidden="true"></div>
+    <div class="legend"><span><i style="background:var(--line)"></i>H1 not rejected: stop</span><span><i style="background:var(--amber)"></i>H1 rejected, H2 not</span><span><i style="background:var(--teal)"></i>both rejected: claim holds</span></div>
+    <div class="out" id="fs-out" aria-live="polite"></div>
+    <p class="cap">Each simulated study draws its own questions. The two contrasts are simulated independently here, which is a simplification: in the thesis both contrasts share the questions and arm H. Only the bound P(both) &ge; P(H1) + P(H2) &minus; 1, which holds for any dependence, carries over. Set H2's true &delta; to 0: the true probability of wrongly claiming "labels help" is at most 5%, without splitting &alpha;; the simulated share fluctuates around its true value. The last row shows what a Bonferroni split (&alpha; = 0.025 each) would cost.</p>
+  </div>
+
+  <div class="fig" id="kp">
+    <h3>4. Judge vs human: Cohen's &kappa;</h3>
+    <div class="row" id="kp-pre"></div>
+    <table class="t22" aria-label="Agreement table, judge vs author">
+      <tr><th></th><th>author: fully correct</th><th>author: not</th></tr>
+      <tr><th>judge: fully correct</th><td><input id="kp-a" type="number" min="0" max="500" aria-label="both say correct"></td><td class="disc"><input id="kp-b" type="number" min="0" max="500" aria-label="judge yes, author no"><small>false accepts</small></td></tr>
+      <tr><th>judge: not</th><td class="disc"><input id="kp-c" type="number" min="0" max="500" aria-label="judge no, author yes"></td><td><input id="kp-d" type="number" min="0" max="500" aria-label="both say not correct"></td></tr>
+    </table>
+    <div class="out" id="kp-out" aria-live="polite"></div>
+    <p class="cap">Illustrative numbers. The "high agreement, low &kappa;" preset shows that &kappa; depends on how often each rater says "correct": 90% raw agreement can be close to chance when almost everything is labelled correct.</p>
+  </div>
+</section>
+
+<!-- ===================== Watch ===================== -->
+<section class="step" id="lw" data-nav="Watch"><div class="kicker"><span class="lv">Watch</span>about a minute, no sound</div>
+  <h2>Watch: from 40 questions to one decision</h2>
+  <p class="who">The running example in motion: the 2&times;2 table, the coin-toss distribution, the power curve, and the fixed sequence. All numbers are read from this page's data files.</p>
+  <div class="lesson-video" data-video="McNemarTest"></div>
+</section>
+
+<!-- ===================== Level 2 ===================== -->
+<section class="step" id="l2" data-nav="L2"><div class="kicker"><span class="lv">Level 2</span>for an academic</div>
+  <h2>The methods and their sources</h2>
+  <p class="who">With citations. Each citation points to the primary source; a citation we could not check in the primary text is marked.</p>
+
+  <h3>McNemar's test and its variants</h3>
+  <p>McNemar derived the standard error of the difference between two <b>correlated</b> proportions and showed that the test of that difference depends only on the two discordant cells; its chi-square form is (<i>b</i> &minus; <i>c</i>)&sup2;/(<i>b</i> + <i>c</i>) with one degree of freedom <a class="cite" data-c="mcnemar1947"></a>. (We could not read McNemar's or Edwards' papers; the formulas are checked in Fagerland et al., who restate them <a class="cite" data-c="fagerland2013|Methods, eq. 1-4"></a>.) Edwards added a continuity correction, (|<i>b</i> &minus; <i>c</i>| &minus; 1)&sup2;/(<i>b</i> + <i>c</i>) <a class="cite" data-c="edwards1948"></a>; its one-sided upper-tail form is the z<sub>cc</sub> below. Conditional on <i>b</i> + <i>c</i>, <i>b</i> is Binomial(<i>b</i> + <i>c</i>, 1/2) under H<sub>0</sub>, which gives the <b>exact conditional</b> test used on this page.</p>
+  <div class="eq">z = (b &minus; c) / &radic;(b + c) &nbsp;&nbsp;&nbsp; one-sided with correction: z<sub>cc</sub> = (b &minus; c &minus; 1) / &radic;(b + c) &nbsp;&nbsp;&nbsp; p<sub>exact</sub> = P(B &ge; b), B ~ Bin(b + c, &frac12;) &nbsp;&nbsp;&nbsp; p<sub>mid</sub> = p<sub>exact</sub> &minus; &frac12;P(B = b)</div>
+  <p>Fagerland, Lydersen and Laake compared these versions over many sample sizes and found the exact conditional test conservative: in their study (two-sided tests at a nominal 5%, up to 100 pairs) its actual type I error was "barely above 3%", which costs power <a class="cite" data-c="fagerland2013|Results, Type I error rates"></a>; the continuity-corrected asymptotic test was even more conservative. They recommend the mid-p test or the asymptotic test without correction, and "do not recommend use of the McNemar exact conditional test nor the asymptotic test with CC in any situation" <a class="cite" data-c="fagerland2013|Conclusions"></a>.</p>
+  <div class="contra"><b class="h">Open contradiction with our choice</b>The thesis uses the exact conditional test, which this comparison calls conservative. We keep it because, under its model (independent pairs, direction fixed in advance), its type I error is at most &alpha; at every <i>n</i>, which matters for a pre-registered decision with a small and uncertain sample. The cost is paid in power, and our power table is computed for the exact test, so the sample-size target already includes that cost. A mid-p analysis could be added as a sensitivity result; it would not decide.</div>
+  <p>For machine learning, Dietterich compared five tests for "does algorithm A beat algorithm B on this task" and found McNemar's test had low type I error; for algorithms that can be run only once it was the only test with acceptable type I error <a class="cite" data-c="dietterich1998|Abstract; Conclusions"></a>. The version he studied was the continuity-corrected, two-sided chi-square form, not our exact one-sided form <a class="cite" data-c="dietterich1998|Sec. 3.1"></a>, and it does not measure variation due to the training set. Our setting is similar: each arm answers each locked question once (the label is a majority of three generations), and the test applies to those fixed paired labels if the questions are independent.</p>
+
+  <h3>One-sided tests and the p-value</h3>
+  <p>The thesis hypotheses are directional (the graph arm is better), so the tests are one-sided at &alpha; = 0.05, and this was fixed before any main result. A one-sided test cannot support the opposite direction; a result in that direction is reported as an estimate. The American Statistical Association's statement lists what a p-value does not tell you: it is not the probability that the hypothesis is true or that the data arose by chance alone, it does not measure the size or importance of an effect, and a scientific conclusion should not rest only on whether p passes a threshold <a class="cite" data-c="wasserstein2016|principles 1-6"></a>.</p>
+
+  <h3>Power and sample size</h3>
+  <p>For paired binary outcomes, the power of McNemar's test depends on the difference &Delta; = p<sub>10</sub> &minus; p<sub>01</sub> and the discordance &psi; = p<sub>10</sub> + p<sub>01</sub>; note |&Delta;| &le; &psi;. At fixed &Delta;, a higher &psi; means more noise from disagreements and needs more questions. Because the decision uses the exact test, the thesis computes power exactly: the number of disagreements is Binomial(<i>n</i>, &psi;), and the conditional rejection probability is averaged over all of them. The power calculator above implements this, and a second model family recomputed the table independently.</p>
+  <div class="hscroll"><table class="tbl" id="pw-table"></table></div>
+  <p class="small muted">Smallest <i>n</i> with power &ge; target; exact one-sided test, &alpha; = 0.05, &delta; = 0.10, independent questions. Computed on this page's data and equal to the independent recomputation.</p>
+
+  <h3>Two hypotheses: fixed sequence and intersection-union</h3>
+  <p>The thesis makes two standalone statements (H1: H beats R; H2: H beats Hc) and one joint claim (both). Testing H1 first and H2 only if H1 rejects, each at the full &alpha;, keeps the family-wise error rate at most &alpha; for the two statements; it needs no &alpha; adjustment, and after the first non-rejection no later hypothesis can be declared significant <a class="cite" data-c="fda2022|App. A.5, p. 20"></a>. The reason: if H1's null is true, any false rejection must start with a false rejection of H1 (probability at most &alpha;); if H1's null is false, only H2 can be falsely rejected (probability at most &alpha;). For the joint claim, the null hypothesis is the <b>union</b> "H1's null or H2's null is true". Berger showed that rejecting a union of nulls when <b>every</b> component test rejects at level &alpha; gives a level-&alpha; test, with no adjustment <a class="cite" data-c="berger1982"></a>. Regulatory guidance states the same for co-primary endpoints: when success needs every endpoint, "there is no multiplicity problem", but power falls <a class="cite" data-c="fda2022|Sec. III.C.1, p. 9"></a>. Requiring both tests is the price: the joint power is no greater than the smaller of the two powers. Since P(A &cap; B) &ge; P(A) + P(B) &minus; 1 for any two events, power 0.90 for each gives at least 0.80 for both.</p>
+
+  <h3>Holm's procedure: when you would need it</h3>
+  <p>If several hypotheses are tested with no fixed order and <b>any</b> rejection counts as a finding, the family-wise error must be controlled across them. Holm's step-down procedure sorts the k p-values and compares the i-th smallest with &alpha;/(k &minus; i + 1), stopping at the first non-rejection; it controls the family-wise error rate and rejects at least as much as Bonferroni <a class="cite" data-c="holm1979"></a> <a class="cite" data-c="fda2022|App. A.2, pp. 18-19"></a>. The thesis does not need it for H1 and H2 (their order is fixed), and it reports strata and exploratory arms as estimates only, outside the confirmatory family. If, for example, the thesis tested H1 separately in each stratum and claimed every stratum that rejected, it would need a multiplicity procedure such as Holm's. Intervals for strata are individual, not simultaneous, so they must not be read as extra confirmatory findings.</p>
+
+  <h3>Bootstrap confidence intervals</h3>
+  <p>The bootstrap estimates the sampling distribution of a statistic by resampling the observed units with replacement; the percentile interval takes the 2.5% and 97.5% points of the resampled statistic <a class="cite" data-c="efron1993"></a>. For paired data, a resample draws whole questions (all arm outcomes together). In general it should resample the independent sampling units: in the thesis these are source clusters (one homework stem, one book exercise). The interval answers "how big might the difference be"; the test answers "should we reject H<sub>0</sub>". They can disagree at small counts: with <i>b</i> = 4, <i>c</i> = 0 and 40 questions, the percentile interval from resampling questions (with infinitely many resamples) is [2.5, 20] points, which excludes 0, while the exact p = 0.0625 does not reject. The nominal 95% does not guarantee 95% coverage at such sizes. A pre-registered analysis must say in advance which one decides.</p>
+
+  <h3>Agreement: Cohen's &kappa;</h3>
+  <p>Cohen defined &kappa; = (p<sub>o</sub> &minus; p<sub>e</sub>)/(1 &minus; p<sub>e</sub>), where p<sub>o</sub> is the observed share of agreement and p<sub>e</sub> the agreement expected by chance from the two raters' marginal rates <a class="cite" data-c="cohen1960"></a>. Because p<sub>e</sub> depends on the marginals, the same raw agreement gives very different &kappa; values when one label is rare (calculator 4). We therefore report &kappa; together with the raw agreement and the false-accept count with its denominator, by arm. The author is the reference here, which is not the same as the truth.</p>
+</section>
+
+<!-- ===================== Level 3 ===================== -->
+<section class="step" id="l3" data-nav="L3"><div class="kicker"><span class="lv">Level 3</span>our thesis</div>
+  <h2>The rules our thesis fixed in advance</h2>
+  <p class="who">What the protocol says, word for word where it matters. These are planning rules, not results.</p>
+  <div class="ours"><b class="h">The two tests</b>On the locked primary stratum (prerequisite and cross-concept questions), H1: the typed hybrid H has a higher fully-correct rate than the text retriever R; H2: H has a higher rate than H-collapsed (the same retrieval code on the same graph with the three relation labels collapsed to one). Every test is an exact one-sided McNemar test on (<i>b</i>, <i>c</i>) at &alpha; = 0.05, for every value of <i>b</i> + <i>c</i> (no chi-square switch). Each report gives <i>b</i>, <i>c</i>, the p-value and the sidedness.</div>
+  <div class="ours"><b class="h">The decision</b>H1 is tested first; H2 only if H1 is rejected. The claim holds if and only if both are rejected. If H1 is not rejected, H2 is not tested. If H1 is rejected and H2 is not, the thesis says: "the graph helps under this cap; the labels add no detectable gain" (no evidence of an extra gain, which is not evidence of none). &delta; = 0.10 is a planning value for the sample size, not a minimum important effect.</div>
+  <div class="ours"><b class="h">The sample size</b>Planning value &psi; = 0.30 for both contrasts. The exact minimum for power 0.90 is <b>269</b> (power 0.9000); the target is <b>270</b> (power 0.9010), which gives a joint power of at least 0.802. For power 0.80 the minimum is 199. The pilot can only raise the target (if the one-sided 80% upper Clopper-Pearson bound of the pilot &psi; is above 0.30), never lower it. A second model family recomputed these numbers and corrected the earlier table, whose values were not exact minima (for &psi; = 0.30: 202 &rarr; 199 and 270 &rarr; 269); 270 stays as the target.</div>
+  <div class="ours"><b class="h">Inconclusive, not no-effect</b>The expected supply is about 100 to 160 primary questions, below the target. The status line therefore says in advance: "below that target, a non-rejection is reported as inconclusive and not as evidence of no effect. A null or negative result is a finding." At &psi; between 0.20 and 0.30, independent items assumed, the exact test has power 0.80 for true differences of &Delta; &asymp; 0.115-0.141 with 100 questions, 0.101-0.124 with 130 and 0.091-0.112 with 160.</div>
+  <div class="ours"><b class="h">Intervals and independence</b>A paired cluster bootstrap (10,000 resamples, fixed seed) gives two-sided 95% percentile intervals; they never decide. The primary stratum keeps at most one item per source cluster (one homework stem, one book exercise). The test and the power numbers assume independent items; the cluster rule reduces dependence but cannot prove independence.</div>
+  <div class="ours"><b class="h">The judge check</b>On a blinded, arm-stratified sample of 40 to 60 open answers, the author's labels are compared with the judge's: Cohen's &kappa; and the false-accept rate (answers that the judge calls fully correct and the author does not), by arm. If false accepts exceed 0.15, or differ between arms by more than 0.10, the judge prompt gets one repair and a re-check; if it still fails, the primary endpoint becomes the multiple-choice items only, decided before the main run.</div>
+  <div class="ours"><b class="h">What is not tested</b>Strata, the other arms (closed book, LightRAG, exploratory variants), faithfulness and recall are reported as estimates with intervals and no p-values. They make no confirmatory claims, so the family stays at two tests and no multiplicity procedure such as Holm's is needed.</div>
+  <p>The running example shows why these rules exist. Our chunking pilot had 40 questions and an observed &psi; &asymp; 0.175; its best-looking contrast (5 vs 2, direction chosen after seeing the data) gave a tail of about 0.23 and an interval from &minus;5 to +20 points. With 40 questions, &psi; = 0.30 and a true gain of 10 points, the power would be only about 0.22: such a run usually can neither establish nor exclude a 10-point gain. Writing the decision rule, the sample-size target and the "inconclusive" wording before the main run is what keeps such a result honest.</p>
+</section>
+
+<!-- ===================== Quiz ===================== -->
+<section class="step" id="lq" data-nav="Quiz"><div class="kicker"><span class="lv">Quiz</span>five questions</div>
+  <h2>Check yourself</h2>
+  <div class="quiz" id="quiz"></div>
+</section>
+
+<section class="step" id="ls" data-nav="Sources"><div class="kicker">Sources</div>
+  <h2>Sources</h2>
+  <p class="small muted">Each source with what we checked. "Read" means we read the cited place in the primary text; otherwise the metadata was checked and the claim is marked.</p>
+  <ol id="src-list"></ol>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <p><b>Provenance.</b> Computed: every p-value, power value, interval and &kappa; on this page (browser code checked against a Python reference, which agrees with SciPy). Real data: the 2&times;2 counts of the chunking pilot (40 CS 156 homework questions; the outcome is an LLM judge's grade of the retrieved text, not of an answer, and no human checked the grades; the pilot pre-registered no test, so its p-values here are a teaching example). Ours: the thesis protocol (planning values, not results) and the illustrative agreement tables.</p>
+</div></footer>
+
+<script id="stats-core">
+// Exact McNemar p-values, exact power, Cohen's kappa and a seeded RNG for the page. Same maths as data/stats_core.py;
+// node data/check_js.mjs compares every value with data/fixture.json and copies this file into build/index.html (--sync).
+(function (root) {
+  const LF = [0];
+  const lf = n => { for (let i = LF.length; i <= n; i++) LF[i] = LF[i - 1] + Math.log(i); return LF[n]; };
+  const lchoose = (n, k) => lf(n) - lf(k) - lf(n - k);
+  const pmf = (k, n, p) => p <= 0 ? +(k === 0) : p >= 1 ? +(k === n) : Math.exp(lchoose(n, k) + k * Math.log(p) + (n - k) * Math.log1p(-p));
+  // P(B >= b), B ~ Bin(m, 1/2): sum of exp(lchoose - m ln2), summed from the small terms up for accuracy
+  const tailHalf = (b, m) => { if (b <= 0) return 1; if (b > m) return 0; let s = 0; for (let k = m; k >= b; k--) s += Math.exp(lchoose(m, k) - m * Math.LN2); return Math.min(1, s); };
+  const pExact = (b, c) => b + c === 0 ? 1 : tailHalf(b, b + c);
+  const pMid = (b, c) => b + c === 0 ? 1 : tailHalf(b, b + c) - 0.5 * Math.exp(lchoose(b + c, b) - (b + c) * Math.LN2);
+  const pTwo = (b, c) => { const m = b + c; if (!m) return 1; const lo = Math.min(b, c); let s = 0; for (let k = 0; k <= lo; k++) s += Math.exp(lchoose(m, k) - m * Math.LN2); return Math.min(1, 2 * s); };
+  // normal upper tail via erfc (Numerical Recipes erfcc, |error| < 1.2e-7)
+  const erfc = x => { const z = Math.abs(x), t = 1 / (1 + 0.5 * z);
+    const r = t * Math.exp(-z * z - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+    return x >= 0 ? r : 2 - r; };
+  const normSf = z => 0.5 * erfc(z / Math.SQRT2);
+  const pAsym = (b, c, cc) => { const m = b + c; if (!m) return 1; return normSf((cc ? b - c - 1 : b - c) / Math.sqrt(m)); };
+  const CR = {};
+  const crit = (m, a = 0.05) => { const k = m + "|" + a; if (k in CR) return CR[k]; let t = 0, out = 0;
+    for (let b = m; b >= 0; b--) { t += Math.exp(lchoose(m, b) - m * Math.LN2); if (t > a + 1e-12) { out = b + 1; break; } }
+    return (CR[k] = out); };
+  function power(n, psi, delta, a = 0.05) {
+    if (!(psi > 0 && psi <= 1 && Math.abs(delta) <= psi)) return NaN;
+    const q = (psi + delta) / (2 * psi); let tot = 0;
+    for (let m = 0; m <= n; m++) { const w = pmf(m, n, psi); if (w < 1e-300) continue; const k = crit(m, a); if (k > m) continue;
+      let s = 0; for (let b = k; b <= m; b++) s += pmf(b, m, q); tot += w * s; }
+    return tot;
+  }
+  const nFor = (psi, delta, target, a = 0.05, hi = 1500) => { for (let n = 1; n < hi; n++) if (power(n, psi, delta, a) >= target) return n; return null; };
+  function kappa(t) { const N = t.flat().reduce((x, y) => x + y, 0), k = t.length; if (!N) return [NaN, NaN, NaN];
+    let po = 0, pe = 0; for (let i = 0; i < k; i++) { po += t[i][i]; pe += t[i].reduce((x, y) => x + y, 0) * t.reduce((x, r) => x + r[i], 0); }
+    po /= N; pe /= N * N; return [(po - pe) / (1 - pe), po, pe]; }
+  // ideal paired bootstrap (every resample, exact): q-quantile of (B - C)/n, (B, C, rest) ~ Multinomial(n; b/n, c/n, rest)
+  function bootQuantile(b, c, n, q) { const pb = b / n, pc = c / n, pr = 1 - pb - pc, L = Math.log, dist = new Map();
+    for (let i = 0; i <= n; i++) for (let j = 0; i + j <= n; j++) { const r = n - i - j;
+      if ((i && pb === 0) || (j && pc === 0) || (r && pr <= 0)) continue;
+      const lw = lf(n) - lf(i) - lf(j) - lf(r) + (i ? i * L(pb) : 0) + (j ? j * L(pc) : 0) + (r ? r * L(pr) : 0);
+      dist.set(i - j, (dist.get(i - j) || 0) + Math.exp(lw)); }
+    const ks = [...dist.keys()].sort((x, y) => x - y); let acc = 0;
+    for (const d of ks) { acc += dist.get(d); if (acc >= q - 1e-12) return d / n; } return ks[ks.length - 1] / n; }
+  // mulberry32: small seeded RNG for the fixed-sequence simulation
+  const rng = seed => () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  root.Stats = {pmf, pExact, pMid, pTwo, pAsym, crit, power, nFor, kappa, rng, bootQuantile};
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+<script>
+(() => {
+const S = window.Stats, $ = id => document.getElementById(id), DATA = new URLSearchParams(location.search).get("data") || "../data";
+const f3 = x => isFinite(x) ? (x < 0.001 && x > 0 ? x.toExponential(2) : x.toFixed(3)) : "n/a", pct = x => (100 * x).toFixed(1) + "%";
+const esc = s => String(s).replace(/[&<>"]/g, ch => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"})[ch]);
+const wOf = id => Math.max(340, Math.min(780, ($(id) && $(id).clientWidth) || 780));
+const svgEl = (w, h, inner, label) => `<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(label)}">${inner}</svg>`;
+
+/* nav */
+const nav = $("nav");
+document.querySelectorAll("section[data-nav]").forEach(s => { const a = document.createElement("a"); a.href = "#" + s.id; a.textContent = s.dataset.nav; nav.appendChild(a); });
+const spy = () => { let cur = null; document.querySelectorAll("section[data-nav]").forEach(s => { if (s.getBoundingClientRect().top < innerHeight * .35) cur = s.id; });
+  nav.querySelectorAll("a").forEach(a => a.classList.toggle("on", a.hash === "#" + cur)); };
+addEventListener("scroll", spy, {passive: true}); spy();
+
+/* running example: data/running-example.json (fallback: the same numbers) */
+let EX = {n: 40, contrasts: [{arm: "sentence", both: 7, b_section_only: 5, c_arm_only: 2, neither: 26, boot95_section_minus_arm: [0.075, -0.05, 0.2]}]};
+const ex = () => EX.contrasts.find(c => c.arm === "sentence");
+function drawExample() {
+  const e = ex();
+  $("ex-table").innerHTML = `<tr><th></th><th>sentence rule correct</th><th>sentence rule wrong</th></tr>
+   <tr><th>our section rule correct</th><td class="conc"><b>${e.both}</b><small>both right</small></td><td class="disc"><b>${e.b_section_only}</b><small><i>b</i>: only ours</small></td></tr>
+   <tr><th>our section rule wrong</th><td class="disc"><b>${e.c_arm_only}</b><small><i>c</i>: only sentence</small></td><td class="conc"><b>${e.neither}</b><small>both wrong</small></td></tr>`;
+  $("ex-cap").textContent = `Real counts from the pilot: ${EX.n} questions. Amber cells are the discordant pairs (b + c = ${e.b_section_only + e.c_arm_only}); the faded cells cancel out of the difference.`;
+  // level 0 dots
+  const cells = [].concat(Array(e.both).fill("g"), Array(e.b_section_only).fill("a"), Array(e.c_arm_only).fill("b"), Array(e.neither).fill("g"));
+  const col = {g: "#242B38", a: "#F2A93B", b: "#7C9CFF"}; let s = "";
+  const W0 = wOf("l0-svg"), per = W0 < 600 ? 10 : 20, gap = (W0 - 40) / per, rows = Math.ceil(cells.length / per);
+  cells.forEach((k, i) => { const x = 20 + (i % per) * gap + gap / 2 - 10, y = 22 + Math.floor(i / per) * 34; s += `<circle cx="${x}" cy="${y}" r="12" fill="${col[k]}"/>`; });
+  const ty = 22 + rows * 34;
+  s += `<text x="20" y="${ty}" fill="#98A0B0">${e.both + e.neither} agree (grey) · ${e.b_section_only} only A (amber) · ${e.c_arm_only} only B (blue)</text>`;
+  $("l0-svg").innerHTML = svgEl(W0, ty + 10, s, "40 questions as dots; 7 discordant");
+}
+
+/* 1. McNemar live */
+const MC = {a: 7, b: 5, c: 2, d: 26};
+const MCPRE = [["Pilot: ours vs sentence", 7, 5, 2, 26], ["4 vs 0", 10, 4, 0, 26], ["15 vs 5", 60, 15, 5, 20], ["a thesis-sized result", 100, 40, 22, 108], ["no disagreements", 20, 0, 0, 20]];
+$("mc-pre").innerHTML = MCPRE.map((p, i) => `<button type="button" data-i="${i}">${p[0]}</button>`).join("");
+$("mc-pre").onclick = ev => { const i = ev.target.dataset.i; if (i == null) return; [MC.a, MC.b, MC.c, MC.d] = MCPRE[i].slice(1); mcSet(); mcDraw(); };
+const mcSet = () => ["a", "b", "c", "d"].forEach(k => $("mc-" + k).value = MC[k]);
+["a", "b", "c", "d"].forEach(k => $("mc-" + k).addEventListener("input", () => { const v = Math.max(0, Math.min(400, Math.floor(+$("mc-" + k).value || 0))); MC[k] = v; mcDraw(); }));
+function mcDraw() {
+  const {a, b, c, d} = MC, m = b + c, n = a + b + c + d;
+  // binomial bars Bin(m, 1/2)
+  const W = wOf("mc-svg"), H = 190, L = 20, B = 160; let s = "";
+  if (m > 0) {
+    const ps = Array.from({length: m + 1}, (_, k) => S.pmf(k, m, 0.5)), mx = Math.max(...ps), bw = (W - L - 10) / (m + 1);
+    ps.forEach((p, k) => { const h = (p / mx) * (B - 20), x = L + k * bw; s += `<rect x="${x + bw * .1}" y="${B - h}" width="${Math.max(1, bw * .8)}" height="${h}" fill="${k >= b ? "#F2A93B" : "#242B38"}"/>`;
+      if (k % Math.ceil((m + 1) / (W < 600 ? 10 : 20)) === 0) s += `<text x="${x + bw / 2}" y="${B + 14}" text-anchor="middle" fill="#98A0B0">${k}</text>`; });
+    s += `<text x="${L}" y="12" fill="#98A0B0">If H0 is true: b given b + c = ${m} (a fair coin tossed ${m} times)</text><text x="${W - 10}" y="${B + 28}" text-anchor="end" fill="#98A0B0">b (heads)</text>`;
+  } else s = `<text x="${L}" y="60" fill="#98A0B0">No discordant pairs: the test has nothing to read (p = 1).</text>`;
+  $("mc-svg").innerHTML = svgEl(W, H, s, "Binomial distribution of b under the null hypothesis");
+  const pe = S.pExact(b, c);
+  let boot = "";
+  if (n > 0 && n <= 400) { const lo = S.bootQuantile(b, c, n, 0.025), hi = S.bootQuantile(b, c, n, 0.975); boot = `<br>difference (b − c)/n = <b>${(100 * (b - c) / n).toFixed(1)} points</b> of ${n} questions; ideal bootstrap 95% percentile interval <b>[${(100 * lo).toFixed(1)}, ${(100 * hi).toFixed(1)}]</b>${lo > 0 && pe > 0.05 ? ' <span class="tag bad">interval excludes 0, test does not reject</span>' : ""}`; }
+  $("mc-out").innerHTML = `exact one-sided p = P(B ≥ ${b} | ${m}) = <b>${f3(pe)}</b> (decides)<br>mid-p ${f3(S.pMid(b, c))} · normal approximation ${f3(S.pAsym(b, c))} · with Edwards' correction ${f3(S.pAsym(b, c, true))} · exact two-sided ${f3(S.pTwo(b, c))}${boot}`;
+  const v = $("mc-verdict"); v.className = "verdict " + (pe <= 0.05 ? "rej" : "no");
+  v.textContent = pe <= 0.05 ? "p ≤ 0.05: reject H0 (the first arm is better, at α = 0.05, one-sided)." : "p > 0.05: do not reject H0. Without enough power this is inconclusive, not evidence of no difference.";
+}
+
+/* 2. Power */
+const PW = {psi: 0.30, del: 0.10, n: 270};
+const PWPRE = [["Thesis plan: ψ 0.30, δ 0.10, n 270", 0.30, 0.10, 270], ["Likely supply: n 130", 0.30, 0.10, 130], ["Our pilot: ψ 0.175, δ 0.075, n 40", 0.175, 0.075, 40], ["Lower discordance: ψ 0.15", 0.15, 0.10, 130]];
+$("pw-pre").innerHTML = PWPRE.map((p, i) => `<button type="button" data-i="${i}">${p[0]}</button>`).join("");
+$("pw-pre").onclick = ev => { const i = ev.target.dataset.i; if (i == null) return; [PW.psi, PW.del, PW.n] = PWPRE[i].slice(1); pwSet(); pwDraw(); };
+const pwSet = () => { $("pw-psi").value = PW.psi; $("pw-del").value = PW.del; $("pw-n").value = PW.n; };
+[["psi", "pw-psi"], ["del", "pw-del"], ["n", "pw-n"]].forEach(([k, id]) => $(id).addEventListener("input", () => { PW[k] = +$(id).value; if (k === "psi" && PW.del > PW.psi) PW.del = PW.psi; if (k === "del" && PW.del > PW.psi) PW.psi = PW.del; pwSet(); pwDraw(); }));
+let pwJob = 0;
+function pwDraw() {
+  const {psi, del, n} = PW; $("pw-psi-v").textContent = psi.toFixed(2); $("pw-del-v").textContent = del.toFixed(3); $("pw-n-v").textContent = n;
+  const W = wOf("pw-svg"), H = 220, L = 40, R = 14, T = 12, B = 186, X = v => L + (v - 10) / 590 * (W - L - R), Y = p => B - p * (B - T);
+  let s = `<line x1="${L}" y1="${B}" x2="${W - R}" y2="${B}" stroke="#242B38"/>`;
+  [0.8, 0.9].forEach(p => s += `<line x1="${L}" y1="${Y(p)}" x2="${W - R}" y2="${Y(p)}" stroke="#68707F" stroke-dasharray="4 4"/><text x="${L - 4}" y="${Y(p) + 4}" text-anchor="end" fill="#98A0B0">${p}</text>`);
+  s += `<text x="${L - 4}" y="${B + 4}" text-anchor="end" fill="#98A0B0">0</text><text x="${L - 4}" y="${T + 8}" text-anchor="end" fill="#98A0B0">1</text>`;
+  (W < 600 ? [10, 200, 400, 600] : [10, 100, 200, 300, 400, 500, 600]).forEach(v => s += `<text x="${X(v)}" y="${B + 16}" text-anchor="middle" fill="#98A0B0">${v}</text>`);
+  const pts = []; for (let v = 10; v <= 600; v += 10) pts.push([v, S.power(v, psi, del)]);
+  s += `<polyline fill="none" stroke="#3CC7B4" stroke-width="2" points="${pts.map(([v, p]) => X(v).toFixed(1) + "," + Y(p).toFixed(1)).join(" ")}"/>`;
+  const pn = S.power(n, psi, del);
+  s += `<line x1="${X(n)}" y1="${T}" x2="${X(n)}" y2="${B}" stroke="#F2A93B"/><circle cx="${X(n)}" cy="${Y(pn)}" r="5" fill="#F2A93B"/><text x="${W - R}" y="${B + 30}" text-anchor="end" fill="#98A0B0">questions n</text>`;
+  $("pw-svg").innerHTML = svgEl(W, H + 14, s, "Exact power against the number of questions");
+  $("pw-out").innerHTML = `power at n = ${n}: <b>${pn.toFixed(4)}</b> · expected disagreements ψn ≈ ${(psi * n).toFixed(0)}<br><span id="pw-min">smallest n for 0.80 / 0.90: computing…</span>`;
+  const job = ++pwJob; let n8 = null, n9 = null, v = 1;
+  const step = () => { if (job !== pwJob) return; const end = Math.min(v + 40, 1500);
+    for (; v < end; v++) { const p = S.power(v, psi, del); if (n8 === null && p >= 0.8) n8 = v; if (p >= 0.9) { n9 = v; break; } }
+    if (n9 !== null || v >= 1500) { const el = $("pw-min"); if (el) el.innerHTML = `smallest n for 0.80 / 0.90: <b>${n8 ?? "> 1,500"}</b> / <b>${n9 ?? "> 1,500"}</b>`; return; }
+    setTimeout(step, 0); };
+  setTimeout(step, 0);
+}
+
+/* 3. Fixed sequence */
+const FS = {n: 270, psi: 0.30, d1: 0.10, d2: 0.10};
+const fsSet = () => { $("fs-n").value = FS.n; $("fs-psi").value = FS.psi; $("fs-d1").value = FS.d1; $("fs-d2").value = FS.d2;
+  $("fs-n-v").textContent = FS.n; $("fs-psi-v").textContent = FS.psi.toFixed(2); $("fs-d1-v").textContent = FS.d1.toFixed(2); $("fs-d2-v").textContent = FS.d2.toFixed(2); };
+[["n", "fs-n"], ["psi", "fs-psi"], ["d1", "fs-d1"], ["d2", "fs-d2"]].forEach(([k, id]) => $(id).addEventListener("input", () => { FS[k] = +$(id).value;
+  if (FS.d1 > FS.psi) FS.d1 = FS.psi; if (FS.d2 > FS.psi) FS.d2 = FS.psi; fsSet(); }));
+$("fs-null").onclick = () => { FS.d2 = 0; fsSet(); fsRun(); };
+$("fs-run").onclick = () => fsRun();
+function binom(r, n, p) { let k = 0; for (let i = 0; i < n; i++) if (r() < p) k++; return k; }
+function oneTest(r, n, psi, d, a) { const D = binom(r, n, psi), b = binom(r, D, (psi + d) / (2 * psi)); return D > 0 && b >= S.crit(D, a); }
+function fsRun() {
+  const {n, psi, d1, d2} = FS, r = S.rng(12345), N = 2000; let h1 = 0, both = 0, bon = 0, dots = "";
+  for (let i = 0; i < N; i++) { const A = oneTest(r, n, psi, d1, 0.05), Bt = oneTest(r, n, psi, d2, 0.05);
+    const A2 = oneTest(r, n, psi, d1, 0.025), B2 = oneTest(r, n, psi, d2, 0.025);
+    if (A) h1++; if (A && Bt) both++; if (A2 && B2) bon++;
+    if (i < 120) dots += `<i class="${A && Bt ? "both" : A ? "h1" : ""}"></i>`; }
+  $("fs-dots").innerHTML = dots;
+  const p1 = S.power(n, psi, d1), p2 = d2 > 0 ? S.power(n, psi, d2) : NaN;
+  const nullLine = d2 === 0 ? `<br>H2's null is true here: the share of studies that wrongly claim "labels help" is <b>${pct(both / N)}</b> (at most 5%; it is ${pct(h1 / N)} × at most 5%).` : `<br>exact power: H1 ${p1.toFixed(3)}, H2 ${p2.toFixed(3)}; bound for both ≥ ${Math.max(0, p1 + p2 - 1).toFixed(3)}; if independent, ${(p1 * p2).toFixed(3)}`;
+  $("fs-out").innerHTML = `of ${N.toLocaleString("en")} simulated studies: H1 rejected <b>${pct(h1 / N)}</b> · both rejected (claim holds) <b>${pct(both / N)}</b>${nullLine}<br>with a Bonferroni split (α = 0.025 each), both rejected: ${pct(bon / N)}`;
+}
+
+/* 4. kappa */
+const KP = {a: 20, b: 5, c: 10, d: 15};
+const KPPRE = [["Illustrative: κ 0.40", 20, 5, 10, 15], ["High agreement, low κ", 45, 3, 2, 0], ["Near-perfect", 24, 1, 1, 24]];
+$("kp-pre").innerHTML = KPPRE.map((p, i) => `<button type="button" data-i="${i}">${p[0]}</button>`).join("");
+$("kp-pre").onclick = ev => { const i = ev.target.dataset.i; if (i == null) return; [KP.a, KP.b, KP.c, KP.d] = KPPRE[i].slice(1); kpSet(); kpDraw(); };
+const kpSet = () => ["a", "b", "c", "d"].forEach(k => $("kp-" + k).value = KP[k]);
+["a", "b", "c", "d"].forEach(k => $("kp-" + k).addEventListener("input", () => { KP[k] = Math.max(0, Math.floor(+$("kp-" + k).value || 0)); kpDraw(); }));
+function kpDraw() { const {a, b, c, d} = KP, N = a + b + c + d, [k, po, pe] = S.kappa([[a, b], [c, d]]);
+  $("kp-out").innerHTML = N ? `observed agreement p<sub>o</sub> = <b>${pct(po)}</b> · chance agreement p<sub>e</sub> = ${pct(pe)} · <b>κ = ${isFinite(k) ? k.toFixed(3) : "undefined (p_e = 1)"}</b><br>false accepts (judge says fully correct, author does not): <b>${b}</b>; that is ${b + d ? pct(b / (b + d)) : "n/a"} of the ${b + d} answers the author rejects (one possible denominator; the protocol must fix it)` : "enter counts"; }
+
+/* quiz */
+const QUIZ = [
+ {q: "Two arms answer the same 100 questions. Arm A is right on 60, arm B on 55. Which numbers does McNemar's test need?", o: ["60 and 55", "The number of questions where only A is right and where only B is right", "The 100 questions and the 5-point difference"], a: 1,
+  f: "Only the discordant counts b and c enter the test. The same 60 and 55 can come from b = 5, c = 0 (one-sided exact p = 0.031) or from b = 25, c = 20 (p = 0.28)."},
+ {q: "The exact test gives p = 0.23. What may you write?", o: ["The probability that the arms are equally good is 23%.", "The arms are equally good.", "If the arms were equally good, then, given the disagreements, a split at least this favourable to the first arm would happen about 23% of the time; we did not reject H0."], a: 2,
+  f: "A p-value is computed assuming H0; it is not the probability of H0, and a non-rejection is not evidence of no effect, least of all with low power."},
+ {q: "Why does the thesis need 270 questions and not 40?", o: ["Because McNemar's test only works above 200 pairs.", "So that, if the planning values hold (ψ = 0.30, true difference 0.10), each test rejects with probability at least 0.90.", "Because the bootstrap needs 10,000 resamples."], a: 1,
+  f: "The exact test is valid at any size; the size is set by power. At 40 questions the power for these values is only about 0.22."},
+ {q: "The thesis tests H1 and then H2, each at α = 0.05, without splitting α. Why is that allowed?", o: ["Because H2 is tested only after H1 is rejected, and the claim needs both rejections.", "Because one-sided tests do not need corrections.", "Because the two tests use different questions."], a: 0,
+  f: "Fixed-sequence testing keeps the family-wise error at α for the two statements, and for the joint claim the intersection-union principle gives a level-α test without adjustment. Both use the same questions."},
+ {q: "With 40 questions, b = 4 and c = 0, the percentile interval from resampling questions excludes 0, but the exact one-sided p is 0.0625. What does the thesis conclude?", o: ["Reject H0, because the interval excludes 0.", "Do not reject H0: the pre-registered test decides; the interval is reported as an estimate.", "Run more bootstrap resamples until they agree."], a: 1,
+  f: "The protocol fixes in advance that the exact test decides. Choosing the method after seeing the results would inflate the error rate."}
+];
+$("quiz").innerHTML = QUIZ.map((q, i) => `<div class="q"><p><b>${i + 1}.</b> ${q.q}</p><div class="opts">${q.o.map((o, j) => `<button type="button" data-q="${i}" data-j="${j}">${o}</button>`).join("")}</div><p class="fb" id="fb${i}">${q.f}</p></div>`).join("");
+$("quiz").onclick = ev => { const t = ev.target.closest("button"); if (!t) return; const i = +t.dataset.q, j = +t.dataset.j;
+  t.classList.add(j === QUIZ[i].a ? "right" : "wrong"); if (j === QUIZ[i].a) $("fb" + i).style.display = "block"; };
+
+/* citations and sources: data/sources.json + data/claims.json */
+function cites(src, claims) {
+  const ver = {}; claims.forEach(c => { ver[c.source] = ver[c.source] || !!c.verified; });
+  document.querySelectorAll("a.cite").forEach(a => { const [k, loc] = (a.dataset.c || "").split("|"), s = src[k];
+    if (!s) { a.textContent = "[" + k + "]"; return; }
+    a.textContent = "[" + s.short + (loc ? ", " + loc : "") + "]"; a.href = s.doi ? "https://doi.org/" + s.doi : (s.url || "#ls"); a.target = "_blank"; a.rel = "noopener";
+    if (!ver[k]) a.classList.add("unv"); });
+  const used = [...new Set([...document.querySelectorAll("a.cite")].map(a => a.dataset.c.split("|")[0]))];
+  $("src-list").innerHTML = used.filter(k => src[k]).map(k => { const s = src[k], cs = claims.filter(c => c.source === k);
+    return `<li><b>${esc(s.short)}</b>. ${esc(s.title || "")}. <i>${esc(s.venue || "")}</i>. ${s.doi ? `<a href="https://doi.org/${esc(s.doi)}" target="_blank" rel="noopener">doi:${esc(s.doi)}</a>` : s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener">link</a>` : ""}
+      ${cs.map(c => `<br><span class="tag ${c.verified ? "ok" : "bad"}">${c.verified ? "read" : "not read"}</span> ${esc(c.claim)}${c.locator ? " (" + esc(c.locator) + ")" : ""}`).join("")}</li>`; }).join("");
+}
+
+Promise.all(["running-example.json", "power-table.json", "sources.json", "claims.json"].map(f => fetch(DATA + "/" + f).then(r => r.ok ? r.json() : null).catch(() => null)))
+.then(([ex1, pt, src, cl]) => {
+  if (ex1) EX = ex1; drawExample();
+  if (pt) $("pw-table").innerHTML = `<tr><th>ψ</th>${pt.rows.map(r => `<th>${r.psi.toFixed(2)}</th>`).join("")}</tr><tr><td>n for power 0.80</td>${pt.rows.map(r => `<td class="n">${r.n80}</td>`).join("")}</tr><tr><td>n for power 0.90</td>${pt.rows.map(r => `<td class="n">${r.n90}</td>`).join("")}</tr>`;
+  if (src) cites(src.sources || {}, (cl && (cl.claims || cl)) || []); else document.querySelectorAll("a.cite").forEach(a => a.textContent = "[" + a.dataset.c.split("|")[0] + "]");
+});
+drawExample(); mcSet(); mcDraw(); pwSet(); pwDraw(); fsSet(); fsRun(); kpSet(); kpDraw();
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

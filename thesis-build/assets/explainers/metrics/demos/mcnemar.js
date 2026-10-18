@@ -75,18 +75,18 @@
 
   function gauge(K, ex, cc, pl) {   // p-value bars on a log-ish scale, line at 0.05
     const W = 600, svg = K.svg('svg', { viewBox: '0 0 600 110', width: '100%', role: 'img', 'aria-label': 'p-values of the three versions of the test' });
-    const X = p => 90 + (1 - Math.min(1, Math.max(0, p))) * 0 + Math.min(1, p) * 470;
+    const X = p => 130 + Math.min(1, Math.max(0, p)) * 430;   // bars start at x=130 so the longest label ("chi2 (corrected)") does not touch them
     [['exact', ex, 'var(--he)'], ['chi2 (corrected)', cc, 'var(--ai)'], ['chi2 (plain)', pl, 'var(--warn)']].forEach(([n, p, col], i) => {
       const y = 12 + i * 28;
       svg.append(K.svg('text', { x: 0, y: y + 13 }, n));
-      svg.append(K.svg('rect', { x: 90, y, width: 470, height: 16, fill: 'var(--panel2)', stroke: 'var(--line)' }));
-      svg.append(K.svg('rect', { x: 90, y, width: Math.max(2, X(p) - 90), height: 16, fill: col, opacity: 0.8 }));
-      svg.append(K.svg('text', { x: Math.min(X(p) + 4, 520), y: y + 13 }, sg(p)));
+      svg.append(K.svg('rect', { x: 130, y, width: 430, height: 16, fill: 'var(--panel2)', stroke: 'var(--line)' }));
+      svg.append(K.svg('rect', { x: 130, y, width: Math.max(2, X(p) - 130), height: 16, fill: col, opacity: 0.8 }));
+      svg.append(K.svg('text', { x: Math.min(X(p) + 4, 560), y: y + 13 }, sg(p)));
     });
     svg.append(K.svg('line', { x1: X(0.05), x2: X(0.05), y1: 6, y2: 98, stroke: 'var(--text)', 'stroke-dasharray': '4 3' }));
     svg.append(K.svg('text', { x: X(0.05) + 4, y: 106 }, 'p = 0.05'));
-    svg.append(K.svg('text', { x: 90, y: 106 }, '0'));
-    svg.append(K.svg('text', { x: 548, y: 106 }, '1'));
+    svg.append(K.svg('text', { x: 130, y: 106 }, '0'));
+    svg.append(K.svg('text', { x: 560, y: 106 }, '1'));
     return svg;
   }
 

@@ -1,0 +1,1394 @@
+{
+ "meta": {
+  "answer_model": "deepseek/deepseek-v4-flash",
+  "judge": "openai/gpt-oss-120b",
+  "ragas": "0.4.3",
+  "retriever": "BM25Okapi (rank-bm25, k1=1.5, b=0.75 defaults), lowercase word tokens, small stop list",
+  "k": 3,
+  "corpus": {
+   "chunks": 1076,
+   "lectures": 18,
+   "run": "thesis-pipeline cs156-pilot"
+  },
+  "hhem": [
+   "vectara/hallucination_evaluation_model",
+   "de9a5e6ba9ba49531a022dba17e35ffeb2a6fad8"
+  ],
+  "minicheck": "lytang/MiniCheck-Flan-T5-Large via minicheck @b58b9fa69acbd1015ec970fa65dd752413a053d2",
+  "transformers": "5.16.1",
+  "nli_seconds": 525.4,
+  "where": "retrieval and API calls from the Mac; HHEM and MiniCheck on a Kaggle CPU (private kernel, deleted after the run)",
+  "ragas_part_rc": 0
+ },
+ "summary": {
+  "n": 3,
+  "fully_correct": 2,
+  "answer_usd": 0.000299,
+  "usd_per_correct": 0.000149
+ },
+ "items": [
+  {
+   "id": "Q17",
+   "stratum": "CROSS",
+   "format": "open-forum",
+   "source": "Cross Validated question 29130, accepted answer 31334",
+   "licence": "CC BY-SA 4.0 (stats.stackexchange.com; answer text shown with attribution, HTML stripped)",
+   "url": "https://stats.stackexchange.com/questions/29130",
+   "question": "In the context of neural networks, what is the difference between the learning rate and weight decay?",
+   "options": null,
+   "reference": "The learning rate is a parameter that determines how much an updating step influences the current value of the weights. While weight decay is an additional term in the weight update rule that causes the weights to exponentially decay to zero, if no other update is scheduled. So let's say that we have a cost or error function $E(\\mathbf{w})$ that we want to minimize. Gradient descent tells us to modify the weights $\\mathbf{w}$ in the direction of steepest descent in $E$: \\begin{equation} w_i \\leftarrow w_i-\\eta\\frac{\\partial E}{\\partial w_i}, \\end{equation} where $\\eta$ is the learning rate, and if it's large you will have a correspondingly large modification of the weights $w_i$ (in general it shouldn't be too large, otherwise you'll overshoot the local minimum in your cost function). In order to effectively limit the number of free parameters in your model so as to avoid over-fitting, it is possible to regularize the cost function. An easy way to do that is by introducing a zero mean Gaussian prior over the weights, which is equivalent to changing the cost function to $\\widetilde{E}(\\mathbf{w})=E(\\mathbf{w})+\\frac{\\lambda}{2}\\mathbf{w}^2$. In practice this penalizes large weights and effectively limits the freedom in your model. The regularization parameter $\\lambda$ determines how you trade off the original cost $E$ with the large weights penalization. Applying gradient descent to this new cost function we obtain: \\begin{equation} w_i \\leftarrow w_i-\\eta\\frac{\\partial E}{\\partial w_i}-\\eta\\lambda w_i. \\end{equation} The new term $-\\eta\\lambda w_i$ coming from the regularization causes the weight to decay in proportion to its size.",
+   "reference_letter": null,
+   "required_concepts": [
+    "learning rate",
+    "weight decay",
+    "neural networks"
+   ],
+   "lectures_tagged": [
+    9,
+    10,
+    12
+   ],
+   "contexts": [
+    {
+     "rank": 1,
+     "lecture": 12,
+     "ts": "00:40:00",
+     "bm25": 22.792,
+     "n_chars": 1598,
+     "text": "The choice of lambda will be extremely principled, based on validation. And that will be the saving grace, if our heuristic choice for the regularizer is not that great, as we will see in a moment. If you want to characterize what's happening as you increase lambda, here we started with overfitting. That was the problem we were trying to solve. And we solved it. And we solved it all too well. We are certainly not overfitting here. But the problem is that we went to the other extreme. And now we are underfitting, just as bad. So the proper choice of lambda is important. Now, the regularizer that I described to you is the most famous regularizer in machine learning. And it's called weight decay. And the name is not very strange, because we're trying to get the weights to be small, so decay is not a far term. But I would like to understand why it is actually called, specifically, decay. The reason is the following. Let's say that you are not in a neat, linear case like that. Let's say you are doing this in a neural network. And in neural networks, weight decay-- trying to minimize w transposed w, is a very important regularization method. We know that in neural networks, you don't have a neat closed-form solution, and you use gradient descent. So let's say you use gradient descent on this. And let's say just batch gradient descent, for the simplicity of the derivation. What do you do? Batch gradient descent, you have a step that takes you from w at time t to w time t plus 1. And they happen to be this minus eta, which is the learning rate, times the gradient. So we just need"
+    },
+    {
+     "rank": 2,
+     "lecture": 9,
+     "ts": "01:00:00",
+     "bm25": 16.681,
+     "n_chars": 1594,
+     "text": "try to make eta proportional to the size of the gradient, so it's bigger when the slope is bigger. That's very convenient, because I have here the size of the gradient sitting there. So if I make eta proportional to the size of our gradient, something will nicely cancel out, and then I will get another eta-- purple eta, which is the new constant. And this guy completely canceled out, and I have a very simple formula. Now it's not a fixed step anymore, but a fixed learning rate, eta now being the learning rate. You just compute the gradient, and use that learning rate, and that will take care of the previous observation. So that's what we have. That's all I'm going to say about gradient descent for this case. And then we're going to go to the more complicated issues of it, when we talk about neural networks next time. So this is how to minimize. And now we have the logistic regression algorithm, written in language. You iterate, you start by initializing at w(0). You iterate for every step. What do you do? You compute the gradient. How do I do that? Oh, I have a formula for the in-sample error. All I need to do is to differentiate it. Differentiating it will not be difficult. You're going to get this-- you can verify it. And now, you are going to take the next weight to be the current weight minus your learning rate times the gradient. That's the formula we had. And then, you go to the next iteration, next iteration, until it's time to stop. And then we return the final weight. That is the algorithm. Now let me spend two minutes summarizing all the linear models in one"
+    },
+    {
+     "rank": 3,
+     "lecture": 9,
+     "ts": "01:25:00",
+     "bm25": 16.271,
+     "n_chars": 514,
+     "text": "then, this becomes part of learning. Now here, we had an explicit nonlinear transformation. When we go to neural networks, we'll find out that they choose features automatically. But that is part of learning, and you are charged for it in terms of VC dimension. So probably, the question will be better answered and understood in the context when I talk about neural networks and hidden layers, and then we'll see what that means. MODERATOR: I think that's it. PROFESSOR: Very good. Then we'll see you on Thursday."
+    }
+   ],
+   "answer": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient [2]. Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting [1]. In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\" [1]. The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient [1][2]. The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+   "answer_stripped": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient. Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting. In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\". The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient. The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+   "recall_at_k": {
+    "k": 3,
+    "tagged": [
+     9,
+     10,
+     12
+    ],
+    "retrieved": [
+     9,
+     12
+    ],
+    "value": 0.6667
+   },
+   "claims": [
+    {
+     "statement": "The learning rate (eta) controls the step size in gradient descent.",
+     "llm_verdict": 1,
+     "llm_reason": "The context defines the update as w_{t+1}=w_t - eta * gradient, showing eta determines the magnitude of each step.",
+     "hhem": 0.7097,
+     "hhem_rounded": 1,
+     "minicheck": 0.9496,
+     "minicheck_label": 1,
+     "tokens": 942
+    },
+    {
+     "statement": "The learning rate (eta) determines how much the weights are adjusted at each iteration based on the gradient.",
+     "llm_verdict": 1,
+     "llm_reason": "Because the weight update is the current weight minus eta times the gradient, eta directly sets how much the weights change per iteration.",
+     "hhem": 0.7808,
+     "hhem_rounded": 1,
+     "minicheck": 0.9725,
+     "minicheck_label": 1,
+     "tokens": 954
+    },
+    {
+     "statement": "Weight decay is a regularizer that penalizes large weights by adding a term like w\\u207B\\u00B2w to the error.",
+     "llm_verdict": 0,
+     "llm_reason": "The context says weight decay tries to minimize w^T w (the sum of squares), not a term written as w⁻²w, so the specific form is not stated.",
+     "hhem": 0.0394,
+     "hhem_rounded": 0,
+     "minicheck": 0.042,
+     "minicheck_label": 0,
+     "tokens": 962
+    },
+    {
+     "statement": "Weight decay pushes weights toward zero to prevent overfitting.",
+     "llm_verdict": 1,
+     "llm_reason": "The speaker explains that weight decay aims to make the weights small, which is a mechanism to avoid overfitting.",
+     "hhem": 0.0163,
+     "hhem_rounded": 0,
+     "minicheck": 0.1436,
+     "minicheck_label": 0,
+     "tokens": 941
+    },
+    {
+     "statement": "In gradient descent, weight decay effectively shrinks the weights each step.",
+     "llm_verdict": 1,
+     "llm_reason": "Since weight decay adds a penalty on the magnitude of the weights (w^T w) and the gradient of this penalty pulls weights toward zero, each gradient‑descent step reduces their size.",
+     "hhem": 0.1655,
+     "hhem_rounded": 0,
+     "minicheck": 0.9533,
+     "minicheck_label": 1,
+     "tokens": 941
+    },
+    {
+     "statement": "The shrinking of weights each step is why weight decay is called \"decay\".",
+     "llm_verdict": 1,
+     "llm_reason": "The material says the name is not strange because we are trying to get the weights to be small, i.e., they decay, linking the shrinkage to the term \"decay\".",
+     "hhem": 0.3814,
+     "hhem_rounded": 0,
+     "minicheck": 0.9096,
+     "minicheck_label": 1,
+     "tokens": 945
+    },
+    {
+     "statement": "The learning rate scales the gradient update.",
+     "llm_verdict": 1,
+     "llm_reason": "The update rule is described as learning rate (eta) multiplied by the gradient, which is a scaling operation.",
+     "hhem": 0.2995,
+     "hhem_rounded": 0,
+     "minicheck": 0.1075,
+     "minicheck_label": 0,
+     "tokens": 935
+    },
+    {
+     "statement": "Weight decay independently reduces weight magnitude regardless of the gradient.",
+     "llm_verdict": 0,
+     "llm_reason": "The context does not claim that weight decay acts independently of the gradient; it is incorporated into the gradient of the regularized loss.",
+     "hhem": 0.044,
+     "hhem_rounded": 0,
+     "minicheck": 0.0465,
+     "minicheck_label": 0,
+     "tokens": 938
+    },
+    {
+     "statement": "The course material does not explicitly contrast learning rate and weight decay beyond this explanation.",
+     "llm_verdict": 1,
+     "llm_reason": "The passage explains each concept but never provides a direct comparison or contrast between learning rate and weight decay.",
+     "hhem": 0.3623,
+     "hhem_rounded": 0,
+     "minicheck": 0.328,
+     "minicheck_label": 0,
+     "tokens": 942
+    },
+    {
+     "statement": "Learning rate controls optimization speed.",
+     "llm_verdict": 1,
+     "llm_reason": "A larger learning rate yields larger steps in gradient descent, which speeds up convergence, as implied by its role in the update rule.",
+     "hhem": 0.0675,
+     "hhem_rounded": 0,
+     "minicheck": 0.1371,
+     "minicheck_label": 0,
+     "tokens": 932
+    },
+    {
+     "statement": "Weight decay controls model complexity.",
+     "llm_verdict": 1,
+     "llm_reason": "By penalizing large weights, weight decay regularizes the model, which is a standard way to limit model complexity and is implied by the description.",
+     "hhem": 0.26,
+     "hhem_rounded": 0,
+     "minicheck": 0.0443,
+     "minicheck_label": 0,
+     "tokens": 932
+    }
+   ],
+   "ragas": {
+    "factual_correctness": 0.62,
+    "context_recall": 1.0,
+    "faithfulness": 0.8182,
+    "faithfulness_with_hhem": 0.1818,
+    "answer_accuracy": {
+     "value": 1.0,
+     "r1": 4,
+     "r2": 4,
+     "ragas_if_judge2_invalid": 1.0,
+     "ragas_if_judge1_invalid": 1.0,
+     "ragas_if_both_invalid": null
+    },
+    "fc_answer_claims": [
+     {
+      "claim": "The learning rate (eta) controls the step size in gradient descent by determining how much the weights are adjusted at each iteration based on the gradient.",
+      "verdict": 1,
+      "reason": "The context explicitly states that the learning rate η determines how much an updating step influences the current value of the weights and that a large η leads to a correspondingly large modification of the weights."
+     },
+     {
+      "claim": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting.",
+      "verdict": 1,
+      "reason": "The context describes weight decay as an additional term that causes weights to exponentially decay to zero and shows that regularization adds a λ/2 w^2 term to the cost, which penalizes large weights and effectively limits model freedom."
+     },
+     {
+      "claim": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it is called \"decay\".",
+      "verdict": 1,
+      "reason": "The update rule includes the term -ηλw_i, which the context explains causes the weight to decay in proportion to its size at each step."
+     },
+     {
+      "claim": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient.",
+      "verdict": 1,
+      "reason": "The context shows the gradient term is multiplied by η, while the weight decay term -ηλw_i depends only on the weight magnitude, not on the gradient."
+     },
+     {
+      "claim": "The key difference is that the learning rate controls optimization speed, whereas weight decay controls model complexity.",
+      "verdict": 1,
+      "reason": "The context links the learning rate to step size (affecting optimization speed) and describes weight decay/regularization as a way to penalize large weights and avoid over‑fitting, which relates to model complexity."
+     }
+    ],
+    "fc_reference_claims": [
+     {
+      "claim": "The learning rate is a parameter that determines how much an updating step influences the current value of the weights.",
+      "verdict": 1,
+      "reason": "The context states that the learning rate controls the step size in gradient descent, i.e., how much the weights are adjusted at each iteration."
+     },
+     {
+      "claim": "Weight decay is an additional term in the weight update rule that causes the weights to exponentially decay to zero if no other update is scheduled.",
+      "verdict": 0,
+      "reason": "The context mentions that weight decay shrinks the weights each step, but it does not specify exponential decay or behavior when no other update is scheduled."
+     },
+     {
+      "claim": "Gradient descent updates each weight w_i by subtracting the product of the learning rate η and the partial derivative of the error function with respect to that weight.",
+      "verdict": 0,
+      "reason": "The context says the learning rate scales the gradient update, but it does not explicitly describe the gradient descent formula involving the partial derivative."
+     },
+     {
+      "claim": "A large learning rate can cause excessively large weight modifications, potentially causing the optimization to overshoot the local minimum of the cost function.",
+      "verdict": 0,
+      "reason": "The context describes the learning rate as controlling optimization speed, but it does not explicitly mention that a large learning rate can cause overshooting of the minimum."
+     },
+     {
+      "claim": "Introducing a zero‑mean Gaussian prior over the weights regularizes the cost function by adding a term (λ/2)·w^2, which penalizes large weights and helps avoid over‑fitting.",
+      "verdict": 0,
+      "reason": "The context explains weight decay adds a term like wᵀw to the error, but it does not refer to a zero‑mean Gaussian prior or the specific (λ/2)·w² term."
+     },
+     {
+      "claim": "The regularization parameter λ controls the trade‑off between minimizing the original error function and penalizing large weights.",
+      "verdict": 0,
+      "reason": "The context discusses weight decay as a regularizer but does not introduce a regularization parameter λ or its trade‑off role."
+     },
+     {
+      "claim": "When gradient descent is applied to the regularized cost, the weight update includes an additional term –ηλw_i, which causes each weight to decay proportionally to its size.",
+      "verdict": 0,
+      "reason": "The context notes that weight decay reduces weight magnitude each step, yet it does not provide the explicit update term –ηλw_i."
+     }
+    ],
+    "fc_counts": {
+     "tp": 5,
+     "fp": 0,
+     "fn": 6
+    },
+    "cr_rows": [
+     {
+      "statement": "The learning rate is a parameter that determines how much an updating step influences the current value of the weights.",
+      "attributed": 1,
+      "reason": "The context explains that eta (learning rate) is used in the gradient descent update step, which matches this description."
+     },
+     {
+      "statement": "While weight decay is an additional term in the weight update rule that causes the weights to exponentially decay to zero, if no other update is scheduled.",
+      "attributed": 1,
+      "reason": "The context describes weight decay as adding a term -eta*lambda*w_i to the gradient descent update, which causes weights to shrink proportionally, aligning with this statement."
+     }
+    ],
+    "unsupported_rate_hhem": 0.8182,
+    "unsupported_rate_minicheck": 0.6364
+   },
+   "alce": {
+    "minicheck": {
+     "citation_recall": 0.4,
+     "citation_precision": 0.4,
+     "n_sentences": 5,
+     "n_citations": 5,
+     "sentences": [
+      {
+       "sentence": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient [2].",
+       "target": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient.",
+       "cites": [
+        2
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 1,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting [1].",
+       "target": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting.",
+       "cites": [
+        1
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\" [1].",
+       "target": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\".",
+       "cites": [
+        1
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 1,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient [1][2].",
+       "target": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient.",
+       "cites": [
+        1,
+        2
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        },
+        {
+         "cite": 2,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+       "target": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    },
+    "hhem": {
+     "citation_recall": 0.2,
+     "citation_precision": 0.2,
+     "n_sentences": 5,
+     "n_citations": 5,
+     "sentences": [
+      {
+       "sentence": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient [2].",
+       "target": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient.",
+       "cites": [
+        2
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 1,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting [1].",
+       "target": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting.",
+       "cites": [
+        1
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\" [1].",
+       "target": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\".",
+       "cites": [
+        1
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient [1][2].",
+       "target": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient.",
+       "cites": [
+        1,
+        2
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        },
+        {
+         "cite": 2,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+       "target": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    }
+   },
+   "per_passage": [
+    {
+     "sentence": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.8652,
+       "hhem": 0.2558
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.8774,
+       "hhem": 0.7372
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0279,
+       "hhem": 0.004
+      }
+     ]
+    },
+    {
+     "sentence": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0508,
+       "hhem": 0.0664
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0166,
+       "hhem": 0.0162
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0312,
+       "hhem": 0.0047
+      }
+     ]
+    },
+    {
+     "sentence": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\".",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.9487,
+       "hhem": 0.3525
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.025,
+       "hhem": 0.0613
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0425,
+       "hhem": 0.0179
+      }
+     ]
+    },
+    {
+     "sentence": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0441,
+       "hhem": 0.0211
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0217,
+       "hhem": 0.0455
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0144,
+       "hhem": 0.0101
+      }
+     ]
+    },
+    {
+     "sentence": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0382,
+       "hhem": 0.0198
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0308,
+       "hhem": 0.028
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0203,
+       "hhem": 0.0202
+      }
+     ]
+    }
+   ],
+   "fully_correct": {
+    "value": 1,
+    "rule": "open answer: AnswerAccuracy ratings 4 and 4 (both must be 4)"
+   },
+   "notes": [
+    "The judge's statement split turned the answer's wᵀw into garbled characters (third statement); the judge then rejected its own garbled statement, and HHEM and MiniCheck were given the garbled text too.",
+    "ContextRecall classified only 2 sentences of a long reference (equations, overshooting, the Gaussian prior were not classified), so its 1.00 covers those 2 sentences only."
+   ],
+   "cost": {
+    "usd": 0.000116753,
+    "prompt_tokens": 981,
+    "completion_tokens": 151
+   }
+  },
+  {
+   "id": "Q18",
+   "stratum": "CROSS",
+   "format": "open-forum",
+   "source": "Cross Validated question 29325, accepted answer 29326",
+   "licence": "CC BY-SA 4.0 (stats.stackexchange.com; answer text shown with attribution, HTML stripped)",
+   "url": "https://stats.stackexchange.com/questions/29325",
+   "question": "What is the difference between linear regression and logistic regression? When would you use each?",
+   "options": null,
+   "reference": "Linear regression uses the general linear equation $Y=b_0+∑(b_i X_i)+\\epsilon$ where $Y$ is a continuous dependent variable and independent variables $X_i$ are usually continuous (but can also be binary, e.g. when the linear model is used in a t-test) or other discrete domains. $\\epsilon$ is a term for the variance that is not explained by the model and is usually just called \"error\". Individual dependent values denoted by $Y_j$ can be solved by modifying the equation a little: $Y_j=b_0 + \\sum{(b_i X_{ij})+\\epsilon_j}$ Logistic regression is another generalized linear model (GLM) procedure using the same basic formula, but instead of the continuous $Y$, it is regressing for the probability of a categorical outcome. In simplest form, this means that we're considering just one outcome variable and two states of that variable- either 0 or 1. The equation for the probability of $Y=1$ looks like this: $$ P(Y=1) = {1 \\over 1+e^{-(b_0+\\sum{(b_iX_i)})}} $$ Your independent variables $X_i$ can be continuous or binary. The regression coefficients $b_i$ can be exponentiated to give you the change in odds of $Y$ per change in $X_i$, i.e., $Odds={P(Y=1) \\over P(Y=0)}={P(Y=1) \\over 1-P(Y=1)}$ and ${\\Delta Odds}= e^{b_i}$. $\\Delta Odds$ is called the odds ratio, $Odds(X_i+1)\\over Odds(X_i)$. In English, you can say that the odds of $Y=1$ increase by a factor of $e^{b_i}$ per unit change in $X_i$. Example: If you wanted to see how body mass index predicts blood cholesterol (a continuous measure), you'd use linear regression as described at the top of my answer. If you wanted to see how BMI predicts the odds of being a diabetic (a binary diagnosis), you'd use logistic regression.",
+   "reference_letter": null,
+   "required_concepts": [
+    "linear regression",
+    "logistic regression",
+    "use cases"
+   ],
+   "lectures_tagged": [
+    3,
+    9
+   ],
+   "contexts": [
+    {
+     "rank": 1,
+     "lecture": 10,
+     "ts": "00:00:00",
+     "bm25": 16.854,
+     "n_chars": 1595,
+     "text": "ANNOUNCER: The following program is brought to you by Caltech. YASER ABU-MOSTAFA: Welcome back. Last time, we introduced the third linear model, which is logistic regression. It has the same structure as the linear models, where you have the inputs combined linearly using weights, summed up into a signal, and then the signal passes through something. In this case, it passes through what we refer to as a soft threshold. We labeled it theta. And the model is meant to implement a probability that has a genuine probability interpretation. And because of that, the error measure we derived was based on likelihood measure, which has a probabilistic connotation, in which case we maximized the probability that we would get the data set that we got-- the outputs given the inputs-- based on the hypothesis that is represented by the logistic regression being assumed to be the target function identically. And this makes us able to express the probability in terms of the parameters that define the hypothesis, which are the weights, w. And therefore, we have this quantity that we want to maximize. And then we derived an error measure that very much parallels the error measures that we had before, in terms of the in-example error for logistic regression that we will minimize. So this is a useful model, and it complements the other models. One of them was for classification, one of them for real-valued function regression. And this one is for bounded real-valued function that is interpreted as a probability. One of the key issues about logistic regression is that, because the the error"
+    },
+    {
+     "rank": 2,
+     "lecture": 9,
+     "ts": "01:05:00",
+     "bm25": 16.146,
+     "n_chars": 1591,
+     "text": "We have credit analysis. If you apply each of these to credit analysis, what type of thing do you implement? For the linear classification, the perceptron, you accept or deny. That was our very first example, right? If you use linear regression, you are trying to decide the credit line. We have seen that example as well. If you're applying logistic regression, you are computing the probability of default-- just the reliability, and then let the bank decide what to do with it. So this is from an application domain. Let's look from tools point of view. They had different error measures. The perceptron had the binary classification error, right? Linear regression has squared error. And finally, logistic regression had cross-entropy error. Different errors that had different plausibility motivations to them. And we have tackled all three of them. And then there was the learning algorithm that goes with them, that is very dependent on the error measure you choose. For the case of the classification error, which was a combinatorial quantity, and we went for something like the perceptron learning algorithm, or the pocket version if the thing is non-separable. And there are other, more sophisticated methods to do that. How about squared error? That was the easiest. That was the one-step learning, where we had the pseudo-inverse and you have your solution. And finally with the cross-entropy, we had the gradient descent, which is a very general method. All we needed to do is that it's a twice differentiable surface, and we are ready to go with that. And this was particularly"
+    },
+    {
+     "rank": 3,
+     "lecture": 9,
+     "ts": "00:05:00",
+     "bm25": 16.014,
+     "n_chars": 1591,
+     "text": "This is the big picture of linear models. And they start with linear classification-- perceptrons. We have seen that. And then go on to linear regression. We have also seen that. That was the part that was covered. There is a third one, which is another linear model that is neither linear classification nor linear regression, which will be the bulk of the lecture today. It will be called logistic regression. And then, for all of these linear models, we have this nice trick called nonlinear transforms that allows us to use the learning algorithms of linear models, which are very simple ones, and apply them to nonlinear transformation. And if you remember, that the observation here was that linearity in the parameters was the key issue for deriving the algorithm. So let's see what we finished, and what we didn't finish in these topics. Linear classification is pretty much done. We know the algorithm, perceptron or pocket. There are obviously more sophisticated algorithms. And we did the generalization analysis. We got the VC dimension of perceptrons explicitly. And therefore, we are able to predict the generalization ability of linear classification. So this is a done deal. Linear regression is also a done deal. We have the algorithm, remember, that was the pseudo-inverse, the one-step learning. And last time, we did a very brief analysis of generalization ability. And we found that it parallels that of the perceptron, d plus 1 is the operative point, the operative quantity in this case. And therefore, we have linear regression as a technique, and as a generalization"
+    }
+   ],
+   "answer": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1 [2]. Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default) [2]. The course material does not provide further detail beyond these application examples.",
+   "answer_stripped": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1. Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default). The course material does not provide further detail beyond these application examples.",
+   "recall_at_k": {
+    "k": 3,
+    "tagged": [
+     3,
+     9
+    ],
+    "retrieved": [
+     9,
+     10
+    ],
+    "value": 0.5
+   },
+   "claims": [
+    {
+     "statement": "Linear regression uses squared error.",
+     "llm_verdict": 1,
+     "llm_reason": "The context explicitly states that linear regression has squared error.",
+     "hhem": 0.973,
+     "hhem_rounded": 1,
+     "minicheck": 0.982,
+     "minicheck_label": 1,
+     "tokens": 1076
+    },
+    {
+     "statement": "Linear regression gives a real-valued output.",
+     "llm_verdict": 1,
+     "llm_reason": "The context describes linear regression as a real-valued function regression, implying its output is real-valued.",
+     "hhem": 0.9298,
+     "hhem_rounded": 1,
+     "minicheck": 0.2209,
+     "minicheck_label": 0,
+     "tokens": 1080
+    },
+    {
+     "statement": "Logistic regression uses cross-entropy error.",
+     "llm_verdict": 1,
+     "llm_reason": "The context mentions that logistic regression had cross-entropy error.",
+     "hhem": 0.9743,
+     "hhem_rounded": 1,
+     "minicheck": 0.9421,
+     "minicheck_label": 1,
+     "tokens": 1079
+    },
+    {
+     "statement": "Logistic regression outputs a probability between 0 and 1.",
+     "llm_verdict": 1,
+     "llm_reason": "The context explains that logistic regression implements a probability with a genuine probability interpretation, i.e., a bounded real-valued function interpreted as a probability.",
+     "hhem": 0.1453,
+     "hhem_rounded": 0,
+     "minicheck": 0.1058,
+     "minicheck_label": 0,
+     "tokens": 1081
+    },
+    {
+     "statement": "Linear regression should be used for real-valued targets such as deciding a credit line.",
+     "llm_verdict": 1,
+     "llm_reason": "The context gives the example that using linear regression you are trying to decide the credit line, a real-valued target.",
+     "hhem": 0.9848,
+     "hhem_rounded": 1,
+     "minicheck": 0.4041,
+     "minicheck_label": 0,
+     "tokens": 1089
+    },
+    {
+     "statement": "Logistic regression should be used for probability estimates such as probability of default.",
+     "llm_verdict": 1,
+     "llm_reason": "The context states that applying logistic regression you compute the probability of default, a probability estimate.",
+     "hhem": 0.9817,
+     "hhem_rounded": 1,
+     "minicheck": 0.9465,
+     "minicheck_label": 1,
+     "tokens": 1083
+    },
+    {
+     "statement": "The course material does not provide further detail beyond the mentioned application examples.",
+     "llm_verdict": 0,
+     "llm_reason": "The context contains extensive discussion of algorithms, error measures, and theory beyond the application examples, so this claim is not supported.",
+     "hhem": 0.1855,
+     "hhem_rounded": 0,
+     "minicheck": 0.0729,
+     "minicheck_label": 0,
+     "tokens": 1082
+    }
+   ],
+   "ragas": {
+    "factual_correctness": 0.0,
+    "context_recall": 0.3333,
+    "faithfulness": 0.8571,
+    "faithfulness_with_hhem": 0.7143,
+    "answer_accuracy": {
+     "value": 0.5,
+     "r1": 2,
+     "r2": 2,
+     "ragas_if_judge2_invalid": 0.5,
+     "ragas_if_judge1_invalid": 0.5,
+     "ragas_if_both_invalid": null
+    },
+    "fc_answer_claims": [
+     {
+      "claim": "Linear regression uses squared error and gives a real-valued output.",
+      "verdict": 0,
+      "reason": "The context describes the linear regression equation and mentions a continuous dependent variable, but it does not specify that squared error is the loss function; therefore this detail cannot be directly inferred."
+     },
+     {
+      "claim": "Logistic regression uses cross-entropy error and outputs a probability between 0 and 1.",
+      "verdict": 0,
+      "reason": "The context states that logistic regression outputs a probability between 0 and 1, but it does not mention the use of cross‑entropy error, so the full statement is not directly supported."
+     },
+     {
+      "claim": "Linear regression should be used for real-valued targets such as deciding a credit line.",
+      "verdict": 0,
+      "reason": "While the context indicates that linear regression is appropriate for continuous (real‑valued) targets, it does not provide the specific example of a credit line, making the statement not directly inferable."
+     },
+     {
+      "claim": "Logistic regression should be used for probability estimates such as probability of default.",
+      "verdict": 0,
+      "reason": "The context explains that logistic regression yields probability estimates for binary outcomes, but it does not mention probability of default as an example; thus the statement cannot be directly inferred from the given text."
+     },
+     {
+      "claim": "The course material does not provide further detail beyond these application examples.",
+      "verdict": 0,
+      "reason": "The passage ends with two application examples but does not explicitly state that no additional detail is provided, so this claim about the absence of further information cannot be directly inferred."
+     }
+    ],
+    "fc_reference_claims": [
+     {
+      "claim": "Linear regression uses the general linear equation Y = b0 + \\sum(b_i X_i) + \\epsilon where Y is a continuous dependent variable and the independent variables X_i are usually continuous but can also be binary or other discrete domains.",
+      "verdict": 0,
+      "reason": "The context does not mention the specific linear equation or the epsilon term, so this cannot be inferred."
+     },
+     {
+      "claim": "\\epsilon is a term for the variance that is not explained by the model and is usually called \"error\".",
+      "verdict": 0,
+      "reason": "The context does not define epsilon or describe it as error variance."
+     },
+     {
+      "claim": "Individual dependent values denoted by Y_j can be expressed as Y_j = b0 + \\sum(b_i X_{ij}) + \\epsilon_j.",
+      "verdict": 0,
+      "reason": "The context provides no information about individual observations or this formulation."
+     },
+     {
+      "claim": "Logistic regression is another generalized linear model (GLM) procedure that uses the same basic formula but regresses the probability of a categorical outcome instead of a continuous Y.",
+      "verdict": 0,
+      "reason": "While the context notes that logistic regression outputs probabilities, it does not state that it is a GLM or uses the same formula as linear regression."
+     },
+     {
+      "claim": "In its simplest form, logistic regression considers one outcome variable with two states, 0 or 1.",
+      "verdict": 1,
+      "reason": "The context indicates logistic regression outputs a probability between 0 and 1, implying a binary outcome variable, so this statement is supported."
+     },
+     {
+      "claim": "The probability that Y = 1 is given by P(Y=1) = 1 / (1 + e^{-(b0 + \\sum(b_i X_i))}).",
+      "verdict": 0,
+      "reason": "The specific logistic function formula is not provided in the context."
+     },
+     {
+      "claim": "In logistic regression, the independent variables X_i can be continuous or binary.",
+      "verdict": 0,
+      "reason": "The context does not discuss the types of independent variables for logistic regression."
+     },
+     {
+      "claim": "The regression coefficients b_i can be exponentiated to give the change in odds of Y per change in X_i, and the odds ratio is e^{b_i}.",
+      "verdict": 0,
+      "reason": "The context does not mention exponentiating coefficients or odds ratios."
+     },
+     {
+      "claim": "Odds are defined as P(Y=1) / P(Y=0) = P(Y=1) / (1 - P(Y=1)).",
+      "verdict": 0,
+      "reason": "The definition of odds is not included in the context."
+     },
+     {
+      "claim": "The odds of Y = 1 increase by a factor of e^{b_i} per unit change in X_i.",
+      "verdict": 0,
+      "reason": "The relationship between coefficients and odds is not described in the context."
+     },
+     {
+      "claim": "If you want to predict a continuous measure such as blood cholesterol from body mass index, you would use linear regression.",
+      "verdict": 1,
+      "reason": "The context says linear regression is used for real-valued targets, which includes continuous measures like blood cholesterol."
+     },
+     {
+      "claim": "If you want to predict the odds of a binary diagnosis such as diabetes from body mass index, you would use logistic regression.",
+      "verdict": 1,
+      "reason": "The context says logistic regression is used for probability estimates of binary outcomes, such as predicting the odds of a diagnosis."
+     }
+    ],
+    "fc_counts": {
+     "tp": 0,
+     "fp": 5,
+     "fn": 9
+    },
+    "cr_rows": [
+     {
+      "statement": "Linear regression uses the general linear equation $Y=b_0+∑(b_i X_i)+\\epsilon$ where $Y$ is a continuous dependent variable and independent variables $X_i$ are usually continuous (but can also be binary, e.g. when the linear model is used in a t-test) or other discrete domains.",
+      "attributed": 0,
+      "reason": "The context discusses linear regression as a model for real‑valued function regression and mentions its use for continuous outcomes (e.g., credit line), but it never provides the explicit algebraic form or mentions the epsilon error term, so the statement is not directly supported by the context."
+     },
+     {
+      "statement": "$\\epsilon$ is a term for the variance that is not explained by the model and is usually just called \"error\".",
+      "attributed": 0,
+      "reason": "The context refers to error measures (squared error for linear regression) but does not define an explicit error term \\epsilon, so this detail cannot be attributed to the given context."
+     },
+     {
+      "statement": "Individual dependent values denoted by $Y_j$ can be solved by modifying the equation a little: $Y_j=b_0 + \\sum{(b_i X_{ij})+\\epsilon_j}$",
+      "attributed": 0,
+      "reason": "The context never mentions per‑instance notation $Y_j$ or a modified equation; therefore this statement is not supported by the context."
+     },
+     {
+      "statement": "Logistic regression is another generalized linear model (GLM) procedure using the same basic formula, but instead of the continuous $Y$, it is regressing for the probability of a categorical outcome.",
+      "attributed": 1,
+      "reason": "The context explicitly describes logistic regression as a model that implements a probability and contrasts it with linear regression, which is used for real‑valued regression. This matches the statement, so it can be attributed."
+     },
+     {
+      "statement": "In simplest form, this means that we're considering just one outcome variable and two states of that variable- either 0 or 1.",
+      "attributed": 1,
+      "reason": "The context mentions logistic regression as a classification model with a binary outcome (probability of default), which aligns with the statement, so it is attributable."
+     },
+     {
+      "statement": "The equation for the probability of $Y=1$ looks like this: $$ P(Y=1) = {1 \\over 1+e^{-(b_0+\\sum{(b_iX_i)})}} $$",
+      "attributed": 0,
+      "reason": "The context explains that logistic regression passes the linear combination through a soft threshold (theta) to produce a probability, but it does not provide the explicit sigmoid formula, so this specific equation is not directly present in the context."
+     },
+     {
+      "statement": "Your independent variables $X_i$ can be continuous or binary.",
+      "attributed": 1,
+      "reason": "The context states that inputs are combined linearly using weights and does not restrict the type of inputs, which is consistent with the statement, allowing attribution."
+     },
+     {
+      "statement": "The regression coefficients $b_i$ can be exponentiated to give you the change in odds of $Y$ per change in $X_i$, i.e., $Odds={P(Y=1) \\over P(Y=0)}={P(Y=1) \\over 1-P(Y=1)}$ and ${\\Delta Odds}= e^{b_i}$.",
+      "attributed": 0,
+      "reason": "The context does not discuss exponentiation of coefficients or odds ratios, so this detail cannot be attributed to the context."
+     },
+     {
+      "statement": "$\\Delta Odds$ is called the odds ratio, $Odds(X_i+1)\\over Odds(X_i)$.",
+      "attributed": 0,
+      "reason": "The concept of odds ratio is not mentioned in the provided context, so the statement is not attributable."
+     },
+     {
+      "statement": "In English, you can say that the odds of $Y=1$ increase by a factor of $e^{b_i}$ per unit change in $X_i$.",
+      "attributed": 0,
+      "reason": "The context does not contain any discussion of interpreting coefficients as odds multipliers, so this statement is not supported."
+     },
+     {
+      "statement": "Example: If you wanted to see how body mass index predicts blood cholesterol (a continuous measure), you'd use linear regression as described at the top of my answer.",
+      "attributed": 0,
+      "reason": "The context gives a generic example of using linear regression for a continuous outcome (credit line) but does not mention BMI or cholesterol; the specific example is not present, so it is not attributable."
+     },
+     {
+      "statement": "If you wanted to see how BMI predicts the odds of being a diabetic (a binary diagnosis), you'd use logistic regression.",
+      "attributed": 1,
+      "reason": "The context mentions logistic regression for computing a probability of default (a binary outcome), which aligns with using it for a binary diagnosis, so the statement is consistent and can be attributed."
+     }
+    ],
+    "unsupported_rate_hhem": 0.2857,
+    "unsupported_rate_minicheck": 0.5714
+   },
+   "alce": {
+    "minicheck": {
+     "citation_recall": 0.0,
+     "citation_precision": 0.0,
+     "n_sentences": 3,
+     "n_citations": 2,
+     "sentences": [
+      {
+       "sentence": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1 [2].",
+       "target": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1.",
+       "cites": [
+        2
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default) [2].",
+       "target": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default).",
+       "cites": [
+        2
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The course material does not provide further detail beyond these application examples.",
+       "target": "The course material does not provide further detail beyond these application examples.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    },
+    "hhem": {
+     "citation_recall": 0.3333333333333333,
+     "citation_precision": 0.5,
+     "n_sentences": 3,
+     "n_citations": 2,
+     "sentences": [
+      {
+       "sentence": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1 [2].",
+       "target": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1.",
+       "cites": [
+        2
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default) [2].",
+       "target": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default).",
+       "cites": [
+        2
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 2,
+         "relevant": 1,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "The course material does not provide further detail beyond these application examples.",
+       "target": "The course material does not provide further detail beyond these application examples.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    }
+   },
+   "per_passage": [
+    {
+     "sentence": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0184,
+       "hhem": 0.0382
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.016,
+       "hhem": 0.0496
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0159,
+       "hhem": 0.0089
+      }
+     ]
+    },
+    {
+     "sentence": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default).",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0166,
+       "hhem": 0.0395
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.087,
+       "hhem": 0.8261
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0092,
+       "hhem": 0.0131
+      }
+     ]
+    },
+    {
+     "sentence": "The course material does not provide further detail beyond these application examples.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.0373,
+       "hhem": 0.1353
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0788,
+       "hhem": 0.1264
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0751,
+       "hhem": 0.3509
+      }
+     ]
+    }
+   ],
+   "fully_correct": {
+    "value": 0,
+    "rule": "open answer: AnswerAccuracy ratings 2 and 2 (both must be 4)"
+   },
+   "notes": [
+    "FactualCorrectness found 0 of the answer's claims in the reference: the judge rejected \"linear regression uses squared error\" because the forum answer does not say it, while in the other direction it accepted the reference's cholesterol example as present in the answer. The 0.00 says more about a strict, uneven judge than about the answer."
+   ],
+   "cost": {
+    "usd": 5.02866e-05,
+    "prompt_tokens": 1115,
+    "completion_tokens": 80
+   }
+  },
+  {
+   "id": "Q20",
+   "stratum": "CROSS",
+   "format": "mc-4",
+   "source": "MMLU machine_learning, test item 102",
+   "licence": "MIT (cais/mmlu)",
+   "url": "https://huggingface.co/datasets/cais/mmlu",
+   "question": "You are training a linear regression model for a simple estimation task, and notice that the model is overfitting to the data. You decide to add in $\\ell_2$ regularization to penalize the weights. As you increase the $\\ell_2$ regularization coefficient, what will happen to the bias and variance of the model?",
+   "options": {
+    "A": "Bias increase ; Variance increase",
+    "B": "Bias increase ; Variance decrease",
+    "C": "Bias decrease ; Variance increase",
+    "D": "Bias decrease ; Variance decrease"
+   },
+   "reference": "B. Bias increase ; Variance decrease",
+   "reference_letter": "B",
+   "required_concepts": [
+    "L2 regularization",
+    "bias",
+    "variance"
+   ],
+   "lectures_tagged": [
+    8,
+    11,
+    12
+   ],
+   "contexts": [
+    {
+     "rank": 1,
+     "lecture": 12,
+     "ts": "00:10:00",
+     "bm25": 32.225,
+     "n_chars": 1597,
+     "text": "the out-of-sample error will be terrible. Let's look at the situation with regularization. As expected, the gray region has diminished, because the lines weren't as crazy. If you look at the red line, the red line is a little bit different, because we couldn't fit the points, we couldn't fit the points, so there's a little bit of an added bias, because the fit is not perfect. And we get this. Now regularization, in general, reduces the variance at the expense, possibly, of increasing the bias just a little bit. So think of it that I am handicapping the fit. Well, you are handicapping the fit on both the noise and the signal. You cannot distinguish one from another. But the handicapping of the noise is significant. That's what reduced the variance. The handicapping of the fit results in a certain loss of the quality of the fit. That is reflected by that. Let's look at the numbers and see that, actually, this stands to the reality. The bias here was 0.21. We have seen these numbers before. And the variance was a horrific 1.69. And when we added them up, the linear model lost to the simplistic constant model. So let's look at with regularization. Now we are using still the linear model, but we are regularizing it. And you get a bias of 0.23. Well, that's not too bad. We lost a little bit. Think of it as a side effect of the treatment. You're attacking the disease, which is overfitting. And you will get some funny side effects. So instead of getting the 0.21, you are getting 0.23. OK, fine. How about the variance? Totally dramatic, 0.33. And when you add them up, not only do"
+    },
+    {
+     "rank": 2,
+     "lecture": 11,
+     "ts": "01:10:00",
+     "bm25": 30.685,
+     "n_chars": 1589,
+     "text": "PROFESSOR: OK. This is a very specific question about logistic regression. If the thing is completely clean, then you obviously can get closer and closer to having the probability being perfect, by having bigger and bigger weights. So there is a minimum. And again, it's a unique minimum. Except that the minimum is at infinity, in terms of the size of the weight. But this doesn't bother you, because you are really going to stop at some point when the gradient is small, according to your specification. And you can specify this any way you want. So the goal is not necessarily to arrive at the minimum. Which hardly ever happens, even if the thing is not at infinity. But get close enough, in the sense that the value is close to the minimum, and therefore you achieve the small error that you want. MODERATOR: Can you resolve again the contradiction of when you increase the complexity of the model, you should be reducing your bias, and hence your deterministic noise? So here we had an example when we had H-- well, H_10 had more error than H_2. PROFESSOR: H_10 had total error more than H_2. If we were doing the approximation game, H_10 would be better. We had three terms in the bias-variance. If we were only going by these two, then there is no question that the bigger model, H_10, will win. Because this is for all, and this one will be better for H_10 than H_2, because H_10 is closer to the target we want, and therefore we will be making smaller error. This is not the source of the problem of overfitting. This is just identifying terms in the bias-variance decomposition,"
+    },
+    {
+     "rank": 3,
+     "lecture": 12,
+     "ts": "00:05:00",
+     "bm25": 28.312,
+     "n_chars": 1597,
+     "text": "find, is purely heuristic. And in this case, you are just handicapping the minimization of the in-sample error, which is putting the brakes, as we described it last time. And indeed, this is what we are going to do. We are going to borrow enough from the math, to make this not a completely random activity, but rather pointed at something that is likely to help our cause of fighting overfitting. I am going to start by an example of regularization, and how it affects overfitting. And the example will be quite familiar. You have seen it before. You probably recognize this picture. This is a sinusoid. And we had the funny problem, where we had only two points in the training set, so N equals 2. And we were fitting our model, which was a general line in this case. So we pass the line through the two points. And we get a variety of lines, depending on the data set you have. And we noticed, after doing a careful analysis of this using the bias-variance analysis, that this is really bad. And the main reason it's bad is because it's all over the place. And being all over the place results in a high variance term. That was the key. In that case, a simplistic constant model, where you approximate the sine by just a constant, which ends up being a zero on average, is actually better in performance out-of-sample than fitting with a line. That was the lesson that we got there. So let's see if we can improve the situation here by regularizing it, by controlling the lines. Instead of having wild lines, we are going to have mild lines, if you will. What we're going to do, we are going to"
+    }
+   ],
+   "answer": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect [1]. At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting [1][3]. Therefore, bias increases while variance decreases.",
+   "answer_stripped": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect. At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting. Therefore, bias increases while variance decreases.",
+   "recall_at_k": {
+    "k": 3,
+    "tagged": [
+     8,
+     11,
+     12
+    ],
+    "retrieved": [
+     11,
+     12
+    ],
+    "value": 0.6667
+   },
+   "claims": [
+    {
+     "statement": "The ℓ2 regularization coefficient is increased.",
+     "llm_verdict": 0,
+     "llm_reason": "The context discusses regularization effects but never mentions the ℓ2 coefficient or its increase explicitly.",
+     "hhem": 0.1561,
+     "hhem_rounded": 0,
+     "minicheck": 0.056,
+     "minicheck_label": 0,
+     "tokens": 1176
+    },
+    {
+     "statement": "Increasing the ℓ2 regularization coefficient handicaps the fit.",
+     "llm_verdict": 1,
+     "llm_reason": "The passage explains that applying regularization \"handicaps the fit,\" implying that a stronger (e.g., increased ℓ2) regularization would have this effect, even though ℓ2 is not named.",
+     "hhem": 0.4771,
+     "hhem_rounded": 0,
+     "minicheck": 0.076,
+     "minicheck_label": 0,
+     "tokens": 1180
+    },
+    {
+     "statement": "Handicapping the fit increases bias slightly as a side effect.",
+     "llm_verdict": 1,
+     "llm_reason": "The text states that regularization \"handicaps the fit\" and results in a small increase in bias (from 0.21 to 0.23).",
+     "hhem": 0.894,
+     "hhem_rounded": 1,
+     "minicheck": 0.9657,
+     "minicheck_label": 1,
+     "tokens": 1180
+    },
+    {
+     "statement": "Handicapping the fit significantly reduces variance by controlling wild lines and fighting overfitting.",
+     "llm_verdict": 1,
+     "llm_reason": "The context notes that regularization (handicapping) dramatically lowers variance (from 1.69 to 0.33) by preventing overly wild lines and combating overfitting.",
+     "hhem": 0.9473,
+     "hhem_rounded": 1,
+     "minicheck": 0.7735,
+     "minicheck_label": 1,
+     "tokens": 1185
+    },
+    {
+     "statement": "Bias increases while variance decreases.",
+     "llm_verdict": 1,
+     "llm_reason": "The passage provides numbers showing bias rising from 0.21 to 0.23 and variance dropping from 1.69 to 0.33 after regularization.",
+     "hhem": 0.3154,
+     "hhem_rounded": 0,
+     "minicheck": 0.0903,
+     "minicheck_label": 0,
+     "tokens": 1175
+    }
+   ],
+   "ragas": {
+    "factual_correctness": 0.0,
+    "context_recall": 1.0,
+    "faithfulness": 0.8,
+    "faithfulness_with_hhem": 0.4,
+    "exact_match": 1.0,
+    "letter": "B",
+    "fc_answer_claims": [
+     {
+      "claim": "Increasing the ℓ2 regularization coefficient slightly increases bias and significantly reduces variance.",
+      "verdict": 0,
+      "reason": "The context states that bias increases and variance decreases, but it does not specify the magnitude (slightly or significantly), so the statement cannot be directly inferred."
+     }
+    ],
+    "fc_reference_claims": [
+     {
+      "claim": "Increasing bias leads to a decrease in variance.",
+      "verdict": 0,
+      "reason": "The context states that bias increases and variance decreases as a result of increasing the ℓ2 regularization coefficient, but it does not explicitly claim that the increase in bias itself causes the decrease in variance."
+     }
+    ],
+    "fc_counts": {
+     "tp": 0,
+     "fp": 1,
+     "fn": 1
+    },
+    "cr_rows": [
+     {
+      "statement": "Bias increase ; Variance decrease",
+      "attributed": 1,
+      "reason": "The context explains that adding L2 regularization reduces variance and may increase bias slightly, and provides concrete numbers (bias from 0.21 to 0.23, variance from 1.69 to 0.33), directly supporting the claim that bias increases while variance decreases."
+     }
+    ],
+    "unsupported_rate_hhem": 0.6,
+    "unsupported_rate_minicheck": 0.6
+   },
+   "alce": {
+    "minicheck": {
+     "citation_recall": 0.0,
+     "citation_precision": 0.0,
+     "n_sentences": 3,
+     "n_citations": 3,
+     "sentences": [
+      {
+       "sentence": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect [1].",
+       "target": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect.",
+       "cites": [
+        1
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting [1][3].",
+       "target": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting.",
+       "cites": [
+        1,
+        3
+       ],
+       "recall": 0,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 0,
+         "single": true
+        },
+        {
+         "cite": 3,
+         "relevant": 0,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "Therefore, bias increases while variance decreases.",
+       "target": "Therefore, bias increases while variance decreases.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    },
+    "hhem": {
+     "citation_recall": 0.6666666666666666,
+     "citation_precision": 1.0,
+     "n_sentences": 3,
+     "n_citations": 3,
+     "sentences": [
+      {
+       "sentence": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect [1].",
+       "target": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect.",
+       "cites": [
+        1
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 1,
+         "relevant": 1,
+         "single": true
+        }
+       ]
+      },
+      {
+       "sentence": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting [1][3].",
+       "target": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting.",
+       "cites": [
+        1,
+        3
+       ],
+       "recall": 1,
+       "precision": [
+        {
+         "cite": 1,
+         "alone": 1,
+         "relevant": 1
+        },
+        {
+         "cite": 3,
+         "alone": 1,
+         "relevant": 1
+        }
+       ]
+      },
+      {
+       "sentence": "Therefore, bias increases while variance decreases.",
+       "target": "Therefore, bias increases while variance decreases.",
+       "cites": [],
+       "why": "no citation",
+       "recall": 0,
+       "precision": []
+      }
+     ]
+    }
+   },
+   "per_passage": [
+    {
+     "sentence": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.1106,
+       "hhem": 0.6984
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0104,
+       "hhem": 0.0336
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0186,
+       "hhem": 0.1176
+      }
+     ]
+    },
+    {
+     "sentence": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.1428,
+       "hhem": 0.9269
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0067,
+       "hhem": 0.0782
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0389,
+       "hhem": 0.9287
+      }
+     ]
+    },
+    {
+     "sentence": "Therefore, bias increases while variance decreases.",
+     "scores": [
+      {
+       "passage": 1,
+       "minicheck": 0.1014,
+       "hhem": 0.8908
+      },
+      {
+       "passage": 2,
+       "minicheck": 0.0372,
+       "hhem": 0.1426
+      },
+      {
+       "passage": 3,
+       "minicheck": 0.0237,
+       "hhem": 0.075
+      }
+     ]
+    }
+   ],
+   "fully_correct": {
+    "value": 1,
+    "rule": "multiple choice: the first letter of the answer (B) vs the key (B)"
+   },
+   "notes": [
+    "FactualCorrectness turned the key \"Bias increase ; Variance decrease\" into the claim \"Increasing bias leads to a decrease in variance\", a causal claim the key does not make, and then rejected it; the answer's claim was rejected for its words \"slightly\" and \"significantly\". The 0.00 is partly an extraction error.",
+    "The LLM Faithfulness judge counted the question's own setup (\"the coefficient is increased\") as an unsupported claim."
+   ],
+   "cost": {
+    "usd": 0.00013167,
+    "prompt_tokens": 1351,
+    "completion_tokens": 56
+   }
+  }
+ ]
+}

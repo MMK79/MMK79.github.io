@@ -79,7 +79,7 @@
   function mountToy(el) {
     const K = DemoKit; let st = clone(defaults), changing = false;
     const shell = K.shell(el, 'Prompt caching: what do we save when a prefix repeats?',
-      'Toy numbers (invented scenario, prices from the Anthropic pricing table row in the entry, dated 2026-10-08, input tokens only). Move the sliders; the cached part of the prompt is the left block of the strip.');
+      'Toy numbers (invented scenario, prices from the Anthropic pricing table row in the entry, dated, input tokens only). Move the sliders; the cached part of the prompt is the left block of the strip.');
     const pr = K.el('div', { class: 'row' }), ctl = K.el('div', { class: 'row' }), strip = K.el('div', {}), res = K.el('div', { 'aria-live': 'polite' }), formula = K.el('div', { class: 'formula' }), bars = K.el('div', {});
     const S = {
       L: K.slider('prefix L (tokens)', 0, 20000, 100, st.L, v => { st.L = v; draw(); }),
@@ -114,7 +114,7 @@
   function mountCalls(el) {
     const K = DemoKit, url = new URL('data/kv_prompt_cache.calls.json', SRC || location.href).href;
     const box = K.shell(el, 'Real example: the 36 provider calls of the answer study',
-      'Real data: 36 answer calls to qwen3.7-plus (12 questions x 3 arms: A no retrieval, B hybrid top-5, C dense top-5 + graph passages), 2026-10-08. Measured: prompt and completion tokens, latency, USD per call. Segment sizes inside a prompt are estimates (stored text split by characters, scaled to the real prompt tokens). Demo scale, n = 12 per arm, one run.');
+      'Real data: 36 answer calls to qwen3.7-plus (12 questions x 3 arms: A no retrieval, B hybrid top-5, C dense top-5 + graph passages). Measured: prompt and completion tokens, latency, USD per call. Segment sizes inside a prompt are estimates (stored text split by characters, scaled to the real prompt tokens). Demo scale, n = 12 per arm, one run.');
     const body = K.el('div', {}, 'loading real data...'); box.append(body);
     fetch(url).then(r => { if (!r.ok) throw new Error(r.status); return r.json(); }).then(data => {
       const o = { arm: 'B', layout: 'asrun', minLen: 1024, Pin: data.prices_usd_per_mtok.input, mw: 1.25, mr: 0.1, pad: 0 };

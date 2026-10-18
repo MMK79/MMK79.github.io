@@ -20,14 +20,16 @@
     const ymax = Math.max(p.idx_v + p.q_v * p.Qmax, p.idx_g + p.q_g * p.Qmax) * 1.05 || 1;
     const X = q => L + w * q / p.Qmax, Y = c => T + h * (1 - c / ymax);
     const kids = [];
+    const HALO = 'paint-order:stroke;stroke:#0B0D12;stroke-width:4px;stroke-linejoin:round',
+      sv = q => Math.min(70, Math.max(0, 100 * (h * q * p.Qmax / ymax) / w));   // a label under a rising line sits lower, so the line does not cross the text
     kids.push(K.svg('line', { x1: L, y1: T + h, x2: L + w, y2: T + h, stroke: '#68707F' }), K.svg('line', { x1: L, y1: T, x2: L, y2: T + h, stroke: '#68707F' }));
     [0, 0.5, 1].forEach(f => { const c = ymax * f / 1.05; kids.push(K.svg('text', { x: L - 6, y: Y(c) + 4, 'text-anchor': 'end', style: 'font-size:11px' }, K.fmt(c, c < 1 ? 3 : 2))); });
     [0, 0.5, 1].forEach(f => kids.push(K.svg('text', { x: X(p.Qmax * f), y: H - 14, 'text-anchor': f === 1 ? 'end' : f ? 'middle' : 'start', style: 'font-size:11px' }, String(Math.round(p.Qmax * f)))));
     kids.push(K.svg('text', { x: L + w / 2, y: H - 1, 'text-anchor': 'middle', style: 'font-size:11px' }, 'queries answered Q      cumulative cost, ' + p.unit));
     kids.push(K.svg('line', { x1: X(0), y1: Y(p.idx_v), x2: X(p.Qmax), y2: Y(p.idx_v + p.q_v * p.Qmax), stroke: '#7C9CFF', 'stroke-width': 2.5 }));
     kids.push(K.svg('line', { x1: X(0), y1: Y(p.idx_g), x2: X(p.Qmax), y2: Y(p.idx_g + p.q_g * p.Qmax), stroke: '#F2A93B', 'stroke-width': 2.5 }));
-    kids.push(K.svg('text', { x: X(p.Qmax) - 4, y: Y(p.idx_v + p.q_v * p.Qmax) + (p.q_v < p.q_g ? 16 : -6), 'text-anchor': 'end', fill: '#7C9CFF', style: 'fill:#7C9CFF;font-size:12px' }, 'vector / hybrid'));
-    kids.push(K.svg('text', { x: X(p.Qmax) - 4, y: Y(p.idx_g + p.q_g * p.Qmax) + (p.q_v < p.q_g ? -6 : 16), 'text-anchor': 'end', style: 'fill:#F2A93B;font-size:12px' }, 'graph'));
+    kids.push(K.svg('text', { x: X(p.Qmax) - 4, y: Y(p.idx_v + p.q_v * p.Qmax) + (p.q_v < p.q_g ? 16 + sv(p.q_v) : -6), 'text-anchor': 'end', fill: '#7C9CFF', style: 'fill:#7C9CFF;font-size:12px;' + HALO }, 'vector / hybrid'));
+    kids.push(K.svg('text', { x: X(p.Qmax) - 4, y: Y(p.idx_g + p.q_g * p.Qmax) + (p.q_v < p.q_g ? -6 : 16 + sv(p.q_g)), 'text-anchor': 'end', style: 'fill:#F2A93B;font-size:12px;' + HALO }, 'graph'));
     const qs = compute({ idx_g: p.idx_g, idx_v: p.idx_v, q_v: p.q_v, q_g: p.q_g });
     if (Number.isFinite(qs) && qs > 0 && qs <= p.Qmax) {
       kids.push(K.svg('circle', { cx: X(qs), cy: Y(p.idx_v + p.q_v * qs), r: 5, fill: '#3CC7B4' }), K.svg('text', { x: X(qs) + 8, y: Y(p.idx_v + p.q_v * qs) + 16, style: 'fill:#3CC7B4;font-size:12px' }, 'Q* = ' + qs));

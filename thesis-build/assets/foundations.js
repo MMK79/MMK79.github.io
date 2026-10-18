@@ -79,7 +79,7 @@ function body(t0) {
 }
 main.innerHTML = `<div class="ex-cards" id="fd-cards">${topics.map(t => { const s = (t.provenance || {}).status || "unverified";
   return `<article class="ex-card" id="${esc(t.id)}" data-s="${esc(s)}" data-p="${esc(t.problem || "")}" data-t="${esc((t.title + " " + (TOP[t.id].title_fa || "") + " " + (t.what_it_is || "") + " " + (t.why || "") + " " + ((FA[t.id] || {}).what_it_is || "")).toLowerCase())}"><details><summary>
-    ${ttl(TOP[t.id] || t, "h3")}<span class="ex-meta">${badge(s)}${(t.prerequisites || []).length ? ` · ${esc(T("fd.n_pre", {n: N(t.prerequisites.length)}))}` : ""}</span></summary><div class="ex-body"></div></details></article>`; }).join("")}</div>
+    ${ttl(TOP[t.id] || t, "h3")}<span class="ex-meta">${badge(s)}${(t.prerequisites || []).length ? ` · ${esc(T(t.prerequisites.length === 1 ? "fd.n_pre1" : "fd.n_pre", {n: N(t.prerequisites.length)}))}` : ""}</span></summary><div class="ex-body"></div></details></article>`; }).join("")}</div>
   <p class="ex-none" id="fd-none" hidden>${esc(T("fd.none"))}</p>`;
 const cards = [...main.querySelectorAll(".ex-card")], byId = Object.fromEntries(topics.map(t => [t.id, t]));
 function open(c) { const b = c.querySelector(".ex-body"); if (!b.dataset.done) { b.innerHTML = body(byId[c.id]); b.dataset.done = 1; b.querySelectorAll(".fd-run").forEach(x => x.addEventListener("click", () => runDemo(x.closest(".ex-demo")))); } }

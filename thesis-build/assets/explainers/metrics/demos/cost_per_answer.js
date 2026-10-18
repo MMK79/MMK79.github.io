@@ -97,7 +97,7 @@
     const means = K.el('div', { class: 'formula', 'aria-live': 'polite' });
     const note = K.el('p', { class: 'hint' });
     const pr = D.cl.prices_usd_per_mtok;
-    priceBox.textContent = 'Price table used (USD per million tokens, pack ' + D.m.generated + ')\n' +
+    priceBox.textContent = 'Price table used (USD per million tokens, from the pack)\n' +
       Object.keys(pr).map(m => (m + (m === D.m.answer_model ? ' (answer model, used here)' : ' (judge, not costed here)')).padEnd(0) + ': in ' + pr[m].input + ', out ' + pr[m].output).join('\n') +
       '\nSource: ' + D.cl.price_source;
     shell.append(K.el('div', { class: 'row' }, K.el('label', {}, 'arm ', aSel)), K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;width:100%' }, 'question ', qSel)),

@@ -125,6 +125,13 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
       <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
       <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
       <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
       <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
@@ -190,7 +197,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
    prefers-reduced-motion: jump instead of smooth scroll, static outline. */
 (()=>{
   const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
-  let at=0, src=null, done=false;
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
   const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
   ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
     if(!e.isTrusted) return;
@@ -284,8 +291,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <span class="live-count" id="cnt" aria-live="polite"></span>
 </div>
 <main id="tg-main"><p class="ex-none" data-i18n="ex.loading">Loading…</p></main>
-<footer class="site-foot"><p data-i18n="tg.foot">Data: vault Presentations/RAG and GraphRAG Tooling Landscape - 2026-10-13. Stars, commits, archived flags and SPDX ids from the GitHub API, model numbers from the Hugging Face API, both on 2026-10-13; licence notes read in each LICENSE file or model card. Fit ratings and verdicts are our judgement.</p></footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology"]}};</script>
+<footer class="site-foot"><p data-i18n="tg.foot">Data: vault Presentations/RAG and GraphRAG Tooling Landscape. Stars, commits, archived flags and SPDX ids from the GitHub API, model numbers from the Hugging Face API; licence notes read in each LICENSE file or model card. Fit ratings and verdicts are our judgement.</p></footer>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "statistical-tests", "evaluating-rag"], "figures": ["anatomy-system"]}};</script>
 <script src="/thesis/assets/gallery.js"></script>
 <script src="/thesis/assets/tooling.js"></script>
 </body>

@@ -1,0 +1,178 @@
+{
+ "counts": {
+  "s1": {
+   "chunks": 116,
+   "by_lecture": {
+    "L14": 56,
+    "L15": 60
+   },
+   "chars": 159733
+  },
+  "s2": {
+   "chunks": 116,
+   "errors": 0,
+   "mentions": 900,
+   "edges_kept": 471,
+   "edges_dropped": 66,
+   "prompt_tokens": 136116,
+   "completion_tokens": 76936,
+   "cost_usd": 0.04439,
+   "by_relation": {
+    "USES": 302,
+    "PREREQUISITE_OF": 77,
+    "IS_A": 92
+   },
+   "by_reading": {
+    "stated": 231,
+    "implied": 240
+   },
+   "dropped_why": {
+    "endpoint is not a mention": 43,
+    "quote not verbatim in passage": 17,
+    "self-loop": 6
+   }
+  },
+  "s3": {
+   "raw_mentions": 900,
+   "distinct_keys": 237,
+   "linked_by_alias": 34,
+   "mentions_linked_by_alias": 488,
+   "leftovers": 203,
+   "lower_band": 38,
+   "judged": 165,
+   "judge_calls": 21,
+   "judge_prompt_tokens": 26147,
+   "judge_completion_tokens": 8488,
+   "decisions": {
+    "related": 47,
+    "same": 34,
+    "not-a-concept": 38,
+    "none": 25,
+    "narrower": 16,
+    "broader": 5
+   },
+   "review_queue": 4,
+   "merged_by_judge": 15,
+   "clustered": 15,
+   "dropped_not_concept": 38,
+   "nodes_after_er": 169,
+   "judge_cost_usd": 0.01389,
+   "review_rejected": 14,
+   "review_accepted": 16
+  },
+  "s4": {
+   "pairs": 390,
+   "hhem_supported": 326,
+   "minicheck_supported": 175,
+   "both_scored": 390,
+   "gate": {
+    "supported": 172,
+    "review (pedagogical: not gated)": 71,
+    "checkers disagree": 104,
+    "rejected": 43
+   },
+   "hhem_seconds": 480.8,
+   "minicheck_seconds": 1517.8
+  },
+  "s5": {
+   "nodes": 183,
+   "vocabulary_nodes": 29,
+   "candidate_nodes": 154,
+   "evidence_records": 390,
+   "assertions": 301,
+   "assertion_status": {
+    "accepted-by-gate": 146,
+    "proposed": 65,
+    "review": 69,
+    "rejected": 21
+   },
+   "evidence_gate": {
+    "supported": 172,
+    "review (pedagogical: not gated)": 71,
+    "checkers disagree": 104,
+    "rejected": 43
+   },
+   "edges_dropped_at_lift": {
+    "endpoint is not a concept (dropped in ER)": 77,
+    "self-loop after merge": 4
+   },
+   "by_relation": {
+    "USES": 171,
+    "PREREQUISITE_OF": 65,
+    "IS_A": 65
+   },
+   "passage_edges": {
+    "MENTIONS": 686,
+    "DEFINES": 30
+   },
+   "merges": 64,
+   "merges_rejected_in_review": 14,
+   "cycles": {
+    "PREREQUISITE_OF": 4,
+    "USES": 26,
+    "IS_A": 3
+   },
+   "flags": {
+    "R4 USES source is not a method": 119,
+    "R3 kind mismatch": 37,
+    "R3 cycle": 6,
+    "R1 cycle": 9,
+    "R2 cycle": 43
+   }
+  },
+  "s6": {
+   "rule_A": 0,
+   "rule_B": 1,
+   "untyped": 16
+  },
+  "cost_usd_total": 0.0583,
+  "spend_all_calls": {
+   "calls": 161,
+   "usd": 0.074
+  }
+ },
+ "meta": {
+  "extractor": "google/gemini-2.5-flash-lite",
+  "judge": "cf.mistral-small-3.1-24b-instruct (Mistral family)",
+  "embedder": "BAAI/bge-m3",
+  "nli": [
+   "vectara/hallucination_evaluation_model (HHEM-2.1-open)",
+   "lytang/MiniCheck-Flan-T5-Large"
+  ],
+  "where": {
+   "extraction": "OpenRouter API",
+   "judge": "AvalAI API (OpenRouter credit ran out)",
+   "embedding": "Kaggle T4 GPU, thesis batch pipeline",
+   "nli": "Kaggle CPU, private kernel, deleted after download",
+   "mac": "string matching, file assembly, the graph walk"
+  },
+  "snapshot": "16c59dc5e658"
+ },
+ "nli_runs": [
+  {
+   "dataset": "masoudmohararzadeh/kgp-nli-025413-in",
+   "kernel": "masoudmohararzadeh/kgp-nli-025413-job",
+   "started": "2026-10-18 02:54:13",
+   "dataset_private": true,
+   "kernel_status": "complete",
+   "kernel_seconds": 588,
+   "downloaded": true,
+   "deleted_and_absent": {
+    "kernels": true,
+    "datasets": true
+   }
+  },
+  {
+   "dataset": "masoudmohararzadeh/kgp-nli-030545-in",
+   "kernel": "masoudmohararzadeh/kgp-nli-030545-job",
+   "started": "2026-10-18 03:05:45",
+   "dataset_private": true,
+   "kernel_status": "complete",
+   "kernel_seconds": 1643,
+   "deleted_and_absent": {
+    "kernels": true,
+    "datasets": true
+   }
+  }
+ ]
+}

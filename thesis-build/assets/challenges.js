@@ -20,7 +20,7 @@
   $("stats").innerHTML = [[nCh, t("ch.st_ch")], [C.challenges.length - nCh, t("ch.st_ben")], [all.length, t("ch.st_links")],
     [sources.size, t("ch.st_src")], [all.filter(e => e.verified === false).length, t("ch.st_unv")]]
     .map(([b, s]) => `<div><b class="num">${b}</b><span>${esc(s)}</span></div>`).join("");
-  $("framing").innerHTML = I.tx(C.note, F.note) + " " + esc(t("ch.asof", {d: I.dmy(C.asof)}));
+  $("framing").innerHTML = I.tx(C.note, F.note);
 
   const best = c => { const r = [...c.for, ...c.against].map(e => RANK.indexOf(e.tier)).filter(i => i >= 0); return r.length ? RANK[Math.min(...r)] : "—"; };
   const short = s => s.split(/[:;]/)[0];

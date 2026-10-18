@@ -42,7 +42,6 @@ const realWhy = r => { const s = String(r ?? ""); const i = s.indexOf(":"); retu
 const tk = (k, fb) => (I.has && I.has(k)) || (window.I18N_DICT && window.I18N_DICT.en && k in window.I18N_DICT.en) ? T(k) : fb;
 const layerName = l => tk("ex.layer_" + l.id, l.name);
 const evName = s => tk("ex.ev_" + s, s);
-const rev = d => esc(T("ex.revised", {d: "\u0001"})).replace("\u0001", `<bdi dir="ltr">${esc(d)}</bdi>`);   // dates stay YYYY-MM-DD order on Persian
 
 const {tex} = window.EXS;   // explain-shared.js (LaTeX -> Unicode, Origin block)
 
@@ -90,7 +89,6 @@ function card(u) {
     `<span class="ex-tag ${rk}"${realWhy(st.real) ? ` title="${esc(realWhy(st.real))}"` : ""}>${esc(T("ex." + rk))}</span>`,
     u.three ? `<span class="ex-tag d3">${esc(T("ex.tag_3d"))}</span>` : "",
     !u.three && u.viz === "2d" && u.viz_planned === "3d" ? `<span class="ex-tag d3p" title="${esc(T("ex.tag_3d_planned_title"))}">${esc(T("ex.tag_3d_planned"))}</span>` : "",
-    st.revised ? `<span class="ex-tag rev">${rev(st.revised)}</span>` : "",
     (u.superseded || []).length ? `<span class="ex-tag sup">${esc(T("ex.tag_sup", {n: N(u.superseded.length)}))}</span>` : "",
   ].join("");
   a.innerHTML = `<details><summary><div class="ex-sum-h">${loc("h3", E(u.name), (fx(u, "name") && E(fx(u, "name"))) || null)}<span class="ex-chev" aria-hidden="true">›</span></div>
@@ -116,7 +114,7 @@ function wx(u, we) {
 function body(u, el) {
   const st = status[u.id] || {}, rk = realKind(st.real), src = u.source || {}, pg = pages((src.cite || "") + " " + (src.id || ""));
   const we = u.worked_example || {};
-  const sup = (u.superseded || []).map(s => `<div class="ex-sup" lang="en" dir="ltr"><b>${esc(s.date || "")}</b> · ${esc(s.field || "")}: ${E(s.reason || "")}
+  const sup = (u.superseded || []).map(s => `<div class="ex-sup" lang="en" dir="ltr"><b>${esc(s.field || "")}</b>: ${E(s.reason || "")}
       ${s.old ? `<details class="ex-tex"><summary>${esc(T("ex.sup_old"))}</summary><code>${esc(typeof s.old === "string" ? s.old : JSON.stringify(s.old))}</code></details>` : ""}</div>`).join("");
   el.innerHTML = `
     <div class="ex-media">
@@ -138,7 +136,7 @@ function body(u, el) {
         ${sup ? `<h4 style="margin-top:10px">${esc(T("ex.h_sup"))}</h4>${sup}` : ""}
       </div>
       <div class="ex-blk ex-caveat"><h4>${esc(T("ex.h_caveats"))}</h4>
-        <p class="ex-src">${esc(T("ex.example_" + rk))}${realWhy(st.real) ? " " + en("span", E(realWhy(st.real))) : ""}${st.revised ? " · " + rev(st.revised) : ""}</p>
+        <p class="ex-src">${esc(T("ex.example_" + rk))}${realWhy(st.real) ? " " + en("span", E(realWhy(st.real))) : ""}</p>
         ${list(u.blind_spots, fx(u, "blind_spots"))}
       </div>
     </div>

@@ -1,0 +1,118 @@
+{
+ "about": "Sources cited on the Statistical tests page; verified = primary text read at the locator. Built by the sources pass (Opus).",
+ "sources": {
+  "mcnemar1947": {
+   "short": "McNemar 1947",
+   "authors": "Quinn McNemar",
+   "year": 1947,
+   "title": "Note on the Sampling Error of the Difference Between Correlated Proportions or Percentages",
+   "venue": "Psychometrika 12(2):153-157",
+   "doi": "10.1007/BF02295996",
+   "citekey": "mcnemarNoteSamplingError1947",
+   "zotero_key": "TLLVLUXM",
+   "in_zotero": true
+  },
+  "edwards1948": {
+   "short": "Edwards 1948",
+   "authors": "Allen L. Edwards",
+   "year": 1948,
+   "title": "Note on the “Correction for Continuity” in Testing the Significance of the Difference between Correlated Proportions",
+   "venue": "Psychometrika 13(3):185-187",
+   "doi": "10.1007/BF02289261",
+   "citekey": "edwardsNoteCorrectionContinuity1948",
+   "zotero_key": "EETI2H27",
+   "in_zotero": true
+  },
+  "fagerland2013": {
+   "short": "Fagerland et al. 2013",
+   "authors": "Morten W. Fagerland, Stian Lydersen, Petter Laake",
+   "year": 2013,
+   "title": "The McNemar test for binary matched-pairs data: mid-p and asymptotic are better than exact conditional",
+   "venue": "BMC Medical Research Methodology 13:91",
+   "doi": "10.1186/1471-2288-13-91",
+   "citekey": "fagerlandMcNemarTestBinary2013",
+   "zotero_key": "Z5Z8W869",
+   "in_zotero": true
+  },
+  "efron1993": {
+   "short": "Efron & Tibshirani 1993",
+   "authors": "Bradley Efron, Robert J. Tibshirani",
+   "year": 1993,
+   "title": "An Introduction to the Bootstrap",
+   "venue": "Chapman & Hall, New York",
+   "isbn": "978-0-412-04231-7",
+   "citekey": "efronIntroductionBootstrap1993",
+   "zotero_key": "9J4MU4DP",
+   "in_zotero": true,
+   "note": "Zotero record lists only Efron as author; Tibshirani is co-author"
+  },
+  "berger1982": {
+   "short": "Berger 1982",
+   "authors": "Roger L. Berger",
+   "year": 1982,
+   "title": "Multiparameter Hypothesis Testing and Acceptance Sampling",
+   "venue": "Technometrics 24(4):295-300",
+   "doi": "10.1080/00401706.1982.10487790",
+   "citekey": "bergerMultiparameterHypothesisTesting1982",
+   "zotero_key": "6LY5BUGI",
+   "in_zotero": true
+  },
+  "holm1979": {
+   "short": "Holm 1979",
+   "authors": "Sture Holm",
+   "year": 1979,
+   "title": "A Simple Sequentially Rejective Multiple Test Procedure",
+   "venue": "Scandinavian Journal of Statistics 6(2):65-70",
+   "url": "https://www.jstor.org/stable/4615733",
+   "citekey": "holmSimpleSequentiallyRejective1979",
+   "zotero_key": "5SX3NW9V",
+   "in_zotero": true,
+   "note": "OpenAlex lists a JSTOR-prefix DOI that Crossref does not resolve; stored with the JSTOR URL"
+  },
+  "cohen1960": {
+   "short": "Cohen 1960",
+   "authors": "Jacob Cohen",
+   "year": 1960,
+   "title": "A Coefficient of Agreement for Nominal Scales",
+   "venue": "Educational and Psychological Measurement 20(1):37-46",
+   "doi": "10.1177/001316446002000104",
+   "citekey": "cohenCoefficientAgreementNominal1960",
+   "zotero_key": "4GL8I2PE",
+   "in_zotero": true
+  },
+  "dietterich1998": {
+   "short": "Dietterich 1998",
+   "authors": "Thomas G. Dietterich",
+   "year": 1998,
+   "title": "Approximate Statistical Tests for Comparing Supervised Classification Learning Algorithms",
+   "venue": "Neural Computation 10(7):1895-1923",
+   "doi": "10.1162/089976698300017197",
+   "citekey": "dietterichApproximateStatisticalTests1998",
+   "zotero_key": "9Q5UALP6",
+   "in_zotero": true
+  },
+  "wasserstein2016": {
+   "short": "Wasserstein & Lazar 2016",
+   "authors": "Ronald L. Wasserstein, Nicole A. Lazar",
+   "year": 2016,
+   "title": "The ASA Statement on p-Values: Context, Process, and Purpose",
+   "venue": "The American Statistician 70(2):129-133",
+   "doi": "10.1080/00031305.2016.1154108",
+   "citekey": "wassersteinASAStatementPValues2016",
+   "zotero_key": "TSLNCAZL",
+   "in_zotero": true
+  },
+  "fda2022": {
+   "short": "FDA 2022",
+   "authors": "U.S. Food and Drug Administration (CDER, CBER)",
+   "year": 2022,
+   "title": "Multiple Endpoints in Clinical Trials: Guidance for Industry",
+   "venue": "FDA guidance, October 2022 (Biostatistics)",
+   "url": "https://www.fda.gov/media/162416/download",
+   "citekey": "fdaMultipleEndpointsClinical2022",
+   "zotero_key": null,
+   "in_zotero": false,
+   "note": "regulatory guidance, not a paper; not added to Zotero"
+  }
+ }
+}

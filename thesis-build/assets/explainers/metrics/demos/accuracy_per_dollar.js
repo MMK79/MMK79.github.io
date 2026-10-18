@@ -40,10 +40,10 @@
       const r = compute(st); res.set(r.vector, 1); res2.set(r.graph, 1);
       svg.replaceChildren();
       const xm = Math.max(st.vector.usd, st.graph.usd, 0.001) * 1.2, X = c => 40 + (W - 60) * c / xm, Y = a => H - 30 - (H - 50) * a;
-      svg.append(K.svg('line', { x1: 40, x2: W - 20, y1: H - 30, y2: H - 30, stroke: '#242B38' }), K.svg('line', { x1: 40, x2: 40, y1: 10, y2: H - 30, stroke: '#242B38' }),
+      svg.append(K.svg('line', { x1: 40, x2: W - 20, y1: H - 30, y2: H - 30, stroke: '#68707F' }), K.svg('line', { x1: 40, x2: 40, y1: 10, y2: H - 30, stroke: '#68707F' }),
         K.svg('text', { x: W / 2, y: H - 8, 'text-anchor': 'middle' }, 'USD per answer'), K.svg('text', { x: 4, y: 20 }, 'acc'));
       for (const [k, c, col] of [['vector', 'Vector', '#7C9CFF'], ['graph', 'Graph', '#F2A93B']]) {
-        const p = st[k]; svg.append(K.svg('line', { x1: X(0), y1: Y(0), x2: X(Math.min(xm, 1 / (r[k] || 1) * 1)), y2: Y(Math.min(1, r[k] * xm)), stroke: col, 'stroke-opacity': .35, 'stroke-dasharray': '4 3' }),
+        const p = st[k]; svg.append(K.svg('line', { x1: X(0), y1: Y(0), x2: X(Math.min(xm, 1 / (r[k] || 1) * 1)), y2: Y(Math.min(1, r[k] * xm)), stroke: col, 'stroke-opacity': .7, 'stroke-dasharray': '4 3' }),
           K.svg('circle', { cx: X(p.usd), cy: Y(p.acc), r: 7, fill: col }), K.svg('text', { x: X(p.usd) + 10, y: Y(p.acc) + 4 }, c + ' ' + K.fmt(r[k], 1)));
       }
       formula.textContent = `vector: ${st.vector.acc} / ${st.vector.usd} = ${K.fmt(r.vector, 1)}\ngraph:  ${st.graph.acc} / ${st.graph.usd} = ${K.fmt(r.graph, 1)}   (dashed lines: all points with the same ratio)`;
@@ -89,12 +89,12 @@
       }
       svg.replaceChildren();
       const xm = 0.0004, X = c => 50 + (W - 80) * c / xm, Y = v => H - 40 - (H - 70) * v;
-      svg.append(K.svg('line', { x1: 50, x2: W - 20, y1: H - 40, y2: H - 40, stroke: '#242B38' }), K.svg('line', { x1: 50, x2: 50, y1: 10, y2: H - 40, stroke: '#242B38' }),
+      svg.append(K.svg('line', { x1: 50, x2: W - 20, y1: H - 40, y2: H - 40, stroke: '#68707F' }), K.svg('line', { x1: 50, x2: 50, y1: 10, y2: H - 40, stroke: '#68707F' }),
         K.svg('text', { x: W / 2, y: H - 8, 'text-anchor': 'middle' }, 'USD per answer (mean of 12)'), K.svg('text', { x: 4, y: 14 }, 'accuracy'));
       for (const c of [0.0001, 0.0002, 0.0003, 0.0004]) svg.append(K.svg('text', { x: X(c), y: H - 24, 'text-anchor': 'middle' }, '$' + c));
       for (const v of [0, 0.5, 1]) svg.append(K.svg('text', { x: 46, y: Y(v) + 4, 'text-anchor': 'end' }, String(v)));
       const mx = Math.max(...Object.values(out).map(o => o.ratio));
-      for (const k of [0.25, 0.5, 1]) { const rr = mx * k; svg.append(K.svg('line', { x1: X(0), y1: Y(0), x2: X(Math.min(xm, 1 / rr)), y2: Y(Math.min(1, rr * xm)), stroke: '#68707F', 'stroke-opacity': .5, 'stroke-dasharray': '3 4' })); }
+      for (const k of [0.25, 0.5, 1]) { const rr = mx * k; svg.append(K.svg('line', { x1: X(0), y1: Y(0), x2: X(Math.min(xm, 1 / rr)), y2: Y(Math.min(1, rr * xm)), stroke: '#68707F', 'stroke-opacity': .8, 'stroke-dasharray': '3 4' })); }
       const dom = (o, p) => p.acc >= o.acc && p.usd <= o.usd && (p.acc > o.acc || p.usd < o.usd);
       for (const a of 'ABC') {
         const o = out[a], dominated = 'ABC'.split('').some(b => b !== a && dom(o, out[b]));

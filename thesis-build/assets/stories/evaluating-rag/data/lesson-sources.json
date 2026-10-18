@@ -1,0 +1,194 @@
+{
+ "about": "Built by data/build_sources.py from data/claims.json; one row per cited source.",
+ "sources": {
+  "alce_code": {
+   "short": "ALCE code",
+   "title": "princeton-nlp/ALCE eval.py (compute_autoais)",
+   "url": "https://github.com/princeton-nlp/ALCE/blob/main/eval.py",
+   "kind": "code",
+   "verified": true,
+   "how": "raw eval.py at commit 246c476 downloaded and read lines 301-440",
+   "use": "compute_autoais: sentence without citations: joint_entail = 0 (recall 0). Sentence with one citation: entail_prec += joint_entail (precision contribution = its  (eval.py lines 362-364 (no citations), 366-367 (out of range), 371 (total_citations += len(ref)), 386 (entail += joint_entail), 391-413 (precision branch, line 413 entail_prec += joint_entail), 416-417)"
+  },
+  "dataset_note": {
+   "short": "Datasets and frameworks note",
+   "title": "Thesis - Datasets and Evaluation Frameworks - Research Note (vault)",
+   "url": "",
+   "kind": "ours",
+   "use": "the RAGAS decision, framework comparison (PyPI facts), the API traps, Codex objections",
+   "verified": true,
+   "how": "our own research note"
+  },
+  "deepeval": {
+   "short": "DeepEval docs",
+   "title": "DeepEval documentation (G-Eval, faithfulness)",
+   "url": "https://deepeval.com/docs/metrics-faithfulness",
+   "kind": "vendor",
+   "verified": true,
+   "how": "defuddle read of the doc pages, PyPI JSON metadata and GitHub licence field",
+   "use": "DeepEval: Apache-2.0 (PyPI classifier and GitHub licence field). Faithfulness metric: LLM extracts claims from actual_output and classifies each as truthful aga (docs: deepeval.com/docs/metrics-faithfulness ('How Is It Calculated'); metrics-llm-evals (G-Eval); PyPI deepeval 4.3.1)"
+  },
+  "edge2024": {
+   "short": "Edge et al. 2024",
+   "title": "From Local to Global: A Graph RAG Approach to Query-Focused Summarization",
+   "url": "https://arxiv.org/abs/2404.16130",
+   "kind": "preprint",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Significance tests: Wilcoxon signed-rank tests with Holm-Bonferroni correction for multiple pairwise comparisons of the six conditions, over 125 questions per d (App. G Statistical Analysis, Table 6; Sec. 5.2 for p<.05 on claim counts) | Field claim: of Edge, Han, Xiao, Gutierrez, LightRAG, Xiang, only Edge et al. report a significance test. Confirmed on text search. Edge: Wilcoxon + Holm-Bonfer (App. G of Edge; evaluation sections and appendices of the other five (keyword search: significan, p-value, Wilcoxon, t-test, McNemar, bootstrap, confidence interval, standard deviation, seed, runs))"
+  },
+  "es2023": {
+   "short": "Es et al. 2024",
+   "title": "RAGAS: Automated Evaluation of Retrieval Augmented Generation (EACL demos)",
+   "url": "https://arxiv.org/abs/2309.15217",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "RAGAS is a framework for reference-free evaluation of RAG pipelines; it defines three quality aspects: faithfulness, answer relevance and context relevance. (Abstract; Sec. 3 (Evaluation Strategies)) | Faithfulness: an LLM extracts statements from the answer, then verifies each against the context; F = |V|/|S|, where |V| is the number of statements judged supp (Sec. 3, 'Faithfulness' paragraph (formula for F))"
+  },
+  "gao2023": {
+   "short": "Gao et al. 2023",
+   "title": "Enabling Large Language Models to Generate Text with Citations (ALCE, EMNLP)",
+   "url": "https://arxiv.org/abs/2305.14627",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Citation recall = a statement is supported by the concatenation of its cited passages (NLI judge = 1, at least one citation). A citation is irrelevant if (a) it (Sec. 3.3 Citation Quality (recall and precision definitions; Figure 3)) | ALCE uses TRUE (a T5-11B NLI model) as the automatic support judge, and checks it against humans: Cohen's kappa 0.698 (citation recall, substantial) and 0.525 ( (Sec. 3.3 (TRUE, footnote 8); Sec. 6 Human Evaluation; App. G.5)"
+  },
+  "gutierrez2024": {
+   "short": "Gutiérrez et al. 2024",
+   "title": "HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models (NeurIPS)",
+   "url": "https://arxiv.org/abs/2405.14831",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "HippoRAG reports retrieval recall@2 and recall@5 (R@2, R@5) plus EM and F1 for QA. (Sec. 3.3 Metrics)"
+  },
+  "han2025": {
+   "short": "Han et al. 2025",
+   "title": "RAG vs. GraphRAG: A Systematic Evaluation and Key Insights",
+   "url": "https://arxiv.org/abs/2502.11371",
+   "kind": "preprint",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "LLM-as-a-Judge evaluation of query-based summarization (RAG vs GraphRAG) is sensitive to presentation order: reversing the order gives different, sometimes oppo (Sec. 5.2 (observation 1, Figs. 4a-4d); Sec. 5.3 Position Bias in Existing Evaluation; Sec. 1)"
+  },
+  "hhem": {
+   "short": "Vectara HHEM-2.1-Open",
+   "title": "HHEM-2.1-Open model card",
+   "url": "https://huggingface.co/vectara/hallucination_evaluation_model",
+   "kind": "vendor",
+   "verified": true,
+   "how": "README.md of the model repo fetched from the Hugging Face raw URL",
+   "use": "HHEM-2.1-Open: base model google/flan-t5-base; licence Apache-2.0; returns a score in [0,1] (0 = hypothesis not evidenced by the premise, 1 = fully supported; t (Model card: YAML header; 'Using HHEM-2.1-Open'; 'HHEM-2.1-Open vs. HHEM-1.0' (Table 3: RAGTruth-QA; efficiency paragraph))"
+  },
+  "honovich2022": {
+   "short": "Honovich et al. 2022",
+   "title": "TRUE: Re-evaluating Factual Consistency Evaluation (NAACL)",
+   "url": "https://arxiv.org/abs/2204.04991",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Large-scale NLI and QG-QA based approaches perform well across tasks and are highly complementary (ensemble beats single metrics). The NLI model is T5-11B fine- (Abstract; Sec. 1; Sec. 3.3 (ANLI model); Sec. 5 Table 4)"
+  },
+  "mcnemar1947": {
+   "short": "McNemar 1947",
+   "title": "Note on the sampling error of the difference between correlated proportions or percentages (Psychometrika)",
+   "url": "https://doi.org/10.1007/BF02295996",
+   "kind": "peer-reviewed",
+   "verified": false,
+   "how": "abstract only, via the publisher page; full text not available",
+   "use": "McNemar (1947) presents two formulas for judging the significance of the difference between correlated proportions; the chi-square equivalent of one is pointed  (Springer abstract page (DOI 10.1007/BF02295996); no PDF in Zotero or open access (Unpaywall: closed))"
+  },
+  "protocol": {
+   "short": "Claim protocol",
+   "title": "Final claim protocol of the thesis experiment (vault _review)",
+   "url": "",
+   "kind": "ours",
+   "use": "McNemar decision rule, blind-judge rule 13, judge gate 5",
+   "verified": true,
+   "how": "our own protocol"
+  },
+  "ragas_code": {
+   "short": "RAGAS 0.4.3 code",
+   "title": "ragas 0.4.3 wheel source (metrics/collections, metrics/_faithfulness.py)",
+   "url": "https://github.com/vibrantlabsai/ragas",
+   "kind": "code",
+   "use": "how AnswerAccuracy, FactualCorrectness, ContextRecall, Faithfulness and FaithfulnesswithHHEM score; the one-rating fallback",
+   "verified": true,
+   "how": "read in the installed 0.4.3 package; line numbers from that copy"
+  },
+  "ru2024": {
+   "short": "Ru et al. 2024",
+   "title": "RAGChecker: A Fine-grained Framework for Diagnosing Retrieval-Augmented Generation (NeurIPS D&B)",
+   "url": "https://arxiv.org/abs/2408.08067",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "RAGChecker is based on claim-level entailment checking (claim extraction from response and ground truth, then entailment checks) and gives diagnostic metrics fo (Abstract; Sec. 1; Sec. 3.2 Fine-grained Evaluation with Claim Entailment)"
+  },
+  "saadfalcon2023": {
+   "short": "Saad-Falcon et al. 2024",
+   "title": "ARES: An Automated Evaluation Framework for Retrieval-Augmented Generation Systems (NAACL)",
+   "url": "https://arxiv.org/abs/2311.09476",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "ARES generates its own synthetic training data, fine-tunes lightweight LM judges (context relevance, answer faithfulness, answer relevance) and uses prediction- (Abstract; Sec. 3 (PPI and confidence intervals))"
+  },
+  "tang2024": {
+   "short": "Tang et al. 2024",
+   "title": "MiniCheck: Efficient Fact-Checking of LLMs on Grounding Documents (EMNLP)",
+   "url": "https://arxiv.org/abs/2404.10774",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "MiniCheck-FT5 (770M, Flan-T5-L) reaches 74.7 average balanced accuracy on LLM-AggreFact vs GPT-4 75.3. (Sec. 6, Table 2 (Avg column, no per-dataset threshold tuning); Table 3 (size 770M)) | MiniCheck-FT5 has almost the same performance as GPT-4 but is more than 400 times cheaper (cost: GPU at $0.8/GPU-hr on the 13K LLM-AggreFact test set vs GPT-4 A (Sec. 6.2 Computational Cost Comparison; Table 3; Abstract)"
+  },
+  "thakur2024": {
+   "short": "Thakur et al. 2024",
+   "title": "Judging the Judges: Evaluating Alignment and Vulnerabilities in LLMs-as-Judges",
+   "url": "https://arxiv.org/abs/2406.12624",
+   "kind": "preprint",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Only the best and largest judges (GPT-4 Turbo, Llama-3.1 70B, Llama-3 70B) reach strong alignment with humans, and even they fall short of human-human alignment (Sec. 1 main findings (bullets); Fig. 1, Fig. 2; Abstract)"
+  },
+  "trulens": {
+   "short": "TruLens docs",
+   "title": "TruLens documentation (RAG triad)",
+   "url": "https://www.trulens.org/getting_started/core_concepts/rag_triad/",
+   "kind": "vendor",
+   "verified": true,
+   "how": "defuddle read of the doc page, PyPI JSON metadata and GitHub licence field",
+   "use": "TruLens: MIT licence (PyPI classifier and GitHub licence field). RAG triad = context relevance, groundedness (response split into claims, each checked against r (docs: trulens.org/getting_started/core_concepts/rag_triad/; PyPI trulens 2.15.0)"
+  },
+  "wallat2024": {
+   "short": "Wallat et al. 2025",
+   "title": "Correctness is not Faithfulness in RAG Attributions",
+   "url": "https://arxiv.org/abs/2412.18004",
+   "kind": "preprint",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Up to 57% of citations lack citation faithfulness (are post-rationalised). The 57% comes from one adversarial-document experiment (forged relevant but uncited d (Abstract; Sec. 1; results of the post-rationalisation experiment (Fig. 3 text))"
+  },
+  "xiao2025": {
+   "short": "Xiao et al. 2025",
+   "title": "GraphRAG-Bench (college-textbook questions)",
+   "url": "https://arxiv.org/abs/2506.02404",
+   "kind": "preprint",
+   "verified": true,
+   "how": "Zotero-extracted text (pages 1-12) and the arXiv v3 PDF via pdftotext, keyword search plus reading Sec. 4",
+   "use": "GraphRAG-Bench reports Accuracy (LLM-scored for open-ended and fill-in-blank; 0/1 for multiple-choice and true-false; 0/0.5/1 for multi-select) and a rationale  (Sec. 4 Experiments, Metrics; keyword search of all 12 pages (pdftotext) for significance/runs/seed/CI)"
+  },
+  "zheng2023": {
+   "short": "Zheng et al. 2023",
+   "title": "Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena (NeurIPS)",
+   "url": "https://arxiv.org/abs/2306.05685",
+   "kind": "peer-reviewed",
+   "verified": true,
+   "how": "pdfmd cache of arXiv PDF (markitdown), read at the locator",
+   "use": "Strong LLM judges (GPT-4) agree with human preferences above 80%, the same level as human-human agreement; position, verbosity and self-enhancement biases are d (Abstract; Sec. 1; Sec. 3.3 (biases); Sec. 4.2, Table 4)"
+  }
+ }
+}

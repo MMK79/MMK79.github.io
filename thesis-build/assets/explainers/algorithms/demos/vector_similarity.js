@@ -58,12 +58,8 @@
     grid.append(K.svg('text', { x: X(0.1), y: Y(-1.1), style: 'fill:var(--faint);font-size:11px' }, 'length 1'));
     const layer = K.svg('g'); svg.append(layer);
 
-    function arrow(v, color, w) {
-      const g = K.svg('g'), x2 = X(v[0]), y2 = Y(v[1]), n = len(v) * S || 1, ux = (v[0] * S) / n, uy = -(v[1] * S) / n;
-      const bx = x2 - ux * 10, by = y2 - uy * 10;
-      g.append(K.svg('line', { x1: C, y1: C, x2: bx, y2: by, stroke: color, 'stroke-width': w }));
-      g.append(K.svg('polygon', { points: `${x2},${y2} ${bx - uy * 5},${by + ux * 5} ${bx + uy * 5},${by - ux * 5}`, fill: color }));
-      return g;
+    function arrow(v, color, w) {   /* head ends at the rim of the drag handle (r 11), never under it */
+      return K.arrow(null, C, C, X(v[0]), Y(v[1]), { color, width: w, head: 10, r2: 11 });
     }
 
     /* inputs table */

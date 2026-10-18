@@ -1,0 +1,32 @@
+{
+ "about": "Demo questions for the lesson page. Written by us (not from the course homework, which may not be redistributed). Each answer is marked by exact quotes from the Lecture 14 captions; build_example.py checks every quote and turns it into character offsets. Answer marking is ours (one rater).",
+ "questions": [
+  {
+   "id": "D1",
+   "question": "Why is a bigger margin better for generalization?",
+   "answer_quotes": [
+    "If you have the bigger margin, the chances are the new point will still be on correct side of the line.",
+    "Fat margins imply fewer dichotomies possible."
+   ],
+   "why_this_one": "The answer has two parts in two places: the noise intuition (00:08:07) and the growth-function argument (00:10:29). A small chunk holds one part only."
+  },
+  {
+   "id": "D2",
+   "question": "What does requiring a minimum margin do to the growth function?",
+   "answer_quotes": [
+    "by requiring the margin to be at least something, I'm putting a restriction on the growth function.",
+    "Fat margins imply fewer dichotomies possible."
+   ],
+   "why_this_one": "One local answer (00:10:29), just after the 00:10:00 window boundary of our pipeline rule."
+  },
+  {
+   "id": "D3",
+   "question": "With three points in the plane, which dichotomies are lost when we demand a fat margin?",
+   "answer_quotes": [
+    "And when you look at it, this is a thin margin for this particular dichotomy.",
+    "these guys that used to be legitimate dichotomies using my model, are no longer allowed."
+   ],
+   "why_this_one": "The setup (three points, all eight dichotomies) comes before the 00:10:00 window boundary of our pipeline rule; the answer (the thin-margin dichotomy is no longer allowed) comes after it."
+  }
+ ]
+}

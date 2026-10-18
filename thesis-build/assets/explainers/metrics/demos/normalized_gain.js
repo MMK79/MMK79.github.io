@@ -10,7 +10,7 @@
     const K = root.DemoKit, W = 560, H = 190, bw = 34, gap = 34;
     const svg = K.svg('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: 'max-width:600px', role: 'img', 'aria-label': 'pre-test and post-test class means for each arm' });
     const Y = v => 160 - (Math.max(0, Math.min(max, v)) / max) * 130;
-    svg.append(K.svg('line', { x1: 20, x2: W - 10, y1: Y(max), y2: Y(max), stroke: '#68707F', 'stroke-dasharray': '4 3' }), K.svg('text', { x: W - 12, y: Y(max) - 4, 'text-anchor': 'end', style: 'fill:#68707F' }, 'maximum ' + max));
+    svg.append(K.svg('line', { x1: 20, x2: W - 10, y1: Y(max), y2: Y(max), stroke: '#68707F', 'stroke-dasharray': '4 3' }), K.svg('text', { x: 22, y: Y(max) - 4, style: 'fill:#98A0B0;paint-order:stroke;stroke:#0B0D12;stroke-width:4px' }, 'maximum ' + max));
     arms.forEach((a, i) => {
       const x0 = 40 + i * (2 * bw + gap + 90);
       svg.append(K.svg('rect', { x: x0, y: Y(a.pre), width: bw, height: 160 - Y(a.pre), fill: '#7C9CFF', rx: 3 }), K.svg('rect', { x: x0 + bw + 4, y: Y(a.post), width: bw, height: 160 - Y(a.post), fill: '#3CC7B4', rx: 3 }),

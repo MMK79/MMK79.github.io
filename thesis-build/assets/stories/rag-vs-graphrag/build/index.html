@@ -115,7 +115,15 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
   #so.open ol{display:block}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
 </style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
 <body>
 <!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
@@ -233,6 +241,13 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
       <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
       <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
       <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
       <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
@@ -298,7 +313,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
    prefers-reduced-motion: jump instead of smooth scroll, static outline. */
 (()=>{
   const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
-  let at=0, src=null, done=false;
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
   const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
   ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
     if(!e.isTrusted) return;
@@ -447,7 +462,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <p><b>Scale.</b> 138 passages (a sample of 15 Wikipedia articles, at most 10 passages each), 24 questions written by Claude, 12 of them answered by an LLM and judged by two LLM judges. One run, temperature 0, no human labels. Intervals are wide. This page explains an idea; it does not rank methods, and it does not evaluate the thesis system.</p>
   <p>Sources: Peng et al. 2024, <i>Graph Retrieval-Augmented Generation: A Survey</i> (conceptual framing, from our canvas notes). Edge et al. 2024 for local and global search as implemented in the pack. Wikipedia contributors, CC BY-SA 4.0; each passage links to its article revision. Everything numeric is copied from <code>../data/*.json</code>, produced by <code>build/extract.py</code> from the real-example pack.</p>
 </footer>
-</main>
+<section class="an-embed" id="anatomy"><h2 data-i18n="an.h">Three pipelines, one question (isometric figure)</h2><p class="an-lede" data-i18n="an.lede">One question, "What must I understand before the SVM kernel trick?", runs through plain RAG, GraphRAG and our typed-KG tutor on one bench. Step through the stages, hover a part, and switch the types off to see what they change.</p><iframe src="/thesis/assets/figures/anatomy-system/index.html?embed=1" loading="lazy" title="Isometric figure: one question through plain RAG, GraphRAG and the typed-KG tutor"></iframe><p class="an-open"><a href="/thesis/assets/figures/anatomy-system/index.html" data-i18n="an.open">Open the figure full page</a></p><p class="an-cap" data-i18n="an.cap">Computed: the RAG top-3 passages and the budget cuts, from the 138-passage demo corpus (TF-IDF stand-in for the embedding). Illustrative: the GraphRAG extraction, communities and all answer sentences. The concept edges follow our ontology and still need the instructor's review.</p></section><style>.an-embed{margin:40px 0}.an-embed iframe{display:block;width:100%;height:min(82vh,760px);border:1px solid #242B38;border-radius:12px;background:#0B0D12}@media(max-width:600px){.an-embed iframe{height:960px}}.an-lede,.an-cap{color:#98A0B0;font-size:14.5px}.an-cap{font-size:12.5px;margin-top:6px}.an-open a{color:#F2A93B}</style></main>
 
 <script>
 (function(){
@@ -630,10 +645,17 @@ function mountGraph(D){
     svg.setAttribute('aria-label','Ego graph of the ridge regression node with the highlighted path');
     const ns=(t,a)=>{const e=document.createElementNS('http://www.w3.org/2000/svg',t);for(const k in a)e.setAttribute(k,a[k]);return e;};
     const hl=new Set(S.e.map(x=>x.join('|')));
-    G.edges.forEach(e=>{const a=pos[e.s],b=pos[e.t];if(!a||!b)return;
-      const on=S.e.some(x=>(x[0]===e.s&&x[1]===e.t)||(x[0]===e.t&&x[1]===e.s));
-      svg.append(ns('line',{x1:a[0],y1:a[1],x2:b[0],y2:b[1],stroke:on?'#F2A93B':'#2d3547','stroke-width':on?2.5:1}));
-      if(on){const t=ns('text',{x:(a[0]+b[0])/2,y:(a[1]+b[1])/2-4,'text-anchor':'middle',fill:'#F2A93B'});t.textContent=e.rel+' ('+e.passages.join(',')+')';t.style.fill='#F2A93B';t.style.fontSize='10px';svg.append(t);}});
+    // edges are directed (s -> t): the line stops at the target circle and a small arrowhead (a polygon, so no marker ids) points into it; the highlighted edges are drawn last, their labels above all lines with a halo
+    const rOf=id=>S.n.includes(id)?9:[ridge,seed,hoerl,kenn].includes(id)?6:4, labs=[];
+    const edge=(e,hlOnly)=>{const a=pos[e.s],b=pos[e.t];if(!a||!b)return;
+      const on=S.e.some(x=>(x[0]===e.s&&x[1]===e.t)||(x[0]===e.t&&x[1]===e.s));if(on!==hlOnly)return;
+      const col=on?'#F2A93B':'#2d3547',hs=on?8:5,dx=b[0]-a[0],dy=b[1]-a[1],L=Math.hypot(dx,dy)||1,ux=dx/L,uy=dy/L;
+      const tx=b[0]-ux*(rOf(e.t)+2),ty=b[1]-uy*(rOf(e.t)+2),bx=tx-ux*hs,by=ty-uy*hs;
+      svg.append(ns('line',{x1:a[0],y1:a[1],x2:bx,y2:by,stroke:col,'stroke-width':on?2.5:1}));
+      svg.append(ns('polygon',{points:tx+','+ty+' '+(bx-uy*hs*.45)+','+(by+ux*hs*.45)+' '+(bx+uy*hs*.45)+','+(by-ux*hs*.45),fill:col}));
+      if(on)labs.push([e,(a[0]+b[0])/2,(a[1]+b[1])/2-4]);};
+    G.edges.forEach(e=>edge(e,false));G.edges.forEach(e=>edge(e,true));
+    labs.forEach(([e,x,y])=>{const t=ns('text',{x:x,y:y,'text-anchor':'middle',fill:'#F2A93B'});t.textContent=e.rel+' ('+e.passages.join(',')+')';t.style.fill='#F2A93B';t.style.fontSize='10px';t.style.paintOrder='stroke';t.style.stroke='var(--bg,#0b0d12)';t.style.strokeWidth='3px';t.style.strokeLinejoin='round';svg.append(t);});
     G.nodes.forEach(n=>{const p=pos[n.id];const on=S.n.includes(n.id);const main=[ridge,seed,hoerl,kenn].includes(n.id);
       const c=ns('circle',{cx:p[0],cy:p[1],r:on?9:main?6:4,fill:on?(n.id===ridge?'#3CC7B4':'#F2A93B'):'#3a4358',stroke:on?'#fff':'none','stroke-width':1.2,tabindex:0,role:'button','aria-label':n.name});
       const show=()=>{cap.textContent=n.name+' ('+n.type+'), in passages: '+n.passages.join(', ');};

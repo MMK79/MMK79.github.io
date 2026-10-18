@@ -75,5 +75,5 @@ $("cq").oninput = drawCourses; drawCourses();
 // quality
 $("qual").innerHTML = (Q.caveats || []).map(c => { const f = FA.caveats?.[c.claim] || {};
   return `<li><b>${I.tx(c.claim, f.claim)}</b> <span class="tag">${tt("ml.basis." + c.basis)}</span> ${I.tx(c.detail, f.detail)}</li>`; }).join("") + (Q.note ? `<li>${I.tx(Q.note, FA.note)}</li>` : "");
-$("foot").textContent = t("ml.foot", {s: P.subset, d: String(P.generated_at || "").slice(0, 10)});
+$("foot").textContent = t("ml.foot", {s: P.subset});
 })();

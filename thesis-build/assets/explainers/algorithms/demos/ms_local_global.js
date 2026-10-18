@@ -97,7 +97,7 @@
       if (st.mode === 'local') {
         const L = local(st.seed), set = new Set(L.entities), nb = new Set([...ADJ[st.seed]]);
         ENT.forEach(e => m.nodes.push({ id: e, p: EPOS[e], c: e === st.seed ? '#F2A93B' : nb.has(e) ? '#3CC7B4' : '#68707F', r: set.has(e) ? 0.13 : 0.08, o: set.has(e) ? 1 : 0.45 }));
-        EDGES.forEach(([a, b]) => { const on = (a === st.seed && nb.has(b)) || (b === st.seed && nb.has(a)); m.edges.push({ a: EPOS[a], b: EPOS[b], c: on ? '#3CC7B4' : '#242B38', o: on ? 1 : 0.7 }); });
+        EDGES.forEach(([a, b]) => { const on = (a === st.seed && nb.has(b)) || (b === st.seed && nb.has(a)); m.edges.push({ a: EPOS[a], b: EPOS[b], c: on ? '#3CC7B4' : '#4A5468', o: on ? 1 : 0.7 }); });
         COMM.forEach((c, k) => m.shells.push({ p: CPOS[k], c: L.reports.includes(c) ? '#C28BFF' : '#98A0B0', o: L.reports.includes(c) ? 0.2 : 0.05 }));
         L.entities.forEach(e => m.tus.push({ p: EPOS[e].map((v, i) => v + [0.0, 0.2, 0.2][i]) }));
         COMM.forEach((c, k) => m.tags.push({ p: CPOS[k], t: L.reports.includes(c) ? c + ' report' : c, c: L.reports.includes(c) ? '#E9ECF2' : '#68707F' }));
@@ -107,7 +107,7 @@
         const keptSet = new Set(p.kept);
         const status = id => info[id].h === 0 ? 'zero' : keptSet.has(info[id].i) ? 'kept' : 'cut';
         ENT.forEach(e => { const id = COMM[commOf(e)], pp = info[id], s = status(id); m.nodes.push({ id: e, p: EPOS[e], c: CHUNKCOL[(pp.i - 1) % CHUNKCOL.length], r: 0.1, o: s === 'kept' ? 1 : 0.35 }); });
-        EDGES.forEach(([a, b]) => m.edges.push({ a: EPOS[a], b: EPOS[b], c: '#242B38', o: 0.8 }));
+        EDGES.forEach(([a, b]) => m.edges.push({ a: EPOS[a], b: EPOS[b], c: '#4A5468', o: 0.8 }));
         COMM.forEach((id, k) => { const pp = info[id], s = status(id); m.shells.push({ p: CPOS[k], c: s === 'zero' ? '#FF8A65' : CHUNKCOL[(pp.i - 1) % CHUNKCOL.length], o: s === 'kept' ? 0.22 : s === 'zero' ? 0.12 : 0.06 });
           m.tags.push({ p: CPOS[k], t: `${id} chunk ${pp.i}${s === 'kept' ? '' : s === 'zero' ? ' h=0' : ' cut'}`, c: s === 'kept' ? '#E9ECF2' : '#98A0B0' }); });
       }
@@ -119,7 +119,7 @@
     const rot = (p) => { const [x, y, z] = p, cy = Math.cos(st.yaw), sy = Math.sin(st.yaw), cx = Math.cos(st.pitch), sx = Math.sin(st.pitch); const x1 = x * cy + z * sy, z1 = -x * sy + z * cy; return [x1, y * cx - z1 * sx, y * sx + z1 * cx]; };
     function drawSvg(m) {
       if (!svg) { svg = K.svg('svg', { viewBox: '0 0 880 340', role: 'img', 'aria-label': 'GraphRAG communities (2D fallback)', style: 'width:100%;height:100%' }); view.prepend(svg); }
-      const P = p => { const [x, y, z] = rot(p), f = 1 / (1 - z * 0.08); return [440 + x * 105 * f, 170 - y * 105 * f]; };
+      const P = p => { const [x, y, z] = rot(p), f = 1 / (1 - z * 0.08); return [440 + x * 92 * f, 160 - y * 92 * f]; };
       const out = [];
       m.shells.forEach(s => { const [x, y] = P(s.p); out.push(K.svg('circle', { cx: x, cy: y, r: 52, fill: s.c, opacity: s.o + 0.05 })); });
       m.edges.forEach(e => { const a = P(e.a), b = P(e.b); out.push(K.svg('line', { x1: a[0], y1: a[1], x2: b[0], y2: b[1], stroke: e.c, 'stroke-width': 2, opacity: e.o })); });

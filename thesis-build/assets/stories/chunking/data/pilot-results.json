@@ -1,0 +1,93 @@
+{
+ "n_queries": 40,
+ "budget_chars": 4800,
+ "judge": "deepseek/deepseek-v4-flash",
+ "embedder": "BAAI/bge-m3 (dense cosine)",
+ "judge_calls_this_run": 240,
+ "usage_this_run": {
+  "prompt_tokens": 335297,
+  "completion_tokens": 110013
+ },
+ "arms": {
+  "fixed": {
+   "mean_grade": 1.225,
+   "share_grade2": 0.3,
+   "share_grade0": 0.075,
+   "mean_grade_diff_vs_section": [
+    0.05,
+    -0.125,
+    0.25
+   ],
+   "share2_diff_vs_section": [
+    0.0,
+    -0.15,
+    0.15
+   ]
+  },
+  "recursive": {
+   "mean_grade": 1.1,
+   "share_grade2": 0.25,
+   "share_grade0": 0.15,
+   "mean_grade_diff_vs_section": [
+    -0.075,
+    -0.275,
+    0.1
+   ],
+   "share2_diff_vs_section": [
+    -0.05,
+    -0.2,
+    0.1
+   ]
+  },
+  "sentence": {
+   "mean_grade": 1.1,
+   "share_grade2": 0.225,
+   "share_grade0": 0.125,
+   "mean_grade_diff_vs_section": [
+    -0.075,
+    -0.25,
+    0.1
+   ],
+   "share2_diff_vs_section": [
+    -0.075,
+    -0.2,
+    0.05
+   ]
+  },
+  "semantic": {
+   "mean_grade": 1.15,
+   "share_grade2": 0.25,
+   "share_grade0": 0.1,
+   "mean_grade_diff_vs_section": [
+    -0.025,
+    -0.225,
+    0.15
+   ],
+   "share2_diff_vs_section": [
+    -0.05,
+    -0.2,
+    0.1
+   ]
+  },
+  "section": {
+   "mean_grade": 1.175,
+   "share_grade2": 0.3,
+   "share_grade0": 0.125
+  },
+  "parent_child": {
+   "mean_grade": 1.125,
+   "share_grade2": 0.3,
+   "share_grade0": 0.175,
+   "mean_grade_diff_vs_section": [
+    -0.05,
+    -0.25,
+    0.175
+   ],
+   "share2_diff_vs_section": [
+    0.0,
+    -0.15,
+    0.15
+   ]
+  }
+ }
+}

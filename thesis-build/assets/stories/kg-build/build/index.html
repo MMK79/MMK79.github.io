@@ -1,0 +1,1617 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How a knowledge graph is built</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+code,.mono,.t{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,54px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:14px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
+.hero{padding:52px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.who{color:var(--faint);font-size:13px}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0}
+.cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible,a:focus-visible,[tabindex]:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 3px 0;color:var(--muted)}
+.tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}
+.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:15px}
+.ans.warn{border-color:var(--warn)}.ans.good{border-color:var(--teal)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
+.card.bad{border-color:var(--warn)}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.card p.quote{color:var(--text);font-size:13.5px}
+mark{background:rgba(242,169,59,.28);color:var(--text);border-radius:3px;padding:0 1px}
+.bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
+.bridge b{color:var(--text)}
+.take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:11px var(--body)}
+svg .nl{font:11px var(--body);fill:var(--text);paint-order:stroke;stroke:var(--bg);stroke-width:3px}
+.node{cursor:pointer}.edge-hit{cursor:pointer}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.t{font-size:12px}
+.tbl tr.dim td{opacity:.5}
+.hscroll{overflow-x:auto}
+.pre{font:12px/1.5 var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto}
+details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+#st-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+#st-body{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
+.strip{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:4px 0}
+.strip .small{width:34px}
+.sq{width:16px;height:16px;min-height:16px;padding:0;border-radius:3px;border:1px solid var(--line)}
+.sq.on{outline:2px solid var(--amber)}
+.funnel li{margin:4px 0}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
+.legend i{display:inline-block;width:22px;height:0;border-top:2px solid;vertical-align:middle;margin-right:4px}
+#g-info{min-height:60px}
+.elist{padding-left:18px;margin:4px 0}.linkish{background:none;border:0;padding:0;min-height:0;color:var(--blue);text-align:left;font-size:13px}
+.cqlist li{margin:4px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.stage-tbl td:first-child{white-space:nowrap}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
+.pin b{display:block;font-size:13px;color:var(--amber)}
+.pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
+.q .opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q button{text-align:left}.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+.vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+.lesson-video:empty::before{content:"Video: BuildingKnowledgeGraph (English, silent; shown on the thesis website build)";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+#factory-fig:empty::before{content:"Figure: the graph factory";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+@media (max-width:640px){.grid2,.pin{grid-template-columns:1fr}.stage-tbl td:first-child{white-space:normal}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Pilot slice, not the thesis graph:</b> two lectures of Caltech CS 156 (14: SVM, 15: kernel methods). Every number below comes from one real run of the pipeline on them. Some steps use our own modelling; each place says which.</p>
+  <nav id="nav" aria-label="Sections">
+    <a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#watch">Watch</a><a href="#factory">Factory</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a>
+  </nav>
+</div></div>
+
+<main class="wrap">
+<div id="err"></div>
+<header class="hero">
+  <div class="kicker">A layered lesson on a real pilot run</div>
+  <h1>How a knowledge graph is built</h1>
+  <p class="lead">From a lecture transcript to a graph that can answer "what must I learn first?", in six stages. We ran every stage on real data and kept every intermediate file. You can open each one below.</p>
+</header>
+
+<section class="step" id="tldr" data-nav="TL;DR">
+  <div class="kicker">TL;DR</div>
+  <h2>Six stages, one real run</h2>
+  <ol>
+    <li><b>Chunks.</b> The transcripts of Lectures 14 and 15 become <span data-n="s1.chunks"></span> passages, each with an id.</li>
+    <li><b>Extraction.</b> An LLM reads each passage and writes typed edges from a closed list of three relations. Every edge must quote its passage. It wrote <span data-n="s2.mentions"></span> mentions and kept <span data-n="s2.edges_kept"></span> edges.</li>
+    <li><b>Entity resolution.</b> Names that mean one thing ("SVM", "support vector machines") become one node. <span data-n="s3.distinct_keys"></span> normalised names ended as <span data-n="s5.nodes"></span> concept nodes (<span data-n="s5.candidate_nodes"></span> of them still candidates). An LLM review then rejected <span data-n="s3.review_rejected"></span> of the 30 merges the LLM judge proposed; no human checked either side.</li>
+    <li><b>Entailment gate.</b> Two small checkers score whether the passage supports each edge. <span data-n="s5.assertion_status.accepted-by-gate"></span> of <span data-n="s5.assertions"></span> assertions pass. By our policy, "learn this first" edges are not decided by the checkers; they wait for a human (none reviewed them in this pilot).</li>
+    <li><b>Graph files.</b> All assertions, with their status and evidence, are written as plain CSV and JSONL files (the master copy). A Neo4j load script exists; it was not run.</li>
+    <li><b>A question.</b> "What must I understand before the kernel trick?" The strict walk over PREREQUISITE_OF edges finds nothing. A wider walk over USES finds one related concept, the kernel function: related, not a verified prerequisite.</li>
+  </ol>
+  <p class="small muted">LLM cost: US$ <span data-n="cost_usd_total"></span> for the extraction and judge calls of the final run; US$ <span data-n="spend_all_calls.usd"></span> for all <span data-n="spend_all_calls.calls"></span> calls, trials and reruns included. The extraction and judge models were called through APIs (the course text went to those providers). The embedding model and the two checkers ran on free Kaggle machines, not on this computer.</p>
+</section>
+
+<section class="step" id="l0" data-nav="L0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div>
+  <h2>A detective's pinboard</h2>
+  <p class="who">For anyone. No technical words.</p>
+  <p>A detective has a box of witness statements. She wants one board that shows who knows whom.</p>
+  <div class="pin">
+    <div><b>1 · Cut</b><p>She cuts the statements into short pieces and numbers each piece.</p></div>
+    <div><b>2 · Pin</b><p>From each piece she writes cards for people and draws arrows: "Anna works for Bruno". Next to each arrow she pins the exact words.</p></div>
+    <div><b>3 · Merge</b><p>Two statements say "Bob, the driver" and "Robert Smith, the driver": the context shows one man, so one card. "Bob Junior" is another man with a similar name: two cards.</p></div>
+    <div><b>4 · Check</b><p>She rereads the words under each arrow and marks it: supported, unsure, or not supported. She keeps every mark. Her reading can be wrong too.</p></div>
+    <div><b>5 · Save</b><p>She photographs the board and writes the list of cards and arrows in her notebook.</p></div>
+    <div><b>6 · Ask</b><p>"Who does Anna work for, and who does that person work for?" She follows only the arrows that mean "works for".</p></div>
+  </div>
+  <div class="take"><b>In one line:</b> a knowledge graph is a board of things and typed arrows. In our design every arrow also keeps the words it came from. Building one is cutting, pinning, merging, checking, saving and then asking.</div>
+  <div class="bridge"><b>Why the next idea:</b> the detective does each step by hand. For a whole course, a program does them. Next, the same six steps on our course text, with the real output of each step.</div>
+</section>
+
+<section class="step" id="l1" data-nav="L1"><div class="kicker"><span class="lv">Level 1</span>for a student</div>
+  <h2>The six stages on one example: the kernel trick</h2>
+  <p class="who">For a CS student. One running example: the kernel trick from Lecture 15.</p>
+  <p>Professor Abu-Mostafa explains the kernel trick in Lecture 15. Our goal: a graph that tells a student what to learn before it, and where each part is explained. Here is what each stage did with that example. The cards below are real output; the page fills them from the data files.</p>
+  <table class="tbl stage-tbl"><thead><tr><th>Stage</th><th>Input → output</th><th>Tool in this run</th><th>What went wrong in this run</th></tr></thead><tbody>
+    <tr><td>1 Chunks</td><td>transcript → passages of at most 1,600 characters</td><td>the thesis batch pipeline (Kaggle)</td><td>speech is not prose: "this", "that guy", formulas read aloud</td></tr>
+    <tr><td>2 Extraction</td><td>passage → mentions + typed edges with a quote</td><td><span data-m="extractor"></span>, JSON schema</td><td><span data-n="s2.edges_dropped"></span> edges failed the code checks (quote not in the passage, end that is not a mention)</td></tr>
+    <tr><td>3 Entity resolution</td><td>mentions → concepts + merge log</td><td>alias table, rapidfuzz, bge-m3, an LLM judge</td><td>the judge merged an adjective, an equation and an error estimate into the wrong concepts</td></tr>
+    <tr><td>4 Entailment gate</td><td>edge + passage → supported or not</td><td>HHEM-2.1-open and MiniCheck-Flan-T5-Large</td><td>the two checkers disagree often; a plausible edge (kernel trick USES dot product) failed; by our policy "learn first" edges are not decided by the checkers</td></tr>
+    <tr><td>5 Graph files</td><td>all assertions with status and evidence → CSV/JSONL (→ Neo4j, planned)</td><td>plain Python; a Neo4j load script</td><td>the Neo4j load was not run (Docker was off)</td></tr>
+    <tr><td>6 Question</td><td>concept → set of concepts reached by typed edges</td><td>a typed walk over the files</td><td>no extracted PREREQUISITE_OF edge points to the kernel trick, so the strict question has no answer</td></tr>
+  </tbody></table>
+  <div id="l1-cards"></div>
+  <h3>Three ideas to keep</h3>
+  <ol>
+    <li><b>A closed list of relations.</b> The extractor may write only <code>PREREQUISITE_OF</code>, <code>IS_A</code> and <code>USES</code>. "A kernelised SVM uses a kernel function" is a fact about machine learning. "Dot product is a prerequisite of the kernel function" is a fact about <i>learning</i>: it says what to study first.</li>
+    <li><b>Evidence on every edge.</b> An edge without a passage id and a quote is not written. The quote shows where the edge came from; it does not prove the edge. The gate and a reviewer test that.</li>
+    <li><b>Merge with care.</b> The intended rule: two names merge only when they mean the same thing in this course. "Hard-margin SVM" is a kind of SVM, not the same, so it keeps its own node. An <code>IS_A</code> edge between them needs its own evidence.</li>
+  </ol>
+  <div class="bridge"><b>Why the next idea:</b> a table of stages is still a description. Below, you can open each stage and change it.</div>
+</section>
+
+<section class="step" id="touch" data-nav="Touch"><div class="kicker"><span class="lv">Touch</span>the real artefacts</div>
+  <h2>Open each stage, click an edge</h2>
+  <p>Pick a stage. The panel shows that stage's real output. The graph under it shows the state after that stage. Click an edge for its quote, the extractor, the two checker scores and the entity-resolution decisions of its two ends. Click a node to bring it to the front and list its edges.</p>
+  <div id="st-tabs" role="group" aria-label="Stage"></div>
+  <div id="st-body" role="region" aria-live="polite"></div>
+  <div class="fig" id="g-wrap" hidden>
+    <p class="small muted" id="g-stage"></p>
+    <div class="row">
+      <button id="g-rej" aria-pressed="false">Show rejected edges</button>
+      <button id="g-rev" aria-pressed="true">Show review edges</button>
+      <button id="g-view" aria-pressed="false">Show all concepts</button>
+      <span id="g-rels" role="group" aria-label="Relation types"><button data-rel="USES" aria-pressed="true">USES</button> <button data-rel="IS_A" aria-pressed="true">IS_A</button> <button data-rel="PREREQUISITE_OF" aria-pressed="true">PREREQUISITE_OF</button></span>
+    </div>
+    <div class="legend"><span><i style="border-color:var(--blue)"></i>USES</span><span><i style="border-color:var(--teal)"></i>IS_A</span><span><i style="border-color:var(--amber);border-top-style:dotted"></i>PREREQUISITE_OF (proposed)</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>review</span><span><i style="border-color:var(--warn);border-top-style:dashed"></i>rejected</span><span>filled circle: vocabulary concept</span></div>
+    <div id="g-svg"></div>
+    <p class="cap" id="g-count"></p>
+    <div id="g-info" class="ans" role="status" aria-live="polite">Click an edge or a node.</div>
+  </div>
+  <div class="bridge"><b>Why the next idea:</b> clicking shows one edge at a time. The video shows the whole run in order, from the same data files.</div>
+</section>
+
+<section class="step" id="watch" data-nav="Watch"><div class="kicker"><span class="lv">Watch</span>the run in order</div>
+  <h2>From transcript to answer</h2>
+  <p>A silent animation of the same run: the chunks, the extraction of one edge, a merge and its undo, the gate, the files and the question. All numbers come from <code>data/page.json</code>.</p>
+  <figure class="sv" id="video-BuildingKnowledgeGraph"><video controls preload="none" playsinline poster="/thesis/videos/BuildingKnowledgeGraph.e2b5bef4.jpg" width="1920" height="1080" aria-label="Video (English, no sound)"><source src="/thesis/videos/BuildingKnowledgeGraph.e2b5bef4.mp4" type="video/mp4"></video><figcaption data-i18n="ex.tw_video_cap">Video, English, no sound.</figcaption></figure>
+</section>
+
+<section class="step" id="factory" data-nav="Factory"><div class="kicker">Figure</div>
+  <h2>The graph factory</h2>
+  <p>The six stages drawn as one machine. Each station shows what goes in and what comes out, with the real counts of this run. Hover or tap a station.</p>
+  <div id="factory-fig"></div>
+  <div class="bridge"><b>Why the next idea:</b> the machine works. A professional asks: where does each stage come from, and what does the literature say about how well it works?</div>
+</section>
+
+<section class="step" id="l2" data-nav="L2"><div class="kicker"><span class="lv">Level 2</span>for a researcher</div>
+  <h2>The stages in the literature</h2>
+  <p class="who">For a researcher. Each claim has a source; the sources box at the end says which ones we read.</p>
+  <h3>Extraction: open or schema-guided</h3>
+  <p>Pretrained LLMs can extract relations with few-shot prompts and no task-specific fine-tuning <a href="#src-wadhwa2023">(Wadhwa et al. 2023, per its abstract)</a>. Two families exist. <b>Open</b> extraction lets the model write any label; then a canonicalisation step must map the labels to a schema. EDC does this in three phases: extract openly, write a definition for each relation, then match the definitions to a target schema; without a target schema it builds one ("self-canonicalisation") <a href="#src-zhang2024">(Zhang and Soh 2024, Sec. 3.1-3.2)</a>. Note: EDC canonicalises <i>relations</i>, not entity names. <b>Schema-guided</b> extraction gives the model the closed list from the start. We use schema-guided extraction because the thesis claim is about three relation types; a closed list keeps extraction and the experiment simpler to control (open extraction plus a fixed mapping would also be possible).</p>
+  <p>The GraphRAG indexer extracts entities and relations per chunk, merges entities that have the same name and writes summaries <a href="#src-edge2024">(Edge et al. 2024)</a>. It reports that smaller chunks gave more entity references than larger ones (600 vs 2,400 tokens, on its test data). That motivates short chunks; it does not show that our 1,600-character lecture chunks are best. LightRAG has the same three steps (recognise, profile, deduplicate) and adds new documents by taking the union <a href="#src-guo2024">(Guo et al. 2024)</a>.</p>
+  <h3>Entity resolution</h3>
+  <p>The problem is old: statistics calls it record linkage. Fellegi and Sunter's model has two thresholds; pairs between them go to clerical review <a href="#src-fellegi1969">(1969)</a>. Our score bands borrow that three-way pattern, without its statistical model. Blocking reduces the number of pairs to compare <a href="#src-papadakis2020">(Papadakis et al. 2020)</a>. On record-matching benchmarks, zero-shot GPT-4 with its best prompt matched about as well as fine-tuned matchers, and smaller models were much more sensitive to the prompt <a href="#src-peeters2025">(Peeters et al. 2025, Tables 3-4)</a>. That is product and bibliographic records, not lecture concepts. Choosing among candidates worked better than yes/no pairs in record matching <a href="#src-wang2025">(Wang et al. 2025, abstract)</a>; this motivated our select-style judge, whose five candidates and six answers are our own untested choices. KGGen clusters names with an LLM and keeps the alias clusters as data <a href="#src-mo2025">(Mo et al. 2025, Sec. 4)</a>; we keep the alias mappings too, and add a merge log with the judge's reason and the review. In the merge code of Microsoft GraphRAG, LightRAG and nano-graphrag, entities merge only when the (upper-cased) name is the same <a href="#src-graphrag-code">(code read)</a>; that step does not reconcile "SVM" with "support vector machine" unless the extractor already wrote one name. Clusters are scored with B-cubed against a gold set <a href="#src-bagga1998">(Bagga and Baldwin 1998)</a>.</p>
+  <h3>The entailment gate</h3>
+  <p>Small trained checkers can test whether a passage supports a claim. MiniCheck-Flan-T5-Large (770M parameters) reaches 74.7 balanced accuracy on LLM-AggreFact against 75.3 for GPT-4 <a href="#src-tang2024">(Tang et al. 2024, Table 2)</a>. HHEM-2.1-open is a smaller open checker; its numbers come from the vendor's card <a href="#src-hhem">(Vectara)</a>. Two limits matter here. First, neither result says anything about spoken lecture captions; accuracy on our text must be measured, not assumed. Second, a passage that supports a claim does not prove that the claim came from it <a href="#src-wallat2024">(Wallat et al. 2024)</a>.</p>
+  <h3>Quality and questions</h3>
+  <p>Quality surveys list accuracy, completeness and consistency as dimensions <a href="#src-zaveri2015">(Zaveri et al. 2015)</a>. For an LLM-built graph we plan to check them as schema conformance, rule checks (no cycles in <code>PREREQUISITE_OF</code>), duplicates, a completeness check against the syllabus, and a sample read by a person; this pilot ran only the rule and schema checks. Competency questions, which the finished graph should answer, help set its scope and the relations it needs <a href="#src-gruninger1995">(Grüninger and Fox 1995; Noy and McGuinness 2001)</a>.</p>
+  <div class="bridge"><b>Why the next idea:</b> the literature gives the parts. The thesis has to choose among them and say what this pilot changes.</div>
+</section>
+
+<section class="step" id="l3" data-nav="L3"><div class="kicker"><span class="lv">Level 3</span>our thesis pipeline</div>
+  <h2>What we build, and what this pilot taught us</h2>
+  <p class="who">For the thesis. Design from our notes (<a href="#src-ont-v1">ontology v1, ER, NLI, batch pipeline</a>); findings from this run.</p>
+  <h3>The design</h3>
+  <table class="tbl"><thead><tr><th>Part</th><th>Decision</th></tr></thead><tbody>
+    <tr><td>Relations</td><td>Closed list. The thesis claim C2 tests three: <code>PREREQUISITE_OF</code> (pedagogical), <code>IS_A</code> and <code>USES</code> (domain). <code>DEFINES</code> and <code>MENTIONS</code> link passages to concepts; <code>HAS_LECTURE</code> and <code>COVERS</code> come from the course structure, not from extraction.</td></tr>
+    <tr><td>Evidence</td><td>One assertion per (source, relation, target); one or more evidence records, each with <code>passage_id</code>, <code>passage_hash</code>, quote, reading (stated or implied), extractor, checker scores. No evidence, no edge (rule R6).</td></tr>
+    <tr><td>Entity resolution</td><td>Normalise → alias table → candidates (rapidfuzz + bge-m3) → LLM judge on the uncertain band (KGGen-style clusters) → review queue → reversible merge log.</td></tr>
+    <tr><td>Gate</td><td>Each evidence record is scored: "supported" when both checkers give at least 0.5 to the claim against the whole chunk. An IS_A or USES assertion is accepted when at least one of its records is supported; review when the checkers disagree; rejected when all its records fail both. PREREQUISITE_OF: scored but, by policy, left for instructor review.</td></tr>
+    <tr><td>Stores (target)</td><td>The master copy of the graph is plain files in git (done in this pilot); Neo4j is rebuilt from them (script written, not run). Passages, their text and their vectors go to Postgres + pgvector (not done here). Experiments are to read a hashed snapshot, never a live database.</td></tr>
+    <tr><td>Compute</td><td>Embedding and checkers run on free machines (Kaggle here) with pinned code; course text uploaded there goes into private datasets that are deleted after download (checked by absence in this run). The LLM calls send the text to the API providers.</td></tr>
+  </tbody></table>
+  <h3>What the pilot measured</h3>
+  <div class="ev"><b class="h">measured in this run</b>
+    <ul>
+      <li>Alias matching alone linked <span data-n="s3.mentions_linked_by_alias"></span> of <span data-n="s3.raw_mentions"></span> mentions to the seed vocabulary. The rest needed candidates and a judge.</li>
+      <li>The judge (<span data-m="judge"></span>) proposed <span data-n="s3.merged_by_judge"></span> merges into vocabulary concepts and <span data-n="s3.clustered"></span> clusters. An LLM review (no human) read each sentence and rejected <span data-n="s3.review_rejected"></span> of these <span id="n-judged-merges"></span>. Neither side was checked by a person. Rejections it made include: an adjective ("quadratic" → quadratic programming), an error estimate into a method ("validation error" → validation), and one answer whose reason named a different target than its choice.</li>
+      <li>The extractor labelled <span data-n="s2.by_reading.implied"></span> of <span data-n="s2.edges_kept"></span> edges "implied" and <span data-n="s2.by_reading.stated"></span> "stated". These are its own labels, not checked.</li>
+      <li>The funnel: <span data-n="s2.edges_kept"></span> kept edges → <span data-n="s5.evidence_records"></span> evidence records after entity resolution (edges to dropped names and loops removed) → <span data-n="s5.assertions"></span> distinct assertions → <span data-n="s5.assertion_status.accepted-by-gate"></span> accepted by the gate.</li>
+      <li>Both checkers scored <span data-n="s4.pairs"></span> evidence records: HHEM put <span data-n="s4.hhem_supported"></span> at 0.5 or above, MiniCheck only <span data-n="s4.minicheck_supported"></span>. Of the 319 IS_A and USES records, <span data-n="s4.gate.supported"></span> passed both, <span data-n="s4.gate.rejected"></span> failed both and <span data-n="s4.gate.checkers disagree"></span> had different decisions; the other 71 (PREREQUISITE_OF) went to review whatever their scores.</li>
+      <li>The gate rejected "kernel trick USES dot product": its quote reads "It's not a straight inner product, but an inner product after a transformation". The fact is plausible (our reading). Why both checkers scored it low is not known; the negation in the sentence is one hypothesis. The gate estimates whether the chunk supports the claim; it is not a test of the world.</li>
+      <li>Rule checks on the non-rejected assertions found cycles (<span data-n="s5.cycles.USES"></span> in USES, <span data-n="s5.cycles.PREREQUISITE_OF"></span> in PREREQUISITE_OF, <span data-n="s5.cycles.IS_A"></span> in IS_A) and <span data-n="s5.flags.R4 USES source is not a method"></span> USES assertions that break our rule "the source of USES is a method". The cause (loose extraction, wrong kinds, wrong merges, or a rule that is too narrow) needs a sample read.</li>
+      <li>No extracted edge says that something is a <code>PREREQUISITE_OF</code> the kernel trick, so the strict competency question has no answer.</li>
+    </ul></div>
+  <div class="ours"><b class="h">what we conclude (our reading, not yet tested)</b>
+    <ul>
+      <li>The judge should never merge without review in the thesis graph, or its "same" band needs a higher bar (both scores high, and the same kind). A gold set of mention pairs must measure this before the freeze.</li>
+      <li>The gate needs calibration on our own text: a threshold of 0.5 is the checkers' default, not a value tuned for lecture speech, and the two checkers disagree on many edges. The gold triples will give a precision-recall curve per relation and show which checker to trust.</li>
+      <li>Hypothesis: "learn this first" is seldom said in a lecture (here it may also be missed by extraction, chunk borders or captions). If it holds, prerequisite edges must come mostly from course structure, syllabi and human review; the plan is to freeze them by hash before the test questions are written, and to write those questions independently.</li>
+      <li>The strict v1 rule gives no answer. A walk that may also use gate-accepted <code>USES</code> returns the kernel function, but "uses" is not "must be learned first": it is a related concept, not a verified prerequisite. Whether such a rule belongs in the ontology is an open design question.</li>
+    </ul></div>
+  <p class="small muted">Not done in this pilot: a human gold set, a second rater, the Postgres load, the Neo4j load, the slides and the book. This is two lectures of eighteen.</p>
+</section>
+
+<section class="step" id="quiz" data-nav="Quiz"><div class="kicker">Quiz</div>
+  <h2>Five questions</h2>
+  <div class="q" data-key="1"><p><b>1.</b> Why does every extracted edge carry a quote from its passage?</p><div class="opts">
+    <button>So that the LLM can learn from it in the next run.</button>
+    <button>So that a checker, an instructor and a student can see why the edge exists, and the edge can be tested.</button>
+    <button>Because Neo4j cannot store an edge without text.</button></div>
+    <p class="fb small" hidden>The quote is provenance: it shows where the edge came from. Whether the passage supports the edge is tested separately, by the gate and by a reviewer (rule R6: no evidence, no edge).</p></div>
+  <div class="q" data-key="2"><p><b>2.</b> The judge said "dimension" is the same as "VC dimension". The sentence was about the input dimension d. What is the right result?</p><div class="opts">
+    <button>Merge: the names share a word.</button>
+    <button>Merge, and add a flag.</button>
+    <button>Keep two nodes; the merge log keeps the judge's answer and the review's reason.</button></div>
+    <p class="fb small" hidden>A flag does not undo a false identity. When in doubt, keep apart; the log makes the decision visible and reversible.</p></div>
+  <div class="q" data-key="0"><p><b>3.</b> In our design, why does a person, not the entailment gate, decide <code>PREREQUISITE_OF</code> edges?</p><div class="opts">
+    <button>"Learn A before B" is a teaching judgement about a course; a passage-support score is not designed to decide it, so we chose not to let the checkers decide.</button>
+    <button>The checkers cannot read the word "prerequisite".</button>
+    <button>Prerequisite edges are always correct.</button></div>
+    <p class="fb small" hidden>It is a policy from our NLI note, not a measured limit: the checkers did score these edges here, but their scores were not used to accept or reject them.</p></div>
+  <div class="q" data-key="2"><p><b>4.</b> Where is the master copy of the graph?</p><div class="opts">
+    <button>In Neo4j; files are exported from it.</button>
+    <button>In the LLM's answers.</button>
+    <button>In plain files in git; Neo4j is rebuilt from them, and a hash names each version.</button></div>
+    <p class="fb small" hidden>Files can be diffed and replayed; the plan is that experiments read a hashed snapshot, never a live database. (The Neo4j rebuild was not run in this pilot.)</p></div>
+  <div class="q" data-key="1"><p><b>5.</b> Without edge types, two hops from the kernel trick reach many concepts. What is missing?</p><div class="opts">
+    <button>Nothing: more concepts is a better answer.</button>
+    <button>A reason: without types the walk cannot tell "needed first" from any other link, so the answer has no meaning as a learning list.</button>
+    <button>The passage text.</button></div>
+    <p class="fb small" hidden>Types make relation-specific walks possible; they do not by themselves give a valid learning order. The thesis ablation will test the label effect with everything else held equal; this page only shows a demonstration.</p></div>
+</section>
+
+<section class="step" id="src" data-nav="Sources"><div class="kicker">Sources</div>
+  <h2>Sources and what we checked</h2>
+  <p class="small muted">"read" = the primary text (paper, code, model card or transcript) was read, in this run or in the vault note named. "not read" = metadata or abstract only; do not cite that claim as checked.</p>
+  <div class="hscroll"><table class="tbl" id="src-tbl"></table></div>
+  <h3>What on this page is real, computed or ours</h3>
+  <div class="ev"><b class="h">real data</b>The transcripts (CS 156 captions), the chunks of the batch pipeline, every LLM answer (cached as raw JSON), the bge-m3 vectors, the two checkers' scores.</div>
+  <div class="ev"><b class="h">implementation consistency (not semantic checking)</b>The graph on the page is recomputed in the browser from the evidence and the merge mapping; <code>scripts/check_core.mjs</code> checks that it equals the Python stage files (it passes). This shows the two programs agree, not that the concepts or edges are right.</div>
+  <div class="ours"><b class="h">ours (modelling)</b>The seed vocabulary of 32 concepts, the claim templates, the 0.5 threshold, the score bands, the walk rule B, and the review of merges (an LLM agent review, not a human rater).</div>
+</section>
+</main>
+<script id="kg-core">/* kg-core.js: the parts of the pipeline that the page recomputes in the browser (tested by scripts/check_core.mjs against the
+   Python stage files). normalise() = scripts/er_common.py normalise; lift() = scripts/s5_graph.py sections 1-3; walk() = s6_cq.py. */
+(function (root) {
+  'use strict';
+  var UKUS = [['isation', 'ization'], ['ising', 'izing'], ['ise', 'ize'], ['neighbour', 'neighbor'], ['modelling', 'modeling']];
+  var KEEP_S = { svms: 1, kkt: 1, rbf: 1, vc: 1, ss: 1, is: 1, 'this': 1, lagrangian: 1, analysis: 1, basis: 1, axis: 1, loss: 1, bias: 1, 'class': 1, less: 1 };
+  function ends(w, list) { for (var i = 0; i < list.length; i++) if (w.slice(-list[i].length) === list[i]) return true; return false; }
+  function normalise(s) {
+    s = s.normalize('NFKC').trim().toLowerCase();
+    s = s.replace(/\s*\(([^)]*)\)\s*$/, '');
+    s = s.replace(/’/g, "'").replace(/_/g, ' ');
+    s = s.replace(/[-‐–—]+/g, '-');
+    s = s.replace(/\s*-\s*/g, '-');
+    s = s.replace(/\s+/g, ' ');
+    UKUS.forEach(function (p) { s = s.replace(new RegExp(p[0] + '\\b', 'g'), p[1]); });
+    var toks = s.split(' '), last = toks[toks.length - 1];
+    if (last.slice(-3) === 'ies' && last.length > 4 && !ends(last, ['series'])) last = last.slice(0, -3) + 'y';
+    else if (last.slice(-3) === 'ces' && (last.slice(0, -1) === 'vertice' || last.slice(0, -1) === 'indice')) last = last.slice(0, -1);
+    else if (last.slice(-1) === 's' && !ends(last, ['ss', 'is', 'us', 'series']) && !KEEP_S[last] && last.length > 3) last = last.slice(0, -1);
+    toks[toks.length - 1] = last;
+    return toks.join(' ');
+  }
+
+  /* The mapping the page starts from: stage 3 decisions, then the review (a rejected merge points the mention back to itself).
+     overrides: {mentionKey: nodeId|null} applied last (the page's undo / apply buttons). mode 'raw' = no resolution at all. */
+  function mapping(P, overrides, mode) {
+    var m = {};
+    Object.keys(P.er).forEach(function (k) {
+      m[k] = mode === 'raw' ? 'new:' + k : P.er[k].node;
+    });
+    if (mode !== 'raw') {
+      P.review.verdicts.forEach(function (v) { if (v.verdict === 'reject') m[v.mention] = 'new:' + v.mention; });
+      Object.keys(overrides || {}).forEach(function (k) { m[k] = overrides[k]; });
+    }
+    return m;
+  }
+
+  /* Same gate and aggregation as s5_graph.py: one assertion per (source, relation, target); IS_A and USES are accepted when
+     one evidence record is supported by both checkers; PREREQUISITE_OF is never gated (proposed, for review). */
+  function lift(P, map) {
+    var groups = {}, order = [], dropped = { concept: 0, selfloop: 0 };
+    var evIds = Object.keys(P.evidence);
+    // keep the Python order: evidence was written chunk by chunk, edge by edge (the page.json key order)
+    evIds.forEach(function (id) {
+      var e = P.evidence[id];
+      var s = map[normalise(e.sn)], t = map[normalise(e.tn)];
+      if (!s || !t) { dropped.concept++; return; }
+      if (s === t) { dropped.selfloop++; return; }
+      var r = e.a ? P.assertionsById[e.a] : null;
+      var key = s + '|' + (r ? r.r : '') + '|' + t;
+      if (!groups[key]) { groups[key] = { s: s, r: r ? r.r : '', t: t, ev: [] }; order.push(key); }
+      groups[key].ev.push(id);
+    });
+    var out = order.map(function (k) {
+      var g = groups[k], gates = g.ev.map(function (i) { return P.evidence[i].g; }), st;
+      if (g.r === 'PREREQUISITE_OF') st = 'proposed';
+      else if (gates.indexOf('supported') >= 0) st = 'accepted-by-gate';
+      else if (gates.indexOf('checkers disagree') >= 0 || gates.indexOf('no score') >= 0) st = 'review';
+      else st = 'rejected';
+      return { key: k, s: g.s, r: g.r, t: g.t, st: st, ev: g.ev };
+    });
+    return { assertions: out, dropped: dropped };
+  }
+
+  /* the relation of an evidence record does not depend on the mapping: take it from the stage-5 assertion it belongs to */
+  function index(P) {
+    P.assertionsById = {};
+    P.assertions.forEach(function (a) { P.assertionsById[a.id] = a; });
+    P.nodesById = {};
+    P.nodes.forEach(function (n) { P.nodesById[n.id] = n; });
+    return P;
+  }
+
+  /* CQ walk (s6_cq.py): rule 'A' = PREREQUISITE_OF backwards up to depthMax hops; 'B' = first the gate-accepted USES targets
+     of the start (its tools), then PREREQUISITE_OF backwards from the start and from each tool, up to 2 hops. */
+  function walk(assertions, start, rule, depthMax) {
+    var live = assertions.filter(function (a) { return a.st !== 'rejected'; });
+    var found = {}, order = [], steps = [];
+    function add(hop, a, from, depth) {
+      if (hop === start || found[hop]) return false;
+      found[hop] = { from: from, depth: depth, relation: a.r, status: a.st, key: a.key };
+      steps.push({ depth: depth, from: from, to: hop, relation: a.r, status: a.st, key: a.key }); order.push(hop);
+      return true;
+    }
+    var roots = [start];
+    if (rule === 'B') live.forEach(function (a) { if (a.r === 'USES' && a.s === start && a.st === 'accepted-by-gate' && add(a.t, a, start, 1)) roots.push(a.t); });
+    roots.forEach(function (root) {
+      var frontier = [root], base = root === start ? 0 : 1, max = rule === 'A' ? (depthMax || 3) : 2;
+      for (var d = 1; d <= max; d++) {
+        var nxt = [];
+        frontier.forEach(function (c) { live.forEach(function (a) { if (a.r === 'PREREQUISITE_OF' && a.t === c && add(a.s, a, c, base + d)) nxt.push(a.s); }); });
+        frontier = nxt;
+      }
+    });
+    return { found: found, order: order, steps: steps };
+  }
+
+  root.KGCore = { normalise: normalise, mapping: mapping, lift: lift, index: index, walk: walk };
+})(typeof window !== 'undefined' ? window : globalThis);
+</script>
+<script id="kg-factory">/* The graph factory: an isometric production line (framework-free SVG). Every number comes from P at runtime. */
+window.KGFactory = function (P) {
+  var host = document.getElementById('factory-fig');
+  if (!host) return;
+  var C = P.counts, M = P.meta, Q = P.cq;
+  var N = function (n) { return Number(n).toLocaleString('en-US'); };
+  var clean = function (s) { return String(s || '').replace(/@x\d+/g, '').replace(/\s*\(revision[^)]*\)/g, '').trim(); };
+  var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+  /* ---------- camera ---------- */
+  var AZ = 36 * Math.PI / 180, CA = Math.cos(AZ), SA = Math.sin(AZ), SE = 0.5, CE = 0.866;
+  var ox = 0; /* world x offset of the station being drawn */
+  function X(x, y) { return (x + ox) * CA - y * SA; }
+  function Y(x, y, z) { return ((x + ox) * SA + y * CA) * SE - z * CE; }
+  function f(n) { return Math.round(n * 10) / 10; }
+  function pt(x, y, z) { return f(X(x, y)) + ',' + f(Y(x, y, z)); }
+
+  /* ---------- colour ---------- */
+  function rgb(h) { h = h.replace('#', ''); return [0, 2, 4].map(function (i) { return parseInt(h.substr(i, 2), 16); }); }
+  function hex(a) { return '#' + a.map(function (v) { v = Math.max(0, Math.min(255, Math.round(v))); return (v < 16 ? '0' : '') + v.toString(16); }).join(''); }
+  function dark(h, k) { return hex(rgb(h).map(function (v) { return v * (1 - k); })); }
+  function lite(h, k) { return hex(rgb(h).map(function (v) { return v + (255 - v) * k; })); }
+  function mix(a, b, k) { var p = rgb(a), q = rgb(b); return hex(p.map(function (v, i) { return v + (q[i] - v) * k; })); }
+  function tone(h) { return { t: lite(h, 0.16), r: h, l: dark(h, 0.3), e: dark(h, 0.58), h: lite(h, 0.38) }; }
+  var COL = { amber: '#F2A93B', blue: '#7C9CFF', teal: '#3CC7B4', purple: '#C28BFF', warn: '#FF8A65', text: '#E9ECF2', muted: '#98A0B0', faint: '#68707F', line: '#242B38' };
+  var STEEL = tone('#3b4558'), DEEP = tone('#262d3b'), BELT = tone('#1b212d'), FLOOR = tone('#151a25'), PAPER = tone('#cdd5e6'), GLASS = tone('#0d1018');
+  var REL = ['USES', 'IS_A', 'PREREQUISITE_OF'], RELC = { USES: COL.blue, IS_A: COL.purple, PREREQUISITE_OF: COL.amber };
+
+  /* ---------- solids ---------- */
+  function poly(pts, fill, stroke, sw) {
+    return '<polygon points="' + pts.map(function (p) { return pt(p[0], p[1], p[2]); }).join(' ') + '" fill="' + fill + '" stroke="' + (stroke || 'none') + '" stroke-width="' + (sw || 0.7) + '" stroke-linejoin="round"/>';
+  }
+  function box(x0, y0, z0, x1, y1, z1, c) {
+    return poly([[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], c.l, c.e) +
+      poly([[x1, y0, z0], [x1, y1, z0], [x1, y1, z1], [x1, y0, z1]], c.r, c.e) +
+      poly([[x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]], c.t, c.e) +
+      '<polyline points="' + pt(x0, y1, z1) + ' ' + pt(x1, y1, z1) + ' ' + pt(x1, y0, z1) + '" fill="none" stroke="' + c.h + '" stroke-width=".7" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>';
+  }
+  function qY(x0, x1, z0, z1, y, fill, stroke) { return poly([[x0, y, z0], [x1, y, z0], [x1, y, z1], [x0, y, z1]], fill, stroke, 0.5); }
+  function qX(y0, y1, z0, z1, x, fill, stroke) { return poly([[x, y0, z0], [x, y1, z0], [x, y1, z1], [x, y0, z1]], fill, stroke, 0.5); }
+  function qZ(x0, x1, y0, y1, z, fill, stroke) { return poly([[x0, y0, z], [x1, y0, z], [x1, y1, z], [x0, y1, z]], fill, stroke, 0.5); }
+  function line(a, b, stroke, w, op) { return '<line x1="' + f(X(a[0], a[1])) + '" y1="' + f(Y(a[0], a[1], a[2])) + '" x2="' + f(X(b[0], b[1])) + '" y2="' + f(Y(b[0], b[1], b[2])) + '" stroke="' + stroke + '" stroke-width="' + (w || 1) + '" stroke-linecap="round"' + (op ? ' opacity="' + op + '"' : '') + '/>'; }
+  var defs = {};
+  function grad(h) {
+    var id = 'kf-g-' + h.slice(1);
+    if (!defs[id]) defs[id] = '<linearGradient id="' + id + '" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="' + dark(h, 0.45) + '"/><stop offset=".38" stop-color="' + lite(h, 0.12) + '"/><stop offset=".62" stop-color="' + h + '"/><stop offset="1" stop-color="' + dark(h, 0.5) + '"/></linearGradient>';
+    return id;
+  }
+  function cyl(cx, cy, z0, z1, r, h) {
+    var sx = X(cx, cy), a = f(1.2247 * r), b = f(0.7071 * r * 1.0), yt = Y(cx, cy, z1), yb = Y(cx, cy, z0);
+    sx = f(sx); yt = f(yt); yb = f(yb);
+    return '<path d="M' + (sx - a) + ',' + yt + ' L' + (sx - a) + ',' + yb + ' A' + a + ',' + b + ' 0 0 0 ' + (sx + a) + ',' + yb + ' L' + (sx + a) + ',' + yt + ' Z" fill="url(#' + grad(h) + ')" stroke="' + dark(h, 0.6) + '" stroke-width=".6"/>' +
+      '<ellipse cx="' + sx + '" cy="' + yt + '" rx="' + a + '" ry="' + b + '" fill="' + lite(h, 0.2) + '" stroke="' + dark(h, 0.5) + '" stroke-width=".6"/>';
+  }
+  function tY(x, z, y, str, size, fill, anchor, weight) { /* text on a +y face */
+    return '<text transform="matrix(' + f(CA * 100) / 100 + ' ' + f(SA * SE * 100) / 100 + ' 0 ' + CE + ' ' + pt(x, y, z) + ')" style="font-size:' + size + 'px" fill="' + fill + '" text-anchor="' + (anchor || 'middle') + '" font-weight="' + (weight || 600) + '" class="kf-t">' + str + '</text>';
+  }
+  function sText(x, y, z, dx, dy, str, size, fill, anchor, weight) { /* screen-space text anchored at a world point */
+    return '<text x="' + f(X(x, y) + dx) + '" y="' + f(Y(x, y, z) + dy) + '" style="font-size:' + size + 'px" fill="' + fill + '" text-anchor="' + (anchor || 'middle') + '" font-weight="' + (weight || 600) + '" class="kf-t">' + str + '</text>';
+  }
+  function disc(x, y, z, r, fill, op) { return '<ellipse cx="' + f(X(x, y)) + '" cy="' + f(Y(x, y, z)) + '" rx="' + f(1.2247 * r) + '" ry="' + f(0.7071 * r) + '" fill="' + fill + '"' + (op != null ? ' opacity="' + op + '"' : '') + '/>'; }
+  function lamp(x, y, z, r, col, lvl) { /* round lamp: halo + body + highlight */
+    var cx = f(X(x, y)), cy = f(Y(x, y, z));
+    return '<circle cx="' + cx + '" cy="' + cy + '" r="' + f(r * 2.6) + '" fill="' + col + '" opacity="' + f(0.22 * lvl) + '"/><circle cx="' + cx + '" cy="' + cy + '" r="' + r + '" fill="' + mix('#1a1f2b', col, 0.15 + 0.85 * lvl) + '" stroke="' + dark(col, 0.5) + '" stroke-width=".7"/><circle cx="' + f(cx - r * 0.3) + '" cy="' + f(cy - r * 0.32) + '" r="' + f(r * 0.32) + '" fill="#fff" opacity="' + f(0.15 + 0.55 * lvl) + '"/>';
+  }
+  function screws(x0, x1, z0, z1, y, n) { var s = ''; [[x0, z0], [x1, z0], [x0, z1], [x1, z1]].forEach(function (p) { s += '<circle cx="' + f(X(p[0], y)) + '" cy="' + f(Y(p[0], y, p[1])) + '" r=".7" fill="' + STEEL.h + '" opacity=".7"/>'; }); return s; }
+  function ease(u) { u = Math.max(0, Math.min(1, u)); return u * u * (3 - 2 * u); }
+  function pulse(p, a, b) { return ease((p - a) / (b - a)) * (1 - ease((p - b) / (1 - b + 1e-6))); }
+
+  /* ---------- station geometry ---------- */
+  var D = 108, HW = 30, HD = 30;
+  var S = [
+    { n: 1, name: 'Chunker', H: 34, acc: COL.teal },
+    { n: 2, name: 'Extractor', H: 46, acc: COL.amber },
+    { n: 3, name: 'Resolver', H: 40, acc: COL.blue },
+    { n: 4, name: 'Gate', H: 36, acc: COL.purple },
+    { n: 5, name: 'Archive', H: 52, acc: COL.teal },
+    { n: 6, name: 'Question desk', H: 23, acc: COL.amber }
+  ];
+  function housing(H, acc, tunnel) {
+    var s = box(-HW - 4, -HD - 4, 0, HW + 4, HD + 4, 6, DEEP) + box(-HW, -HD, 6, HW, HD, H, STEEL);
+    s += qY(-HW + 3, HW - 3, H - 5, H - 2.5, HD, acc, dark(acc, 0.5)); /* accent band */
+    s += qY(-HW, HW, 6, 9, HD, DEEP.l); /* kick plate */
+    s += screws(-HW + 3, HW - 3, 11, H - 8, HD);
+    if (tunnel) {
+      s += qX(-13, 13, 12, 28, HW, '#07090e', DEEP.e) + qX(-13, 13, 26, 28, HW, DEEP.r);
+      s += line([HW, -13, 12], [HW, 13, 12], STEEL.h, 0.8, 0.6);
+    }
+    return s;
+  }
+  function display(txt, H, acc) { /* count plate on the +y face, taking its number from P */
+    return qY(-HW + 4, 6, 12, 22, HD, '#06080c', DEEP.e) + tY(-12, 14.8, HD, txt, 8, acc, 'middle', 700) + qY(-HW + 4, 6, 22, 22.7, HD, STEEL.h);
+  }
+  /* static, per station: back / body / front */
+  var rel = { USES: C.s5.by_relation.USES, IS_A: C.s5.by_relation.IS_A, PREREQUISITE_OF: C.s5.by_relation.PREREQUISITE_OF };
+  var relTot = rel.USES + rel.IS_A + rel.PREREQUISITE_OF;
+  var propFrac = (C.s5.assertion_status.proposed || 0) / Math.max(1, C.s5.assertions);
+  var dropFrac = C.s2.edges_dropped / Math.max(1, C.s2.edges_kept + C.s2.edges_dropped);
+  var lampA = Math.min(1, C.s4.hhem_supported / Math.max(1, C.s4.pairs));
+  var lampB = Math.min(1, C.s4.minicheck_supported / Math.max(1, C.s4.pairs));
+
+  var ST = [];
+  function build() {
+    var i, st, s, H;
+    /* 0 Chunker */
+    ox = 0; H = 34; s = { back: '', body: '', front: '' };
+    s.body = housing(H, COL.teal, true) + display(N(C.s1.chunks), H, COL.teal) +
+      cyl(-13, -12, H, H + 16, 8, '#cdd5e6') + cyl(-13, 10, H, H + 16, 8, '#cdd5e6') +
+      box(-16, 20, H, -10, 24, H + 3, DEEP);
+    ST.push(s);
+    /* 1 Extractor */
+    ox = D; H = 46; s = { back: '', body: '', front: '' };
+    s.back = box(16, -22, H, 20, -18, H + 15, DEEP); /* antenna post */
+    s.body = housing(H, COL.amber, true) +
+      qY(-20, 20, 24, 40, HD, '#07090e', DEEP.e) + qY(-20, 20, 24, 24.8, HD, STEEL.h) + qY(-20, 20, 40, 40.8, HD, STEEL.h) +
+      [0, 1, 2].map(function (k) { var c = RELC[REL[k]]; return qY(-16, -16 + 13 + k * 6, 27 + k * 4.4, 29.4 + k * 4.4, HD, dark(c, 0.15)); }).join('') +
+      box(-26, 2, H, 26, 12, H + 3, DEEP) + display(N(C.s2.edges_kept), H, COL.amber);
+    /* reject bin on the front */
+    s.front = poly([[8, 29.5, 24], [30, 29.5, 24], [30, 40, 15], [8, 40, 15]], DEEP.t, DEEP.e) +
+      box(6, 36, 0, 32, 54, 15, tone('#4a3029')) + qZ(8, 30, 38, 52, 15, '#0a0707', '#7a4a3c');
+    ST.push(s);
+    /* 2 Resolver */
+    ox = 2 * D; H = 40; s = { back: '', body: '', front: '' };
+    var deskTop = 21;
+    s.back = [[-6, -66], [26, -66], [-6, -48], [26, -48]].map(function (p) { return box(p[0], p[1], 0, p[0] + 3, p[1] + 3, deskTop, DEEP); }).join('') +
+      box(-8, -68, deskTop, 30, -46, deskTop + 3, STEEL) +
+      qZ(-2, 8, -64, -54, deskTop + 3, '#dfe5f2', '#9aa3b6') + qZ(12, 24, -62, -52, deskTop + 3, '#dfe5f2', '#9aa3b6') +
+      line([-1, -62, deskTop + 3], [7, -56, deskTop + 3], COL.warn, 1.2) + line([13, -60, deskTop + 3], [23, -54, deskTop + 3], COL.warn, 1.2) +
+      box(14, -50, deskTop + 3, 28, -48.6, deskTop + 15, DEEP) + tY(21, deskTop + 10.6, -48.6, N(C.s3.review_rejected), 8, COL.warn, 'middle', 700);
+    s.body = housing(H, COL.blue, true) + display(N(C.s5.nodes), H, COL.blue) +
+      box(-26, -12, H, -2, 12, H + 3, DEEP) + qZ(-24, -4, -10, 10, H + 3, '#07090e');
+    ST.push(s);
+    /* 3 Gate */
+    ox = 3 * D; H = 36; s = { back: '', body: '', front: '' };
+    s.body = housing(H, COL.purple, true) + display(N(C.s5.assertions), H, COL.purple) +
+      box(-18.5, -3, H, -15.5, 0, H + 11, DEEP) + box(12.5, -3, H, 15.5, 0, H + 11, DEEP) +
+      qY(-28, -6, 29.6, 34, HD, '#07090e', DEEP.e) + tY(-17, 31.3, HD + 0.1, 'HHEM', 4.2, COL.muted, 'middle', 700) +
+      qY(-2, 28, 29.6, 34, HD, '#07090e', DEEP.e) + tY(13, 31.3, HD + 0.1, 'MiniCheck', 4.2, COL.muted, 'middle', 700);
+    s.front = poly([[10, 29.5, 22], [30, 29.5, 22], [30, 46, 9], [10, 46, 9]], DEEP.t, DEEP.e) +
+      box(4, 44, 0, 36, 62, 9, tone('#4a3a1f')) + qZ(6, 34, 46, 60, 9, '#0a0807', '#8a6a2c') +
+      tY(20, 6.2, 62, 'human review', 4.6, COL.amber, 'middle', 700);
+    ST.push(s);
+    /* 4 Archive */
+    ox = 4 * D; H = 52; s = { back: '', body: '', front: '' };
+    s.back = cyl(26, -84, 0, 38, 14, '#2a6e86') +
+      box(23.5, -72, 26, 28.5, -30, 31, STEEL) + sText(26, -84, 38, 0, -1, 'Neo4j', 9.5, '#fff', 'middle', 700);
+    s.body = housing(H, COL.teal, false);
+    ST.push(s);
+    /* 5 Desk */
+    ox = 5 * D; H = 23; s = { back: '', body: '', front: '' };
+    var dz = 19;
+    s.body = [[-33, -28], [30, -28], [-33, 25], [30, 25]].map(function (p) { return box(p[0], p[1], 0, p[0] + 3, p[1] + 3, dz, DEEP); }).join('') +
+      box(-36, -33, dz, 36, 33, dz + 4, STEEL) + qZ(-33, 33, -30, 30, dz + 4, '#0e1219', DEEP.e);
+    s.body += box(-33, -31, dz + 4, 33, -29, dz + 27, DEEP) + qY(-31, 31, dz + 6, dz + 25, -29, '#080a10', DEEP.e);
+    s.body += tY(0, dz + 23, -28.9, 'What must I', 5.6, COL.text, 'middle', 600) + tY(0, dz + 17, -28.9, 'understand before', 5.6, COL.text, 'middle', 600) + tY(0, dz + 11, -28.9, 'the kernel trick?', 5.6, COL.amber, 'middle', 600);
+    ST.push(s);
+  }
+  /* desk path nodes (static data, in local desk coordinates) */
+  var PATH = [[-22, 17], [-8, 2], [8, 14], [14, -8], [26, 6]];
+  var DZ = 19 + 4;
+
+  /* ---------- dynamic parts ---------- */
+  var T = 0.9, V = 48, XEND = 4 * D;
+  function hh(n, k) { var v = Math.imul(n + 7, 2654435761 ^ (k * 40503)); v ^= v >>> 15; v = Math.imul(v, 2246822519); v ^= v >>> 13; return (v >>> 0) / 4294967296; }
+  function relOf(n) { var h = hh(n, 1) * relTot, a = 0; for (var i = 0; i < 3; i++) { a += rel[REL[i]]; if (h < a) return REL[i]; } return REL[0]; }
+  function parcels(t) {
+    var out = [], n1 = Math.floor(t / T), n0 = Math.floor((t - XEND / V) / T) - 1;
+    for (var n = n0; n <= n1; n++) {
+      var x = (t - n * T) * V; if (x < 0 || x > XEND) continue;
+      out.push({ n: n, x: x, y: (Math.floor(hh(n, 2) * 3) - 1) * 4.5, rel: relOf(n), prop: hh(n, 3) < propFrac, rej: hh(n, 4) < dropFrac });
+    }
+    return out;
+  }
+  function plate(x, y, c, op) {
+    var cc = tone(c);
+    return box(x - 6, y - 4, 12, x + 6, y + 4, 15, cc) + line([x - 3.5, y, 15], [x + 3.5, y, 15], dark(c, 0.55), 1);
+  }
+  function parcel(p) {
+    var x = p.x, y = p.y;
+    if (x < D) return box(x - 4, y - 4, 12, x + 4, y + 4, 19, tone(COL.teal)) + line([x - 4, y, 16.5], [x + 4, y, 16.5], dark(COL.teal, 0.5), 0.7);
+    if (x < 2 * D) return plate(x, y, p.rej ? COL.warn : RELC[p.rel]);
+    if (x < 3 * D) return plate(x, y, RELC[p.rel]) + box(x + 3, y - 3, 15, x + 9, y + 3, 21, tone('#8fa8ff'));
+    return plate(x, y, p.prop ? RELC[p.rel] : mix(RELC[p.rel], '#1b212d', 0.55));
+  }
+  function belt(x0, x1, t) {
+    var s = '', i, cl = 14;
+    for (i = Math.ceil((x0 + 8) / 40); i * 40 < x1 - 4; i++) s += box(i * 40 - 2, -13, 0, i * 40 + 2, -9, 6, DEEP) + box(i * 40 - 2, 9, 0, i * 40 + 2, 13, 6, DEEP);
+    s += box(x0, -16, 6, x1, -14, 14, DEEP);
+    s += box(x0, -14, 6, x1, 14, 12, BELT);
+    var off = (t * V) % cl;
+    for (var x = x0 - off + cl; x < x1; x += cl) if (x > x0) s += line([x, -13, 12], [x, 13, 12], '#2c3445', 0.9);
+    return s;
+  }
+  function layer(i, t, ps) {
+    var s = '', x0, x1;
+    if (i === 0) { x0 = -86; x1 = -30; } else if (i <= 4) { x0 = (i - 1) * D + HW; x1 = i * D; }
+    if (i <= 4) s += belt(x0, x1, t);
+    if (i === 5) {
+      s += box(4 * D + HW, -20, 8, 5 * D - HW, -17, 11, tone('#1f5f73'));
+      var q = (t / 3.2) % 1, px = 4 * D + HW + q * (D - 2 * HW);
+      s += box(px - 3, -20.2, 8.2, px + 3, -16.8, 11.4, tone(COL.teal));
+    }
+    ps.sort(function (a, b) { return a.x - b.x; });
+    ps.forEach(function (p) { s += parcel(p); });
+    if (i >= 1 && i <= 4) s += box(x0, 14, 6, x1, 16, 14, STEEL);
+    return s;
+  }
+  function bucketOf(x) { for (var i = 0; i < 5; i++) if (x < i * D + HW) return i; return 4; }
+
+  function dyn(i, t, ps) {
+    var s = '', p = (t / T) % 1;
+    ox = i * D;
+    if (i === 0) {
+      var cut = pulse(p, 0.1, 0.5);
+      var dz = 9 * cut;
+      s += box(10, -24, 34, 14, -20, 34 + 18, DEEP) + box(11, -22.5, 34 + 6 + 9 - dz, 13, 22.5, 34 + 9 + 9 - dz + 1, tone('#dfe6f5')) + box(10, 20, 34, 14, 24, 34 + 18, DEEP);
+      s += '<text x="' + f(X(-13, -12)) + '" y="' + f(Y(-13, -12, 50) + 2.6) + '" style="font-size:7.5px" fill="' + dark('#cdd5e6', 0.65) + '" text-anchor="middle" class="kf-t" font-weight="700">L14</text>';
+      s += '<text x="' + f(X(-13, 10)) + '" y="' + f(Y(-13, 10, 50) + 2.6) + '" style="font-size:7.5px" fill="' + dark('#cdd5e6', 0.65) + '" text-anchor="middle" class="kf-t" font-weight="700">L15</text>';
+      s += lamp(22, 24, 34 + 2, 2.2, COL.teal, 0.55 + 0.45 * cut);
+    }
+    if (i === 1) {
+      var act = Math.floor(t / T) % 3, d = 7 * pulse(p, 0.05, 0.5);
+      for (var k = 0; k < 3; k++) {
+        var xx = -16 + k * 14, c = RELC[REL[k]], dd = k === act ? d : 0;
+        s += cyl(xx, 7, 46 + 3 + 7 - dd, 46 + 3 + 11 - dd, 3.4, dark(c, 0.1)) + cyl(xx, 7, 46 + 3 + 11 - dd, 46 + 3 + 13 - dd, 1.3, '#aab2c4');
+      }
+      s += lamp(18, -20, 46 + 15, 3, COL.amber, 0.5 + 0.5 * Math.sin(t * 2.4) * Math.sin(t * 2.4));
+      /* rejected edge drops into the bin */
+      ps.forEach(function (q) {
+        if (!q.rej) return; var tau = (q.x - D) / V; if (tau < 0 || tau > 1.1) return;
+        var u = tau / 1.1, yy = 28 + 14 * Math.min(1, u * 1.6), zz = u < 0.6 ? 24 - 9 * u / 0.6 : 15 - 10 * ease((u - 0.6) / 0.4);
+        s += box(14 - 4, yy - 3, zz, 14 + 4, yy + 3, zz + 4, tone(COL.warn));
+      });
+    }
+    if (i === 2) {
+      var m = pulse(p, 0.05, 0.55), g = 11 * (1 - m);
+      s += box(-24 - g, -4, 43 - 0.2, -14 - g, 4, 44.4, tone('#dfe5f2'));
+      s += box(-12 + g, -4, 43 - 0.2, -2 + g, 4, 44.4, tone('#cdd5e6'));
+      var pop = ease((p - 0.55) / 0.2) * (1 - ease((p - 0.9) / 0.1));
+      if (pop > 0.02) s += box(10, -4, 43, 10 + 8 * pop, -4 + 8 * pop, 43 + 8 * pop, tone(COL.blue));
+    }
+    if (i === 3) {
+      var fl = 0.06 * Math.sin(t * 5);
+      s += lamp(-17, -1.5, 36 + 15, 4.4, COL.teal, Math.max(0.08, lampA + fl * (lampA > 0.01 ? 1 : 0)) * (lampA > 0.01 ? 1 : 0.02));
+      s += lamp(14, -1.5, 36 + 15, 4.4, COL.blue, Math.max(0.0, lampB + fl * (lampB > 0.01 ? 1 : 0)) * (lampB > 0.01 ? 1 : 0.02));
+      ps.forEach(function (q) {
+        if (q.rel !== 'PREREQUISITE_OF') return; var tau = (q.x - 3 * D) / V; if (tau < 0 || tau > 1.5) return;
+        var u = tau / 1.5, yy = 29 + 17 * ease(u), zz = 22 - 13 * ease(u);
+        s += box(20 - 6, yy - 4, zz, 20 + 6, yy + 4, zz + 3, tone(COL.amber));
+      });
+    }
+    if (i === 4) {
+      var drawers = [['nodes.csv', 0], ['assertions.csv', 1], ['evidence.jsonl', 2]];
+      var act4 = Math.floor((t - XEND / V * 0) / T) % 3;
+      var act4n = act4; drawers.slice().sort(function (a, b) { return (a[1] === act4n) - (b[1] === act4n); }).forEach(function (dw) {
+        var z0 = 8 + dw[1] * 14.5, z1 = z0 + 13, pull = dw[1] === act4 ? 5 * pulse((t / T) % 1, 0.05, 0.6) : 0, yf = HD + 1.6 + pull;
+        s += box(-26, HD, z0, 26, yf, z1, tone('#46526a')) + qY(-18, 18, z0 + 7.2, z0 + 10.4, yf, '#0b0e15', DEEP.e) + tY(0, z0 + 9.6, yf, dw[0], 5.3, COL.text, 'middle', 600);
+        s += box(-6, yf, z0 + 3, 6, yf + 1.4, z0 + 4.6, tone('#aab2c4'));
+      });
+      s += sText(0, HD, 52, 0, -13, 'files in git', 10, COL.teal, 'middle', 700);
+      var q4 = (t / 1.6) % 1;
+      s += box(23.9, -71 + q4 * 41 - 1.5, 31, 28.1, -71 + q4 * 41 + 1.5, 32.4, tone(COL.teal));
+      s += sText(26, -84, 38, 0, -14, 'rebuilt from files', 8.4, COL.muted, 'middle', 600);
+    }
+    if (i === 5) {
+      var cyc = (t / 1.5) % (PATH.length), hop = Math.floor(cyc), fr = ease(cyc - hop), a = PATH[hop], b = PATH[(hop + 1) % PATH.length];
+      var wasWrap = hop === PATH.length - 1;
+      var lx = a[0] + (b[0] - a[0]) * (wasWrap ? 0 : fr), ly = a[1] + (b[1] - a[1]) * (wasWrap ? 0 : fr);
+      for (var k2 = 0; k2 < PATH.length - 1; k2++) s += line([PATH[k2][0], PATH[k2][1], DZ], [PATH[k2 + 1][0], PATH[k2 + 1][1], DZ], '#4a5468', 1.3);
+      PATH.forEach(function (pp, k3) { s += cyl(pp[0], pp[1], DZ, DZ + 2.2, 2.8, k3 === 0 ? COL.amber : '#5b6985'); });
+      s += disc(lx, ly, DZ + 0.1, 11, COL.amber, 0.1 + 0.07 * Math.sin(t * 3)) + disc(lx, ly, DZ + 0.1, 6, COL.amber, 0.12);
+      s += box(lx - 0.6, ly - 0.6, DZ, lx + 0.6, ly + 0.6, DZ + 11, tone('#aab2c4')) + lamp(lx, ly, DZ + 13, 3.2, COL.amber, 0.9);
+      s += qY(-24, 24, dz5 + 0.5, dz5 + 3.5, 33, '#06080c', DEEP.e) + tY(0, dz5 + 3, 33.1, N(Q.rule_B.answer.length) + ' concepts', 5.6, COL.amber, 'middle', 700);
+    }
+    return s;
+  }
+  var dz5 = 19;
+
+  /* ---------- readouts ---------- */
+  var rr = C.s2.dropped_why || {};
+  function why() { return Object.keys(rr).map(function (k) { return N(rr[k]) + ' ' + k; }).join(', '); }
+  var nli = M.nli || [];
+  var INFO = [
+    function () { return { inp: N(C.s1.chars) + ' characters in 2 transcript rolls (L14, L15)', out: N(C.s1.chunks) + ' chunks (' + Object.keys(C.s1.by_lecture).map(function (k) { return k + ': ' + C.s1.by_lecture[k]; }).join(', ') + ')', tool: 'plain code, no model', note: 'The cutter slices each roll into passages short enough to read one at a time.' }; },
+    function () { return { inp: N(C.s1.chunks) + ' chunks', out: N(C.s2.edges_kept) + ' typed edges kept (USES ' + C.s2.by_relation.USES + ', IS_A ' + C.s2.by_relation.IS_A + ', PREREQUISITE_OF ' + C.s2.by_relation.PREREQUISITE_OF + ')', tool: clean(M.extractor), note: 'Only three stamps exist. ' + N(C.s2.edges_dropped) + ' edges failed the code checks and went to the reject bin (' + why() + ').' }; },
+    function () { return { inp: N(C.s3.distinct_keys) + ' distinct names (' + N(C.s3.raw_mentions) + ' mentions)', out: N(C.s5.nodes) + ' concepts', tool: 'embedder ' + clean(M.embedder) + '; judge ' + clean(M.judge), note: N(C.s3.review_rejected) + ' proposed merges were undone on the review desk (' + N(C.s3.review_accepted) + ' kept).' }; },
+    function () {
+      var both = C.s4.both_scored;
+      return { inp: N(C.s5.assertions) + ' assertions, each with its evidence', out: Object.keys(C.s5.assertion_status).map(function (k) { return N(C.s5.assertion_status[k]) + ' ' + k; }).join(', '), tool: 'two checkers: ' + nli.map(clean).join(' and '), note: 'A parcel passes only when both lamps light. HHEM supports ' + N(C.s4.hhem_supported) + ' of ' + N(C.s4.pairs) + ' pairs; MiniCheck supports ' + N(C.s4.minicheck_supported) + '; ' + N(both) + ' scored by both' + (both ? '' : ' (MiniCheck has not scored yet, so no parcel counts as checked)') + '. PREREQUISITE_OF goes to human review (' + N(C.s5.by_relation.PREREQUISITE_OF) + ').' };
+    },
+    function () { return { inp: N(C.s5.nodes) + ' nodes, ' + N(C.s5.assertions) + ' assertions, ' + N(C.s5.evidence_records) + ' evidence records', out: '3 files in git: nodes.csv, assertions.csv, evidence.jsonl', tool: 'Neo4j, rebuilt from the files', note: 'The files are the truth; the database can be thrown away and rebuilt.' }; },
+    function () { return { inp: Q.question, out: 'rule B returns ' + N(Q.rule_B.answer.length) + ' concepts (rule A returns ' + N(Q.rule_A.answer.length) + ')', tool: 'a graph walk over the files, no model', note: 'The lamp walks from "' + Q.start.replace(/-/g, ' ') + '" backwards along the prerequisite paths.' }; }
+  ];
+  function summary() {
+    return '<div class="kf-flow"><span>' + N(C.s1.chunks) + ' chunks</span><i>&rarr;</i><span>' + N(C.s2.edges_kept) + ' edges</span><i>&rarr;</i><span>' + N(C.s5.nodes) + ' concepts</span><i>&rarr;</i><span>' + N(C.s5.assertions) + ' assertions</span><i>&rarr;</i><span>' + N(Q.rule_B.answer.length) + ' answers</span></div><div class="kf-note">Pilot run, one pass through the whole line.</div>';
+  }
+
+  /* ---------- page ---------- */
+  var css = '#factory-fig{position:relative}#factory-fig *{box-sizing:border-box}' +
+    '#factory-fig .kf-card{background:var(--panel,#121620);border:1px solid var(--line,#242B38);border-radius:14px;overflow:hidden}' +
+    '#factory-fig .kf-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 16px 0;font-family:var(--body,Inter,system-ui,sans-serif)}' +
+    '#factory-fig .kf-fig{font:600 11px var(--mono,ui-monospace,monospace);color:var(--faint,#68707F);letter-spacing:.08em;text-transform:uppercase}' +
+    '#factory-fig .kf-title{font-weight:650;font-size:15px;color:var(--text,#E9ECF2)}' +
+    '#factory-fig svg.kf-svg{display:block;width:100%;height:auto;max-width:100%}' +
+    '#factory-fig .kf-t{font-family:var(--body,Inter,system-ui,sans-serif);pointer-events:none;user-select:none}' +
+    '#factory-fig .kf-st{cursor:pointer;outline:none}' +
+    '#factory-fig .kf-st .kf-hit{fill:transparent}' +
+    '#factory-fig .kf-st .kf-badge circle{fill:var(--panel2,#171C28);stroke:var(--line,#242B38);stroke-width:1.2}' +
+    '#factory-fig .kf-st .kf-badge text{fill:var(--muted,#98A0B0)}' +
+    '#factory-fig .kf-st.on .kf-badge circle{fill:var(--kfc);stroke:var(--kfc)}#factory-fig .kf-st.on .kf-badge text{fill:#0B0D12}' +
+    '#factory-fig .kf-st.on .kf-lbl{fill:var(--text,#E9ECF2)}' +
+    '#factory-fig .kf-st:focus-visible .kf-badge circle{stroke:var(--kfc);stroke-width:2.4}' +
+    '#factory-fig .kf-st.on .kf-body{filter:drop-shadow(0 0 7px var(--kfc))}' +
+    '#factory-fig .kf-lbl{fill:var(--muted,#98A0B0);font-weight:650}' +
+    '#factory-fig .kf-ro{padding:10px 16px 12px;border-top:1px solid var(--line,#242B38);background:var(--panel2,#171C28);font-family:var(--body,Inter,system-ui,sans-serif);min-height:112px}' +
+    '#factory-fig .kf-h{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:var(--text,#E9ECF2);font-weight:650;font-size:14px}' +
+    '#factory-fig .kf-h i{font:700 11px var(--mono,monospace);font-style:normal;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--kfc,#3CC7B4);color:#0B0D12}' +
+    '#factory-fig .kf-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:14px;color:var(--text,#E9ECF2);margin-bottom:6px}' +
+    '#factory-fig .kf-flow i{font-style:normal;color:var(--faint,#68707F)}' +
+    '#factory-fig .kf-flow span{background:var(--panel,#121620);border:1px solid var(--line,#242B38);border-radius:8px;padding:2px 8px}' +
+    '#factory-fig .kf-tool{font:12px var(--mono,monospace);color:var(--muted,#98A0B0);margin:2px 0;overflow-wrap:anywhere}' +
+    '#factory-fig .kf-note{font-size:13px;line-height:1.5;color:var(--muted,#98A0B0)}' +
+    '#factory-fig .kf-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 16px 12px;font-size:12px;color:var(--faint,#68707F);font-family:var(--body,Inter,system-ui,sans-serif);border-top:1px solid var(--line,#242B38)}' +
+    '#factory-fig .kf-legend text{font-size:12px}#factory-fig.kf-narrow .kf-lbl{display:none}' +
+    '@media (max-width:520px){#factory-fig .kf-ro{min-height:150px}#factory-fig .kf-title{font-size:14px}}';
+
+  function stationHTML(i) {
+    var s = ST[i], H = S[i].H;
+    ox = i * D;
+    var lx = X(0, 0) - (i === 4 ? 34 : 0), ly = Y(0, 0, H + (i === 4 ? 12 : i === 1 ? 20 : i === 0 ? 22 : i === 2 ? 14 : i === 3 ? 22 : 30)) - 26;
+    if (i === 5) { ly = Y(0, 36, 0) + 28; lx = X(0, 0) + 20; }
+    var name = S[i].name;
+    return '<g class="kf-st" data-i="' + i + '" tabindex="0" role="button" aria-label="Station ' + S[i].n + ', ' + name + '" style="--kfc:' + S[i].acc + '">' +
+      '<g class="kf-body">' + s.back + s.body + s.front + '<g id="kf-dyn-' + i + '"></g></g>' +
+      '<g class="kf-lab" data-x="' + f(lx) + '" data-y="' + f(ly) + '" data-off="' + f(Math.min(60, name.length * 4.6)) + '" transform="translate(' + f(lx - Math.min(60, name.length * 4.6)) + ',' + f(ly) + ')"><g class="kf-badge"><circle r="10"/><text y="4.3" text-anchor="middle" style="font-size:12px" font-weight="700" class="kf-t">' + S[i].n + '</text></g>' +
+      '<text x="16" y="5.2" style="font-size:15px" class="kf-t kf-lbl">' + name + '</text></g>' +
+      '</g>';
+  }
+  function floorSvg() {
+    ox = 0; var s = box(-100, -112, -8, 6 * D + 10, 76, 0, FLOOR) ;
+    for (var gx = -80; gx < 6 * D; gx += 40) s += line([gx, -112, 0], [gx, 76, 0], '#1d2431', 0.8, 0.9);
+    for (var gy = -100; gy < 76; gy += 40) s += line([-100, gy, 0], [6 * D + 10, gy, 0], '#1d2431', 0.8, 0.9);
+    return s;
+  }
+  function legendSvg() {
+    var items = [['chunk', COL.teal], ['USES', COL.blue], ['IS_A', COL.purple], ['PREREQUISITE_OF', COL.amber], ['rejected', COL.warn]], s = '<g class="kf-legend" transform="translate(-120,110)">', y = 0;
+    items.forEach(function (it) { s += '<rect x="0" y="' + (y - 8) + '" width="10" height="10" rx="2.5" fill="' + it[1] + '"/><text class="kf-t" x="16" y="' + y + '" fill="' + COL.muted + '" font-weight="600">' + it[0] + '</text>'; y += 17; });
+    return s + '</g>';
+  }
+  var sel = -1, sticky = false, lastInt = 0, tourI = 0, tourT = 0;
+  var svgEl, roEl, dyns = [], lays = [], stEls = [];
+  function show(i) {
+    sel = i;
+    stEls.forEach(function (e, k) { e.classList.toggle('on', k === i); });
+    if (i < 0) { roEl.style.removeProperty('--kfc'); roEl.innerHTML = '<div class="kf-h"><b>The whole line</b></div>' + summary(); return; }
+    var d = INFO[i]();
+    roEl.style.setProperty('--kfc', S[i].acc);
+    roEl.innerHTML = '<div class="kf-h"><i>' + S[i].n + '</i>' + S[i].name + '</div><div class="kf-flow"><span>' + d.inp + '</span><i>&rarr;</i><span>' + d.out + '</span></div><div class="kf-tool">tool: ' + d.tool + '</div><div class="kf-note">' + d.note + '</div>';
+  }
+  function init() {
+    build();
+    var st = '';
+    for (var i = 0; i < 6; i++) { ox = 0; st += '<g id="kf-lay-' + i + '"></g>' + stationHTML(i); }
+    var floor = floorSvg();
+    host.innerHTML = '<style>' + css + '</style><div class="kf-card"><div class="kf-top"><span class="kf-fig">Fig</span><span class="kf-title">The graph factory</span></div>' +
+      '<svg class="kf-svg" viewBox="-130 -125 800 470" role="group" aria-label="The graph factory: a production line of six stations"><defs>' + Object.keys(defs).map(function (k) { return defs[k]; }).join('') + '</defs>' + floor + legendSvg() + st + '</svg>' +
+      '<div class="kf-ro" aria-live="polite"></div>' +
+      '<div class="kf-foot"><span>Hover or tap a station</span><span>Pilot slice: CS 156 Lectures 14-15, not the thesis graph.</span></div></div>';
+    svgEl = host.querySelector('svg'); roEl = host.querySelector('.kf-ro');
+    /* defs may have gained gradients during dyn build, so re-inject each time they change */
+    stEls = [].slice.call(host.querySelectorAll('.kf-st'));
+    for (var k = 0; k < 6; k++) { dyns.push(host.querySelector('#kf-dyn-' + k)); lays.push(host.querySelector('#kf-lay-' + k)); }
+    stEls.forEach(function (e, k) {
+      var go = function () { lastInt = performance.now(); show(k); };
+      e.addEventListener('pointerenter', function (ev) { sticky = false; go(); });
+      e.addEventListener('focus', go);
+      e.addEventListener('click', function () { sticky = true; go(); });
+      e.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); sticky = true; go(); } });
+    });
+    svgEl.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse' && !sticky) { lastInt = performance.now(); show(-1); } });
+    show(-1);
+    frame(reduced ? 9.4 : 0);
+    fit();
+    if (window.ResizeObserver) new ResizeObserver(fit).observe(host);
+    if (!reduced) {
+      var vis = true, t0 = performance.now() - 6500, raf = 0;
+      var loop = function (now) {
+        raf = 0; if (!vis) return;
+        var t = (now - t0) / 1000;
+        frame(t);
+        if (now - lastInt > 9000 && now - tourT > 4200) { tourT = now; tourI = (tourI + 1) % 6; sticky = false; show(tourI); }
+        raf = requestAnimationFrame(loop);
+      };
+      if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { vis = en[0].isIntersecting; if (vis && !raf) raf = requestAnimationFrame(loop); }).observe(host);
+      raf = requestAnimationFrame(loop);
+    }
+  }
+  var vbW = 800;
+  function fit() {
+    var b = svgEl.getBBox(), pad = 10;
+    if (!svgEl.dataset.fit) { svgEl.setAttribute('viewBox', f(b.x - pad) + ' ' + f(b.y - pad) + ' ' + f(b.width + 2 * pad) + ' ' + f(b.height + 2 * pad)); svgEl.dataset.fit = 1; vbW = b.width + 2 * pad; }
+    var w = host.clientWidth || 800, sc = w / vbW, narrow = w < 560, k = narrow ? Math.max(1, Math.min(2.3, 0.8 / sc)) : 1;
+    host.classList.toggle('kf-narrow', narrow);
+    [].forEach.call(host.querySelectorAll('.kf-lab'), function (g) {
+      var x = +g.dataset.x, y = +g.dataset.y, o = +g.dataset.off;
+      g.setAttribute('transform', narrow ? 'translate(' + x + ',' + y + ') scale(' + f(k) + ')' : 'translate(' + (x - o) + ',' + y + ')');
+    });
+  }
+  var gradKeys = '';
+  function frame(t) {
+    var ps = parcels(t), buckets = [[], [], [], [], [], []];
+    ps.forEach(function (p) {
+      if (p.rej && p.x > D + 34) return;
+      if (p.rel === 'PREREQUISITE_OF' && p.x > 3 * D + 34 && p.x > 3 * D) return;
+      buckets[bucketOf(p.x)].push(p);
+    });
+    for (var i = 0; i < 6; i++) {
+      ox = 0; lays[i].innerHTML = layer(i, t, buckets[i]);
+      dyns[i].innerHTML = dyn(i, t, ps);
+    }
+    var dk = Object.keys(defs).join(',');
+    if (dk !== gradKeys) { gradKeys = dk; svgEl.querySelector('defs').innerHTML = Object.keys(defs).map(function (k) { return defs[k]; }).join(''); }
+  }
+  init();
+};
+</script>
+<script id="kg-l1">/* l1.js: fills the Level 1 example cards and the sources table from page.json (window.KGL1(P) is called by page.js). */
+(function () {
+  'use strict';
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  window.KGL1 = function (P) {
+    var box = document.getElementById('l1-cards');
+    var a = P.assertions.find(function (x) { return x.s === 'kernel-trick' && x.r === 'USES' && x.t === 'kernel-function'; }) ||
+            P.assertions.find(function (x) { return x.s === 'kernel-trick' || x.t === 'kernel-trick'; });
+    if (box && a) {
+      var e = P.evidence[a.ev[0]], ch = P.chunks.find(function (c) { return c.id === e.p; });
+      var names = function (id) { return Object.keys(P.er).filter(function (k) { return P.er[k].node === id; }).map(function (k) { return '<span class="tag">' + esc(k) + '</span> <span class="small faint">' + esc(P.er[k].method) + '</span>'; }).join('<br>'); };
+      var lab = function (id) { return P.nodesById[id] ? P.nodesById[id].label : id; };
+      var i = ch.text.toLowerCase().indexOf(e.q.toLowerCase().slice(0, 30));
+      var B = P.cq.rule_B.answer.map(function (x) { return esc(x.label); }).join(', ');
+      box.innerHTML =
+        '<div class="card"><div class="hd"><b>1 · Chunk</b><span class="tag">' + esc(ch.id) + '</span><span>' + esc(P.meta.lectures[ch.lec].title) + ', from ' + esc(ch.loc) + '</span></div><p class="quote">... ' + (i >= 0 ? esc(ch.text.slice(Math.max(0, i - 160), i).replace(/^\S*\s/, '')) + '<mark>' + esc(ch.text.slice(i, i + e.q.length)) + '</mark>' + esc(ch.text.slice(i + e.q.length, i + e.q.length + 160).replace(/\s\S*$/, '')) : esc(ch.text.slice(0, 360))) + ' ...</p><p class="small faint">A display excerpt of the stored chunk; the checker read the whole chunk.</p></div>' +
+        '<div class="card"><div class="hd"><b>2 · Extraction</b><span>' + esc(P.meta.extractor) + '</span></div><p><code>' + esc(e.sn) + '</code> <span class="tag">' + esc(a.r) + '</span> <code>' + esc(e.tn) + '</code> · reading: ' + esc(e.rd) + ' · quote: "' + esc(e.q) + '"</p></div>' +
+        '<div class="card"><div class="hd"><b>3 · Entity resolution</b></div><p>Names that became <b>' + esc(lab(a.s)) + '</b>:<br>' + names(a.s) + '</p><p>Names that became <b>' + esc(lab(a.t)) + '</b>:<br>' + names(a.t) + '</p></div>' +
+        '<div class="card"><div class="hd"><b>4 · Entailment gate</b></div><p>Claim: "' + esc(e.h) + '" · HHEM ' + (e.hh == null ? '-' : e.hh.toFixed(3)) + ' · MiniCheck ' + (e.mc == null ? '-' : e.mc.toFixed(3)) + ' → <b>' + esc(e.g) + '</b>. The assertion has ' + a.ev.length + ' evidence record' + (a.ev.length === 1 ? '' : 's') + ' and status <b>' + esc(a.st) + '</b>.</p></div>' +
+        '<div class="card"><div class="hd"><b>5 · Graph files</b></div><p><code>' + esc([a.id, a.s, a.r, a.t, a.st, 'unreviewed', a.fl.join('|'), a.ev.length].join(',')) + '</code> in assertions.csv; the quote and the scores in evidence.jsonl.</p></div>' +
+        '<div class="card"><div class="hd"><b>6 · Question</b></div><p>"What must I understand before the kernel trick?" Strict rule (PREREQUISITE_OF only): ' + (P.cq.rule_A.answer.length ? P.cq.rule_A.answer.map(function (x) { return esc(x.label); }).join(', ') : '<b>no answer</b>') + '. Wider rule (also what it USES): ' + (B || 'no answer') + ' (a related concept, not a verified prerequisite).</p></div>';
+    }
+    var t = document.getElementById('src-tbl');
+    if (t && P.sources) {
+      t.innerHTML = '<thead><tr><th>Source</th><th>Used for</th><th>Where</th><th>Checked</th></tr></thead><tbody>' + P.sources.map(function (s) {
+        return '<tr id="src-' + esc(s.id) + '"><td>' + (s.url ? '<a href="' + esc(s.url) + '">' + esc(s.cite) + '</a>' : esc(s.cite)) + '</td><td>' + esc(s.used_for) + '</td><td>' + esc(s.locator) + '</td><td class="' + (s.verified ? 'vtrue' : 'vfalse') + '">' + (s.verified ? 'read' : 'not read') + '<br><span class="faint small">' + esc(s.via) + '</span></td></tr>';
+      }).join('') + '</tbody>';
+    }
+    var n = document.getElementById('n-judged-merges');
+    if (n) n.textContent = P.merges.length;
+  };
+})();
+</script>
+<script id="kg-page">/* page.js: the interactive part of "How a knowledge graph is built". Reads ../data/page.json (real artefacts of the pilot run).
+   Plain SVG, no library: arrowheads stop at the node border, a clicked node is drawn on top. */
+(function () {
+  'use strict';
+  var C = window.KGCore, P = null;
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function el(tag, attrs, html) { var e = document.createElement(tag); for (var k in attrs || {}) e.setAttribute(k, attrs[k]); if (html != null) e.innerHTML = html; return e; }
+  function svgEl(tag, attrs) { var e = document.createElementNS('http://www.w3.org/2000/svg', tag); for (var k in attrs || {}) e.setAttribute(k, attrs[k]); return e; }
+  function get(o, path) { return path.split('.').reduce(function (a, k) { return a == null ? a : a[k]; }, o); }
+  function fmt(v) { return typeof v === 'number' ? (Math.abs(v) < 1 && v !== 0 ? v.toFixed(3) : v.toLocaleString('en')) : v; }
+  function pct(a, b) { return b ? Math.round(100 * a / b) + '%' : '-'; }
+  var REL_COL = { USES: 'var(--blue)', IS_A: 'var(--teal)', PREREQUISITE_OF: 'var(--amber)' };
+  var ST_LABEL = { 'accepted-by-gate': 'accepted by the gate', review: 'review: checkers disagree', rejected: 'rejected by the gate', proposed: 'proposed: needs instructor review' };
+
+  /* ------------------------------------------------------------ state */
+  var S = { stage: 1, chunk: 'L15-c13', overrides: {}, showRejected: false, showReview: true, rel: { USES: true, IS_A: true, PREREQUISITE_OF: true },
+            selNode: null, selEdge: null, view: 'core', cq: null };
+  var G = null;   // current lifted graph
+
+  function rebuild() {
+    var mode = S.stage <= 2 ? 'raw' : 'er';
+    var map = C.mapping(P, S.overrides, mode);
+    if (mode === 'raw') {
+      // before resolution: every distinct name is a node and every extracted edge is drawn (nothing is gated yet)
+      var as = [], seen = {};
+      Object.keys(P.extraction).forEach(function (ch) {
+        P.extraction[ch].edges.forEach(function (e) {
+          var s = 'new:' + C.normalise(e[0]), t = 'new:' + C.normalise(e[2]);
+          if (s === t) return;
+          var k = s + '|' + e[1] + '|' + t;
+          if (!seen[k]) { seen[k] = { key: k, s: s, r: e[1], t: t, st: 'extracted', ev: [] }; as.push(seen[k]); }
+        });
+      });
+      G = { assertions: as, map: map, mode: mode };
+    } else {
+      var L = C.lift(P, map);
+      G = { assertions: L.assertions, map: map, mode: mode, dropped: L.dropped };
+    }
+    G.nodes = {};
+    G.assertions.forEach(function (a) { [a.s, a.t].forEach(function (n) { if (!G.nodes[n]) G.nodes[n] = nodeInfo(n, map); }); });
+    G.byNode = {};
+    G.assertions.forEach(function (a) { [a.s, a.t].forEach(function (n) { (G.byNode[n] = G.byNode[n] || []).push(a); }); });
+  }
+  function nodeInfo(id, map) {
+    var n = P.nodesById[id];
+    var keys = Object.keys(map).filter(function (k) { return map[k] === id; });
+    if (n) return { id: id, label: n.label, kind: n.kind, status: n.status, keys: keys };
+    var k = id.slice(4), er = P.er[k];
+    return { id: id, label: k, kind: er && P.nodesById['new:' + k] ? P.nodesById['new:' + k].kind : '', status: 'candidate', keys: keys };
+  }
+
+  /* ------------------------------------------------------------ layout: a small deterministic force simulation */
+  var POS = {};
+  function layout(ids, W, H, deg) {
+    var keep = POS._w;
+    // deterministic: start on rings by degree (hubs in the middle), then a short force run; earlier positions are kept
+    var sorted = ids.slice().sort(function (x, y) { return (deg[y] || 0) - (deg[x] || 0) || (x < y ? -1 : 1); });
+    var pts = sorted.map(function (id, i) {
+      var old = POS[id];
+      if (old) return { id: id, x: old.x, y: old.y, vx: 0, vy: 0 };
+      var ring = Math.sqrt(i / sorted.length), ang = i * 2.399963;   // golden-angle spiral
+      return { id: id, x: W / 2 + Math.cos(ang) * ring * W * 0.42, y: H / 2 + Math.sin(ang) * ring * H * 0.42, vx: 0, vy: 0 };
+    });
+    var idx = {}; pts.forEach(function (p, i) { idx[p.id] = i; });
+    var links = visible().filter(function (a) { return idx[a.s] != null && idx[a.t] != null; });
+    for (var it = 0; it < 320; it++) {
+      var alpha = 1 - it / 320;
+      for (var i = 0; i < pts.length; i++) for (var j = i + 1; j < pts.length; j++) {
+        var dx = pts[j].x - pts[i].x, dy = pts[j].y - pts[i].y, d2 = dx * dx + dy * dy + 1;
+        if (d2 > 40000) continue;
+        var f = Math.min(1, 800 / d2) * alpha;
+        pts[i].vx -= dx * f; pts[i].vy -= dy * f; pts[j].vx += dx * f; pts[j].vy += dy * f;
+      }
+      links.forEach(function (a) {
+        var p = pts[idx[a.s]], q = pts[idx[a.t]], dx = q.x - p.x, dy = q.y - p.y, d = Math.sqrt(dx * dx + dy * dy) + 0.01, f = (d - 80) * 0.02 * alpha;
+        p.vx += dx / d * f; p.vy += dy / d * f; q.vx -= dx / d * f; q.vy -= dy / d * f;
+      });
+      pts.forEach(function (p) {
+        p.vx += (W / 2 - p.x) * 0.008 * alpha; p.vy += (H / 2 - p.y) * 0.012 * alpha;
+        p.x += Math.max(-8, Math.min(8, p.vx)); p.y += Math.max(-8, Math.min(8, p.vy)); p.vx *= 0.55; p.vy *= 0.55;
+        p.x = Math.max(30, Math.min(W - 30, p.x)); p.y = Math.max(22, Math.min(H - 22, p.y));
+      });
+    }
+    pts.forEach(function (p) { POS[p.id] = { x: p.x, y: p.y }; });
+    POS._w = keep;
+  }
+
+  function visible() {
+    return G.assertions.filter(function (a) {
+      if (!S.rel[a.r]) return false;
+      if (a.st === 'rejected' && !S.showRejected) return false;
+      if (a.st === 'review' && !S.showReview) return false;
+      return true;
+    });
+  }
+  function visibleNodes(edges) {
+    var deg = {};
+    edges.forEach(function (a) { deg[a.s] = (deg[a.s] || 0) + 1; deg[a.t] = (deg[a.t] || 0) + 1; });
+    var ids = Object.keys(deg);
+    if (S.view === 'core') {
+      // core view: vocabulary concepts plus every node with at least 3 edges, and the endpoints of the selected edge
+      ids = ids.filter(function (id) { return (G.nodes[id] && G.nodes[id].status === 'vocabulary') || deg[id] >= 3 || id === S.selNode || (S.cq && S.cq.nodes[id]); });
+    }
+    return { ids: ids, deg: deg };
+  }
+
+  /* ------------------------------------------------------------ graph drawing */
+  function radius(deg) { return 5 + Math.min(9, Math.sqrt(deg || 1) * 2); }
+  function drawGraph() {
+    var host = $('#g-svg'); if (!host) return;
+    var narrow = host.clientWidth && host.clientWidth < 520, W = narrow ? 420 : 760, H = narrow ? 640 : 540;
+    if (POS._w !== W) { POS = { _w: W }; }
+    var edges = visible(), vn = visibleNodes(edges), keep = {};
+    vn.ids.forEach(function (id) { keep[id] = 1; });
+    edges = edges.filter(function (a) { return keep[a.s] && keep[a.t]; });
+    layout(vn.ids, W, H, vn.deg);
+    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'The knowledge graph of the pilot slice: ' + vn.ids.length + ' concepts, ' + edges.length + ' typed edges' });
+    var defs = svgEl('defs');
+    ['USES', 'IS_A', 'PREREQUISITE_OF', 'rejected', 'hl'].forEach(function (k) {
+      var m = svgEl('marker', { id: 'ah-' + k, viewBox: '0 0 10 10', refX: '10', refY: '5', markerWidth: '9', markerHeight: '9', markerUnits: 'userSpaceOnUse', orient: 'auto' });
+      m.appendChild(svgEl('path', { d: 'M0,0 L10,5 L0,10 z', fill: k === 'rejected' ? 'var(--warn)' : k === 'hl' ? 'var(--text)' : REL_COL[k] }));
+      defs.appendChild(m);
+    });
+    svg.appendChild(defs);
+    var gE = svgEl('g', { 'class': 'edges' }), gN = svgEl('g', { 'class': 'nodes' });
+    svg.appendChild(gE); svg.appendChild(gN);
+    var cqE = S.cq ? S.cq.edges : {}, cqN = S.cq ? S.cq.nodes : {};
+    edges.forEach(function (a) {
+      var p = POS[a.s], q = POS[a.t]; if (!p || !q) return;
+      var dx = q.x - p.x, dy = q.y - p.y, d = Math.sqrt(dx * dx + dy * dy) || 1;
+      var rs = radius(vn.deg[a.s]) + 1, rt = radius(vn.deg[a.t]) + 2;   // stop at the border of the target circle
+      var x1 = p.x + dx / d * rs, y1 = p.y + dy / d * rs, x2 = q.x - dx / d * rt, y2 = q.y - dy / d * rt;
+      var on = S.selEdge === a.key || cqE[a.key], gated = S.stage >= 4, rej = gated && a.st === 'rejected';
+      var line = svgEl('line', { x1: x1.toFixed(1), y1: y1.toFixed(1), x2: x2.toFixed(1), y2: y2.toFixed(1),
+        stroke: rej ? 'var(--warn)' : REL_COL[a.r], 'stroke-width': on ? 3 : 1.4, 'stroke-opacity': S.cq && !cqE[a.key] ? 0.12 : on ? 1 : 0.55,
+        'stroke-dasharray': rej ? '4 3' : a.r === 'PREREQUISITE_OF' ? '1.5 2.5' : gated && a.st === 'review' ? '6 2' : '',
+        'marker-end': 'url(#ah-' + (on ? 'hl' : rej ? 'rejected' : a.r) + ')', 'class': 'edge', tabindex: '0', 'data-key': a.key });
+      var hit = svgEl('line', { x1: x1, y1: y1, x2: x2, y2: y2, stroke: 'transparent', 'stroke-width': 10, 'class': 'edge-hit', 'data-key': a.key });
+      var t = svgEl('title'); t.textContent = label(a.s) + ' ' + a.r + ' ' + label(a.t) + ' (' + (ST_LABEL[a.st] || a.st) + ')';
+      hit.appendChild(t);
+      gE.appendChild(line); gE.appendChild(hit);
+    });
+    vn.ids.forEach(function (id) {
+      var p = POS[id], n = G.nodes[id] || { label: id, status: 'candidate' }, r = radius(vn.deg[id]);
+      var g = svgEl('g', { 'class': 'node' + (S.selNode === id ? ' sel' : ''), transform: 'translate(' + p.x.toFixed(1) + ',' + p.y.toFixed(1) + ')', tabindex: '0', 'data-id': id, role: 'button', 'aria-label': n.label });
+      var dim = S.cq && !cqN[id] && id !== S.cq.start;
+      g.appendChild(svgEl('circle', { r: r, fill: n.status === 'vocabulary' ? 'var(--panel2)' : 'var(--panel)', stroke: id === (S.cq && S.cq.start) ? 'var(--purple)' : cqN[id] ? 'var(--amber)' : n.status === 'vocabulary' ? 'var(--muted)' : 'var(--faint)',
+        'stroke-width': S.selNode === id || cqN[id] ? 3 : 1.4, opacity: dim ? 0.25 : 1 }));
+      if (n.status === 'vocabulary' || vn.deg[id] >= 6 || S.selNode === id || cqN[id] || (S.cq && id === S.cq.start)) {
+        var left = p.x > W - (narrow ? 90 : 130); var tx = svgEl('text', { x: left ? -(r + 3) : r + 3, y: 4, 'text-anchor': left ? 'end' : 'start', 'class': 'nl', opacity: dim ? 0.3 : 1 }); tx.textContent = n.label; g.appendChild(tx);
+      }
+      var tt = svgEl('title'); tt.textContent = n.label + ' (' + (n.status === 'vocabulary' ? 'vocabulary concept' : 'candidate concept') + ')'; g.appendChild(tt);
+      gN.appendChild(g);
+    });
+    host.innerHTML = ''; host.appendChild(svg);
+    // a clicked node is drawn last, so it sits on top of the others
+    if (S.selNode) { var sel = gN.querySelector('[data-id="' + cssq(S.selNode) + '"]'); if (sel) gN.appendChild(sel); }
+    svg.addEventListener('click', function (ev) {
+      var h = ev.target.closest('.edge-hit,.edge'), nd = ev.target.closest('.node');
+      if (h) { selectEdge(h.getAttribute('data-key')); }
+      else if (nd) { selectNode(nd.getAttribute('data-id')); }
+    });
+    svg.addEventListener('keydown', function (ev) {
+      if (ev.key !== 'Enter' && ev.key !== ' ') return;
+      var h = ev.target.closest('.edge'), nd = ev.target.closest('.node');
+      if (h) { ev.preventDefault(); selectEdge(h.getAttribute('data-key')); } else if (nd) { ev.preventDefault(); selectNode(nd.getAttribute('data-id')); }
+    });
+    var st = {}; G.assertions.forEach(function (a) { st[a.st] = (st[a.st] || 0) + 1; });
+    $('#g-count').textContent = vn.ids.length + ' concepts and ' + edges.length + ' edges shown (' + Object.keys(G.nodes).length + ' concepts, ' + G.assertions.length + ' assertions in this state' +
+      (G.mode === 'raw' ? ', before entity resolution' : ': ' + Object.keys(st).map(function (k) { return st[k] + ' ' + k; }).join(', ')) + ').';
+  }
+  function cssq(s) { return s.replace(/["\\]/g, '\\$&'); }
+  function label(id) { return (G.nodes[id] && G.nodes[id].label) || id.replace(/^new:/, ''); }
+
+  /* ------------------------------------------------------------ the info panel */
+  function chunkText(pid) { var c = P.chunks.find(function (x) { return x.id === pid; }); return c ? c.text : ''; }
+  function chunkLoc(pid) { var c = P.chunks.find(function (x) { return x.id === pid; }); return c ? c.lec + ' ' + c.loc : pid; }
+  function highlight(text, quote) {
+    var words = quote.split(/\s+/).map(function (w) { return w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); });
+    var m = new RegExp(words.join('\\s+'), 'i').exec(text);
+    if (!m) return esc(text);
+    var a = Math.max(0, m.index - 220), b = Math.min(text.length, m.index + m[0].length + 220);
+    return (a > 0 ? '... ' : '') + esc(text.slice(a, m.index)) + '<mark>' + esc(m[0]) + '</mark>' + esc(text.slice(m.index + m[0].length, b)) + (b < text.length ? ' ...' : '');
+  }
+  function erLine(id) {
+    var n = G.nodes[id]; if (!n) return '';
+    var rows = n.keys.slice(0, 8).map(function (k) {
+      var e = P.er[k] || {}, ov = S.overrides[k] !== undefined, rev = P.review.verdicts.find(function (v) { return v.mention === k; });
+      var how = ov ? 'changed by you on this page' : rev && rev.verdict === 'reject' ? 'judge merged it, the review undid it' : e.method;
+      return '<span class="tag">' + esc(k) + '</span> <span class="small faint">' + esc(how) + (e.best_emb != null ? ' · bge-m3 ' + e.best_emb + ' · fuzzy ' + e.best_fuzzy : '') + '</span>';
+    });
+    return '<p class="small"><b>' + esc(n.label) + '</b> <span class="faint">' + esc(n.status === 'vocabulary' ? 'vocabulary concept' : 'candidate concept') + '</span><br>' + rows.join('<br>') + (n.keys.length > 8 ? '<br><span class="faint small">+ ' + (n.keys.length - 8) + ' more names</span>' : '') + '</p>';
+  }
+  function evidenceCard(id) {
+    var e = P.evidence[id];
+    var g = e.g === 'supported' ? 'ok' : e.g === 'rejected' ? 'bad' : 'gold';
+    return '<div class="card"><div class="hd"><span class="tag">' + esc(e.p) + '</span><span>' + esc(chunkLoc(e.p)) + '</span><span class="tag ' + g + '">' + esc(e.g) + '</span><span>reading: ' + esc(e.rd) + '</span></div>' +
+      '<p class="quote">' + highlight(chunkText(e.p), e.q) + '</p>' +
+      '<p>Extractor wrote: <code>' + esc(e.sn) + ' ' + '</code><span class="tag">' + esc(P.assertionsById[e.a] ? P.assertionsById[e.a].r : '') + '</span><code>' + esc(e.tn) + '</code> · ' + esc(P.meta.extractor) + '</p>' +
+      '<p>Claim checked: "' + esc(e.h) + '"<br>HHEM ' + (e.hh == null ? '-' : e.hh.toFixed(3)) + ' · MiniCheck ' + (e.mc == null ? '-' : e.mc.toFixed(3)) + ' <span class="faint">(supported when both are at least ' + P.meta.threshold + ')</span></p></div>';
+  }
+  function selectEdge(key) {
+    S.selEdge = key; S.selNode = null;
+    var a = G.assertions.find(function (x) { return x.key === key; }); if (!a) return;
+    var box = $('#g-info');
+    var ev = a.ev.length ? a.ev.map(evidenceCard).join('') : rawEvidence(a);
+    box.innerHTML = '<h3>' + esc(label(a.s)) + ' <span class="tag" style="color:' + REL_COL[a.r] + '">' + a.r + '</span> ' + esc(label(a.t)) + '</h3>' +
+      '<p class="small">Status: <b>' + esc(ST_LABEL[a.st] || a.st) + '</b> · ' + a.ev.length + ' evidence record' + (a.ev.length === 1 ? '' : 's') + '</p>' + ev +
+      '<h3 style="margin-top:12px">Entity resolution of the two ends</h3>' + erLine(a.s) + erLine(a.t);
+    drawGraph();
+  }
+  function rawEvidence(a) {
+    var out = [];
+    Object.keys(P.extraction).forEach(function (ch) {
+      P.extraction[ch].edges.forEach(function (e) {
+        if ('new:' + C.normalise(e[0]) === a.s && e[1] === a.r && 'new:' + C.normalise(e[2]) === a.t && out.length < 3)
+          out.push('<div class="card"><div class="hd"><span class="tag">' + esc(ch) + '</span><span>' + esc(chunkLoc(ch)) + '</span><span>reading: ' + esc(e[4]) + '</span></div><p class="quote">' + highlight(chunkText(ch), e[3]) + '</p></div>');
+      });
+    });
+    return out.join('') + '<p class="small faint">Before entity resolution and before the gate: no checker has read this edge yet.</p>';
+  }
+  function selectNode(id) {
+    S.selNode = id; S.selEdge = null;
+    var es = (G.byNode[id] || []).filter(function (a) { return visible().indexOf(a) >= 0; });
+    $('#g-info').innerHTML = erLine(id) + '<p class="small">' + es.length + ' visible edges:</p><ul class="elist">' +
+      es.slice(0, 14).map(function (a) { return '<li><button class="linkish" data-key="' + esc(a.key) + '">' + esc(label(a.s)) + ' <span style="color:' + REL_COL[a.r] + '">' + a.r + '</span> ' + esc(label(a.t)) + '</button> <span class="faint small">' + esc(a.st) + '</span></li>'; }).join('') + '</ul>';
+    $$('#g-info .linkish').forEach(function (b) { b.onclick = function () { selectEdge(b.getAttribute('data-key')); }; });
+    drawGraph();
+  }
+
+  /* ------------------------------------------------------------ the six stages */
+  var STAGES = [
+    { n: 1, t: 'Chunks', f: stage1 }, { n: 2, t: 'Extraction', f: stage2 }, { n: 3, t: 'Entity resolution', f: stage3 },
+    { n: 4, t: 'Entailment gate', f: stage4 }, { n: 5, t: 'Graph files', f: stage5 }, { n: 6, t: 'Ask a question', f: stage6 }];
+  function setStage(n) {
+    S.stage = n; S.cq = null; S.selEdge = null;
+    $$('#st-tabs button').forEach(function (b) { b.setAttribute('aria-pressed', String(+b.getAttribute('data-n') === n)); });
+    S.showRejected = n === 4;
+    S.showReview = n <= 4;
+    $('#g-rej').setAttribute('aria-pressed', String(S.showRejected));
+    $('#g-rev').setAttribute('aria-pressed', String(S.showReview));
+    rebuild();
+    var box = $('#st-body'); box.innerHTML = ''; STAGES[n - 1].f(box);
+    $('#g-wrap').hidden = false;
+    $('#g-stage').textContent = n <= 2 ? 'Before entity resolution: one node per distinct name. Nothing is checked yet.' : n === 3 ? 'After entity resolution (and the review of merges). Nothing is checked yet.' : n === 4 ? 'After the gate: rejected edges dashed red, edges where the checkers disagree dashed blue.' : 'The graph as saved in the files: accepted edges and proposed PREREQUISITE_OF edges (turn on "Show review edges" for the rest).';
+    drawGraph();
+  }
+  function counts(path) { return fmt(get(P.counts, path)); }
+
+  function stage1(box) {
+    var c = P.counts.s1;
+    box.innerHTML = '<p>The batch pipeline cut each lecture transcript into chunks of at most 1,600 characters, with at most 200 characters of overlap, inside 5-minute windows. ' +
+      'The two lectures give <b>' + c.chunks + ' chunks</b> (' + c.by_lecture.L14 + ' from Lecture 14, ' + c.by_lecture.L15 + ' from Lecture 15). Each chunk is a passage with an id; every edge later points back to one.</p>' +
+      '<p class="small muted">One square per chunk. The colour shows how many edges the extractor kept from it. Click a square to read it.</p><div id="chunk-strip"></div><div id="chunk-read"></div>';
+    var strip = $('#chunk-strip', box);
+    ['L14', 'L15'].forEach(function (lec) {
+      var row = el('div', { 'class': 'strip' }, '<span class="small faint">' + lec + '</span>');
+      P.chunks.filter(function (x) { return x.lec === lec; }).forEach(function (x) {
+        var n = (P.extraction[x.id] || { edges: [] }).edges.length;
+        var b = el('button', { 'class': 'sq' + (x.id === S.chunk ? ' on' : ''), 'aria-label': x.id + ', ' + n + ' edges', title: x.id + ' · ' + x.loc + ' · ' + n + ' edges', style: 'background:color-mix(in srgb, var(--amber) ' + Math.min(100, n * 12) + '%, var(--panel2))' });
+        b.onclick = function () { S.chunk = x.id; $$('.sq', strip).forEach(function (s) { s.classList.remove('on'); }); b.classList.add('on'); readChunk(); };
+        row.appendChild(b);
+      });
+      strip.appendChild(row);
+    });
+    function readChunk() {
+      var x = P.chunks.find(function (c) { return c.id === S.chunk; }), ex = P.extraction[x.id];
+      var t = esc(x.text);
+      ex.edges.forEach(function (e) {
+        var words = e[3].split(/\s+/).map(function (w) { return esc(w).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); });
+        t = t.replace(new RegExp('(' + words.join('\\s+') + ')', 'i'), '<mark>$1</mark>');
+      });
+      $('#chunk-read', box).innerHTML = '<div class="card"><div class="hd"><span class="tag">' + x.id + '</span><span>' + esc(P.meta.lectures[x.lec].title) + ' · from ' + x.loc + '</span><span>' + x.text.length + ' characters</span></div><p class="quote">' + t + '</p><p class="small faint">Highlighted: the quotes of the edges the extractor kept. Caltech CS 156 captions, CC BY (YouTube licence field).</p></div>';
+    }
+    readChunk();
+  }
+
+  function stage2(box) {
+    var c = P.counts.s2;
+    box.innerHTML = '<p>One call per chunk to <code>' + esc(P.meta.extractor) + '</code> at temperature 0. The answer must fit a JSON schema (Pydantic): mentions, and edges of <b>only three relations</b> (' +
+      P.meta.relations.map(function (r) { return '<span class="tag" style="color:' + REL_COL[r] + '">' + r + '</span>'; }).join(' ') + '). Each edge must quote the chunk. Then code checks every edge: is the quote really in the chunk? are both ends mentions? is it a loop?</p>' +
+      '<table class="tbl"><tbody><tr><td>calls</td><td class="t">' + c.chunks + ' (' + c.errors + ' schema errors)</td></tr><tr><td>mentions</td><td class="t">' + fmt(c.mentions) + '</td></tr>' +
+      '<tr><td>edges kept</td><td class="t">' + c.edges_kept + ' (' + Object.keys(c.by_relation).map(function (k) { return c.by_relation[k] + ' ' + k; }).join(', ') + ')</td></tr>' +
+      '<tr><td>edges dropped by the code checks</td><td class="t">' + c.edges_dropped + ' (' + Object.keys(c.dropped_why).map(function (k) { return c.dropped_why[k] + ' ' + k; }).join('; ') + ')</td></tr>' +
+      '<tr><td>reading</td><td class="t">' + c.by_reading.stated + ' stated, ' + c.by_reading.implied + ' implied by the model</td></tr>' +
+      '<tr><td>tokens, cost</td><td class="t">' + fmt(c.prompt_tokens) + ' in, ' + fmt(c.completion_tokens) + ' out, US$ ' + c.cost_usd.toFixed(3) + '</td></tr></tbody></table>' +
+      '<div class="row"><label for="ch-pick" class="small">Chunk</label><select id="ch-pick">' + P.chunks.map(function (x) { return '<option' + (x.id === S.chunk ? ' selected' : '') + '>' + x.id + '</option>'; }).join('') + '</select></div><div id="ex-out"></div>' +
+      '<details><summary>The prompt the extractor got</summary><pre class="pre">' + esc(P.meta.system_prompt) + '</pre></details>';
+    var pick = $('#ch-pick', box);
+    pick.onchange = function () { S.chunk = pick.value; show(); };
+    function show() {
+      var ex = P.extraction[S.chunk];
+      $('#ex-out', box).innerHTML = '<h3>Mentions (' + ex.mentions.length + ')</h3><p>' + ex.mentions.map(function (m) { return '<span class="tag' + (m[3] ? ' gold' : '') + '" title="name: ' + esc(m[1]) + ' · kind: ' + esc(m[2]) + '">' + esc(m[0]) + (m[0].toLowerCase() !== m[1].toLowerCase() ? ' → ' + esc(m[1]) : '') + '</span>'; }).join(' ') + '</p><p class="small faint">Amber: the model says the chunk defines it (DEFINES).</p>' +
+        '<h3>Edges kept (' + ex.edges.length + ')</h3>' + ex.edges.map(function (e) { return '<div class="card"><div class="hd"><b>' + esc(e[0]) + '</b><span class="tag" style="color:' + REL_COL[e[1]] + '">' + e[1] + '</span><b>' + esc(e[2]) + '</b><span>' + esc(e[4]) + '</span></div><p>"' + esc(e[3]) + '"</p></div>'; }).join('') +
+        (ex.dropped.length ? '<h3>Dropped by the code checks (' + ex.dropped.length + ')</h3>' + ex.dropped.map(function (e) { return '<div class="card bad"><div class="hd"><b>' + esc(e[0]) + '</b><span class="tag">' + e[1] + '</span><b>' + esc(e[2]) + '</b><span class="tag bad">' + esc(e[4]) + '</span></div><p>"' + esc(e[3]) + '"</p></div>'; }).join('') : '');
+    }
+    show();
+  }
+
+  function stage3(box) {
+    var c = P.counts.s3;
+    box.innerHTML = '<p>The extractor wrote <b>' + fmt(c.raw_mentions) + ' mentions</b> with <b>' + c.distinct_keys + ' distinct names</b> after normalising (lower case, hyphens, plurals). Many name the same concept: "SVM", "support vector machines". ' +
+      'The pipeline resolves them in steps, cheapest first:</p><ol class="funnel">' +
+      '<li><b>' + c.linked_by_alias + ' names</b> (' + fmt(c.mentions_linked_by_alias) + ' mentions, ' + pct(c.mentions_linked_by_alias, c.raw_mentions) + ') match the seed vocabulary or one of its aliases exactly.</li>' +
+      '<li>The other <b>' + c.leftovers + '</b> get candidates: rapidfuzz string scores (on this computer) and bge-m3 vectors (on a Kaggle GPU, through the batch pipeline).</li>' +
+      '<li><b>' + c.lower_band + '</b> score low against everything and stay separate without a judge.</li>' +
+      '<li><b>' + c.judged + '</b> go to an LLM judge (' + esc(P.meta.judge) + ', another model family than the extractor) in ' + c.judge_calls + ' batched calls. It chooses same / narrower / broader / related / none / not a concept: ' +
+        Object.keys(c.decisions).map(function (k) { return c.decisions[k] + ' ' + k; }).join(', ') + '.</li>' +
+      '<li><b>' + c.review_queue + '</b> go to the review queue, where the rules see a conflict.</li>' +
+      '<li>Every merge goes to the merge log. An LLM review (no human) read each judge merge with its sentence and rejected <b>' + c.review_rejected + ' of ' + (c.review_rejected + c.review_accepted) + '</b>. Neither the judge nor the review was checked by a person.</li></ol>' +
+      '<p class="small muted">The review here is an agent review (' + esc(P.meta.reviewer) + '). Click "undo" to split a merge, or "apply" to see what the judge wanted. The graph below changes.</p><div id="mg"></div>';
+    var mg = $('#mg', box);
+    function draw() {
+      mg.innerHTML = '<table class="tbl"><thead><tr><th>mention</th><th>judge merged it into</th><th>review</th><th></th></tr></thead><tbody>' + P.merges.map(function (m, i) {
+        var tgt = m.to.indexOf('new:') === 0 ? m.to.slice(4) : (P.nodesById[m.to] ? P.nodesById[m.to].label : m.to);
+        var rejected = m.review === 'reject', ov = S.overrides[m.mention];
+        var merged = ov !== undefined ? ov === m.to : !rejected;
+        return '<tr class="' + (merged ? '' : 'dim') + '"><td class="t">' + esc(m.mention) + '</td><td>' + esc(tgt) + '<br><span class="faint small">' + esc(m.reason || '') + '</span></td><td><span class="tag ' + (rejected ? 'bad' : 'ok') + '">' + m.review + '</span><br><span class="faint small">' + esc(m.review_reason || '') + '</span></td>' +
+          '<td><button data-i="' + i + '" aria-pressed="' + merged + '">' + (merged ? 'undo' : 'apply') + '</button></td></tr>';
+      }).join('') + '</tbody></table>';
+      $$('button[data-i]', mg).forEach(function (b) {
+        b.onclick = function () {
+          var m = P.merges[+b.getAttribute('data-i')], cur = G.map[m.mention];
+          var target = cur === m.to ? 'new:' + m.mention : m.to;
+          S.overrides[m.mention] = target; rebuild(); draw();
+          var node = target; S.selNode = G.nodes[node] ? node : null; S.selEdge = null;
+          if (S.selNode) selectNode(S.selNode); else drawGraph();
+          $('#mg-note').textContent = (target === m.to ? 'Applied: "' + m.mention + '" now points to ' + label(m.to) : 'Undone: "' + m.mention + '" is its own node again') + '. ' + G.assertions.length + ' assertions now.';
+        };
+      });
+    }
+    draw();
+    mg.insertAdjacentHTML('afterend', '<p class="small" id="mg-note" role="status" aria-live="polite"></p>');
+  }
+
+  function stage4(box) {
+    var c = P.counts.s4;
+    box.innerHTML = '<p>Each edge becomes a short claim (' + Object.keys(P.meta.templates).map(function (k) { return '<code>' + esc(P.meta.templates[k]) + '</code>'; }).join(' ') + ') and two small checkers read it against the whole chunk: ' +
+      esc(P.meta.nli[0]) + ' and ' + esc(P.meta.nli[1]) + ', on a Kaggle CPU. An IS_A or USES edge passes when <b>both</b> say "supported" (score at least ' + P.meta.threshold + '). ' +
+      'PREREQUISITE_OF edges are scored but, by our policy, not decided by the checkers: "learn this first" is a teaching judgement, so they wait for a human. The gate estimates whether the chunk supports the claim; it does not prove the claim true.</p>' +
+      '<table class="tbl"><tbody><tr><td>claims scored</td><td class="t">' + c.pairs + '</td></tr><tr><td>HHEM says supported</td><td class="t">' + c.hhem_supported + ' (' + pct(c.hhem_supported, c.pairs) + ')</td></tr>' +
+      '<tr><td>MiniCheck says supported</td><td class="t">' + c.minicheck_supported + ' of ' + c.both_scored + ' (' + pct(c.minicheck_supported, c.both_scored) + ')</td></tr>' +
+      '<tr><td>gate result per evidence record</td><td class="t">' + Object.keys(c.gate).map(function (k) { return c.gate[k] + ' ' + k; }).join('<br>') + '</td></tr></tbody></table>' +
+      '<p class="small muted">Each dot is one evidence record: HHEM score across, MiniCheck score up. Click a dot.</p><div id="sc"></div><div id="sc-info"></div>';
+    var W = 520, H = 300, m = 36, svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Scatter of the two checker scores for every evidence record' });
+    svg.appendChild(svgEl('rect', { x: m + (W - 2 * m) * 0.5, y: 10, width: (W - 2 * m) * 0.5, height: (H - m - 10) * 0.5, fill: 'var(--teal)', opacity: 0.07 }));
+    svg.appendChild(svgEl('line', { x1: m, y1: H - m, x2: W - m, y2: H - m, stroke: 'var(--faint)' }));
+    svg.appendChild(svgEl('line', { x1: m, y1: 10, x2: m, y2: H - m, stroke: 'var(--faint)' }));
+    [[W / 2, H - 12, 'HHEM score (0 to 1)'], [10, 16, 'MiniCheck']].forEach(function (t) { var x = svgEl('text', { x: t[0], y: t[1], 'text-anchor': t[0] > 20 ? 'middle' : 'start', 'class': 'nl' }); x.textContent = t[2]; svg.appendChild(x); });
+    Object.keys(P.evidence).forEach(function (id) {
+      var e = P.evidence[id]; if (e.mc == null || e.hh == null) return;
+      var r = P.assertionsById[e.a] ? P.assertionsById[e.a].r : 'USES';
+      var dot = svgEl('circle', { cx: m + e.hh * (W - 2 * m), cy: H - m - e.mc * (H - m - 10), r: 3.2, fill: r === 'PREREQUISITE_OF' ? 'var(--amber)' : e.g === 'supported' ? 'var(--teal)' : e.g === 'rejected' ? 'var(--warn)' : 'var(--blue)', opacity: 0.75, tabindex: '0', 'data-id': id });
+      var t = svgEl('title'); t.textContent = e.h; dot.appendChild(t); svg.appendChild(dot);
+    });
+    $('#sc', box).appendChild(svg);
+    $('#sc', box).insertAdjacentHTML('beforeend', '<p class="legend small"><span style="color:var(--teal)">● supported by both</span> <span style="color:var(--warn)">● rejected by both</span> <span style="color:var(--blue)">● the checkers disagree</span> <span style="color:var(--amber)">● PREREQUISITE_OF (not gated)</span></p>');
+    svg.addEventListener('click', function (ev) { var d = ev.target.closest('circle[data-id]'); if (d) { var e = P.evidence[d.getAttribute('data-id')]; $('#sc-info', box).innerHTML = evidenceCard(d.getAttribute('data-id')); var k = G.assertions.find(function (a) { return a.ev.indexOf(d.getAttribute('data-id')) >= 0; }); if (k) { S.selEdge = k.key; drawGraph(); } } });
+  }
+
+  function stage5(box) {
+    var c = P.counts.s5;
+    var nodesCsv = 'id,label,kind,status,aliases\n' + P.nodes.slice(0, 4).map(function (n) { return [n.id, n.label, n.kind, n.status, n.aliases.slice(0, 3).join('|')].join(','); }).join('\n');
+    var a = P.assertions.find(function (x) { return x.s === 'kernel-trick' && x.r === 'USES'; }) || P.assertions[0];
+    var asCsv = 'assertion_id,source,relation,target,status,reviewed,flags,n_evidence\n' + [a.id, a.s, a.r, a.t, a.st, 'unreviewed', a.fl.join('|'), a.ev.length].join(',');
+    var e = P.evidence[a.ev[0]];
+    box.innerHTML = '<p>The master copy of the graph is <b>plain files in git</b>: <code>nodes.csv</code>, <code>assertions.csv</code>, <code>evidence.jsonl</code>, <code>passages.csv</code>, <code>passage_edges.csv</code>, <code>structural.csv</code>, <code>merges.jsonl</code>. ' +
+      'The files keep every assertion with its status (accepted, proposed, review, rejected). A snapshot hash over these files names this exact graph: <code>' + esc(P.meta.snapshot) + '</code>. In the target design Neo4j is rebuilt from the files by an idempotent load script, passage text and vectors live in Postgres + pgvector, and a passage is only a stub node (id, hash) in the graph.</p>' +
+      '<table class="tbl"><tbody><tr><td>concepts</td><td class="t">' + c.nodes + ' (' + c.vocabulary_nodes + ' from the vocabulary, ' + c.candidate_nodes + ' candidates)</td></tr>' +
+      '<tr><td>assertions</td><td class="t">' + c.assertions + ': ' + Object.keys(c.assertion_status).map(function (k) { return c.assertion_status[k] + ' ' + k; }).join(', ') + '</td></tr>' +
+      '<tr><td>evidence records</td><td class="t">' + c.evidence_records + '</td></tr><tr><td>passage edges</td><td class="t">' + Object.keys(c.passage_edges).map(function (k) { return c.passage_edges[k] + ' ' + k; }).join(', ') + '</td></tr>' +
+      '<tr><td>rule checks</td><td class="t">cycles: ' + Object.keys(c.cycles).map(function (k) { return k + ' ' + c.cycles[k]; }).join(', ') + '<br>' + Object.keys(c.flags).map(function (k) { return c.flags[k] + ' × ' + k; }).join('<br>') + '</td></tr></tbody></table>' +
+      '<h3>What the files look like</h3><pre class="pre">' + esc(nodesCsv) + '\n…\n\n' + esc(asCsv) + '\n…\n\nevidence.jsonl (one line):\n' + esc(JSON.stringify({ evidence_id: a.ev[0], assertion_id: a.id, passage_id: e.p, quote: e.q, reading: e.rd, extractor: P.meta.extractor, nli: { hhem: e.hh, minicheck: e.mc, gate: e.g } })) + '</pre>' +
+      '<p class="small muted">Not run: the Neo4j load. Docker was not running on this computer, and the brief said not to start it. The script (<code>data/graph/load_neo4j.py</code>) and the question in Cypher (<code>data/graph/cq.cypher</code>) are in the folder.</p>';
+  }
+
+  function stage6(box) {
+    var q = P.cq;
+    box.innerHTML = '<p>Competency question: <b>"' + esc(q.question) + '"</b> A typed walk follows only edges of chosen types. Rejected edges are never used. The result is a set of concepts, not yet a learning order.</p>' +
+      '<div class="row" role="group" aria-label="Traversal rule"><button data-r="A">Rule A: PREREQUISITE_OF only (ontology v1)</button><button data-r="B">Rule B: also what it USES (ours)</button><button data-r="U">No types: every neighbour</button></div><div id="cq-out" role="status" aria-live="polite"></div>';
+    $$('button[data-r]', box).forEach(function (b) { b.onclick = function () { $$('button[data-r]', box).forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); }); run(b.getAttribute('data-r')); }; });
+    function run(r) {
+      var out = $('#cq-out', box);
+      if (r === 'U') {
+        var u = q.untyped_2hop;
+        S.cq = { start: q.start, nodes: {}, edges: {} };
+        u.hop1.concat(u.hop2).forEach(function (n) { S.cq.nodes[n] = 1; });
+        G.assertions.forEach(function (a) { if (a.st !== 'rejected' && (S.cq.nodes[a.s] || a.s === q.start) && (S.cq.nodes[a.t] || a.t === q.start)) S.cq.edges[a.key] = 1; });
+        S.view = 'all'; $('#g-view').setAttribute('aria-pressed', 'true'); drawGraph();
+        out.innerHTML = '<div class="ans warn">Without types and directions, two hops from the kernel trick reach <b>' + u.total + ' concepts</b> (' + u.hop1.length + ' at one hop). There is no order and no reason why each one matters: this is the "untyped" contrast that the thesis claim C2 tests.</div>';
+        return;
+      }
+      var w = C.walk(G.assertions, q.start, r, 3);
+      S.cq = { start: q.start, nodes: {}, edges: {} }; S.view = 'core'; $('#g-view').setAttribute('aria-pressed', 'false');
+      var steps = w.steps.slice(), i = 0;
+      out.innerHTML = w.order.length ? '<ol class="cqlist"></ol>' : '<div class="ans warn">Rule A finds <b>nothing</b>: no extracted edge says that something is a PREREQUISITE_OF the kernel trick, so the strict question has no answer in this pilot. The extractor may have missed such a statement, or the lectures may not make one. This is a real result, not a bug of the page.</div>';
+      var ol = $('.cqlist', out);
+      (function tick() {
+        if (i >= steps.length) { drawGraph(); return; }
+        var s = steps[i++]; S.cq.nodes[s.to] = 1; S.cq.edges[s.key] = 1; drawGraph();
+        var n = s.to, info = q.rule_B.answer.find(function (x) { return x.id === n; }) || {};
+        var li = el('li', {}, '<b>' + esc(label(n)) + '</b> <span class="small faint">depth ' + s.depth + ' · via ' + esc(s.relation) + ' from ' + esc(label(s.from)) + ' · ' + esc(ST_LABEL[s.status] || s.status) + (info.read_first && info.read_first.length ? ' · read ' + info.read_first.join(', ') : '') + '</span>');
+        ol.appendChild(li);
+        setTimeout(tick, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 650);
+      })();
+    }
+  }
+
+  /* ------------------------------------------------------------ quiz */
+  function quiz() {
+    $$('.q').forEach(function (q) {
+      var key = +q.getAttribute('data-key');
+      $$('button', q).forEach(function (b, i) {
+        b.onclick = function () {
+          $$('button', q).forEach(function (x) { x.disabled = true; });
+          b.classList.add(i === key ? 'right' : 'wrong'); $$('button', q)[key].classList.add('right');
+          $('.fb', q).hidden = false;
+        };
+      });
+    });
+  }
+
+  /* ------------------------------------------------------------ boot */
+  function bindNumbers() {
+    $$('[data-n]').forEach(function (e) { var v = get(P.counts, e.getAttribute('data-n')); if (v != null) e.textContent = fmt(v); });
+    $$('[data-m]').forEach(function (e) { var v = get(P.meta, e.getAttribute('data-m')); if (v != null) e.textContent = v; });
+  }
+  function boot(data) {
+    P = C.index(data);
+    bindNumbers();
+    var tabs = $('#st-tabs');
+    STAGES.forEach(function (s) { var b = el('button', { 'data-n': s.n, 'aria-pressed': 'false' }, s.n + ' · ' + s.t); b.onclick = function () { setStage(s.n); }; tabs.appendChild(b); });
+    $('#g-rej').onclick = function () { S.showRejected = !S.showRejected; this.setAttribute('aria-pressed', String(S.showRejected)); drawGraph(); };
+    $('#g-rev').onclick = function () { S.showReview = !S.showReview; this.setAttribute('aria-pressed', String(S.showReview)); drawGraph(); };
+    $('#g-view').onclick = function () { S.view = S.view === 'core' ? 'all' : 'core'; this.setAttribute('aria-pressed', String(S.view === 'all')); drawGraph(); };
+    $$('#g-rels button').forEach(function (b) { b.onclick = function () { var r = b.getAttribute('data-rel'); S.rel[r] = !S.rel[r]; b.setAttribute('aria-pressed', String(S.rel[r])); drawGraph(); }; });
+    setStage(1);
+    quiz();
+    if (window.KGL1) window.KGL1(P);
+    if (window.KGFactory) window.KGFactory(P);
+  }
+  var q = /[?&]data=([^&]+)/.exec(location.search), base = q ? decodeURIComponent(q[1]) : '../data';
+  fetch(base + '/page.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(boot).catch(function (e) {
+    $('#err').innerHTML = '<div class="ans warn">Could not load the data (' + esc(e.message) + '). Open this page through a web server, for example <code>python3 -m http.server</code> in the folder, then <code>/build/index.html</code>.</div>';
+  });
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

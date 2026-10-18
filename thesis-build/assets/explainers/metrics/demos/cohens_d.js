@@ -29,9 +29,9 @@
     const X = v => 10 + (v - lo) / (hi - lo) * (W - 20), pdf = (v, m, s) => Math.exp(-0.5 * ((v - m) / s) ** 2) / s;
     const top = Math.max(1 / i.s1, 1 / i.s2), Y = p => H - 20 - (p / top) * (H - 40);
     const svg = K.svg('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: 'max-width:600px', role: 'img', 'aria-label': 'two overlapping normal curves for group 1 and group 2' });
-    [[i.m1, i.s1, '#7C9CFF', 'group 1'], [i.m2, i.s2, '#F2A93B', 'group 2']].forEach(([m, s, c, t]) => {
+    [[i.m1, i.s1, '#7C9CFF', 'group 1', 24], [i.m2, i.s2, '#F2A93B', 'group 2', 38]].forEach(([m, s, c, t, ty]) => {
       let d = ''; for (let k = 0; k <= 120; k++) { const v = lo + (hi - lo) * k / 120; d += (k ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(pdf(v, m, s)).toFixed(1); }
-      svg.append(K.svg('path', { d, fill: 'none', stroke: c, 'stroke-width': 2.5 }), K.svg('line', { x1: X(m), x2: X(m), y1: 14, y2: H - 20, stroke: c, 'stroke-dasharray': '4 3' }), K.svg('text', { x: X(m) + 4, y: 24, style: 'fill:' + c }, t + ' mean ' + K.fmt(m, 2)));
+      svg.append(K.svg('path', { d, fill: 'none', stroke: c, 'stroke-width': 2.5 }), K.svg('line', { x1: X(m), x2: X(m), y1: 14, y2: H - 20, stroke: c, 'stroke-dasharray': '4 3' }), K.svg('text', { x: X(m) + (X(m) > W * 0.7 ? -4 : 4), y: ty, 'text-anchor': X(m) > W * 0.7 ? 'end' : 'start', style: 'fill:' + c + ';paint-order:stroke;stroke:#0B0D12;stroke-width:4px;stroke-linejoin:round' }, t + ' mean ' + K.fmt(m, 2)));
     });
     svg.append(K.svg('line', { x1: 10, x2: W - 10, y1: H - 20, y2: H - 20, stroke: '#68707F' }));
     host.replaceChildren(svg);
@@ -80,14 +80,14 @@
   function series(rows, arm, key) { const m = {}; rows.filter(r => r.arm === arm).forEach(r => { m[r.qid] = r[key]; }); return ANSWERABLE.map(q => m[q]); }
 
   function strip(host, qids, x1, x2, an, bn) {
-    const K = root.DemoKit, W = 560, H = 120, X = v => 40 + v * (W - 60);
+    const K = root.DemoKit, W = 560, H = 150, X = v => 40 + v * (W - 60);
     const svg = K.svg('svg', { viewBox: `0 0 ${W} ${H}`, width: '100%', style: 'max-width:600px', role: 'img', 'aria-label': 'per-question scores of two arms on a 0 to 1 axis' });
-    svg.append(K.svg('line', { x1: X(0), x2: X(1), y1: 100, y2: 100, stroke: '#68707F' }));
-    [0, 0.5, 1].forEach(t => svg.append(K.svg('text', { x: X(t), y: 114, 'text-anchor': 'middle' }, String(t))));
-    [[x1, 30, '#7C9CFF', 'arm ' + an], [x2, 70, '#F2A93B', 'arm ' + bn]].forEach(([xs, y, c, t]) => {
+    svg.append(K.svg('line', { x1: X(0), x2: X(1), y1: 134, y2: 134, stroke: '#68707F' }));
+    [0, 0.5, 1].forEach(t => svg.append(K.svg('text', { x: X(t), y: 148, 'text-anchor': 'middle' }, String(t))));
+    [[x1, 58, '#7C9CFF', 'arm ' + an], [x2, 112, '#F2A93B', 'arm ' + bn]].forEach(([xs, y, c, t]) => {
       svg.append(K.svg('text', { x: 4, y: y + 4, style: 'fill:' + c }, t.slice(-1)));
       const seen = {};
-      xs.forEach((v, k) => { const key = v.toFixed(3); seen[key] = (seen[key] || 0) + 1; svg.append(K.svg('circle', { cx: X(v), cy: y - (seen[key] - 1) * 7, r: 5, fill: c, 'fill-opacity': 0.8 }, K.svg('title', {}, qids[k] + ': ' + K.fmt(v, 3)))); });
+      xs.forEach((v, k) => { const key = v.toFixed(3); seen[key] = (seen[key] || 0) + 1; svg.append(K.svg('circle', { cx: X(v), cy: y - (seen[key] - 1) * 6, r: 5, fill: c, 'fill-opacity': 0.8 }, K.svg('title', {}, qids[k] + ': ' + K.fmt(v, 3)))); });
       const m = mean(xs); svg.append(K.svg('line', { x1: X(m), x2: X(m), y1: y - 22, y2: y + 12, stroke: c, 'stroke-width': 2.5 }));
     });
     host.replaceChildren(svg);

@@ -62,7 +62,7 @@
     const gZ = K.svg('g'), gE = K.svg('g'), gN = K.svg('g'); svg.append(gZ, gE, gN);
     ZC.forEach((c, i) => gZ.append(K.svg('circle', { cx: c[0], cy: c[1], r: ZR, fill: 'none', stroke: COL[i], 'stroke-opacity': .35, 'stroke-dasharray': '4 4' }),
       K.svg('text', { x: c[0], y: c[1] - ZR - 4, 'text-anchor': 'middle', fill: COL[i], style: 'font-size:11px' }, 'group ' + (i + 1))));
-    const out = K.el('div', { 'aria-live': 'polite' }), formula = K.el('div', { class: 'formula' }), table = K.el('div', {}), presets = K.el('div', { class: 'row' });
+    const out = K.el('div', { 'aria-live': 'polite' }), formula = K.el('div', { class: 'formula' }), table = K.el('div', { style: 'overflow-x:auto' }), presets = K.el('div', { class: 'row' });
     const sg = K.slider('resolution gamma', 0.25, 3, 0.25, 1, v => { st.gamma = v; render(); });
     let pos = {}, drag = null, lastQ;
     function layout() {
@@ -128,7 +128,7 @@
       const allConn = base0.groups.every(c => c.connected);
       const shell = K.el('div', {}); box.replaceChildren(shell);
       const cv = K.el('canvas', { role: 'img', 'aria-label': 'the extracted knowledge graph coloured by Leiden community', style: 'width:100%;max-width:880px;aspect-ratio:880/520;background:var(--panel2);border-radius:8px;display:block;cursor:pointer' });
-      const info = K.el('div', {}), qline = K.el('div', { 'aria-live': 'polite' }), formula = K.el('div', { class: 'formula' }), table = K.el('div', {});
+      const info = K.el('div', {}), qline = K.el('div', { 'aria-live': 'polite' }), formula = K.el('div', { class: 'formula' }), table = K.el('div', { style: 'overflow-x:auto' });
       const selA = K.el('select', { 'aria-label': 'community' }, ...C.reports.map((r, i) => K.el('option', { value: i }, `c${String(i + 1).padStart(2, '0')}  ${r.title} (${r.size} nodes)`)));
       const selB = K.el('select', { 'aria-label': 'merge with' }, ...C.reports.map((r, i) => K.el('option', { value: i }, `c${String(i + 1).padStart(2, '0')}  ${r.title}`)));
       selB.value = 11;

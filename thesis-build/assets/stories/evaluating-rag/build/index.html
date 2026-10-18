@@ -1,0 +1,765 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Evaluating RAG and GraphRAG</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;--red:#FF5D5D;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+code,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:18px 0 6px}
+h4{font:600 13px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--amber);margin:18px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;font:600 11px var(--mono);letter-spacing:.06em;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:middle}
+.who{font-size:13px;color:var(--faint);margin:-6px 0 14px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.tldr{background:var(--panel);border:1px solid var(--amber);border-radius:12px;padding:14px 16px;margin:18px 0}
+.tldr h3{margin:0 0 8px;font-size:18px;color:var(--amber);font-family:var(--body);font-weight:600;letter-spacing:.04em}
+.tldr ul{margin:0;padding-left:20px}.tldr li{margin:0 0 6px}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0;min-width:0}
+.fig .cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select,input{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible,[tabindex]:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.tag{display:inline-block;white-space:nowrap;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}.tag.llm{border-color:var(--purple);color:var(--purple)}.tag.code{border-color:var(--blue);color:var(--blue)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.card.gold{border-color:var(--amber)}.card.ok{border-color:var(--teal)}.card.bad{border-color:var(--warn)}
+.take{background:var(--panel);border:1px solid var(--amber);border-radius:10px;padding:12px 14px;margin:16px 0;font-size:16px}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:10px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:10px 0;font-size:14px}
+.contra{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:10px 0;font-size:14px}
+.ev b.h,.ours b.h,.contra b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}.contra b.h{color:var(--warn)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:12px var(--body)}
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.n{font-family:var(--mono);font-size:12px;text-align:right;white-space:nowrap}
+.tbl tr.sel td{background:rgba(242,169,59,.08)}
+.hscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+#err{display:none;background:#3a1d17;color:var(--warn);border-radius:8px;padding:10px 12px;margin:16px 0}
+details{margin:6px 0}summary{cursor:pointer;color:var(--muted);font-size:13px}
+footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.cite{font:11px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.cite:hover{text-decoration:underline}
+.strip3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.strip3>div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.strip3 h3{font-size:16px;margin:4px 0}.strip3 p{font-size:14px;color:var(--muted);margin:0}
+/* touch */
+#qsel{display:flex;flex-direction:column;gap:6px}
+#qsel button{text-align:left;white-space:normal;font-size:13px;line-height:1.4}
+.qtext{font-size:15px;white-space:pre-wrap}
+.opts{margin:6px 0 0;padding:0;list-style:none;font-size:14px;color:var(--muted)}
+.opts li.key{color:var(--amber)}
+.ctxt{font-size:13px;line-height:1.55;color:var(--muted);white-space:pre-wrap}
+.sent{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px}
+.sent .tx{margin:0 0 6px}
+.sent sup.c{font:600 11px var(--mono);color:var(--blue);margin:0 1px}
+.sent.r1{border-left:3px solid var(--teal)}.sent.r0{border-left:3px solid var(--warn)}
+.heat{display:inline-flex;gap:3px;vertical-align:middle;margin-left:4px}
+.heat i{display:inline-block;width:30px;height:16px;border-radius:3px;font:10px/16px var(--mono);text-align:center;color:#0B0D12;font-style:normal}
+.bar{display:inline-block;position:relative;width:90px;height:10px;border-radius:5px;background:var(--line);vertical-align:middle;margin-right:6px}
+.bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:5px;background:var(--teal)}
+.bar>b{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--amber)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:10px 0}
+.kpi{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.kpi .v{font:600 22px var(--mono)}.kpi .l{font-size:12px;color:var(--muted);line-height:1.35}
+.kpi.ok{border-color:var(--teal)}.kpi.bad{border-color:var(--warn)}
+.judges{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch}
+.judge{flex:1 1 200px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.judge .sc{display:flex;gap:6px;margin:6px 0}
+.judge .sc span{flex:1;text-align:center;border:1px solid var(--line);border-radius:6px;font:600 16px var(--mono);padding:4px 0;color:var(--faint)}
+.judge .sc span.on{border-color:var(--amber);color:var(--amber);background:rgba(242,169,59,.1)}
+.judge.off{opacity:.55}.judge.off .sc span.on{border-color:var(--warn);color:var(--warn);text-decoration:line-through}
+.switch{display:inline-flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;user-select:none}
+.switch input{width:18px;height:18px;min-height:0;accent-color:var(--amber)}
+.verdict{border-radius:12px;padding:12px 14px;margin:14px 0;font-size:16px;border:1px solid var(--line);background:var(--panel)}
+.verdict.ok{border-color:var(--teal)}.verdict.bad{border-color:var(--warn)}
+.verdict b.big{font:600 20px var(--body)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:8px 0 0}
+.legend i{display:inline-block;width:16px;height:10px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.lesson-video:empty::before{content:"Video: EvaluatingRag (English, silent). Final render pending; it appears here when it is encoded.";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+.quiz .q{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
+.quiz .q p{margin:0 0 6px}
+.quiz .opts2{display:flex;flex-direction:column;gap:6px}
+.quiz .opts2 button{text-align:left;white-space:normal;line-height:1.4;padding:8px 10px}
+.quiz .opts2 button.right{border-color:var(--teal);color:var(--teal)}.quiz .opts2 button.wrong{border-color:var(--warn);color:var(--warn)}
+.quiz .fb{font-size:13px;color:var(--muted);margin-top:6px;display:none}
+.vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+@media(max-width:640px){.strip3{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>What is real here:</b> three items of our CS 156 pilot set, passages retrieved from the CS 156 lecture captions, one answer per item, and the scores that RAGAS 0.4.3, HHEM and MiniCheck really returned for them. Three items are a demonstration, not a result; no human has checked these judgements.</p>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap">
+<div id="err"></div>
+<header class="hero" id="top">
+  <div class="kicker">Evaluation &middot; a layered lesson</div>
+  <h1>Evaluating RAG and GraphRAG</h1>
+  <p class="lead">How do you grade an answer that a retrieval system wrote? This page explains the tools our thesis uses (the RAGAS library, and two small checking models called HHEM and MiniCheck), four times over: as a picture, for a student, with the research, and as the harness of our thesis. One real example runs through all of it: three questions from our pilot set, answered from the CS 156 lectures and then graded.</p>
+  <div class="tldr" id="tldr">
+    <h3>TL;DR</h3>
+    <ul>
+      <li><b>RAGAS</b> is an open-source Python library (Apache-2.0) of metrics for retrieval-augmented generation. Most of its metrics ask an LLM to act as the judge; a few are plain code. We pin version <b>0.4.3</b> and use it as the one framework of record.</li>
+      <li><b>"Fully correct"</b> is our primary score. Multiple-choice and true/false items: the answer letter must match the key (no judge). Open items: RAGAS <b>AnswerAccuracy</b> must give full marks <b>with both judge ratings valid</b>, because RAGAS silently uses one rating when the other fails.</li>
+      <li><b>HHEM</b> (Vectara's hallucination evaluation model) and <b>MiniCheck</b> (Tang et al.) are small models, not LLM judges. Each reads a passage and a claim together and scores whether the passage supports the claim. HHEM gives the unsupported-claim rate inside RAGAS; MiniCheck gives the citation precision and recall of ALCE.</li>
+      <li>We also report FactualCorrectness, ContextRecall, retrieval recall@k and cost per correct answer, and we compare systems with an exact McNemar test. Among the GraphRAG papers we read, only Edge et al. test significance at all.</li>
+      <li id="tldr-ex">The example shows why one number is not enough.</li>
+    </ul>
+  </div>
+</header>
+
+<!-- ===================== Level 0 ===================== -->
+<section class="step" id="l0" data-nav="L0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div>
+  <h2>Three ways to grade homework</h2>
+  <p class="who">For anyone. No technical words.</p>
+  <p>A student answers questions with an open textbook and writes the page number after each sentence. How does a teacher grade this?</p>
+  <div class="strip3">
+    <div><h3>The answer key</h3><p>For a multiple-choice question, compare the letter with the key. No opinion is needed, so this is the safest check.</p></div>
+    <div><h3>Two marking sheets</h3><p>For an essay, a teacher marks it twice against a model answer, with two different sheets, each giving 0, 2 or 4 points. "Full marks" means both sheets say 4. If one sheet is lost, the school's form quietly uses the other one alone. We do not accept that.</p></div>
+    <div><h3>A fact-checker with a highlighter</h3><p>A third person checks each sentence against the page the student cited. A true sentence with the wrong page number still fails this check.</p></div>
+  </div>
+  <div class="fig"><div id="l0-svg"></div><p class="cap">One answer, three checks. Each check asks a different question, so each can pass while another fails.</p></div>
+  <div class="take"><b>Takeaway:</b> "correct", "supported by the book" and "cites the right page" are three different questions. A good evaluation asks each one separately, and decides in advance which one is the main score.</div>
+</section>
+
+<!-- ===================== Level 1 ===================== -->
+<section class="step" id="l1" data-nav="L1"><div class="kicker"><span class="lv">Level 1</span>for a student</div>
+  <h2>What each metric looks at</h2>
+  <p class="who">For a student who knows what RAG is: a system that retrieves passages and gives them to a language model, which writes the answer.</p>
+  <p>A RAG answer has four parts that can be checked: the <b>question</b>, the <b>retrieved passages</b>, the <b>answer</b> (with citation markers such as [2]), and, in a test set, a <b>reference answer</b>. Every metric compares two or three of these parts. The figure shows which parts each metric reads, and who decides: plain code, an LLM judge, or a small checking model.</p>
+  <div class="fig"><div id="l1-svg" class="hscroll"></div>
+    <div class="legend"><span><i style="background:var(--blue)"></i>code (deterministic)</span><span><i style="background:var(--purple)"></i>LLM judge (RAGAS prompt)</span><span><i style="background:var(--teal)"></i>small checking model (HHEM, MiniCheck)</span></div>
+    <p class="cap">Arrows show what each metric reads. Exact match runs on multiple-choice items, AnswerAccuracy on open items, the others on every item; only "fully correct" decides the comparison between systems.</p></div>
+  <div class="hscroll"><table class="tbl" id="l1-tbl"></table></div>
+  <h3>Two words to keep apart</h3>
+  <div class="card"><div class="hd"><span class="tag gold">correct</span>vs.<span class="tag gold">supported</span></div><p><b>Correct</b> compares the answer with the reference answer. <b>Supported</b> (faithful, grounded) compares the answer with the retrieved passages. An answer can be correct but unsupported (the model knew it already) or supported but wrong (the passage itself was off the point).</p></div>
+  <div class="card"><div class="hd"><span class="tag gold">LLM judge</span>vs.<span class="tag gold">checking model</span></div><p>An <b>LLM judge</b> is a general language model that receives a grading prompt, so its score depends on the prompt and the model. A <b>checking model</b> (HHEM, MiniCheck) is a small model trained for one task: read a passage and a claim together and output the probability that the passage supports the claim. It is cheaper, runs on a CPU, and comes from a different family than any answer model.</p></div>
+</section>
+
+<!-- ===================== Touch ===================== -->
+<section class="step" id="lt" data-nav="Touch"><div class="kicker"><span class="lv">Touch</span>grade it yourself</div>
+  <h2>Three pilot questions, every score opened up</h2>
+  <p>Pick a question. You see what the retriever returned, the answer the model wrote, the answer cut into sentences and into claims with the verdict of each checker, and the RAGAS scores with the judge's own words. Then switch off judge prompt 2 to see what RAGAS does when one rating is missing.</p>
+  <div class="fig">
+    <div id="qsel" role="group" aria-label="Question"></div>
+  </div>
+  <div id="tq"></div>
+  <h3>All three items side by side</h3>
+  <div class="hscroll"><table class="tbl" id="sumtbl"></table></div>
+  <p class="cap small muted" id="sumcap"></p>
+</section>
+
+<!-- ===================== Watch ===================== -->
+<section class="step" id="lw" data-nav="Watch"><div class="kicker"><span class="lv">Watch</span>the video</div>
+  <h2>One answer through the harness</h2>
+  <p>The same example as a short animation: the answer is cut into claims, each claim meets a checker, the two judges rate it, and the "fully correct" rule decides.</p>
+  <div class="lesson-video" data-video="EvaluatingRag"></div>
+</section>
+
+<!-- ===================== Level 2 ===================== -->
+<section class="step" id="l2" data-nav="L2"><div class="kicker"><span class="lv">Level 2</span>professional and academic</div>
+  <h2>What the research and the code say</h2>
+  <p class="who">For a practitioner or a researcher. Every claim links to its source; the source list says whether we read the primary text. Worked demos of each metric are on the <a href="/thesis/metrics.html">metrics page</a>.</p>
+  <div id="l2-body"></div>
+</section>
+
+<!-- ===================== Level 3 ===================== -->
+<section class="step" id="l3" data-nav="L3"><div class="kicker"><span class="lv">Level 3</span>in detail, for the thesis</div>
+  <h2>Our harness, and why RAGAS</h2>
+  <div id="l3-body"></div>
+</section>
+
+<!-- ===================== Quiz ===================== -->
+<section class="step" id="lq" data-nav="Quiz"><div class="kicker"><span class="lv">Check</span>yourself</div>
+  <h2>Five questions</h2>
+  <div class="quiz" id="lq-box"></div>
+  <p class="small muted" id="lq-score" role="status"></p>
+</section>
+
+<!-- ===================== Sources ===================== -->
+<section class="step" id="ls" data-nav="Src"><div class="kicker">Sources of the lesson</div>
+  <h2>Where each claim comes from</h2>
+  <p class="small muted"><span class="vtrue">Read</span> = we read the primary text (paper, model card or source code) and the locator comes from it. <span class="vfalse">Not read</span> = taken from an abstract, metadata or a secondary source; treat it as weaker. Labels: peer-reviewed, preprint, vendor, code, ours (our own notes and protocol).</p>
+  <div class="hscroll"><table class="tbl" id="ls-tbl"></table></div>
+</section>
+</main>
+<footer><div class="wrap">
+  <p id="foot">Passages: captions of the Caltech CS 156 lectures (Yaser Abu-Mostafa), which YouTube lists under Creative Commons Attribution. Questions and reference answers: Cross Validated (stats.stackexchange.com, CC BY-SA 4.0, linked per item) and MMLU (MIT). The homework and exam items of the pilot set are not shown, because their licence does not allow it.</p>
+</div></footer>
+
+<script id="lesson-text">
+// Lesson prose with citations: <a class="cite" data-c="sourceKey|locator"></a> (sources in ../data/lesson-sources.json).
+// Generated by build_page.py from lesson/*.html and lesson/quiz.js: edit those, not this block.
+window.L2_HTML = "<h3>1. What RAGAS is, and where its metrics come from<\/h3>\n<p>RAGAS started as a paper and a library for <b>reference-free<\/b> evaluation of retrieval-augmented generation: three scores that need no gold answer, namely faithfulness, answer relevance and context relevance <a class=\"cite\" data-c=\"es2023|abstract\"><\/a>. Its faithfulness score is an early example of statement-level grounding evaluation: an LLM splits the answer into statements, then an LLM decides for each statement whether the context supports it, and the score is the share of supported statements <a class=\"cite\" data-c=\"es2023|§3\"><\/a>. The library has grown since the paper. Version 0.4.3 also has <b>reference-based<\/b> metrics, which compare the answer with a gold answer: AnswerAccuracy, FactualCorrectness, AnswerCorrectness and ContextRecall, plus plain string metrics such as ExactMatch <a class=\"cite\" data-c=\"ragas_code|metrics/collections\"><\/a>. So \"RAGAS\" today means a toolbox of judge prompts and scoring rules, not one number.<\/p>\n<div class=\"ev\"><b class=\"h\">Evidence: how each metric we use scores (read in the 0.4.3 source)<\/b>\n<b>AnswerAccuracy<\/b> sends two different judge prompts; each must answer 0, 2 or 4; the two ratings are divided by 4 and averaged <a class=\"cite\" data-c=\"ragas_code|answer_accuracy/metric.py l.120-130\"><\/a>. The docstring calls this NVIDIA's dual-judge approach. A rating that is not 0, 2 or 4, or a call that fails, is retried up to five times and then becomes NaN, and <code>_average_scores<\/code> then returns the other rating alone <a class=\"cite\" data-c=\"ragas_code|answer_accuracy/metric.py l.132-172\"><\/a>.\n<b>FactualCorrectness<\/b> splits both the answer and the reference into claims, checks the answer's claims against the reference (true and false positives) and the reference's claims against the answer (false negatives), and reports F1 rounded to two decimals <a class=\"cite\" data-c=\"ragas_code|factual_correctness/metric.py l.137-165\"><\/a>.\n<b>ContextRecall<\/b> asks the judge, for each sentence of the reference, whether the retrieved contexts (joined) support it; the score is the supported share <a class=\"cite\" data-c=\"ragas_code|context_recall/metric.py l.110-129\"><\/a>.\n<b>FaithfulnesswithHHEM<\/b> keeps the LLM statement split but replaces the LLM verdicts with the HHEM model: each statement is scored against <i>all retrieved contexts joined<\/i>, the score is rounded to 0 or 1, and the mean is returned <a class=\"cite\" data-c=\"ragas_code|metrics/_faithfulness.py l.236-273\"><\/a>. It loads HHEM from the hub without a pinned revision <a class=\"cite\" data-c=\"ragas_code|metrics/_faithfulness.py l.230-232\"><\/a>.<\/div>\n\n<h3>2. Can an LLM be the judge?<\/h3>\n<p>Mostly yes, with known biases. On MT-Bench and Chatbot Arena, GPT-4 as a judge agreed with human preferences over 80% of the time, about as often as humans agree with each other; the same study found position, verbosity and self-enhancement biases <a class=\"cite\" data-c=\"zheng2023|abstract, §3\"><\/a>. A wider study found that only the best judge models align well with humans, and that Scott's π separates good and weak judges better than percent agreement does <a class=\"cite\" data-c=\"thakur2024|§1\"><\/a>. When an LLM judged RAG against GraphRAG summaries, its verdict changed with the order in which the two answers were shown <a class=\"cite\" data-c=\"han2025|§5.3\"><\/a>. None of this measures our judge on our task. Three rules follow for the main experiment: the judge comes from a different model family than the answer model, the judge never sees which system wrote the answer, and the judge is checked against a human sample before its numbers are used. The demo on this page keeps the first two; the human check is not done yet.<\/p>\n\n<h3>3. Checking claims without an LLM: NLI, HHEM and MiniCheck<\/h3>\n<p>A grounding check is a natural-language-inference question: does this passage (the premise) entail this claim (the hypothesis)? Large NLI models and question-answering metrics turned out to be strong and complementary checkers of factual consistency <a class=\"cite\" data-c=\"honovich2022|abstract\"><\/a>, and ALCE used such a T5-11B NLI model as its automatic judge of citations <a class=\"cite\" data-c=\"gao2023|§3.3\"><\/a>. Two small models do this job today.<\/p>\n<div class=\"card\"><div class=\"hd\"><span class=\"tag ok\">HHEM-2.1-Open<\/span>Vectara, Apache-2.0<\/div><p>The Hughes Hallucination Evaluation Model: a classifier built on flan-t5-base that reads a (premise, hypothesis) pair together, like a cross-encoder, and returns a score between 0 (hallucinated) and 1 (consistent) <a class=\"cite\" data-c=\"hhem|model card\"><\/a>. The card reports balanced accuracy close to GPT-4 on RAGTruth and a CPU time of about 1.5 s for a 2k-token input; its card lists English only, and these are the vendor's numbers, not an independent test <a class=\"cite\" data-c=\"hhem|model card\"><\/a>.<\/p><\/div>\n<div class=\"card\"><div class=\"hd\"><span class=\"tag ok\">MiniCheck-Flan-T5-Large<\/span>Tang, Laban and Durrett, MIT<\/div><p>A 770M fact-checker trained on synthetic data built with GPT-4, made to teach it claims that need evidence from several sentences of a document <a class=\"cite\" data-c=\"tang2024|§3\"><\/a>. On LLM-AggreFact, a benchmark of human-labelled grounding datasets, it reaches GPT-4-level balanced accuracy (74.7% vs. 75.3%) at more than 400 times lower cost, by the authors' estimate on one test set <a class=\"cite\" data-c=\"tang2024|Table 2, §6.2\"><\/a>.<\/p><\/div>\n<div class=\"contra\"><b class=\"h\">Limit<\/b>Two more limits. MiniCheck cuts long premises into chunks of about 500 words and keeps the best chunk, so evidence spread across chunks is not combined. And a supported citation is not proof that the model used it: in one study, when relevant but uncited documents were added to the context, up to 57% of citations behaved as post-rationalised (12% when random documents were added), which the authors read as evidence that the answer did not depend on them <a class=\"cite\" data-c=\"wallat2024|abstract, Fig. 3\"><\/a>. Both checkers were also trained on news, Wikipedia and similar text, not on spoken lectures with equations; on our own lecture triples HHEM was far more lenient than MiniCheck (see <a href=\"../../kg-build/build/index.html\">How a knowledge graph is built<\/a>).<\/div>\n\n<h3>4. Citation precision and recall (ALCE)<\/h3>\n<p>ALCE measures whether each sentence of an answer is supported by the passages it cites <a class=\"cite\" data-c=\"gao2023|§3.3\"><\/a>. <b>Citation recall<\/b> of a sentence is 1 if the concatenation of its cited passages entails it; a sentence with no citation scores 0. <b>Citation precision<\/b> gives credit to a citation of a supported sentence if it supports the sentence on its own, or if the others no longer support it without it; a citation of an unsupported sentence gets no credit. So two citations that each support the sentence alone both get credit <a class=\"cite\" data-c=\"gao2023|§3.3\"><\/a>. In the released code, a sentence with a single citation gets precision equal to its recall, and precision is divided by the number of citations, not sentences <a class=\"cite\" data-c=\"alce_code|eval.py l.362-417\"><\/a>. Even the best systems in the paper lacked complete citation support about half of the time on ELI5 <a class=\"cite\" data-c=\"gao2023|abstract\"><\/a>.<\/p>\n\n<h3>5. Why RAGAS and not another framework<\/h3>\n<div class=\"hscroll\"><table class=\"tbl\">\n<tr><th>framework<\/th><th>reference-based correctness<\/th><th>grounding<\/th><th>what is missing for us<\/th><\/tr>\n<tr class=\"sel\"><td><b>RAGAS<\/b> (Apache-2.0)<\/td><td>AnswerAccuracy (two judges, fixed 0/2/4 scale), FactualCorrectness, ExactMatch<\/td><td>Faithfulness, FaithfulnesswithHHEM (a non-LLM checker), ContextRecall<\/td><td>ignores citation links; one-rating fallback; repository moved, so pin the exact version <a class=\"cite\" data-c=\"dataset_note|§3\"><\/a><\/td><\/tr>\n<tr><td>DeepEval (Apache-2.0)<\/td><td>G-Eval: a rubric that we would write ourselves<\/td><td>Faithfulness, contextual metrics<\/td><td>our own rubric must then be defended; no paper for the framework <a class=\"cite\" data-c=\"deepeval|docs\"><\/a><\/td><\/tr>\n<tr><td>TruLens (MIT)<\/td><td>a ground-truth agreement feedback exists (not studied by us)<\/td><td>groundedness, context relevance (the reference-free \"RAG triad\") <a class=\"cite\" data-c=\"trulens|docs\"><\/a><\/td><td>no fixed two-prompt rating scale like AnswerAccuracy; we did not evaluate its ground-truth feedback<\/td><\/tr>\n<tr><td>ARES<\/td><td>none<\/td><td>fine-tuned judges + prediction-powered confidence intervals <a class=\"cite\" data-c=\"saadfalcon2023|abstract, §3\"><\/a><\/td><td>needs fine-tuning per domain; package not updated for a long time <a class=\"cite\" data-c=\"dataset_note|§3\"><\/a><\/td><\/tr>\n<tr><td>RAGChecker<\/td><td>claim-level precision, recall, F1 <a class=\"cite\" data-c=\"ru2024|§3.2\"><\/a><\/td><td>faithfulness, noise sensitivity<\/td><td>package not updated for a long time <a class=\"cite\" data-c=\"dataset_note|§3\"><\/a><\/td><\/tr>\n<\/table><\/div>\n<p class=\"small muted\">Package facts (versions, licences, last release) were read on PyPI by our research pass; the table above leaves the dates out on purpose.<\/p>\n\n<h3>6. What GraphRAG papers report, and how they test<\/h3>\n<p>GraphRAG papers use very different scores: pairwise LLM win rates on comprehensiveness and diversity <a class=\"cite\" data-c=\"edge2024|§3\"><\/a>, retrieval Recall@2 and Recall@5 with exact match and F1 <a class=\"cite\" data-c=\"gutierrez2024|§3.3\"><\/a>, or accuracy and a rationale score <a class=\"cite\" data-c=\"xiao2025|§4\"><\/a>. Among the GraphRAG papers our research pass read, only Edge et al. test whether a difference is larger than chance (Wilcoxon signed-rank tests with Holm-Bonferroni correction, on scores averaged over five runs) <a class=\"cite\" data-c=\"edge2024|App. G\"><\/a>. This is a finding about the papers we searched (by keyword, appendices included), not proof about the whole field. Our plan, a paired exact McNemar test on per-item correct/incorrect labels <a class=\"cite\" data-c=\"mcnemar1947|abstract\"><\/a>, with the two hypotheses tested in a fixed order, therefore does more than these papers do.<\/p>\n";
+window.L3_HTML = "<h3>The decision<\/h3>\n<p><b>RAGAS 0.4.3 is the one framework of record<\/b> for the thesis experiment (arms L, R, G, H and H-collapsed on CS 156 prerequisite and cross-concept questions) <a class=\"cite\" data-c=\"dataset_note|TL;DR\"><\/a>. Three reasons. (1) It has reference-based correctness with a <i>fixed<\/i> rating scale, so we do not write and defend our own rubric. (2) It has a grounding metric whose checker is not an LLM (HHEM), so the grounding score shares no family with any answer model. (3) It is a cited, open-source library that other GraphRAG work also uses, so a reader can rerun our numbers. What it does not give, we add in a thin wrapper and say so.<\/p>\n\n<h3>What we report<\/h3>\n<div class=\"hscroll\"><table class=\"tbl\">\n<tr><th>role<\/th><th>metric<\/th><th>how<\/th><th>on this site<\/th><\/tr>\n<tr class=\"sel\"><td>primary<\/td><td><b>fully correct<\/b> (0/1 per item)<\/td><td>multiple choice and true/false: exact letter or label match, no judge. Open items: RAGAS AnswerAccuracy = 1.0 <i>with both judge ratings valid<\/i><\/td><td><a href=\"/thesis/metrics.html#exact_match\">exact match<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>FactualCorrectness (F1)<\/td><td>RAGAS, claims of answer vs reference both ways<\/td><td><a href=\"/thesis/metrics.html#answer_correctness\">answer correctness<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>estimated unsupported-claim rate<\/td><td>1 − RAGAS FaithfulnesswithHHEM, HHEM pinned to one revision; the LLM Faithfulness on the same items as a cross-check<\/td><td><a href=\"/thesis/metrics.html#faithfulness\">faithfulness<\/a>, <a href=\"/thesis/metrics.html#hallucination_rate\">hallucination rate<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>ContextRecall<\/td><td>RAGAS, reference sentences supported by the retrieved passages<\/td><td><a href=\"/thesis/metrics.html#context_recall\">context recall<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>citation precision and recall<\/td><td>ALCE rules unchanged, checker MiniCheck-FT5 instead of T5-11B; HHEM as a robustness check<\/td><td><a href=\"/thesis/metrics.html#citation_recall\">citation recall<\/a>, <a href=\"/thesis/metrics.html#citation_precision\">citation precision<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>Recall@k<\/td><td>gold lecture passages among the top k (planned); this demo shows only tagged-lecture coverage, a weaker stand-in<\/td><td><a href=\"/thesis/metrics.html#recall_at_k\">recall@k<\/a><\/td><\/tr>\n<tr><td>secondary<\/td><td>cost per fully correct answer<\/td><td>answer-generation tokens and US dollars divided by the number of fully correct items; graph build cost separately; judge and checker costs are evaluation cost<\/td><td><a href=\"/thesis/metrics.html#accuracy_per_dollar\">accuracy per dollar<\/a><\/td><\/tr>\n<tr><td>test<\/td><td>exact one-sided McNemar<\/td><td>on the discordant pairs of per-item labels, α = 0.05, H1 then H2 in a fixed order; bootstrap intervals as estimates only <a class=\"cite\" data-c=\"protocol|rule 4\"><\/a><\/td><td><a href=\"../../statistical-tests/build/index.html\">Statistical tests<\/a><\/td><\/tr>\n<\/table><\/div>\n\n<h3>The wrapper: five rules RAGAS does not enforce<\/h3>\n<div class=\"ours\"><b class=\"h\">Ours<\/b>\n<b>1. Both ratings valid.<\/b> We record the two AnswerAccuracy ratings ourselves. If one is invalid, we re-judge; if it is still invalid, the item scores 0 and is logged. RAGAS alone would return the other rating <a class=\"cite\" data-c=\"ragas_code|answer_accuracy/metric.py l.165-172\"><\/a>, so one judge could award full marks (Codex objection 6 in <a class=\"cite\" data-c=\"dataset_note|Consulted\"><\/a>).<br>\n<b>2. Blind judge.<\/b> The judge sees the question, the reference and the answer with the citation markers removed, no arm name, in a fixed random order <a class=\"cite\" data-c=\"protocol|rule 13\"><\/a>.<br>\n<b>3. Different family.<\/b> The judge model is never from the answer model's family (here: answers by DeepSeek, judgement by an OpenAI open-weight model). The two AnswerAccuracy prompts go to the same judge model, and HHEM still reads statements that the LLM judge cut out, so neither check is fully independent.<br><b>Answer format.<\/b> Exact match reads the letter at the start of the answer, in the form (B); an answer in another format is logged as malformed, not as wrong.<br>\n<b>4. Citations need their own check.<\/b> RAGAS joins all retrieved passages into one premise, so it never asks whether the <i>cited<\/i> passage supports a sentence <a class=\"cite\" data-c=\"ragas_code|metrics/_faithfulness.py l.236-244\"><\/a>. The ALCE port does.<br>\n<b>5. Pin and record.<\/b> Pinned: <code>ragas==0.4.3<\/code>, the HHEM revision, the MiniCheck code commit. Only recorded so far: the MiniCheck weights and the flan-t5 tokenizer (loaded by name), and <code>langchain-community&lt;0.4<\/code> (a range; the import fails without it). The run manifest of the main experiment must pin them too; and loop over <code>await metric.ascore(...)<\/code>, because <code>ragas.evaluate()<\/code> rejects the new metric classes <a class=\"cite\" data-c=\"dataset_note|§3\"><\/a>.<\/div>\n\n<h3>Validity: what makes a score trustworthy<\/h3>\n<p>A framework does not validate an endpoint; a calibration sample does. This is planned, not done. Before the main run, the user grades a blinded, arm-stratified sample of open answers; we report Cohen's κ and the judge's false-accept rate by arm (the estimand and sample are set in the protocol). If false-accept is above 0.15, or differs between arms by more than 0.10, the judge prompt gets one repair and a fresh check; if it still fails, the primary endpoint becomes multiple-choice items only, and the claim says so <a class=\"cite\" data-c=\"protocol|gate 5\"><\/a>. On multiple-choice items the judge is also compared with exact match. HHEM and MiniCheck will be checked on about 100 of our own claim-passage pairs, because lecture captions are outside their training data <a class=\"cite\" data-c=\"dataset_note|§3b\"><\/a>.<\/p>\n\n<h3>What this demo ran, and its limits<\/h3>\n<p id=\"l3-run\"><\/p>\n<div class=\"contra\"><b class=\"h\">Limits<\/b>Three items, one run, no human check: a demonstration of the harness, not a result. Retrieval here is BM25 alone (the keyword half of arm R, no dense search or reranker). Recall@k is computed against the lectures an AI rater tagged for each item, not against gold passages, which are not built yet. HHEM and MiniCheck thresholds are their defaults (0.5). Every premise here (three passages joined) is 930 to 1,190 flan-t5 tokens; the tokenizer warns above 512. The HHEM card says the model has no length limit, a vendor claim that this run does not test <a class=\"cite\" data-c=\"hhem|model card\"><\/a>. The three checkers disagree often on these lecture captions (compare the columns in Touch, step 4): one reason we calibrate them on our own pairs before trusting them.<\/div>\n";
+window.QUIZ = [
+ {q: "RAGAS AnswerAccuracy gets rating 4 from judge prompt 1, and judge prompt 2 gives no valid rating in five attempts. What does RAGAS 0.4.3 return, and what does our rule say?",
+  o: ["RAGAS returns NaN; our rule says not fully correct.", "RAGAS returns 1.0 from judge 1 alone; our rule re-judges, and if the rating is still invalid, scores 0 and logs it.", "RAGAS returns 0.5 (the average of 4 and 0); our rule agrees.", "RAGAS raises an error; our rule skips the item."],
+  a: 1, f: "<code>_average_scores</code> returns the valid rating alone when the other is NaN, so one judge can give full marks. Our wrapper needs both ratings valid <a class=\"cite\" data-c=\"ragas_code|answer_accuracy/metric.py l.165-172\"></a>."},
+ {q: "Why do multiple-choice items get exact letter match and not an LLM judge?",
+  o: ["Because LLM judges cannot read letters.", "Because RAGAS has no metric for multiple choice.", "Because the key gives one right letter: a deterministic check has no judge error and no judge bias.", "Because exact match gives higher scores."],
+  a: 2, f: "The answer key decides, so a judge can only add its own errors and biases (the parser can still fail on a badly formatted answer, which is logged separately). In the main run the judge is also compared with exact match on these items, as a check of the judge; this demo does not do that."},
+ {q: "RAGAS FaithfulnesswithHHEM says 1.0 for an answer. Which statement is true?",
+  o: ["Every sentence is supported by the passage it cites.", "Every statement is consistent with all retrieved passages joined together, as HHEM scores it, after rounding.", "The answer is correct.", "The answer used the passages to reach its result."],
+  a: 1, f: "RAGAS joins all passages into one premise and never reads the citation markers <a class=\"cite\" data-c=\"ragas_code|metrics/_faithfulness.py l.236-244\"></a>. Correctness needs a reference, and use of a passage needs an ablation <a class=\"cite\" data-c=\"wallat2024|abstract\"></a>."},
+ {q: "A sentence cites [1][2]. Together they support it; [1] alone supports it; [2] alone does not, and [1] without [2] still supports it. ALCE citation precision for this sentence's citations?",
+  o: ["1 of 2 citations relevant: [2] is irrelevant.", "2 of 2: both were cited.", "0 of 2: one citation is wrong, so both fail.", "Not defined: precision needs a single citation."],
+  a: 0, f: "A citation is irrelevant when it does not support the sentence alone and the others still support it without it <a class=\"cite\" data-c=\"gao2023|§3.3\"></a>."},
+ {q: "On the multiple-choice demo item the answer letter is right, yet FactualCorrectness is low. What does that show?",
+  o: ["The answer is wrong.", "FactualCorrectness compares LLM-extracted claims with the reference: here the judge rejected the answer's claim for its extra words and turned the key into a causal claim it does not make. It is a different, noisier measurement than the primary endpoint.", "Exact match is broken.", "The judge model is too small."],
+  a: 1, f: "Each metric answers its own question, and LLM-based ones add their own extraction errors (see the note under Q20 in Touch). That is why one primary endpoint is fixed before the run, and the others are reported as secondary."}
+];
+</script>
+
+<script id="ui">
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var f2 = function (x) { return x == null ? '–' : Number(x).toFixed(2); };
+  var pct = function (x) { return x == null ? '–' : Math.round(x * 100) + '%'; };
+  var base = (new URLSearchParams(location.search).get('data') || '../data').replace(/\/$/, '');
+  var EX, SRC = { sources: {} };
+  var state = { q: 'Q17', j2: true, checker: 'minicheck' };
+
+  function get(url, opt) { return fetch(url).then(function (r) { if (!r.ok) { if (opt) return null; throw new Error(url + ' ' + r.status); } return r.json(); }); }
+  Promise.all([get(base + '/eval-example.json'), get(base + '/lesson-sources.json', true)]).then(function (a) {
+    EX = a[0]; if (a[1]) SRC = a[1];
+    l0(); l1(); touch(); summary(); level2(); level3(); quiz(); sources(); nav(); tldr();
+    renderCites(document);
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load or draw the data (' + e.message + '). If you opened the file directly, open it through a local web server instead.'; if (window.console) console.error(e); });
+
+  function renderCites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]:not([data-done])'), function (a) {
+      var parts = a.getAttribute('data-c').split('|'), src = SRC.sources[parts[0]];
+      a.setAttribute('data-done', '1'); a.href = '#src-' + parts[0];
+      a.textContent = '[' + (src ? src.short : parts[0]) + (parts[1] ? ', ' + parts[1] : '') + ']';
+      if (src) a.title = src.title + (src.verified ? ' (read)' : ' (not read)');
+    });
+  }
+  function I(id) { return EX.items.filter(function (x) { return x.id === id; })[0]; }
+  function label(it) { return it.id === 'Q20' ? 'L2 regularization: bias and variance' : it.id === 'Q17' ? 'learning rate vs. weight decay' : 'linear vs. logistic regression'; }
+
+  // ------------------------------------------------------------------ Level 0: one answer, three checks
+  function l0() {
+    var W = 760, H = 170, h = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="One answer and three checks">';
+    h += '<rect x="10" y="40" width="210" height="90" rx="10" fill="var(--panel2)" stroke="var(--line)"/><text x="24" y="66">Answer</text><text x="24" y="92" style="fill:var(--muted)">"Bias goes up,</text><text x="24" y="112" style="fill:var(--muted)">variance goes down [1]."</text>';
+    var chk = [['answer key', 'letter = key?', 'var(--blue)'], ['two marking sheets', 'both say 4?', 'var(--purple)'], ['highlighter', 'page [1] says it?', 'var(--teal)']];
+    chk.forEach(function (c, i) {
+      var y = 14 + i * 52;
+      h += '<line x1="220" y1="85" x2="420" y2="' + (y + 20) + '" stroke="' + c[2] + '" stroke-width="2"/>';
+      h += '<rect x="420" y="' + y + '" width="320" height="40" rx="8" fill="var(--panel2)" stroke="' + c[2] + '"/><text x="436" y="' + (y + 25) + '" style="fill:' + c[2] + ';font-weight:600">' + c[0] + '</text><text x="560" y="' + (y + 25) + '" style="fill:var(--muted)">' + c[1] + '</text>';
+    });
+    $('l0-svg').innerHTML = h + '</svg>';
+  }
+
+  // ------------------------------------------------------------------ Level 1: inputs -> metrics, and the table
+  var METRICS = [
+    { n: 'Exact match', k: 'code', in: ['A', 'R'], role: 'primary (MC/TF)', how: 'first letter of the answer = the key letter', demo: 'exact_match' },
+    { n: 'AnswerAccuracy', k: 'llm', in: ['Q', 'A', 'R'], role: 'primary (open)', how: 'two judge prompts (same model) rate 0, 2 or 4; mean / 4; we need 4 and 4', demo: 'answer_correctness' },
+    { n: 'FactualCorrectness', k: 'llm', in: ['A', 'R'], role: 'secondary', how: 'claims of the answer vs. the reference, both ways; F1', demo: 'answer_correctness' },
+    { n: 'ContextRecall', k: 'llm', in: ['P', 'R'], role: 'secondary', how: 'share of reference sentences that the passages support', demo: 'context_recall' },
+    { n: 'Faithfulness (HHEM)', k: 'nli', in: ['P', 'A'], role: 'secondary', how: 'LLM cuts the answer into statements; HHEM scores each against all passages joined', demo: 'faithfulness' },
+    { n: 'Citation recall / precision', k: 'nli', in: ['P', 'A'], role: 'secondary', how: 'ALCE: each sentence vs. the passages it cites; MiniCheck decides', demo: 'citation_recall' },
+    { n: 'Recall@k', k: 'code', in: ['P'], role: 'secondary', how: 'gold passages (here: tagged lectures) among the top k', demo: 'recall_at_k' },
+    { n: 'Cost per correct answer', k: 'code', in: ['A'], role: 'secondary', how: 'answer-model dollars / number of fully correct items', demo: 'accuracy_per_dollar' }
+  ];
+  var KC = { code: 'var(--blue)', llm: 'var(--purple)', nli: 'var(--teal)' }, KN = { code: 'code', llm: 'LLM judge', nli: 'checking model' };
+  function l1() {
+    var W = 760, H = 330, ins = [['Q', 'question'], ['P', 'retrieved passages'], ['A', 'answer [1][2]'], ['R', 'reference answer']];
+    var h = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Which inputs each metric reads" style="min-width:560px">';
+    var iy = function (k) { return 40 + k * 78; }, my = function (k) { return 14 + k * 39; };
+    METRICS.forEach(function (m, j) {
+      m.in.forEach(function (x) { var k = ins.map(function (p) { return p[0]; }).indexOf(x); h += '<path d="M190,' + (iy(k) + 18) + ' C330,' + (iy(k) + 18) + ' 360,' + (my(j) + 14) + ' 470,' + (my(j) + 14) + '" fill="none" stroke="' + KC[m.k] + '" stroke-opacity=".55" stroke-width="1.6"/>'; });
+    });
+    ins.forEach(function (p, k) { h += '<rect x="10" y="' + iy(k) + '" width="180" height="36" rx="8" fill="var(--panel2)" stroke="var(--line)"/><text x="24" y="' + (iy(k) + 23) + '"><tspan style="font-weight:600">' + p[0] + '</tspan>  ' + esc(p[1]) + '</text>'; });
+    METRICS.forEach(function (m, j) { h += '<rect x="470" y="' + my(j) + '" width="280" height="28" rx="6" fill="var(--panel2)" stroke="' + KC[m.k] + '"/><text x="482" y="' + (my(j) + 19) + '">' + esc(m.n) + '</text>'; });
+    $('l1-svg').innerHTML = h + '</svg>';
+    var t = '<tr><th>metric</th><th>reads</th><th>decided by</th><th>how it scores</th><th>role in the thesis</th></tr>';
+    METRICS.forEach(function (m) { t += '<tr><td><b>' + esc(m.n) + '</b><br><a class="small" href="/thesis/metrics.html#' + m.demo + '">worked demo</a></td><td class="mono small">' + m.in.join(' + ') + '</td><td><span class="tag ' + (m.k === 'llm' ? 'llm' : m.k === 'nli' ? 'ok' : 'code') + '">' + KN[m.k] + '</span></td><td class="small">' + esc(m.how) + '</td><td class="small">' + esc(m.role) + '</td></tr>'; });
+    $('l1-tbl').innerHTML = t;
+  }
+
+  // ------------------------------------------------------------------ Touch
+  function touch() {
+    $('qsel').innerHTML = EX.items.map(function (it) { return '<button type="button" data-q="' + it.id + '" aria-pressed="false"><b>' + it.id + '</b> &middot; ' + esc(label(it)) + ' <span class="small muted">(' + (it.reference_letter ? 'multiple choice, ' : 'open, ') + esc(it.source.split(',')[0]) + ')</span></button>'; }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qsel button'), function (b) { b.addEventListener('click', function () { state.q = b.dataset.q; state.j2 = true; draw(); }); });
+    draw();
+  }
+  function cites(s) { return esc(s).replace(/\[(\d+)\]/g, '<sup class="c">[$1]</sup>'); }
+  function heatColor(p) { var a = 0.15 + 0.85 * p; return p >= 0.5 ? 'rgba(60,199,180,' + a.toFixed(2) + ')' : 'rgba(255,138,101,' + (0.25 + 0.6 * (1 - p)).toFixed(2) + ')'; }
+  function draw() {
+    Array.prototype.forEach.call(document.querySelectorAll('#qsel button'), function (b) { b.setAttribute('aria-pressed', b.dataset.q === state.q); });
+    var it = I(state.q), ra = it.ragas, h = '';
+    // 1 question
+    h += '<h4>1 · Question and gold answer</h4><div class="fig"><p class="qtext">' + esc(it.question.replace(/\$\\ell_2\$/g, 'ℓ2')) + '</p>';
+    if (it.options) h += '<ul class="opts">' + Object.keys(it.options).map(function (k) { return '<li class="' + (k.toLowerCase() === String(it.reference_letter).toLowerCase() ? 'key' : '') + '">(' + k + ') ' + esc(it.options[k]) + (k.toLowerCase() === String(it.reference_letter).toLowerCase() ? '  ← key' : '') + '</li>'; }).join('') + '</ul>';
+    h += '<details' + (it.options ? '' : '') + '><summary>Reference answer (' + (it.options ? 'the key' : 'the accepted forum answer, ' + it.reference.length.toLocaleString('en-US') + ' characters') + ')</summary><p class="ctxt">' + esc(it.reference) + '</p></details>';
+    h += '<p class="small faint" style="margin:6px 0 0">' + esc(it.source) + ' &middot; <a href="' + esc(it.url.split(' ;')[0]) + '" rel="noopener">source</a> &middot; ' + esc(it.licence) + ' &middot; stratum ' + esc(it.stratum) + '</p></div>';
+    // 2 retrieval
+    var rk = it.recall_at_k;
+    h += '<h4>2 · What the retriever returned (BM25, top ' + rk.k + ' of ' + EX.meta.corpus.chunks.toLocaleString('en-US') + ' lecture chunks)</h4>';
+    h += it.contexts.map(function (c) { var hit = rk.tagged.indexOf(c.lecture) >= 0; return '<div class="card' + (hit ? ' ok' : '') + '"><div class="hd"><span class="tag gold">[' + c.rank + ']</span><span>Lecture ' + c.lecture + ', ' + c.ts + '</span><span class="mono">BM25 ' + c.bm25.toFixed(1) + '</span><span>' + c.n_chars.toLocaleString('en-US') + ' characters</span>' + (hit ? '<span class="tag ok">tagged lecture</span>' : '') + '</div><details><summary>' + esc(c.text.slice(0, 150)) + '…</summary><p class="ctxt">' + esc(c.text) + '</p></details></div>'; }).join('');
+    h += '<p class="small muted">A stand-in for recall@' + rk.k + ': tagged-lecture coverage. An AI rater tagged this item with lectures ' + rk.tagged.join(', ') + '; the top ' + rk.k + ' chunks come from lectures ' + rk.retrieved.join(', ') + ', so <b>' + pct(rk.value) + '</b> of the tagged lectures are reached. A chunk from a tagged lecture counts even if it is off the point; the thesis will use gold passages.</p>';
+    // 3 answer + ALCE
+    var al = it.alce[state.checker];
+    h += '<h4>3 · The answer, sentence by sentence: citation recall and precision (ALCE)</h4>';
+    h += '<div class="fig"><p class="small muted" style="margin:0 0 6px">Answer by ' + esc(EX.meta.answer_model) + ', temperature 0:</p><p>' + cites(it.answer) + '</p></div>';
+    h += '<div class="row"><span class="small muted">Checker that decides support:</span><button type="button" data-ck="minicheck" aria-pressed="' + (state.checker === 'minicheck') + '">MiniCheck (our choice)</button><button type="button" data-ck="hhem" aria-pressed="' + (state.checker === 'hhem') + '">HHEM ≥ 0.5 (robustness check)</button></div>';
+    h += al.sentences.map(function (s, i) {
+      var pp = it.per_passage[i], prec = s.precision.map(function (p) { return '<span class="tag ' + (p.relevant ? 'ok' : 'bad') + '">[' + p.cite + '] ' + (p.relevant ? 'needed' : 'not needed') + (p.single ? ' (single citation: = recall)' : p.alone ? ' (supports alone)' : p.without_it_still_supported != null ? (p.without_it_still_supported ? ' (others suffice)' : ' (needed with the others)') : '') + '</span>'; }).join('');
+      var heat = pp ? '<span class="heat" title="' + esc(state.checker) + ' score of this sentence against each passage alone">' + pp.scores.map(function (x) { var v = x[state.checker]; return '<i style="background:' + heatColor(v) + '">[' + x.passage + '] ' + v.toFixed(2) + '</i>'; }).join('') + '</span>' : '';
+      return '<div class="sent r' + s.recall + '"><p class="tx">' + cites(s.sentence) + '</p><span class="tag ' + (s.recall ? 'ok' : 'bad') + '">recall ' + s.recall + (s.why ? ' (' + esc(s.why) + ')' : '') + '</span>' + prec + '<br><span class="small faint">each passage alone:</span>' + heat + '</div>';
+    }).join('');
+    h += '<div class="kpis"><div class="kpi"><div class="v">' + f2(al.citation_recall) + '</div><div class="l">citation recall (' + al.n_sentences + ' sentences)</div></div><div class="kpi"><div class="v">' + f2(al.citation_precision) + '</div><div class="l">citation precision (' + al.n_citations + ' citations)</div></div></div>';
+    h += '<p class="cap small muted">ALCE rules ported from its <code>eval.py</code>, with MiniCheck instead of a T5-11B NLI model (other small differences in the README). A sentence without a citation scores 0 for recall. MiniCheck cuts a long premise into chunks of about 500 words and keeps the best chunk score, so evidence split across two chunks is not combined. The coloured cells show each passage <i>alone</i>; recall uses the cited passages <i>together</i>, so the two can differ.</p>';
+    // 4 RAGAS statements
+    var mx = Math.max.apply(null, it.claims.map(function (c) { return c.tokens; }));
+    h += '<h4>4 · The answer, claim by claim: is it supported by the passages? (RAGAS Faithfulness)</h4>';
+    h += '<p class="small muted">The judge LLM cut the answer (citation markers removed) into ' + it.claims.length + ' statements. Each is checked against <b>all three passages joined</b>, three ways.</p>';
+    h += '<div class="hscroll"><table class="tbl"><tr><th>statement</th><th>LLM judge</th><th>HHEM (rounded)</th><th>MiniCheck</th></tr>' + it.claims.map(function (c) {
+      return '<tr><td>' + esc(c.statement) + '<details><summary>judge\'s reason</summary><p class="small muted">' + esc(c.llm_reason) + '</p></details></td><td><span class="tag ' + (c.llm_verdict ? 'ok' : 'bad') + '">' + (c.llm_verdict ? 'supported' : 'not') + '</span></td><td class="n"><span class="bar"><i style="width:' + Math.round(c.hhem * 100) + '%"></i><b></b></span>' + c.hhem.toFixed(2) + ' → ' + c.hhem_rounded + '</td><td class="n"><span class="bar"><i style="width:' + Math.round(c.minicheck * 100) + '%;background:var(--blue)"></i><b></b></span>' + c.minicheck.toFixed(2) + '</td></tr>';
+    }).join('') + '</table></div>';
+    h += '<div class="kpis"><div class="kpi"><div class="v">' + f2(ra.faithfulness) + '</div><div class="l">RAGAS Faithfulness (LLM verdicts)</div></div><div class="kpi"><div class="v">' + f2(ra.faithfulness_with_hhem) + '</div><div class="l">RAGAS FaithfulnesswithHHEM</div></div><div class="kpi"><div class="v">' + pct(ra.unsupported_rate_hhem) + '</div><div class="l">estimated unsupported-claim rate (1 − HHEM faithfulness)</div></div><div class="kpi"><div class="v">' + pct(ra.unsupported_rate_minicheck) + '</div><div class="l">the same with MiniCheck</div></div></div>';
+    h += '<p class="cap small muted">Amber tick on each bar = the 0.5 threshold. RAGAS rounds HHEM to 0 or 1 and takes the mean. The longest input here is ' + mx.toLocaleString('en-US') + ' tokens (flan-t5 tokenizer).</p>';
+    // 5 correctness
+    h += '<h4>5 · Is it correct? (against the reference)</h4>';
+    if (it.reference_letter) {
+      h += '<div class="judges"><div class="judge"><b>Exact match</b> <span class="tag code">code</span><p class="small muted" style="margin:4px 0">first letter of the answer vs. the key</p><div class="sc"><span class="on">' + esc(ra.letter || '–') + '</span><span>=</span><span class="on">' + esc(String(it.reference_letter).toUpperCase()) + '</span></div><p class="small" style="margin:0">RAGAS ExactMatch = <b class="mono">' + f2(ra.exact_match) + '</b></p></div></div>';
+    } else {
+      var aa = ra.answer_accuracy, r2v = state.j2;
+      var jd = function (n, r, on) { return '<div class="judge' + (on ? '' : ' off') + '"><b>Judge prompt ' + n + '</b> <span class="tag llm">' + esc(EX.meta.judge) + '</span><div class="sc">' + [0, 2, 4].map(function (v) { return '<span class="' + (v === r ? 'on' : '') + '">' + v + '</span>'; }).join('') + '</div><p class="small muted" style="margin:0">' + (on ? 'valid rating ' + r : 'simulated failure: no valid rating in 5 attempts (NaN)') + '</p></div>'; };
+      h += '<div class="judges">' + jd(1, aa.r1, true) + jd(2, aa.r2, r2v) + '</div>';
+      h += '<div class="row"><label class="switch"><input type="checkbox" id="j2" ' + (r2v ? 'checked' : '') + '>Judge 2 returned a valid rating</label></div>';
+      var ragasV = r2v ? aa.value : aa.ragas_if_judge2_invalid, ours = r2v ? (aa.r1 === 4 && aa.r2 === 4) : false; h += '<p class="small muted">Both prompts go to the same judge model, so the two ratings are two readings, not two independent judges.</p>';
+      h += '<div class="kpis"><div class="kpi ' + (ragasV === 1 ? 'ok' : '') + '"><div class="v">' + f2(ragasV) + '</div><div class="l">RAGAS AnswerAccuracy' + (r2v ? ' = (' + aa.r1 + '/4 + ' + aa.r2 + '/4) / 2' : ' = judge 1 alone (' + aa.r1 + '/4): RAGAS\'s own fallback') + '</div></div><div class="kpi ' + (ours ? 'ok' : 'bad') + '"><div class="v">' + (ours ? 'yes' : 'no') + '</div><div class="l">fully correct by our rule' + (r2v ? '' : ': not yet. Re-judge; if the rating is still invalid, the item scores 0 and is logged') + '</div></div></div>';
+      if (!r2v && aa.r1 === 4) h += '<p class="small" style="color:var(--warn)">This is the silent fallback: RAGAS would report full marks from one judge, with no warning. Our wrapper does not accept it.</p>';
+      else if (!r2v) h += '<p class="small muted">Here judge 1 gave ' + aa.r1 + ', so the fallback does not turn this item into a full mark; on an item where judge 1 gives 4 it would.</p>';
+    }
+    var fc = ra.fc_counts;
+    h += '<div class="kpis"><div class="kpi"><div class="v">' + f2(ra.factual_correctness) + '</div><div class="l">FactualCorrectness F1 (TP ' + fc.tp + ', FP ' + fc.fp + ', FN ' + fc.fn + ')</div></div><div class="kpi"><div class="v">' + f2(ra.context_recall) + '</div><div class="l">ContextRecall (' + ra.cr_rows.length + ' reference sentences)</div></div></div>';
+    h += '<details><summary>FactualCorrectness: the answer\'s claims checked against the reference (' + ra.fc_answer_claims.length + ')</summary>' + ra.fc_answer_claims.map(function (c) { return '<div class="card ' + (c.verdict ? 'ok' : 'bad') + '"><div class="hd"><span class="tag ' + (c.verdict ? 'ok' : 'bad') + '">' + (c.verdict ? 'in the reference' : 'not in the reference') + '</span></div>' + esc(c.claim) + '<p>' + esc(c.reason) + '</p></div>'; }).join('') + '</details>';
+    h += '<details><summary>FactualCorrectness: the reference\'s claims checked against the answer (' + ra.fc_reference_claims.length + ')</summary>' + ra.fc_reference_claims.map(function (c) { return '<div class="card ' + (c.verdict ? 'ok' : 'bad') + '"><div class="hd"><span class="tag ' + (c.verdict ? 'ok' : 'bad') + '">' + (c.verdict ? 'in the answer' : 'missing from the answer') + '</span></div>' + esc(c.claim) + '<p>' + esc(c.reason) + '</p></div>'; }).join('') + '</details>';
+    h += '<details><summary>ContextRecall: each reference sentence checked against the passages (' + ra.cr_rows.length + ')</summary>' + ra.cr_rows.map(function (c) { return '<div class="card ' + (c.attributed ? 'ok' : 'bad') + '"><div class="hd"><span class="tag ' + (c.attributed ? 'ok' : 'bad') + '">' + (c.attributed ? 'found in the passages' : 'not in the passages') + '</span></div>' + esc(c.statement) + '<p>' + esc(c.reason) + '</p></div>'; }).join('') + '</details>';
+    if (it.notes && it.notes.length) h += '<div class="contra"><b class="h">Our reading of the judge\'s work (one rater)</b>' + it.notes.map(function (n) { return esc(n); }).join('<br>') + '</div>';
+    // verdict
+    var full = it.fully_correct.value === 1 && (it.reference_letter || state.j2);
+    h += '<div class="verdict ' + (full ? 'ok' : 'bad') + '"><b class="big">' + (full ? 'Fully correct' : 'Not fully correct') + '</b><br><span class="small muted">' + esc(it.fully_correct.rule) + (it.reference_letter || state.j2 ? '' : '; judge 2 switched off') + '. Answer cost: $' + (it.cost.usd || 0).toFixed(6) + ' (' + it.cost.prompt_tokens + ' tokens in, ' + it.cost.completion_tokens + ' out).</span></div>';
+    $('tq').innerHTML = h;
+    Array.prototype.forEach.call(document.querySelectorAll('#tq [data-ck]'), function (b) { b.addEventListener('click', function () { state.checker = b.dataset.ck; draw(); }); });
+    if ($('j2')) $('j2').addEventListener('change', function (e) { state.j2 = e.target.checked; draw(); });
+  }
+  function summary() {
+    var rows = [
+      ['fully correct (primary)', function (it) { return it.fully_correct.value ? '<span class="vtrue">yes</span>' : '<span class="vfalse">no</span>'; }],
+      ['exact match / AnswerAccuracy', function (it) { return it.reference_letter ? 'EM ' + f2(it.ragas.exact_match) : 'AA ' + f2(it.ragas.answer_accuracy.value) + ' (' + it.ragas.answer_accuracy.r1 + ', ' + it.ragas.answer_accuracy.r2 + ')'; }],
+      ['FactualCorrectness', function (it) { return f2(it.ragas.factual_correctness); }],
+      ['ContextRecall', function (it) { return f2(it.ragas.context_recall); }],
+      ['Faithfulness (LLM)', function (it) { return f2(it.ragas.faithfulness); }],
+      ['FaithfulnesswithHHEM', function (it) { return f2(it.ragas.faithfulness_with_hhem); }],
+      ['citation recall (MiniCheck)', function (it) { return f2(it.alce.minicheck.citation_recall); }],
+      ['citation precision (MiniCheck)', function (it) { return f2(it.alce.minicheck.citation_precision); }],
+      ['tagged-lecture coverage, top 3', function (it) { return f2(it.recall_at_k.value); }],
+      ['answer cost (US$)', function (it) { return (it.cost.usd || 0).toFixed(6); }]
+    ];
+    $('sumtbl').innerHTML = '<tr><th>metric</th>' + EX.items.map(function (it) { return '<th class="n">' + it.id + '</th>'; }).join('') + '</tr>' + rows.map(function (r) { return '<tr><td>' + r[0] + '</td>' + EX.items.map(function (it) { return '<td class="n">' + r[1](it) + '</td>'; }).join('') + '</tr>'; }).join('');
+    var S = EX.summary;
+    $('sumcap').innerHTML = 'Fully correct: ' + S.fully_correct + ' of ' + S.n + ' (no human check). Answer-generation API cost per fully correct answer: $' + (S.usd_per_correct == null ? '–' : S.usd_per_correct.toFixed(6)) + ' (answer model only; judge and checkers are evaluation cost, not system cost). Judge: ' + esc(EX.meta.judge) + '; checkers: HHEM-2.1-open and MiniCheck-Flan-T5-Large on a Kaggle CPU.';
+  }
+  function level2() { $('l2-body').innerHTML = window.L2_HTML || ''; }
+  function level3() {
+    $('l3-body').innerHTML = window.L3_HTML || '';
+    var M = EX.meta, S = EX.summary;
+    if ($('l3-run')) $('l3-run').innerHTML = 'Retrieval: ' + esc(M.retriever) + ', top ' + M.k + ' of ' + M.corpus.chunks.toLocaleString('en-US') + ' chunks of ' + M.corpus.lectures + ' lectures. Answers: ' + esc(M.answer_model) + ' on OpenRouter, temperature 0. Judge: ' + esc(M.judge) + ' on OpenRouter through <code>llm_factory</code>, RAGAS ' + esc(M.ragas) + '. Checkers: ' + esc(M.hhem[0]) + ' at revision <code>' + esc(M.hhem[1].slice(0, 7)) + '</code> and ' + esc(M.minicheck) + ', transformers ' + esc(M.transformers) + ', ' + M.nli_seconds + ' s on a Kaggle CPU. Where: ' + esc(M.where) + '. Result: ' + S.fully_correct + ' of ' + S.n + ' fully correct.';
+  }
+  var QUIZ = [];
+  function quiz() {
+    QUIZ = window.QUIZ || []; var done = {};
+    $('lq-box').innerHTML = QUIZ.map(function (q, i) { return '<div class="q"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p><div class="opts2">' + q.o.map(function (o, j) { return '<button type="button" data-q="' + i + '" data-o="' + j + '">' + esc(o) + '</button>'; }).join('') + '</div><p class="fb" id="lq-fb' + i + '"></p></div>'; }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#lq-box button'), function (b) {
+      b.addEventListener('click', function () {
+        var i = +b.dataset.q, j = +b.dataset.o, q = QUIZ[i], fb = $('lq-fb' + i);
+        if (done[i] == null) done[i] = j === q.a;
+        Array.prototype.forEach.call(b.parentNode.children, function (x, k) { x.classList.toggle('right', k === q.a); x.classList.toggle('wrong', k === j && j !== q.a); });
+        fb.style.display = 'block'; fb.innerHTML = (j === q.a ? '<b class="vtrue">Right.</b> ' : '<b class="vfalse">Not quite.</b> ') + q.f; renderCites(fb);
+        var n = Object.keys(done).length, r = Object.keys(done).filter(function (k) { return done[k]; }).length;
+        $('lq-score').textContent = r + ' of ' + n + ' right on the first try' + (n === QUIZ.length ? (r === n ? '. All five.' : '. Read the feedback, then try the Touch section again.') : '');
+      });
+    });
+  }
+  function sources() {
+    var keys = Object.keys(SRC.sources).sort(function (a, b) { return (SRC.sources[a].short || a).localeCompare(SRC.sources[b].short || b); });
+    $('ls-tbl').innerHTML = '<tr><th>source</th><th>kind</th><th>what we use it for</th><th>read?</th></tr>' + keys.map(function (k) {
+      var s = SRC.sources[k];
+      return '<tr id="src-' + esc(k) + '"><td><b>' + esc(s.short) + '</b><br><span class="small">' + (s.url ? '<a href="' + esc(s.url) + '" rel="noopener">' + esc(s.title) + '</a>' : esc(s.title)) + '</span></td><td><span class="tag">' + esc(s.kind) + '</span></td><td class="small">' + esc(s.use || '') + '</td><td class="' + (s.verified ? 'vtrue' : 'vfalse') + '">' + (s.verified ? 'read' : 'not read') + (s.how ? '<br><span class="small faint">' + esc(s.how) + '</span>' : '') + '</td></tr>';
+    }).join('');
+  }
+  function tldr() {
+    var a = I('Q17'), c = I('Q20'), S = EX.summary;
+    $('tldr-ex').innerHTML = 'On our three items, ' + S.fully_correct + ' of ' + S.n + ' are fully correct, and the scores disagree in instructive ways. The multiple-choice answer has the right letter, yet RAGAS FactualCorrectness gives it ' + f2(c.ragas.factual_correctness) + '. The open answer on learning rate vs. weight decay got 4 and 4 from the two judges, but its LLM faithfulness is ' + f2(a.ragas.faithfulness) + ', its HHEM faithfulness ' + f2(a.ragas.faithfulness_with_hhem) + ' and its citation recall ' + f2(a.alce.minicheck.citation_recall) + '. One number would hide this: see <a href="#lt">Touch</a>.';
+  }
+  function nav() {
+    var secs = document.querySelectorAll('section.step[data-nav]');
+    $('nav').innerHTML = Array.prototype.map.call(secs, function (s) { return '<a href="#' + s.id + '">' + esc(s.dataset.nav) + '</a>'; }).join('');
+    var links = document.querySelectorAll('#nav a');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) Array.prototype.forEach.call(links, function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-40% 0px -55% 0px' });
+      Array.prototype.forEach.call(secs, function (s) { io.observe(s); });
+    }
+  }
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

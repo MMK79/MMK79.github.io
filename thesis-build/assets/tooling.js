@@ -30,7 +30,6 @@ const card = (r, i) => { const L = r.licence || {}, g = r.gh, h = r.hf, ft = r.f
     <div><h4>${esc(T("tg.h_thesis"))}</h4>${en("p", esc(ft.why || ""))}</div>
     <div><h4>${esc(T("tg.h_mac"))}</h4>${en("p", esc(fm.why || ""))}</div>
     ${(r.sources || []).length ? `<div><h4>${esc(T("tg.h_sources"))}</h4><ul lang="en" dir="ltr">${r.sources.map(s => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.what || s.url)}</a>${s.read ? "" : ` <span class="ex-tag">${esc(T("tg.not_read"))}</span>`}</li>`).join("")}</ul></div>` : ""}
-    <p class="ex-src">${esc(T("tg.measured", {date: day((g && g.as_of) || (h && h.as_of) || DATA.as_of)}))}</p>
   </div></details>
   <div class="gx-links">${ext(repo, T("gx.repo"))}${ext(site, T("tg.site"))}${ext(hf, T("tg.hf_model"))}</div>
 </article>`; };

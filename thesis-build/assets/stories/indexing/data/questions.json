@@ -1,0 +1,31 @@
+{
+ "about": "The three sample questions of the lesson page. Written by us (not from the course homework). Each answer is marked by exact quotes from the CS 156 captions; build_m3_input.py checks that every quote occurs in the chunk text. Q1 is D1 of the chunking page. Q2 tests an exact acronym, Q3 is a paraphrase of Q1 with few shared words. Answer marking is ours (one rater).",
+ "questions": [
+  {
+   "id": "Q1",
+   "question": "Why is a bigger margin better for generalization?",
+   "answer_quotes": [
+    "If you have the bigger margin, the chances are the new point will still be on correct side of the line.",
+    "Fat margins imply fewer dichotomies possible."
+   ],
+   "why_this_one": "A natural question that shares its key words with the lecture (margin, bigger, better)."
+  },
+  {
+   "id": "Q2",
+   "question": "What does KKT stand for?",
+   "answer_quotes": [
+    "Karush, which is the first K, and Kuhn-Tucker, which is the KT."
+   ],
+   "why_this_one": "An exact acronym: one rare token carries the question, the textbook case for keyword search. See whether it wins."
+  },
+  {
+   "id": "Q3",
+   "question": "Why does leaving a wide empty gap between the two classes help the classifier on unseen data?",
+   "answer_quotes": [
+    "If you have the bigger margin, the chances are the new point will still be on correct side of the line.",
+    "Fat margins imply fewer dichotomies possible."
+   ],
+   "why_this_one": "Q1 said in other words: it shares almost no rare word with the answer, which suits a dense embedding."
+  }
+ ]
+}

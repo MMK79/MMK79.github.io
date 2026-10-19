@@ -110,6 +110,19 @@ footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);f
 .quiz .opts button.right{border-color:var(--teal);color:var(--teal)}.quiz .opts button.wrong{border-color:var(--warn);color:var(--warn)}
 .quiz .fb{font-size:13px;color:var(--muted);margin-top:6px;display:none}
 .vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+.nm{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:16px 0}
+.nm h3{margin:0 0 8px}
+.nm .viz{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;margin:8px 0;overflow-x:auto}
+.nm dl{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr);gap:4px 12px;margin:8px 0;font-size:14.5px}
+.nm dt{color:var(--faint);font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;padding-top:3px}
+.nm dd{margin:0}
+.nm .go{font-size:14px}
+.hb{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 64px;gap:5px 10px;align-items:center;font-size:13px}
+.hb .tr{background:var(--bg);border:1px solid var(--line);border-radius:4px;height:15px;overflow:hidden}
+.hb .tr i{display:block;height:100%;background:var(--blue)}
+.hb .tr i.t{background:var(--teal)}.hb .tr i.a{background:var(--amber)}.hb .tr i.w{background:var(--warn)}
+.hb .v{font:12px var(--mono);text-align:right}
+@media(max-width:640px){.nm dl{grid-template-columns:1fr}.hb{grid-template-columns:minmax(0,1fr) 54px}.hb .tr{grid-column:1 / -1}}
 @media(max-width:640px){.grid3,.grid2{grid-template-columns:1fr}.anat{height:600px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -266,6 +279,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
       <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
       <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
+      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
       <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
       <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
       <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
@@ -1640,6 +1655,14 @@ if (state.playing) tourTimer = setTimeout(tourStep, (DUR.flat + 2.2) * 1000);
   <div class="take"><b>Takeaway:</b> filter <i>before</i> or <i>during</i> the search, never only after it. Post-filtering an ordinary index quietly drops results when the filter is selective; on our chunks, keeping one lecture leaves less than one of ten chunks after post-filtering 10 candidates.</div>
 </section>
 
+<!-- ===================== What our numbers mean ===================== -->
+<section class="step" id="lnum" data-nav="Numbers"><div class="kicker"><span class="lv">Numbers</span>what our measurements mean</div>
+  <h2>What our numbers mean</h2>
+  <p class="who">For anyone who read the Touch and Filters parts and wondered what the numbers say. One card per finding: what we measured, an everyday picture, why it matters for our tutor, and a link that opens the part of the page that shows it. Every number is read from this page's data.</p>
+  <div id="num-cards"></div>
+  <div class="take"><b>Takeaway:</b> at our size the index is not the problem: exact search is fast and returns the true nearest vectors. The choices that matter more are which lists we fuse, whether we rerank, and how we filter (never by trimming a short list afterwards).</div>
+</section>
+
 <!-- ===================== Level 2 ===================== -->
 <section class="step" id="l2" data-nav="L2"><div class="kicker"><span class="lv">Level 2</span>professional and academic</div>
   <h2>What the research says</h2>
@@ -1726,7 +1749,7 @@ window.QUIZ = [
   function get(url, opt) { return fetch(url).then(function (r) { if (!r.ok) { if (opt) return null; throw new Error(url + ' ' + r.status); } return r.json(); }); }
   Promise.all([get(base + '/indexing-example.json'), get(base + '/lesson-sources.json', true)]).then(function (a) {
     EX = a[0]; if (a[1]) SRC = a[1];
-    l0(); l1(); tabs(); ann(); mem(); flt(); fsweep(); hyb(); kg(); level2(); level3(); quiz(); sources(); nav(); tldr();
+    l0(); l1(); tabs(); ann(); mem(); flt(); fsweep(); hyb(); kg(); level2(); level3(); quiz(); sources(); numbers(); nav(); tldr();
     renderCites(document);
   }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load or draw the data (' + e.message + '). If you opened the file directly, open it through a local web server instead.'; if (window.console) console.error(e); });
 
@@ -1802,6 +1825,103 @@ window.QUIZ = [
     $('l1-note').innerHTML = 'Recall@10 against exact search, averaged over 43 real questions (our 3 demo questions and 40 pilot questions from the course homework; the homework text is not shown). Comparisons = distance computations per question. Time = this Mac, one CPU thread, one question at a time: on ' + fmt(C.n) + ' vectors every method is far below a millisecond, so read the times as an ordering only.';
   }
 
+
+  // ------------------------------------------------------------------ what our numbers mean
+  function goTo(spec) {
+    var a = spec.split(':'), click = function (sel) { var b = document.querySelector(sel); if (b) b.click(); };
+    if (a[0] === 'filter') { click('#flt-m button[data-v="' + a[1] + '"]'); $('flt-m').scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+    click('#tabs button[data-t="' + a[0] + '"]');
+    if (a[0] === 'ann') { click('#ann-q button[data-v="' + a[2] + '"]'); click('#ann-m button[data-v="' + a[1] + '"]'); }
+    if (a[0] === 'mem') { if (a[1] === 'mrl') st.mdim = 256; click('#mem-m button[data-v="' + a[1] + '"]'); }
+    if (a[0] === 'hyb') click('#hyb-q button[data-v="' + a[1] + '"]');
+    $('tabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function hbar(rows, max) {
+    return '<div class="hb">' + rows.map(function (r) { return '<span>' + r[0] + '</span><span class="tr"><i class="' + (r[2] || '') + '" style="width:' + Math.max(0.5, Math.min(100, 100 * r[1] / max)).toFixed(1) + '%"></i></span><span class="v">' + r[3] + '</span>'; }).join('') + '</div>';
+  }
+  function numbers() {
+    var F = EX.flat, C = EX.corpus, hn = g(EX.hnsw, function (r) { return r.M === 16 && r.ef === 32; }), B = EX.binary,
+      r100 = g(B.rescore, function (r) { return r.candidates === 100; }),
+      m3 = g(EX.matryoshka.rows, function (r) { return r.model === 'bge-m3' && r.dim === 256; }),
+      gem = g(EX.matryoshka.rows, function (r) { return r.model === 'embeddinggemma-2' && r.dim === 256; }),
+      fi = 0, f1 = EX.filter[0], p10 = g(f1.post, function (p) { return p.candidates === 10; }), p100 = g(f1.post, function (p) { return p.candidates === 100; }),
+      Q = function (id) { return qtext(id); }, q2 = Q('Q2'), q3 = Q('Q3'), qps = 1e6 / F.us;
+    var card = function (title, viz, what, pic, why, spec, linkText) {
+      return '<div class="nm"><h3>' + title + '</h3><div class="viz">' + viz + '</div><dl><dt>What we measured</dt><dd>' + what + '</dd><dt>Everyday picture</dt><dd>' + pic + '</dd><dt>Why it matters for our tutor</dt><dd>' + why + '</dd></dl><p class="go"><a href="#lt" data-go="' + spec + '">' + linkText + ' &rarr;</a></p></div>';
+    };
+    var h = '';
+    // 1. microseconds and megabytes
+    var W = 640, x = function (s) { return 20 + (Math.log10(s) + 9) / 9 * (W - 40); };
+    var ruler = '<svg viewBox="0 0 ' + W + ' 86" role="img" aria-label="A time ruler from one nanosecond to one second, log scale">';
+    ruler += '<line x1="20" y1="44" x2="' + (W - 20) + '" y2="44" stroke="var(--faint)"/>';
+    [[-9, '1 ns', 'nanosecond'], [-6, '1 µs', 'microsecond'], [-3, '1 ms', 'millisecond'], [0, '1 s', 'second']].forEach(function (k) { var X = x(Math.pow(10, k[0])); ruler += '<line x1="' + X + '" y1="38" x2="' + X + '" y2="50" stroke="var(--faint)"/><text x="' + X + '" y="66" text-anchor="middle" style="fill:var(--muted);font:12px var(--mono)">' + k[1] + '</text><text x="' + X + '" y="80" text-anchor="middle" style="fill:var(--faint);font:10px var(--body)">' + k[2] + '</text>'; });
+    var X1 = x(F.us * 1e-6); ruler += '<circle cx="' + X1 + '" cy="44" r="6" fill="var(--amber)"/><text x="' + X1 + '" y="24" text-anchor="middle" style="fill:var(--amber);font:12px var(--mono)">exact search: ' + fmt(F.us, 1) + ' µs</text></svg>';
+    h += card('1 &middot; Exact search takes about ' + fmt(Math.round(F.us)) + ' microseconds and ' + fmt(F.bytes / 1e6, 1) + ' MB',
+      ruler + '<p class="small muted" style="margin:6px 0 0">Each step on the ruler is 1,000 times longer than the one before. µs is a <b>microsecond</b>, one millionth of a second (not a nanosecond, which is a thousand times shorter).</p>',
+      'Comparing one question with all ' + fmt(C.n) + ' chunk vectors (' + fmt(C.dim) + ' numbers each) took ' + fmt(F.us, 1) + ' µs on this Mac, one CPU thread. The vectors fill ' + fmt(F.bytes / 1e6, 1) + ' MB: ' + fmt(C.n) + ' chunks &times; ' + fmt(C.dim) + ' numbers &times; 4 bytes.',
+      'Reading every page of a short booklet, but so fast that you could do it about ' + fmt(Math.round(qps / 1000) * 1000) + ' times in one second. And the whole booklet fits in a few megabytes, about the size of one phone photo.',
+      'At our size the vector search is cheap. So we can use exact search, which always returns the true 10 nearest vectors (the right answer can still rank lower; that is a question of the embedding, not the index), and skip approximate indexes until the corpus is much bigger. We did not measure the full answer time, only the search.',
+      'ann:flat:Q1', 'Open Touch 1 with Flat (exact)');
+    // 2. HNSW
+    var dots = '', kept = hn.recall * 10;
+    for (var i = 0; i < 10; i++) { var fill = Math.max(0, Math.min(1, kept - i)); dots += '<span style="display:inline-block;width:26px;height:26px;border-radius:50%;margin:0 4px 4px 0;border:2px solid var(--teal);background:linear-gradient(90deg,var(--teal) ' + (fill * 100).toFixed(0) + '%,transparent ' + (fill * 100).toFixed(0) + '%)"></span>'; }
+    h += card('2 &middot; HNSW keeps ' + pct(hn.recall) + ' of the exact top 10',
+      '<div>' + dots + '</div><p class="small muted" style="margin:4px 0 8px">The exact top 10, filled by how many HNSW finds on average (' + fmt(kept, 2) + ' of 10).</p>' + hbar([['exact search', F.ndis, '', fmt(F.ndis)], ['HNSW (M 16, ef 32)', hn.ndis, 't', fmt(hn.ndis)]], F.ndis) + '<p class="small muted" style="margin:6px 0 0">Comparisons per question.</p>',
+      'HNSW (a graph of links between similar chunks, M 16, efSearch 32) compared the question with about ' + fmt(hn.ndis) + ' chunks instead of ' + fmt(F.ndis) + ', and its top 10 shared ' + pct(hn.recall) + ' of the chunks with the exact top 10, averaged over ' + fmt(C.queries) + ' real questions.',
+      'Finding the ten nearest houses by asking neighbours for directions instead of knocking on every door: you knock on far fewer doors, and on average you find about 9.7 of the 10 houses.',
+      'Recall here only means "the same as exact search", not "the right answer". On ' + fmt(C.n) + ' chunks the saving is tiny, so we do not pay this small loss yet. We will look again when the corpus grows (we did not measure where the crossover is).',
+      'ann:hnsw:Q1', 'Open Touch 1 with HNSW');
+    // 3. binary
+    h += card('3 &middot; Binary codes keep ' + pct(B.recall) + ', then ' + pct(r100.recall) + ' after rescoring the top 100',
+      hbar([['full vectors', 1, '', '100%'], ['binary codes alone', B.recall, 'w', pct(B.recall)]].concat(B.rescore.map(function (r) { return ['binary, rescore top ' + r.candidates, r.recall, r.candidates === 100 ? 't' : 'a', pct(r.recall)]; })), 1) +
+      '<p class="small muted" style="margin:6px 0 0">Share of the exact top 10 found. Memory per chunk: ' + fmt(C.dim * 4) + ' bytes full, ' + fmt(B.bytes_per_vector) + ' bytes binary (32 times smaller).</p>',
+      'Each of the ' + fmt(C.dim) + ' numbers was cut to one bit (above or below zero). Searching with these bits alone kept ' + pct(B.recall) + ' of the exact top 10. Taking the binary top 100 and re-scoring only those 100 with the full vectors kept ' + pct(r100.recall) + '.',
+      'Sorting job applicants by a one-line summary first, then reading the full CV of the best 100. The summary alone ranks badly; the summary as a first cut, followed by a careful look, is almost as good as reading every CV.',
+      'If the corpus grows large, the binary codes that are searched are 32 times smaller than the full vectors (the full vectors are still kept, on disk, for the rescoring step), and the result is almost the same top 10. Binary codes need the rescoring step: alone they lost about a third of the exact top 10 here. Milder compression such as int8 kept 99% without it (Touch 2).',
+      'mem:binary', 'Open Touch 2 with Binary + rescoring');
+    // 4. Matryoshka
+    h += card('4 &middot; The first 256 numbers of bge-m3 keep only ' + pct(m3.recall),
+      hbar([['bge-m3, first 256 of ' + fmt(m3.full), m3.recall, 'w', pct(m3.recall)], ['EmbeddingGemma 2, first 256 of ' + fmt(gem.full), gem.recall, 't', pct(gem.recall)]], 1) + '<p class="small muted" style="margin:6px 0 0">Share of each model\'s own full-length top 10 found with the first 256 numbers.</p>',
+      'We kept only the first 256 of the 1,024 numbers of each bge-m3 vector and searched again: ' + pct(m3.recall) + ' of the full top 10 came back. EmbeddingGemma 2, trained to put the important information first (Matryoshka training), kept ' + pct(gem.recall) + ' with its first 256 of 768.',
+      'Matryoshka dolls: the smallest doll is a real doll. A model trained this way packs the main meaning into the first numbers, so a short prefix is still a usable vector. bge-m3 was not trained like that: cutting its vector is like tearing a page in half, not using a smaller doll.',
+      'Shortening bge-m3 vectors to 256 numbers saves 75% of the space but keeps only ' + pct(m3.recall) + ' of the full top 10, a poor deal. If we need smaller vectors, we compress them (binary or PQ with rescoring) or switch to a model trained for it.',
+      'mem:mrl', 'Open Touch 2 with Matryoshka truncation');
+    // 5. post-filter
+    var slots = ''; for (var j = 0; j < 10; j++) { var fl = Math.max(0, Math.min(1, p10.returned - j)); slots += '<span style="display:inline-block;width:22px;height:30px;border-radius:4px;margin:0 3px 3px 0;border:1px solid var(--line);background:linear-gradient(0deg,var(--amber) ' + (fl * 100).toFixed(0) + '%,transparent ' + (fl * 100).toFixed(0) + '%)"></span>'; }
+    h += card('5 &middot; Post-filtering 10 candidates for one lecture returns ' + fmt(p10.returned, 1) + ' chunks',
+      '<div>' + slots + '</div><p class="small muted" style="margin:4px 0 8px">Ten slots the tutor wanted to fill; amber = filled on average.</p>' + hbar([['pre-filter, then exact', 10, 't', '10'], ['post-filter, 100 candidates', p100.returned, 'a', fmt(p100.returned, 1)], ['post-filter, 10 candidates', p10.returned, 'w', fmt(p10.returned, 2)]], 10) + '<p class="small muted" style="margin:6px 0 0">Chunks returned (of 10) when only ' + esc(f1.filter) + ' is allowed.</p>',
+      'With the filter "' + esc(f1.filter) + '" (' + fmt(f1.n) + ' chunks, ' + pct(f1.selectivity) + ' of the corpus), we asked HNSW for its 10 best chunks and then threw away those from other lectures. On average ' + fmt(p10.returned, 2) + ' chunks survived. Filtering first and then searching exactly returned all 10.',
+      'Asking a shop for its ten best-selling shirts and then keeping only the green ones: on average fewer than one green shirt is in that top ten. Asking for green shirts first, then the best ten of those, fills the bag whenever the shop has at least ten green shirts.',
+      'A tutor restricted to one lecture or one book chapter must not post-filter a short, fixed candidate list. Filter first, filter during the search, or keep asking for more candidates (an iterative scan recovered 99.8% after about 300 candidates). Otherwise it would answer from almost nothing and could wrongly say the material has no answer.',
+      'filter:0', 'Open the named filters table');
+    // 6. KKT
+    var ranks = function (q) { var gr = q.gold_ranks, o = []; ['bm25', 'dense', 'sparse', 'colbert', 'rerank'].forEach(function (m) { o.push([m, gr[m][0]]); }); return o; };
+    var lab = { bm25: 'BM25 (keywords)', dense: 'bge-m3 dense', sparse: 'bge-m3 sparse', colbert: 'ColBERT', rerank: 'reranker' };
+    var ladder = function (q, maxR) {
+      var Wl = 600, Hl = 30 * 5 + 30, xx = function (r) { return 150 + (Math.log10(r) / Math.log10(maxR)) * (Wl - 180); }, s = '<svg viewBox="0 0 ' + Wl + ' ' + Hl + '" role="img" aria-label="Rank of the answer chunk in each list, log scale">';
+      s += '<rect x="' + xx(1) + '" y="4" width="' + (xx(10.5) - xx(1)) + '" height="' + (Hl - 30) + '" fill="var(--teal)" opacity=".08"/><text x="' + xx(1) + '" y="' + (Hl - 8) + '" style="fill:var(--teal);font:10px var(--body)">top 10</text>';
+      [1, 10, 100].forEach(function (r) { if (r <= maxR) s += '<text x="' + xx(r) + '" y="' + (Hl - 8) + '" text-anchor="middle" style="fill:var(--faint);font:10px var(--mono)">' + (r === 1 ? '' : r) + '</text>'; });
+      ranks(q).forEach(function (m, k) { var y = 18 + k * 30; s += '<text x="0" y="' + (y + 4) + '" style="fill:var(--muted);font:12px var(--body)">' + lab[m[0]] + '</text><line x1="150" y1="' + y + '" x2="' + (Wl - 30) + '" y2="' + y + '" stroke="var(--line)"/><circle cx="' + xx(m[1]) + '" cy="' + y + '" r="6" fill="' + (m[1] <= 10 ? 'var(--teal)' : 'var(--warn)') + '"/><text x="' + (xx(m[1]) + 10) + '" y="' + (y + 4) + '" style="fill:var(--text);font:12px var(--mono)">' + m[1] + '</text>'; });
+      return s + '</svg>';
+    };
+    var kkt = g(q2.terms_top_bm25.terms, function (t) { return t.term === 'kkt'; });
+    h += card('6 &middot; "What does KKT stand for?": BM25 ranked the defining chunk ' + q2.gold_ranks.bm25[0] + 'th, dense ' + q2.gold_ranks.dense[0] + 'nd',
+      ladder(q2, 20) + '<p class="small muted" style="margin:6px 0 0">Rank of the chunk that defines KKT in each list (1 = top). Green = inside the top 10.</p>',
+      'BM25 scores a chunk by its matching words. "KKT" is rare (it appears in ' + kkt.df + ' of ' + fmt(C.n) + ' chunks), so all ' + kkt.df + ' chunks share the same large weight for that word, and the chunk that spells out the name was only ' + q2.gold_ranks.bm25[0] + 'th. The dense bge-m3 search put it ' + q2.gold_ranks.dense[0] + 'nd.',
+      'Looking up "KKT" in the index at the back of a book: it lists every page with "KKT", but it does not say which page explains it. You have to open them all.',
+      'Even for an acronym, the textbook case for keyword search, dense search ranked the defining chunk higher (2nd versus 10th). One question proves little, but it is the kind of case where fusing BM25 with dense search, as our text arm does, keeps both chances.',
+      'hyb:Q2', 'Open Touch 3 with Q2');
+    // 7. paraphrase
+    var gr3 = q3.gold_ranks, first = ['bm25', 'dense', 'sparse', 'colbert'].map(function (m) { return gr3[m][0]; }), best = Math.min.apply(null, first);
+    h += card('7 &middot; The paraphrase question: no first-stage list had an answer chunk in its top 10; the reranker put one ' + gr3.rerank[0] + 'nd',
+      ladder(q3, 200) + '<p class="small muted" style="margin:6px 0 0">Best rank of an answer chunk in each list (log scale). Orange = outside the top 10.</p>',
+      'Q3 asks the same thing as Q1 in other words ("a wide empty gap" instead of "a bigger margin"). No first-stage list had an answer chunk in its top 10: the best was bge-m3 sparse at ' + best + ', dense ' + gr3.dense[0] + ', BM25 ' + gr3.bm25[0] + '. The reranker, which reads the question and each chunk together, put one ' + gr3.rerank[0] + 'nd.',
+      'A quick skim for familiar words misses an answer written in different words; a careful reader who reads question and page side by side sees that they mean the same thing.',
+      'Students often ask in their own words, not the lecturer\'s. A reranker can rescue such questions, but only if the chunk is in the list it is given: here it scored all ' + fmt(C.n) + ' chunks, while in practice it would see only the first stage\'s top list, so how long that list is matters. Three questions are a demonstration, not a test.',
+      'hyb:Q3', 'Open Touch 3 with Q3');
+    $('num-cards').innerHTML = h;
+    $('num-cards').addEventListener('click', function (e) { var a = e.target.closest('a[data-go]'); if (a) { e.preventDefault(); goTo(a.dataset.go); } });
+  }
   // ------------------------------------------------------------------ tabs
   function tabs() {
     Array.prototype.forEach.call(document.querySelectorAll('#tabs button'), function (b) {

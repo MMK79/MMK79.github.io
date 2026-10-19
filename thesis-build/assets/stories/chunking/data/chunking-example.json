@@ -1796,7 +1796,7 @@
   {
    "id": "recursive",
    "name": "Recursive",
-   "rule": "Try a paragraph break first, then a line break, a space, a character; merge pieces up to 800 characters, keeping up to 100 characters of overlap.",
+   "rule": "Try a paragraph break first, then a line break, a space, a character; merge pieces up to 800 characters. The overlap setting is 100 characters, but the splitter carries overlap only as whole pieces, and every paragraph of this passage (132 to 669 characters) is longer than 100, so the chunks shown here have no overlap.",
    "kind": "rule",
    "params": {
     "size": 800,

@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What happens when a student asks</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.wide{max-width:1120px;margin:0 auto;padding:0 16px}
+code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(32px,7.5vw,52px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:14px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
+.hero{padding:52px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.who{color:var(--faint);font-size:13px}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:disabled{opacity:.4;cursor:default}
+button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.lbl{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
+label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+.take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
+.pin b{display:block;font-size:13px;color:var(--amber)}
+.pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
+.b{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.b.comp{color:var(--teal);border-color:var(--teal)}
+.b.ours{color:var(--amber);border-color:var(--amber)}
+.b.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.b.skip{color:var(--faint);border-color:var(--line)}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.m{font-family:var(--mono);font-size:12.5px;white-space:nowrap}
+/* arms */
+.arms{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.arm{text-align:left;padding:8px 10px;min-height:56px}
+.arm b{display:block;font:500 16px var(--mono)}
+.arm span{font-size:12px;color:var(--muted)}
+/* stepper */
+#flow{display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start}
+#steps{list-style:none;margin:0;padding:0;position:sticky;top:110px}
+#steps li button{width:100%;text-align:left;display:flex;gap:8px;align-items:center;justify-content:space-between;background:none;border:1px solid transparent;border-radius:8px;padding:5px 8px;min-height:34px;font-size:13.5px;color:var(--muted)}
+#steps li button.on{border-color:var(--amber);color:var(--text);background:var(--panel)}
+#steps li button.off{opacity:.45}
+#steps .no{font:12px var(--mono);color:var(--faint);margin-right:4px}
+#stage{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;min-height:420px}
+#stage h3{margin-top:0}
+.nav2{display:flex;justify-content:space-between;gap:8px;margin-top:14px}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
+.card.ex{border-color:var(--warn);opacity:.7}
+.rel{font:12px var(--mono)}.rel.USES{color:var(--blue)}.rel.IS_A{color:var(--teal)}.rel.PREREQUISITE_OF{color:var(--amber)}
+.tokbar{display:flex;height:26px;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:8px 0}
+.tokbar span{display:block;height:100%;border-right:1px solid var(--bg);font:10px/26px var(--mono);color:var(--bg);text-align:center;overflow:hidden;white-space:nowrap}
+.pre{font:12px/1.5 var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto}
+.design{border:1px dashed var(--purple);border-radius:10px;padding:10px 12px;margin:10px 0;color:var(--muted);font-size:14px}
+.design b{color:var(--purple)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:11px var(--body)}
+.cmp td.in{color:var(--teal)}.cmp td.out{color:var(--faint)}
+.chip{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 3px 4px 0}
+.chip.only{border-color:var(--amber);color:var(--amber)}
+.chip.ex{border-color:var(--warn);color:var(--warn);text-decoration:line-through}
+details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
+.q .opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q button{text-align:left}.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+.vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+.layers{list-style:none;margin:12px 0;padding:0;display:flex;flex-direction:column;gap:0}
+.layer{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.layer .ln{font:600 12px var(--mono);color:var(--purple);letter-spacing:.06em}
+.layer h3{margin:2px 0 6px}
+.layer .when{font-size:12px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em}
+.down{text-align:center;color:var(--faint);font-size:18px;line-height:1;padding:4px 0}
+.gate{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.gate input[type=range]{width:220px;max-width:100%}
+.verdict{display:inline-block;font:600 13px var(--body);border-radius:8px;padding:4px 10px;border:1px solid}
+.verdict.pass{color:var(--teal);border-color:var(--teal)}.verdict.stop{color:var(--warn);border-color:var(--warn)}
+.bars{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr) 54px;gap:6px 10px;align-items:center;font-size:13px;margin:8px 0}
+.bars .tr{background:var(--panel2);border:1px solid var(--line);border-radius:4px;height:16px;overflow:hidden}
+.bars .tr i{display:block;height:100%;background:var(--purple)}
+.bars .tr i.alt{background:var(--warn)}
+.bars .v{font:12px var(--mono);text-align:right}
+.mini{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;margin:8px 0}
+.mini span.box{border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--panel2)}
+.mini span.ar{color:var(--faint)}
+.mock{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:12px 14px;margin:10px 0}
+.mock .mh{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.mock .mline{font-size:14px;margin:4px 0}
+.mock .mline b{color:var(--muted);font-weight:500;display:inline-block;min-width:140px}
+@media (max-width:900px){#flow{grid-template-columns:1fr}#steps{position:static;display:flex;flex-wrap:wrap;gap:4px}#steps li button{width:auto;border-color:var(--line)}#steps li button .b{display:none}}
+@media (max-width:640px){.pin{grid-template-columns:1fr}.arms{grid-template-columns:repeat(2,1fr)}.tbl td.m{white-space:normal}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
+      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real slice, partly designed system:</b> the question, the passages, the graph and every score come from the CS 156 Lecture 14-15 pilot. Each step says whether it is <span class="b comp">computed</span>, a <span class="b ours">stand-in (ours)</span> or a <span class="b dsg">design, not built</span>. No answer is generated on this page.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#system">System view</a><a href="#touch">Step through</a><a href="#compare">Compare arms</a><a href="#abstain">"I don't know"</a><a href="#variants">Query variants</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">A layered lesson on the question path</div>
+  <h1>What happens when a student asks</h1>
+  <p class="lead">A student in CS 156 asked: <i>"What happens when the points are not linearly separable?"</i> This page follows that question, step by step, through the five arms of our experiment, on the real pilot graph. Switch the arm and watch the context the answer model would receive change.</p>
+</header>
+
+<section class="step" id="tldr"><div class="kicker">TL;DR</div><h2>Eleven steps, one budget cap, five arms</h2>
+<ol>
+  <li><b>Same start.</b> The question is linked to concept ids (alias table plus bge-m3 search over concept names), once, and H and Hc read the same cached seeds. (G, LightRAG, would use its own retrieval; it is not run here.)</li>
+  <li><b>The graph arms walk.</b> From the seeds they follow typed edges (PREREQUISITE_OF, IS_A, USES), at most two hops. The typed arm <b>H</b> follows only the relations the router picks; the collapsed arm <b>Hc</b> follows all three. Nothing else differs.</li>
+  <li><b>Edges point to passages.</b> Each edge carries evidence records; their passage ids fetch the passage text. That list is fused with the text retriever's list.</li>
+  <li><b>One cap for all.</b> The retrieval arms share one cap of 4,000 tokens for the passage text (counted here with the bge-m3 tokenizer, a proxy for the answer model's); the space used differs by arm. The request carries no relation, hop or path, though the choice of passages itself can still differ.</li>
+  <li><b>What is built.</b> Linking, walk, ranking, fusion and packing are <span class="b comp">computed</span> here on the pilot slice. The router is a <span class="b ours">stand-in</span>. Answer generation (an Alibaba-hosted LLM), book citations and the citation check are <span class="b dsg">design, not built</span>.</li>
+  <li><b>A real finding.</b> In the pilot graph no PREREQUISITE_OF edge has passed review, so with the stand-in router's USES + IS_A mask, H and Hc load the same edges and send the same context on all three questions. A narrower mask (for example USES only, in step 3) separates them; so does the non-confirmatory "also load proposed edges" toggle on Q1.</li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div><h2>Five ways to answer at the library desk</h2>
+<p class="who">For anyone. No technical words.</p>
+<div class="pin">
+  <div><b>L · From memory</b><p>The librarian answers without opening anything.</p></div>
+  <div><b>R · Similar cards</b><p>She pulls the cards whose words and meaning look most like the question.</p></div>
+  <div><b>G · Off-the-shelf map</b><p>A ready-made map tool, with its default settings, picks the cards.</p></div>
+  <div><b>H · Labelled arrows</b><p>She starts at the idea named in the question and follows only the arrows that fit it, for example "uses" and "is a kind of".</p></div>
+  <div><b>Hc · Same arrows, no labels</b><p>The same start and the same map, but she follows every arrow, whatever it says.</p></div>
+  <div><b>The rule</b><p>Whatever she does, she may hand over only one folder of the same size, and the reader never learns how each card was found.</p></div>
+</div>
+</section>
+
+<section class="step" id="l1"><div class="kicker"><span class="lv">Level 1</span>for a student</div><h2>The story of the question path</h2>
+<ol>
+  <li><b>Problem:</b> a text retriever finds passages that <i>look like</i> the question. A good answer to "not linearly separable" names two ideas the question does not (soft margin, nonlinear transforms); the course treats them in detail in Lecture 15, although the professor sketches both in his reply. <b>Next idea:</b> start from the concept the question names and walk the graph to related concepts.</li>
+  <li><b>Problem:</b> the question is words, the graph is concept ids. <b>Fix:</b> entity linking, once per question, shared by all graph arms.</li>
+  <li><b>Problem:</b> walking every edge pulls in everything near the seed. <b>Fix:</b> a typed walk: the router picks which relations fit the question, and the walk stops after two hops.</li>
+  <li><b>Problem:</b> the answer model needs text, not edges. <b>Fix:</b> every edge has evidence records pointing to passage ids; the passages are fetched by id.</li>
+  <li><b>Problem:</b> a bigger context could win on its own. <b>Fix:</b> one token cap, B = 4,000, for every retrieval arm; passages are added in fused order until the next one does not fit.</li>
+  <li><b>Problem:</b> the answer could cite a passage that does not support it. <b>Fix (designed):</b> cite book, chapter, section and page, and check each cited sentence with an entailment checker.</li>
+</ol>
+</section>
+</div>
+
+<section class="step" id="system"><div class="wrap">
+  <div class="kicker">System view (exists already)</div><h2>Three pipelines on one bench</h2>
+  <p>The isometric figure on the site follows one question through plain RAG, GraphRAG and our typed-KG tutor at system level, with a types on / types off switch. This page does not repeat it: it zooms into the typed-KG lane, step by step, on the real pilot data.</p>
+  <p><a href="/thesis/assets/figures/anatomy-system/index.html">Open the system figure: one question, three pipelines →</a></p>
+  <p class="small faint">The figure uses a small demo corpus and a hand-built edge list; this page uses the pilot graph built from the lecture captions.</p>
+</div></section>
+
+<section class="step" id="touch"><div class="wide">
+  <div class="kicker">Touch</div><h2>Step through one question</h2>
+  <div class="row"><span class="lbl">Question</span><select id="qsel" aria-label="Question"></select></div>
+  <div class="arms" id="arms" role="group" aria-label="Arm"></div>
+  <div class="row">
+    <label class="ck"><input type="checkbox" id="leak" checked> exclude the question's own Q&amp;A passages (leakage rule)</label>
+    <label class="ck"><input type="checkbox" id="prop"> also load proposed edges (not allowed in the confirmatory arms; they act only as bridges, their own evidence is ungated)</label>
+    <span class="lbl" style="min-width:0">Budget B</span><select id="bsel" aria-label="Token budget"><option value="2000">2,000</option><option value="4000" selected>4,000</option><option value="8000">8,000</option></select>
+  </div>
+  <div id="flow">
+    <ol id="steps"></ol>
+    <div id="stage" aria-live="polite"></div>
+  </div>
+  <p class="small faint">Keys: ← → change the step. The step list shows which steps the chosen arm uses.</p>
+</div></section>
+
+<section class="step" id="compare"><div class="wrap">
+  <div class="kicker">Touch</div><h2>Compare the arms: what reaches the answer model</h2>
+  <p>Each row is the packed context of one arm for the selected question and settings. Amber chips are passages that the text retriever R did not send. The last column is a <b>coverage proxy</b>: how many reference points of the professor's own answer have at least one packed passage that mentions one of their concepts. It is not an answer grade.</p>
+  <div id="cmp"></div>
+  <div id="hhc" class="take"></div>
+</div></section>
+
+
+<section class="step" id="abstain"><div class="wrap">
+  <div class="kicker">Product design · not part of the thesis arms</div>
+  <h2>When the tutor should say "I don't know"</h2>
+  <p class="design" style="margin-top:0"><b>What this section is.</b> The approved design for the tutor app: how it decides to answer or to say "this is not in the course material". It is <b>not built yet</b>, and it is <b>kept out of the five thesis arms</b> above (see the box at the end of this section). The passages and scores you see are real; every cut-off is a placeholder until we tune it.</p>
+  <p><b>Plain words first.</b> A good student who cannot find the answer in the book says "it's not in the book". A weak one makes up something that sounds right. We want the tutor to be the good student, and we need a way to check it, because a language model is very good at sounding right.</p>
+
+  <h3>Why "just tell the model" is not enough</h3>
+  <p>The easy idea is to add one line to the prompt: "if the passages do not contain the answer, say so". Studies show that models often ignore it.</p>
+  <div class="bars" role="img" aria-label="Two published measurements of refusal">
+    <span>ChatGPT, only noise passages: refused</span><span class="tr"><i style="width:24.67%"></i></span><span class="v">24.67%</span>
+    <span>Claude 3.5 Sonnet, no passages: abstained</span><span class="tr"><i style="width:84.1%"></i></span><span class="v">84.1%</span>
+    <span>Claude 3.5 Sonnet, with passages: abstained</span><span class="tr"><i class="alt" style="width:52%"></i></span><span class="v">52%</span>
+  </div>
+  <p class="small muted">First bar: in the RGB benchmark every passage was noise, so the right reply was always "I can't answer"; ChatGPT gave it only about one time in four (exact-match count). Bars 2 and 3: in the Sufficient Context study the same model abstained less once retrieved passages were added: passages make models bolder, even when the passages do not answer the question. These are the authors' numbers on their data, not ours. <span class="small">[chen2023rgb, joren2025]</span></p>
+  <div class="take">So the tutor does not rely on one instruction. It stops at <b>four layers</b>, and when it stops it still helps: it shows the three closest passages.</div>
+
+  <h3>The four layers: three checks for each question, one step before launch</h3>
+  <div class="row"><span class="lbl">Question</span><span id="ab-q" class="small muted"></span></div>
+  <ol class="layers" id="layers">
+    <li class="layer"><div class="ln">LAYER 1 · before writing</div><h3>Retrieval-score gate <span class="b dsg">design, not built</span></h3>
+      <p>Look at the search results first. The reranker gives every packed passage a score; take the best one. If even the best passage is a poor match, do not ask the language model to write an answer. The scores already exist from the search, so this layer adds no model call, and it aims at the plainest case: the search found nothing close to the question. A low score does not prove that the answer is nowhere in the course; it only says the search did not find it.</p>
+      <div class="gate"><label for="ab-cut" class="small">placeholder cut-off <b id="ab-cut-v" class="mono">0.50</b></label><input type="range" id="ab-cut" min="0" max="1" step="0.05" value="0.5"></div>
+      <div id="ab-gate" aria-live="polite"></div>
+      <p class="small faint">Real numbers: bge-reranker-v2-m3 scores of this question against the passages the selected arm packs (arm R when L or G is selected), shown on a 0-1 scale (the sigmoid of the raw score). The leakage switch above changes them. The cut-off is ours and not tuned.</p>
+    </li>
+    <li class="down" aria-hidden="true">↓</li>
+    <li class="layer"><div class="ln">LAYER 2 · while writing</div><h3>Answer only from the passages <span class="b dsg">design, not built</span></h3>
+      <p>The prompt tells the model: use only the passages, and if they do not contain the answer (or part of it), reply with one fixed phrase, <code>NOT_IN_MATERIAL</code>. The app looks for that exact phrase. This layer is cheap, but as the bars above show, models do not always obey it, so it is never the only check.</p>
+    </li>
+    <li class="down" aria-hidden="true">↓</li>
+    <li class="layer"><div class="ln">LAYER 3 · after writing</div><h3>Check every sentence, retry once, then stop <span class="b dsg">design, not built</span></h3>
+      <p>A small checker model, MiniCheck, reads each sentence of the answer together with the passages it cites and asks: do these passages support this sentence? It reads the whole cited text up to its 2,048-token input limit and never cuts it shorter; a sentence whose cited text is longer is marked "unchecked" and logged, never counted as supported.</p>
+      <div class="mini" role="img" aria-label="Sentence check flow"><span class="box">answer sentence + cited passages</span><span class="ar">→</span><span class="box">MiniCheck: supported?</span><span class="ar">→ yes →</span><span class="box">keep</span></div>
+      <div class="mini" role="img" aria-label="Retry flow"><span class="ar">no →</span><span class="box">write the answer once more</span><span class="ar">→ still not supported →</span><span class="box" style="border-color:var(--warn);color:var(--warn)">"I could not support an answer from the course material."</span></div>
+      <p class="small muted">Why only one retry: each retry costs another model call and more waiting, and a model that rewrites its own answer does not reliably fix it. HHEM, a second checker, is logged only and never decides.</p>
+    </li>
+    <li class="down" aria-hidden="true">↓</li>
+    <li class="layer"><div class="ln">LAYER 4 · before launch</div><h3>Tune the cut-offs on human-labelled examples <span class="b dsg">design, not built</span></h3>
+      <p>Layers 1 and 3 each need a cut-off. We set them on development examples that a person has labelled (answerable or not, supported or not), never by guessing, and we report the result on separate held-out examples as a <b>risk-coverage curve</b>: coverage = the share of questions the tutor answers; risk = the share of those answers that are wrong. A stricter cut-off answers fewer questions; whether it also makes fewer mistakes is what the curve measures.</p>
+      <div id="ab-rc"></div>
+      <p class="small faint">A drawing of the idea, not our data: we have no human labels yet. The dot moves with the placeholder cut-off of layer 1.</p>
+    </li>
+    <li class="down" aria-hidden="true">↓</li>
+    <li class="layer" style="border-color:var(--teal)"><div class="ln" style="color:var(--teal)">WHEN IT STOPS</div><h3>Show the three closest passages <span class="b dsg">design, not built</span></h3>
+      <p>"I don't know" alone is a dead end. So the tutor says "I could not find this in the enabled course material" and then shows the three passages that came closest (the best-scoring of the passages it retrieved), with their place in the course, so the student can read on. For this question they would be:</p>
+      <div id="ab-close"></div>
+    </li>
+  </ol>
+
+  <div class="design"><b>Kept out of the thesis arms.</b> In the experiment (arms L, R, G, H, Hc) the gate, the retry and the sentence check do not change any answer: a gate would fire differently for each arm and its cut-off would be one more tuned setting. The prompt is the same for all arms, including its one abstain phrase. The harness is planned to <b>log</b> the signals that apply (best reranker score, the abstain phrase, the checker scores; L has no passages to score) for every question and arm, so risk-coverage curves per arm can be drawn afterwards, with no extra model calls. LightRAG's own "Sorry, I'm not able to provide an answer" reply is scored as an abstention.</div>
+</div></section>
+
+<section class="step" id="variants"><div class="wrap">
+  <div class="kicker">A short note · what we found and what we chose</div>
+  <h2>Query variants: do we rewrite the question?</h2>
+  <p><b>Plain words first.</b> A good librarian does not search for your exact sentence. She thinks "this is about <i>margins</i>, maybe <i>soft margin</i> and <i>kernels</i>" and looks on those shelves. Some systems let a model do that thinking: they rewrite the question, write several versions of it, or write a fake answer and search with it.</p>
+  <h3>What we found</h3>
+  <ul>
+    <li><b>It is a real, well-studied step</b>: paraphrases merged together (multi-query, RAG-Fusion), a fake answer used as the search text (HyDE, query2doc), splitting a question into smaller ones, and linking the question's words to graph nodes (GraphRAG, LightRAG, HippoRAG).</li>
+    <li><b>The gain depends on the retriever.</b> One large study (11 methods, 24 retrievers, 12 datasets) found that expansion tended to help weaker retrievers and hurt stronger ones: on one test set a weak retriever (DPR) gained 10.8 points, while a strong one (E5-large-v2) lost 7.6. Its effect on our R arm is not measured. <span class="small">[weller2023]</span></li>
+    <li><b>An LLM rewriter brings its own knowledge, and its own errors, into the search</b>: the fake answer can be wrong, and then the search follows the wrong idea.</li>
+    <li><b>For graph seeds, how you match matters.</b> HippoRAG 2 found that matching the whole question to graph nodes (what our dense linker does) was no better than finding names first, while matching it to whole facts (triples) gained 12.5% recall@5 on average. <span class="small">[gutierrez2025]</span></li>
+  </ul>
+  <h3>What each arm does with the question</h3>
+  <div style="overflow-x:auto"><table class="tbl" aria-label="Query step per arm">
+    <thead><tr><th>arm</th><th>rewrites the question?</th><th>links words to concepts?</th><th>status</th></tr></thead>
+    <tbody>
+      <tr><td class="m">L</td><td>no</td><td>no</td><td>protocol</td></tr>
+      <tr><td class="m">R</td><td>no: the raw question goes to keyword and meaning search</td><td>no</td><td>protocol</td></tr>
+      <tr><td class="m">G</td><td>partly: LightRAG's model picks keywords, which can include words not in the question</td><td>yes, through those keywords</td><td>protocol; not run</td></tr>
+      <tr><td class="m">H, Hc</td><td>no</td><td>yes: one shared linker (alias table + bge-m3), computed once and cached for both</td><td>protocol; stand-in on this page</td></tr>
+    </tbody></table></div>
+  <h3>What we chose</h3>
+  <ol>
+    <li><b>No rewriting in the thesis run.</b> It would be a new factor, it can hurt a strong hybrid retriever like R, and it could mix a model's own knowledge into retrieval. At most, later, one shared cached rewrite for R and H alike as a side check.</li>
+    <li><b>Name the linker as part of H.</b> H gets the linker and the router; R gets the raw question. The claim says "a graph walk seeded by an entity linker", and we log how often the linker finds no concept at all.</li>
+    <li><b>Log G's keywords</b> and count its extra model call in the cost comparison.</li>
+    <li><b>In the app, show only what really ran.</b> A "How I searched" panel under each answer, built from the trace. Here it is for the selected question (arm H, real linker output):</li>
+  </ol>
+  <div class="mock" id="howsearched" aria-live="polite"></div>
+  <p class="small faint">Product design, not built. The panel never lists variants that were not searched.</p>
+</div></section>
+<div class="wrap">
+<section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>Why the protocol looks like this</h2>
+<div class="ev"><b class="h">Literature</b>GraphRAG systems build an entity graph from text chunks with an LLM and answer from graph neighbourhoods or community summaries (Edge et al.); LightRAG retrieves over entity and relation keys at two levels (Guo et al.). Our arm G is planned to run LightRAG with its defaults as the off-the-shelf graph baseline; no LightRAG run is shown here. Comparisons of RAG and GraphRAG report that each wins on different question types, so the strata are reported separately. <span class="small">[edge2024, guo2024, han2025]</span></div>
+<div class="ev"><b class="h">Literature</b>A passage that supports a claim is not proof that the model used it (Wallat et al.), and ALCE measures citation recall (is each statement supported by its citations?) and citation precision (is each citation needed?) with an entailment model (Gao et al.); our designed check covers only part of that. MiniCheck is a small checker close to GPT-4 on grounding benchmarks (Tang et al.). <span class="small">[wallat2024, gao2023, tang2024]</span></div>
+<div class="ev"><b class="h">Ours, measured</b>On 76 claim-premise pairs in 23 clusters (some constructed; labels by one LLM, not human gold), MiniCheck reached balanced accuracy 0.732 (95% interval 0.622-0.852) on the whole premise and 0.454 and 0.501 under two ways of cutting it at 512 tokens. So the designed check scores the whole cited context when it fits MiniCheck's 2,048-token input, logs longer cases instead of cutting them, and never truncates at 512. HHEM is kept as a robustness score only.</div>
+<div class="ours"><b class="h">Ours, the protocol</b>One shared pipeline, <code>link → route → walk → collect → dedupe → rank → fuse(R) → pack(B) → serialize → answer</code>. H and Hc differ only in <code>eligible(edge, route)</code>: in H it is "relation in the router's mask", in Hc it is "true". The protocol specifies fourteen rules against the leaks of our own pipeline (the request carries only (opaque id, text) pairs, the Hc graph is a label-stripped projection, neighbours are sorted by id, only asserted edges load, ranking is type-blind, caches are keyed by arm) and ten harness tests that must pass before the main run. This page implements a demo of several rules and passes a small subset of checks (allowlist, shared cached seeds, no label strings in the projected Hc graph, cap never exceeded, leakage, determinism); the full harness is not built.</div>
+<div class="ours"><b class="h">Ours, the decision rule</b>Two contrasts in a fixed order, each an exact one-sided McNemar test at α = 0.05 on the fully-correct rate of the primary stratum: H − R first; H − Hc is tested confirmatorily only if the first rejects. Both estimates are reported in every case, and the joint claim needs both rejections. A positive H − Hc shows that type-based edge selection beats no selection with this router; it does not show that the labels' meaning matters beyond selectivity.</div>
+</section>
+
+<section class="step" id="l3"><div class="kicker"><span class="lv">Level 3</span>our thesis choice</div><h2>What this slice tells us before the main run</h2>
+<div id="l3box"></div>
+<table class="tbl" aria-label="Built and not built">
+<thead><tr><th>step</th><th>on this page</th><th>thesis status</th></tr></thead>
+<tbody>
+<tr><td>Entity linking</td><td>alias table + real bge-m3 scores over concept names; top 3 above 0.60 (ours)</td><td>designed; linker thresholds tuned on the development split</td></tr>
+<tr><td>Router</td><td>a keyword stand-in (ours); you can change the mask</td><td>not built; reads the question text only</td></tr>
+<tr><td>Typed walk, evidence, passage fetch</td><td>computed on the pilot graph files; Hc on a projection built in the page; "asserted" stands in as "accepted-by-gate"</td><td>designed; Neo4j load not run, passages from Postgres by id</td></tr>
+<tr><td>R (BM25 + dense, RRF, rerank)</td><td>BM25 in the page (ours); real bge-m3 and bge-reranker-v2-m3 scores</td><td>designed; BM25 settings and depth tuned on the development split</td></tr>
+<tr><td>Fusion and budget cut</td><td>computed: RRF k = 60, B = 4,000 bge-m3 tokens of passage text (request overhead not counted); R fills 90-98% of B on the three questions at 4,000 but only 80-82% at 2,000, below the protocol's fill test</td><td>frozen in the protocol (tokens of the answer model)</td></tr>
+<tr><td>G (LightRAG defaults)</td><td>not run on this slice</td><td>not built</td></tr>
+<tr><td>Answer generation</td><td>request shown, not sent</td><td>one Alibaba-hosted answer model for all arms, temperature 0 (model not pinned)</td></tr>
+<tr><td>Citations</td><td>lecture and 5-minute window</td><td>book · chapter · section · page after the table-of-contents step</td></tr>
+<tr><td>Citation check</td><td>design</td><td>MiniCheck on the whole cited context; thresholds from human labels</td></tr>
+</tbody></table>
+<p class="small muted" style="margin-top:10px">The passages and graph come from <a href="/thesis/assets/stories/kg-build/build/index.html">How a knowledge graph is built</a>; the stages that produce them are on <a href="/thesis/assets/stories/data-pipeline/build/index.html">Our data pipeline</a>.</p>
+</section>
+
+<section class="step" id="quiz"><div class="kicker">Check yourself</div><h2>Three questions</h2><div id="qz"></div></section>
+
+<section class="step" id="src"><div class="kicker">Sources</div><h2>Sources</h2>
+<table class="tbl"><thead><tr><th>key</th><th>source</th><th>used for</th><th>checked?</th></tr></thead><tbody id="srcrows"></tbody></table>
+</section>
+</div>
+</main>
+<script id="qf-core">// Query Flow core: the query-time steps of the claim protocol's shared pipeline, run on the KG pilot slice.
+//   link(q) -> route(q) -> walk(seeds, route, eligible) -> collect -> dedupe -> rank -> fuse(R) -> pack(B) -> serialize
+// H and Hc run the same code and differ only in eligible(edge, route). Used by the page (inlined) and by scripts/check_core.mjs.
+// Where the thesis has no implementation yet (router, linker thresholds, k_graph), the values here are OURS and the page says so.
+(function (G) {
+  const STOP = new Set("a an and are as at be but by can do does for from has have how i if in is it its of on or so that the then there these this to was what when where which who why will with you your we they them not".split(" "));
+  const tokens = s => (s.toLowerCase().match(/[a-z0-9]+/g) || []).filter(w => !STOP.has(w) && w.length > 1);
+  const norm = s => " " + s.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim() + " ";
+
+  // BM25 (Okapi; k1 1.2, b 0.75; lowercase word tokens; small stop list). Ours, for the page: the thesis BM25 is not fixed yet.
+  function bm25(D, query, k1 = 1.2, b = 0.75) {
+    if (!D._bm) {
+      const docs = D.chunks.map(c => tokens(c.text)), N = docs.length, avg = docs.reduce((a, d) => a + d.length, 0) / N, df = {};
+      docs.forEach(d => new Set(d).forEach(w => (df[w] = (df[w] || 0) + 1)));
+      D._bm = { docs, N, avg, df, tf: docs.map(d => d.reduce((m, w) => ((m[w] = (m[w] || 0) + 1), m), {})) };
+    }
+    const { docs, N, avg, df, tf } = D._bm, q = [...new Set(tokens(query))];
+    return docs.map((d, i) => q.reduce((s, w) => {
+      if (!tf[i][w]) return s;
+      const idf = Math.log(1 + (N - df[w] + 0.5) / (df[w] + 0.5)), f = tf[i][w];
+      return s + idf * (f * (k1 + 1)) / (f + k1 * (1 - b + b * d.length / avg));
+    }, 0));
+  }
+  const rankBy = (ids, score) => ids.map((id, i) => [id, score[i]]).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1));
+  function rrf(lists, k = 60) {
+    const s = {};
+    lists.forEach(l => l.forEach((id, r) => (s[id] = (s[id] || 0) + 1 / (k + r + 1))));
+    return Object.entries(s).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).map(([id, v]) => ({ id, rrf: v }));
+  }
+
+  // link(q): shared, type-blind. Alias table (exact phrase of a label or alias in the question) + dense search over concept strings.
+  function link(D, q, opt = {}) {
+    const t = opt.threshold ?? 0.6, k = opt.k ?? 3, nq = norm(q.question), seeds = new Map();
+    D.concepts.filter(c => c.status === "vocabulary").forEach(c => [c.label, ...c.aliases].forEach(a => {
+      if (a.length > 3 && nq.includes(norm(a))) { if (!seeds.has(c.id)) seeds.set(c.id, { id: c.id, how: "alias", match: a }); }
+    }));
+    q.concept_dense.filter(x => x[1] >= t).slice(0, k).forEach(([id, v, s]) => { if (!seeds.has(id)) seeds.set(id, { id, how: "dense", match: s, score: v }); });
+    return [...seeds.values()].sort((a, b) => (a.id < b.id ? -1 : 1));
+  }
+
+  // route(q): NOT BUILT in the thesis. Stand-in (ours): reads the question text only; returns (mask, direction, depth <= 2).
+  function route(q) {
+    const s = q.question.toLowerCase();
+    if (/\b(before|first|prerequisite|need to know|understand)\b/.test(s)) return { mask: ["PREREQUISITE_OF"], dir: "in", depth: 2, why: "a 'what first' question: prerequisites, followed backwards" };
+    return { mask: ["USES", "IS_A"], dir: "both", depth: 2, why: "a cross-concept question: domain relations, both directions" };
+  }
+
+  // loaded(): the edges both arms may load. Stand-in for the protocol's asserted-edge snapshot: pilot edges marked accepted-by-gate
+  // (the toggle adds proposed ones, which the confirmatory arms may not load).
+  function loaded(D, opt = {}) {
+    const load = opt.statuses || ["accepted-by-gate"];
+    return D.edges.filter(e => load.includes(e.st) && e.s !== e.t);
+  }
+  // project(): the Hc snapshot, built by projection (rule 2): fields {opaque id, src, dst, relation RELATED_TO, evidence}; the opaque id
+  // is a hash of (src, dst, assertion index), not of the relation; no status, label or score field survives except the gate verdict per
+  // evidence record, which collect() needs in both arms.
+  function project(D, opt = {}) {
+    const h = s => { let x = 5381; for (const ch of s) x = ((x * 33) ^ ch.charCodeAt(0)) >>> 0; return "e" + x.toString(16).padStart(8, "0"); };
+    return loaded(D, opt).map((e, i) => ({ id: h(e.s + "|" + e.t + "|" + D.edges.indexOf(e)), s: e.s, t: e.t, r: "RELATED_TO", ev: e.ev.map(v => ({ p: v.p, g: v.g, hh: v.hh, mc: v.mc, q: v.q })) }));
+  }
+  // linkCached(): link(q) once per question, read-only, shared by H and Hc (rule 6).
+  function linkCached(D, q, opt) {
+    D._seeds = D._seeds || {};
+    const k = q.id + "|" + JSON.stringify(opt || {});
+    if (!D._seeds[k]) D._seeds[k] = Object.freeze(link(D, q, opt));
+    return D._seeds[k];
+  }
+
+  // walk: bounded BFS over loaded edges; neighbours sorted by (target id, edge id); eligible() is the ONLY difference between H and Hc.
+  function walk(D, seeds, rt, arm, opt = {}) {
+    const E = arm === "Hc" ? project(D, opt) : loaded(D, opt);
+    const eligible = e => arm === "Hc" ? true : rt.mask.includes(e.r);
+    const seen = new Map(seeds.map(s => [s.id, 0])), steps = [];
+    let front = seeds.map(s => s.id);
+    for (let hop = 1; hop <= rt.depth && front.length; hop++) {
+      const next = [];
+      for (const c of front) {
+        const nb = [];
+        E.forEach(e => {
+          if (!eligible(e)) return;
+          if ((rt.dir !== "in") && e.s === c) nb.push([e.t, e]);
+          if ((rt.dir !== "out") && e.t === c) nb.push([e.s, e]);
+        });
+        nb.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : a[1].id < b[1].id ? -1 : 1));
+        nb.forEach(([to, e]) => {
+          steps.push({ hop, from: c, to, edge: e });
+          if (!seen.has(to)) { seen.set(to, hop); next.push(to); }
+        });
+      }
+      front = next;
+    }
+    return { steps, reached: seen };
+  }
+
+  // collect -> dedupe -> rank: evidence passages the gate supported; one entry per passage (lowest hop);
+  // rank = hop ascending, then the cross-encoder score on (question, raw passage text) descending, then passage id.
+  function graphList(D, q, w, excluded) {
+    const idx = Object.fromEntries(D.chunks.map((c, i) => [c.id, i])), best = new Map(), records = [];
+    w.steps.forEach(st => st.edge.ev.forEach(ev => {
+      records.push({ hop: st.hop, edge: st.edge, ev });
+      if (ev.g !== "supported" || excluded.has(ev.p)) return;
+      if (!best.has(ev.p) || best.get(ev.p).hop > st.hop) best.set(ev.p, { id: ev.p, hop: st.hop, via: st.edge.id });
+    }));
+    const list = [...best.values()].map(x => ({ ...x, rr: q.rerank[idx[x.id]] }))
+      .sort((a, b) => a.hop - b.hop || b.rr - a.rr || (a.id < b.id ? -1 : 1));
+    return { records, list };
+  }
+
+  // R: BM25 top 50 and dense top 50, RRF k = 60, top 30 candidates reranked by the cross-encoder.
+  function rList(D, q, excluded, n = 30) {
+    const ids = D.chunks.map(c => c.id), keep = x => !excluded.has(x[0]);
+    const bm = rankBy(ids, bm25(D, q.question)).filter(keep).slice(0, 50), de = rankBy(ids, q.dense).filter(keep).slice(0, 50);
+    const fused = rrf([bm.map(x => x[0]), de.map(x => x[0])]).slice(0, n);
+    const idx = Object.fromEntries(ids.map((c, i) => [c, i]));
+    const rer = fused.map(x => ({ ...x, rr: q.rerank[idx[x.id]] })).sort((a, b) => b.rr - a.rr || (a.id < b.id ? -1 : 1));
+    return { bm, de, fused, list: rer };
+  }
+
+  // pack(B): add passages in order while the next one fits, then stop (tokens: bge-m3 counts, a proxy for the answer model's tokenizer).
+  function pack(D, order, B) {
+    const tok = Object.fromEntries(D.chunks.map(c => [c.id, c.tok])), out = []; let used = 0;
+    for (const id of order) { if (used + tok[id] > B) break; out.push(id); used += tok[id]; }
+    return { ids: out, used, next: order[out.length] || null };
+  }
+
+  // serialize: allowlist only (system prompt, question, opaque passage ids + text). No path, relation or hop reaches the request.
+  const SYSTEM = "You are a tutor for a machine-learning course. Answer the question. When numbered passages are given, base the answer on them and cite them by number, and say so if they do not answer it. When no passages are given, answer from your own knowledge.";   // one prompt for every arm, L included
+  function serialize(D, q, ids) {
+    const T = Object.fromEntries(D.chunks.map(c => [c.id, c.text]));
+    return { system: SYSTEM, question: q.question, passages: ids.map((id, i) => ({ n: i + 1, id: "p" + String(i + 1).padStart(2, "0"), text: T[id] })) };
+  }
+
+  function run(D, q, arm, opt = {}) {
+    const B = opt.B ?? D.meta.B, excluded = new Set(opt.leak === false ? [] : q.exclude);
+    const res = { arm, excluded: [...excluded] };
+    if (arm === "L") { res.context = { ids: [], used: 0 }; res.request = serialize(D, q, []); return res; }
+    if (arm === "G") { res.notRun = true; return res; }
+    res.R = rList(D, q, excluded, opt.rCand ?? D.meta.r_candidates);
+    if (arm === "R") { res.final = res.R.list.map(x => x.id); }
+    else {
+      res.seeds = linkCached(D, q, opt.link);
+      res.route = opt.route || route(q);
+      res.walk = walk(D, res.seeds, res.route, arm, opt);
+      res.graph = graphList(D, q, res.walk, excluded);
+      res.gl = res.graph.list.slice(0, opt.kGraph ?? D.meta.k_graph);
+      res.fused = rrf([res.gl.map(x => x.id), res.R.list.map(x => x.id)], D.meta.rrf_k);
+      res.final = res.fused.map(x => x.id);
+    }
+    res.context = pack(D, res.final, B);
+    res.request = serialize(D, q, res.context.ids);
+    return res;
+  }
+
+  // coverage proxy: a reference point counts as reachable when a packed passage MENTIONS one of its concepts (not an answer grade)
+  function coverage(D, q, ids) {
+    return q.reference.map(r => ({ point: r.point, hits: ids.filter(id => (D.mentions[id] || []).some(c => r.concepts.includes(c))) }));
+  }
+
+  G.QF = { tokens, bm25, rrf, link, linkCached, loaded, project, route, walk, graphList, rList, pack, serialize, run, coverage, SYSTEM };
+})(typeof window !== "undefined" ? window : globalThis);
+</script>
+<script>
+(function () {
+  const $ = s => document.querySelector(s), esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const base = (new URLSearchParams(location.search).get("data") || "../data").replace(/\/$/, "");
+  const ARMS = [["L", "closed book"], ["R", "text retriever"], ["G", "LightRAG defaults"], ["H", "typed hybrid"], ["Hc", "labels collapsed"]];
+  const STEPS = [
+    ["q", "Question", "comp"], ["link", "Entity linking", "comp"], ["route", "Route", "ours"], ["walk", "Typed traversal", "comp"],
+    ["ev", "Evidence records", "comp"], ["fetch", "Passage fetch", "comp"], ["fuse", "Text list and fusion", "comp"], ["pack", "Budget cut (B)", "comp"],
+    ["answer", "Answer generation", "dsg"], ["cite", "Citations", "dsg"], ["nli", "Citation check", "dsg"]];
+  const USES = { L: ["q", "pack", "answer"], R: ["q", "fuse", "pack", "answer", "cite", "nli"], G: ["q"], H: STEPS.map(s => s[0]), Hc: STEPS.map(s => s[0]) };
+  const BL = { comp: "computed", ours: "stand-in (ours)", dsg: "design, not built", skip: "not used by this arm" };
+  let D, st = { q: 0, arm: "H", step: 0, leak: true, prop: false, B: 4000, mask: null, cut: 0.5 };
+  const badge = k => '<span class="b ' + k + '">' + BL[k] + '</span>';
+  const C = id => D.chunks.find(c => c.id === id), N = id => (D.concepts.find(c => c.id === id) || { label: id.replace(/^new:/, "") }).label;
+  const snip = (t, n = 220) => t.length > n ? t.slice(0, t.lastIndexOf(" ", n)) + " …" : t;
+  const relSpan = r => '<span class="rel ' + r + '">' + r + '</span>';
+
+  fetch(base + "/query-flow.json").then(r => r.json()).then(d => { D = d; init(); }).catch(e => { $("#stage").innerHTML = '<p style="color:var(--warn)">Could not load the data (' + esc(e) + '). Serve the folder over http.</p>'; });
+
+  function opt() {
+    const q = D.questions[st.q], rt = QF.route(q);
+    if (st.mask) rt.mask = st.mask.slice();
+    return { B: st.B, leak: st.leak, statuses: st.prop ? ["accepted-by-gate", "proposed"] : ["accepted-by-gate"], route: rt };
+  }
+  const runArm = a => QF.run(D, D.questions[st.q], a, opt());
+
+  function init() {
+    $("#qsel").innerHTML = D.questions.map((q, i) => '<option value="' + i + '">' + esc(q.id + " · " + q.question) + '</option>').join("");
+    $("#arms").innerHTML = ARMS.map(([a, t]) => '<button class="arm" data-a="' + a + '" aria-pressed="' + (a === st.arm) + '"><b>' + a + '</b><span>' + t + '</span></button>').join("");
+    $("#steps").innerHTML = STEPS.map((s, i) => '<li><button data-i="' + i + '"><span><span class="no">' + (i + 1) + '</span>' + s[1] + '</span>' + badge(s[2]) + '</button></li>').join("");
+    $("#qsel").onchange = e => { st.q = +e.target.value; st.mask = null; draw(); };
+    $("#arms").onclick = e => { const b = e.target.closest(".arm"); if (b) { st.arm = b.dataset.a; draw(); } };
+    $("#steps").onclick = e => { const b = e.target.closest("button"); if (b) { st.step = +b.dataset.i; draw(); } };
+    $("#leak").onchange = e => { st.leak = e.target.checked; draw(); };
+    $("#prop").onchange = e => { st.prop = e.target.checked; draw(); };
+    $("#bsel").onchange = e => { st.B = +e.target.value; draw(); };
+    document.addEventListener("keydown", e => {
+      if (e.target.closest && e.target.closest("select,input")) return;
+      if (e.key === "ArrowRight" && st.step < STEPS.length - 1) { st.step++; draw(); }
+      if (e.key === "ArrowLeft" && st.step > 0) { st.step--; draw(); }
+    });
+    $("#stage").addEventListener("change", e => {
+      if (e.target.name === "mask") { st.mask = [...document.querySelectorAll('input[name=mask]:checked')].map(x => x.value); draw(); }
+    });
+    $("#stage").addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) { st.step += +b.dataset.go; draw(); } });
+    $("#ab-cut").addEventListener("input", e => { st.cut = +e.target.value; $("#ab-cut-v").textContent = st.cut.toFixed(2); abstain(); });
+    quiz(); sources(); draw();
+  }
+
+  function draw() {
+    document.querySelectorAll(".arm").forEach(b => b.setAttribute("aria-pressed", b.dataset.a === st.arm));
+    const used = USES[st.arm];
+    document.querySelectorAll("#steps button").forEach((b, i) => { b.classList.toggle("on", i === st.step); b.classList.toggle("off", !used.includes(STEPS[i][0])); });
+    const res = runArm(st.arm), s = STEPS[st.step], q = D.questions[st.q];
+    let h = '<div class="kicker">Step ' + (st.step + 1) + ' of ' + STEPS.length + ' · arm ' + st.arm + '</div><h3>' + s[1] + ' ' + badge(used.includes(s[0]) ? s[2] : "skip") + '</h3>';
+    h += used.includes(s[0]) ? (R[s[0]] || (() => ""))(res, q) : skipText(s[0]);
+    h += '<div class="nav2"><button data-go="-1" ' + (st.step ? "" : "disabled") + '>◀ previous</button><button data-go="1" ' + (st.step < STEPS.length - 1 ? "" : "disabled") + '>next ▶</button></div>';
+    $("#stage").innerHTML = h;
+    compare(); l3(); abstain(); howSearched();
+  }
+  function skipText(k) {
+    if (st.arm === "G") return '<div class="design"><b>Not run on this slice.</b> Arm G is planned as LightRAG with its default settings: it would build its own entity graph from the same passages and retrieve over entity and relation keys. No LightRAG run exists on this slice. For a system-level picture of a GraphRAG lane, see the <a href="/thesis/assets/figures/anatomy-system/index.html">isometric figure</a>.</div>';
+    if (st.arm === "L") return '<p class="muted">Arm L gets no passages; the one shared prompt tells the model to answer from its own knowledge when no passages are given. No retrieval, so this step does not happen. It is meant to measure what the model knows without our corpus.</p>';
+    return '<p class="muted">Arm R does not use the graph, so this step does not happen. R retrieves by text only (step 7).</p>';
+  }
+
+  const R = {
+    q(res, q) {
+      return '<div class="card"><div class="hd"><span>' + esc(q.lecture) + '</span><span>Q&amp;A, in the 5-minute window from ' + esc(q.time) + '</span><span>passage ' + esc(q.asked_in) + '</span></div><p style="color:var(--text);font-size:16px">"' + esc(q.question) + '"</p></div>' +
+        '<p class="muted small">A real question from the lecture\'s Q&amp;A (the moderator relays the online audience). Stratum (ours): ' + esc(q.stratum) + '.</p>' +
+        '<p><b>Leakage rule.</b> The professor answers right after the question, in the same passage. A retriever that may read that passage gets the answer for free. So the passages the question came from are excluded from the contexts of R, H and Hc (graph edges extracted from them can still be walked; G is not run): ' + q.exclude.map(x => '<span class="chip' + (st.leak ? ' ex' : '') + '">' + x + '</span>').join("") + (st.leak ? '' : ' <b style="color:var(--warn)">(rule switched off)</b>') + '</p>' +
+        '<details><summary>The professor\'s answer, as reference points (our reading)</summary><ol>' + q.reference.map(r => '<li>' + esc(r.point) + '</li>').join("") + '</ol></details>';
+    },
+    link(res, q) {
+      const seeds = res.seeds, top = q.concept_dense.slice(0, 8);
+      return '<p>The linker turns words into concept ids, once per question; the result is cached read-only and H and Hc read the same list. Two parts: the <b>alias table</b> of the seed vocabulary (a vocabulary concept\'s label or alias appears in the question) and a <b>dense search</b> with bge-m3 over every concept label and alias. Threshold 0.60 and top 3 are ours.</p>' +
+        '<table class="tbl"><thead><tr><th>seed</th><th>how</th><th>matched</th></tr></thead><tbody>' +
+        seeds.map(s => '<tr><td>' + esc(N(s.id)) + ' <span class="faint small">' + esc(s.id) + '</span></td><td>' + s.how + (s.score ? ' · ' + s.score.toFixed(3) : '') + '</td><td>"' + esc(s.match) + '"</td></tr>').join("") + '</tbody></table>' +
+        '<details open><summary>Top bge-m3 concept scores (cosine, best label or alias per concept)</summary><table class="tbl"><tbody>' +
+        top.map(([id, v, s]) => '<tr><td>' + esc(N(id)) + '</td><td class="m">' + v.toFixed(3) + '</td><td class="faint">"' + esc(s) + '"</td></tr>').join("") + '</tbody></table></details>';
+    },
+    route(res) {
+      const rt = res.route, all = ["PREREQUISITE_OF", "IS_A", "USES"];
+      return '<p>The router reads only the question text and returns a relation mask, a direction and a depth of at most 2. <b>The thesis router is not built.</b> This stand-in uses a keyword rule: ' + esc(QF.route(D.questions[st.q]).why) + '.</p>' +
+        '<div class="row"><span class="lbl">Mask (H)</span>' + all.map(r => '<label class="ck"><input type="checkbox" name="mask" value="' + r + '"' + (rt.mask.includes(r) ? " checked" : "") + '> ' + relSpan(r) + '</label>').join("") + '</div>' +
+        '<p class="small muted">Direction: ' + esc(rt.dir) + ' · depth: ' + rt.depth + '. ' + (st.arm === "Hc" ? '<b>Hc gets the same direction and depth and ignores the mask.</b>' : 'Hc would get the same direction and depth and ignore the mask.') + '</p>';
+    },
+    walk(res) {
+      const w = res.walk, n = w.steps.length;
+      let h = '<p>' + (st.arm === "Hc" ? 'Hc follows <b>every</b> loaded edge' : 'H follows only <b>' + res.route.mask.join(", ") + '</b>') + ' from the seeds, at most ' + res.route.depth + ' hops. Loaded: ' + (st.prop ? 'accepted-by-gate <b>and proposed</b> edges (proposed edges only bridge: their evidence is ungated)' : 'edges marked accepted-by-gate, our stand-in for the protocol\'s asserted edges') + (st.arm === 'Hc' ? '. Hc walks a projection of them: opaque ids, every relation RELATED_TO' : '') + '. Neighbours are sorted by concept id, then edge id.</p>';
+      h += '<p class="mono small">' + n + ' edge traversals (' + new Set(w.steps.map(x => x.edge.id)).size + ' distinct edges) · ' + (w.reached.size) + ' concepts reached</p>';
+      h += svgWalk(res);
+      if (!n) h += '<p class="muted">No eligible edge leaves the seeds.</p>';
+      h += '<details' + (n <= 14 ? " open" : "") + '><summary>Edges, hop by hop</summary><table class="tbl"><tbody>' + w.steps.map(x => '<tr><td class="m">hop ' + x.hop + '</td><td>' + esc(N(x.edge.s)) + ' ' + relSpan(x.edge.r) + ' ' + esc(N(x.edge.t)) + '</td><td class="faint small">' + x.edge.st + '</td></tr>').join("") + '</tbody></table></details>';
+      return h;
+    },
+    ev(res) {
+      const r = res.graph.records, sup = r.filter(x => x.ev.g === "supported");
+      return '<p>Every edge carries evidence records: the passage id, the verbatim quote and the two checker scores (HHEM, MiniCheck) from the gate. Only records the gate <b>supported</b> send their passage on: ' + sup.length + ' of ' + r.length + ' record occurrences; after the leakage exclusion and one entry per passage, ' + res.graph.list.length + ' passages remain.</p>' +
+        '<div style="max-height:420px;overflow:auto">' + r.map(x => '<div class="card' + (x.ev.g === "supported" ? "" : " ex") + '"><div class="hd"><span class="mono">' + x.ev.p + '</span><span>' + esc(N(x.edge.s)) + ' ' + relSpan(x.edge.r) + ' ' + esc(N(x.edge.t)) + '</span><span>HHEM ' + x.ev.hh.toFixed(2) + ' · MiniCheck ' + x.ev.mc.toFixed(2) + ' · ' + esc(x.ev.g) + '</span></div><p>"' + esc(snip(x.ev.q, 200)) + '"</p></div>').join("") + '</div>';
+    },
+    fetch(res) {
+      const gl = res.graph.list;
+      return '<p>The passage ids fetch the passage text (in the thesis: from Postgres by <code>passage_id</code>; here: from the pilot\'s passage file). One entry per passage, at its lowest hop; excluded passages are dropped. Ranking is type-blind: hop ascending, then the cross-encoder score on (question, passage), then id. The top ' + D.meta.k_graph + ' (k_graph, ours) go on.</p>' +
+        (gl.length ? gl.map((x, i) => '<div class="card' + (i >= D.meta.k_graph ? " ex" : "") + '"><div class="hd"><span class="mono">' + (i + 1) + '. ' + x.id + '</span><span>hop ' + x.hop + '</span><span>rerank ' + x.rr.toFixed(2) + '</span><span>' + esc(C(x.id).lec + " " + C(x.id).loc) + '</span></div><p>' + esc(snip(C(x.id).text)) + '</p></div>').join("") : '<p class="muted">The walk produced no supported passage, so the graph list is empty and the arm falls back to the text list.</p>');
+    },
+    fuse(res, q) {
+      const Rl = res.R;
+      let h = '<p><b>R, the text retriever:</b> BM25 top 50 and bge-m3 dense top 50, fused with RRF (k = 60); the top ' + D.meta.r_candidates + ' are reordered by the bge-reranker-v2-m3 cross-encoder.</p><div class="grid">';
+      h += '<table class="tbl"><thead><tr><th>BM25 top 5</th><th>dense top 5</th><th>after rerank, top 8</th></tr></thead><tbody>';
+      for (let i = 0; i < 8; i++) h += '<tr><td class="m">' + (Rl.bm[i] && i < 5 ? Rl.bm[i][0] + ' · ' + Rl.bm[i][1].toFixed(1) : '') + '</td><td class="m">' + (Rl.de[i] && i < 5 ? Rl.de[i][0] + ' · ' + Rl.de[i][1].toFixed(3) : '') + '</td><td class="m">' + (Rl.list[i] ? Rl.list[i].id + ' · ' + Rl.list[i].rr.toFixed(2) : '') + '</td></tr>';
+      h += '</tbody></table></div>';
+      if (res.fused) h += '<p style="margin-top:12px"><b>' + st.arm + ':</b> RRF (k = 60) over two lists, the graph list (' + res.gl.length + ') and R\'s list (' + Rl.list.length + '). A passage on both lists rises. First 10: ' + res.fused.slice(0, 10).map(x => '<span class="chip' + (res.gl.some(g => g.id === x.id) ? ' only' : '') + '">' + x.id + '</span>').join("") + '</p><p class="small faint">Amber: came from the graph list.</p>';
+      return h;
+    },
+    pack(res, q) {
+      const ids = res.context.ids, B = st.B, cols = ["#7C9CFF", "#3CC7B4", "#F2A93B", "#C28BFF"];
+      if (st.arm === "L") return '<p>Closed book: the context is empty. The request holds only the system prompt and the question (' + q.qtok + ' bge-m3 tokens).</p>';
+      let h = '<p>Passages are added in order while the next one fits in B = ' + B.toLocaleString() + ' tokens, then packing stops. ' + ids.length + ' passages, ' + res.context.used.toLocaleString() + ' tokens of passage text used (' + Math.round(100 * res.context.used / B) + '% of B)' + (res.context.next ? '; the next one (' + res.context.next + ', ' + C(res.context.next).tok + ' tokens) did not fit.' : '.') + '</p>';
+      h += '<div class="tokbar" role="img" aria-label="Token budget use">' + ids.map((id, i) => '<span style="width:' + (100 * C(id).tok / B) + '%;background:' + cols[i % 4] + '" title="' + id + ' · ' + C(id).tok + ' tokens">' + id.replace(/^L1(\d)-c/, "$1·") + '</span>').join("") + '</div>';
+      h += '<p class="small faint">Token counts use the bge-m3 tokenizer on the passage text only, a proxy: the protocol counts tokens of the answer model, which is not pinned yet, and the request\'s own overhead is not counted. Sensitivity: 2,000 and 8,000 (menu above). The protocol\'s fill test wants R at 90% of B or more on 90% of pilot items.</p>';
+      h += ids.map((id, i) => '<div class="card"><div class="hd"><span class="mono">p' + String(i + 1).padStart(2, "0") + ' = ' + id + '</span><span>' + esc(C(id).lec + " " + C(id).loc) + '</span><span>' + C(id).tok + ' tokens</span></div><p>' + esc(snip(C(id).text, 160)) + '</p></div>').join("");
+      return h;
+    },
+    answer(res, q) {
+      const req = res.request, cov = QF.coverage(D, q, res.context.ids);
+      const show = JSON.stringify({ system: req.system, question: req.question, passages: req.passages.map(p => ({ id: p.id, text: snip(p.text, 90) })) }, null, 1);
+      return '<div class="design"><b>Design, not built.</b> One answer model for every arm, an Alibaba-hosted LLM (not pinned yet), temperature 0, one prompt. Nothing was sent. Below is an abbreviated preview of the request that <code>serialize()</code> builds (passage text shortened, numbering field left out). It carries only the system prompt, the question and (opaque id, text) pairs: no arm, relation, hop or path. That removes the explicit labels; the choice and order of passages can still differ between arms.</div>' +
+        '<div class="pre">' + esc(show) + '</div>' +
+        '<h3>Coverage proxy against the professor\'s answer</h3><table class="tbl"><tbody>' + cov.map(c => '<tr><td>' + esc(c.point) + '</td><td class="m ' + (c.hits.length ? "vtrue" : "vfalse") + '">' + (c.hits.length ? c.hits.slice(0, 4).join(" ") + (c.hits.length > 4 ? " …" : "") : "no passage") + '</td></tr>').join("") + '</tbody></table><p class="small faint">A point counts when a packed passage mentions one of its concepts (pilot MENTIONS edges). It counts concept-mention overlap (one concept of a point is enough), not evidence that answers the point and not what the model would write.</p>';
+    },
+    cite(res, q) {
+      const ids = res.context.ids, ol = D.book_outline || [];
+      return '<p>Each passage the answer cites maps back to its source. For the lecture captions on this slice that is the lecture and its 5-minute window:</p>' +
+        ids.slice(0, 6).map((id, i) => '<div class="card"><div class="hd"><span class="mono">[' + (i + 1) + ']</span><span>Caltech CS 156, ' + (C(id).lec === "L14" ? "Lecture 14, Support Vector Machines" : "Lecture 15, Kernel Methods") + ', window from ' + C(id).loc + '</span></div></div>').join("") +
+        '<div class="design"><b>Design, not built.</b> For book passages the citation is <i>book · chapter · section · page</i>, from the table-of-contents step of the pipeline. The book\'s e-Chapter 8 covers SVMs, kernels and the soft margin; relevant sections, as the OCR headings give them: ' + ol.filter(x => /^8\.(1\.3|3 |4 )/.test(x)).map(esc).join("; ") + '. A citation would read like <code>Learning From Data, e-Chapter 8, §8.4 Soft-margin SVM, p. N</code>; the page numbers are not yet checked against the print, and book passages are not yet indexed.</div>';
+    },
+    nli(res) {
+      return '<div class="design"><b>Design, not built.</b> After the answer is written, each sentence with a citation is checked against the passages it cites: MiniCheck scores the whole cited context when it fits its 2,048-token input (longer cases are logged, never cut, and get no normal label; never cut at 512); HHEM gives a second, robustness score. A sentence below the threshold is flagged as unsupported. The thresholds must still be calibrated on human-labelled pairs; that is not done. ALCE also counts uncited statements and unneeded citations, which this check alone does not.</div>' +
+        '<p>Why this rule: on 76 claim-premise pairs in 23 clusters, MiniCheck reached balanced accuracy 0.732 on whole premises against 0.454 and 0.501 under two ways of truncating them at 512 tokens; in a constructed case with the evidence split over two chunks, whole premises passed 17-18 of 20 and single chunks 0-4 of 20 (labels by an LLM, not human gold).</p>' +
+        '<p class="small faint">The same two checkers already scored the domain-relation evidence of the graph (step 5; prerequisite evidence waits for review); here they would check the answer instead.</p>';
+    }
+  };
+
+  function svgWalk(res) {
+    const w = res.walk, seeds = res.seeds.map(s => s.id), hop = w.reached, W = 640, H = 300, cx = W / 2, cy = H / 2;
+    const rings = [[], [], []]; hop.forEach((h, id) => rings[h].push(id));
+    const pos = {}, RX = [rings[0].length > 1 ? 70 : 0, 175, 290], RY = [rings[0].length > 1 ? 26 : 0, 75, 135];
+    rings.forEach((ids, h) => { const n = ids.length; ids.sort().forEach((id, i) => { const a = -Math.PI / 2 + 2 * Math.PI * i / Math.max(n, 1) + h * 0.35; pos[id] = [cx + RX[h] * Math.cos(a), cy + RY[h] * Math.sin(a)]; }); });
+    const col = { USES: "#7C9CFF", IS_A: "#3CC7B4", PREREQUISITE_OF: "#F2A93B" };
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Walk from the seeds: rings are hops">';
+    [1, 2].forEach(h => s += '<ellipse cx="' + cx + '" cy="' + cy + '" rx="' + RX[h] + '" ry="' + RY[h] + '" fill="none" stroke="#242B38" stroke-dasharray="3 4"/>');
+    w.steps.forEach(x => { const a = pos[x.edge.s], b = pos[x.edge.t]; if (a && b) s += '<line x1="' + a[0] + '" y1="' + a[1] + '" x2="' + b[0] + '" y2="' + b[1] + '" stroke="' + col[x.edge.r] + '" stroke-width="1.4" opacity=".75"/>'; });
+    Object.entries(pos).forEach(([id, p]) => { const sd = seeds.includes(id); s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="' + (sd ? 7 : 4.5) + '" fill="' + (sd ? "#F2A93B" : "#171C28") + '" stroke="#98A0B0"/>'; if (sd || rings[1].length + rings[2].length < 26) s += '<text x="' + (p[0] + 8) + '" y="' + (p[1] + (sd ? (seeds.indexOf(id) % 2 ? 17 : -7) : 4)) + '" style="paint-order:stroke;stroke:#0B0D12;stroke-width:3px;font-size:' + (sd ? 12 : 10) + 'px">' + esc(N(id)) + '</text>'; });
+    return s + '</svg><p class="small faint">Amber dot: seed. Rings: hop 1 and hop 2. Lines: ' + relSpan("USES") + ' ' + relSpan("IS_A") + ' ' + relSpan("PREREQUISITE_OF") + '.</p>';
+  }
+
+  function compare() {
+    const out = {}; ARMS.forEach(([a]) => out[a] = runArm(a));
+    const rset = new Set(out.R.context.ids), q = D.questions[st.q];
+    let h = '<table class="tbl cmp"><thead><tr><th>arm</th><th>packed passages (in order)</th><th>tokens</th><th>coverage proxy</th></tr></thead><tbody>';
+    ARMS.forEach(([a, t]) => {
+      const r = out[a];
+      if (r.notRun) { h += '<tr><td class="m">' + a + '</td><td colspan="3" class="faint">' + t + ': not run on this slice</td></tr>'; return; }
+      const cov = QF.coverage(D, q, r.context.ids), got = cov.filter(c => c.hits.length).length;
+      h += '<tr><td class="m">' + a + '</td><td>' + (r.context.ids.length ? r.context.ids.map(id => '<span class="chip' + (rset.has(id) ? '' : ' only') + '">' + id + '</span>').join("") : '<span class="faint">empty (closed book)</span>') + '</td><td class="m">' + r.context.used + '</td><td class="m">' + got + ' of ' + cov.length + '</td></tr>';
+    });
+    $("#cmp").innerHTML = h + '</tbody></table>';
+    const same = JSON.stringify(out.H.request) === JSON.stringify(out.Hc.request);
+    $("#hhc").innerHTML = '<b>H vs Hc on this question:</b> ' + (same ? 'the two arms send the <b>same</b> request to the answer model.' : 'the two arms send <b>different</b> requests to the answer model.') + ' ' + hhcWhy(out, same);
+  }
+  function hhcWhy(out, same) {
+    const loaded = D.edges.filter(e => (st.prop ? ["accepted-by-gate", "proposed"] : ["accepted-by-gate"]).includes(e.st)), pre = loaded.filter(e => e.r === "PREREQUISITE_OF").length;
+    const m = out.H.route.mask;
+    if (same && !m.includes("PREREQUISITE_OF") && pre === 0) return 'The mask leaves out only PREREQUISITE_OF, and the loaded graph has <b>no</b> PREREQUISITE_OF edge (in the pilot every one is still waiting for human review). So "follow USES and IS_A" and "follow everything" are the same walk. Tick "also load proposed edges" to see what happens when such edges exist.';
+    if (same) return 'The edges that the mask leaves out do not change which passages reach the budget for this question.';
+    return 'Hc also follows the relations outside the mask (' + loaded.length + ' loaded edges, ' + pre + ' of them PREREQUISITE_OF), so different passages enter the fusion and the budget.';
+  }
+  function l3() {
+    const rows = D.questions.map((q, i) => {
+      const o = { B: st.B, leak: true, statuses: ["accepted-by-gate"] }, H = QF.run(D, q, "H", o), Hc = QF.run(D, q, "Hc", o), Rr = QF.run(D, q, "R", o);
+      const o2 = { ...o, statuses: ["accepted-by-gate", "proposed"] }, H2 = QF.run(D, q, "H", o2), Hc2 = QF.run(D, q, "Hc", o2);
+      const diff = (a, b) => a.context.ids.filter(x => !b.context.ids.includes(x)).length;
+      const cv = r => QF.coverage(D, q, r.context.ids).map(c => c.hits.length).join(" / ");
+      return '<tr><td class="m">' + q.id + '</td><td class="m">' + diff(H, Rr) + '</td><td class="m">' + cv(Rr) + '</td><td class="m">' + cv(H) + '</td><td class="m">' + (JSON.stringify(H.request) === JSON.stringify(Hc.request) ? "same" : "different") + '</td><td class="m">' + (JSON.stringify(H2.request) === JSON.stringify(Hc2.request) ? "same" : "different") + '</td></tr>';
+    }).join("");
+    $("#l3box").innerHTML = '<table class="tbl"><thead><tr><th>question</th><th>passages in H not in R</th><th>proxy hits per reference point, R</th><th>same, H</th><th>H vs Hc, asserted edges</th><th>H vs Hc, + proposed edges</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+      '<p class="small faint" style="margin-top:6px">Computed live with B = ' + st.B.toLocaleString() + ', the leakage rule on, and the stand-in router.</p>' +
+      '<div class="ours"><b class="h">Our reading (three questions are a demonstration, not a test)</b>' + l3text() + '</div>';
+  }
+
+  function l3text() {
+    const o = { B: st.B, leak: true, statuses: ["accepted-by-gate"] }, n = D.questions.map(q => { const H = QF.run(D, q, "H", o), R = QF.run(D, q, "R", o); return H.context.ids.filter(x => !R.context.ids.includes(x)).length; });
+    const u = { ...o, route: { mask: ["USES"], dir: "both", depth: 2 } }, usesDiff = D.questions.filter(q => JSON.stringify(QF.run(D, q, "H", u).request) !== JSON.stringify(QF.run(D, q, "Hc", u).request)).length;
+    return 'At B = ' + st.B.toLocaleString() + ', H sends ' + n.join(", ") + ' passages that R does not (Q1-Q3). Whether that helps is for the answer judge, not for the coverage proxy. RQ2 asks on what share of items H and Hc send different inputs. With accepted-by-gate edges and the stand-in mask USES + IS_A they are the same on all three questions, because the loaded graph has <b>no</b> PREREQUISITE_OF edge, so the mask removes nothing. A narrower mask changes that: with USES only, H and Hc differ on ' + usesDiff + ' of 3 questions. With proposed edges added, Q1 differs, while Q2 and Q3 keep identical graph lists (the extra edges do not change the top k_graph passages). So the share depends on the router and on reviewed prerequisite edges; the harness should report it on the pilot snapshot before the main run.';
+  }
+
+  // ---- product design: the four abstention layers (not part of the thesis arms) ----
+  const sig = x => 1 / (1 + Math.exp(-x));
+  function abstain() {
+    const q = D.questions[st.q], arm = ["R", "H", "Hc"].includes(st.arm) ? st.arm : "R", res = runArm(arm);
+    const idx = {}; D.chunks.forEach((c, i) => idx[c.id] = i);
+    const packed = res.context.ids.map(id => ({ id, s: sig(q.rerank[idx[id]]) })).sort((a, b) => b.s - a.s);
+    const best = packed.length ? packed[0].s : 0, pass = best >= st.cut;
+    $("#ab-q").innerHTML = '"' + esc(q.question) + '" · arm ' + arm + ' · leakage rule ' + (st.leak ? "on" : "off");
+    const W = 560, H = 54, x = v => 10 + v * (W - 20);
+    let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Reranker scores of the packed passages on a 0 to 1 line, with the cut-off">';
+    s += '<line x1="10" y1="30" x2="' + (W - 10) + '" y2="30" stroke="#242B38" stroke-width="6" stroke-linecap="round"/>';
+    s += '<rect x="' + x(st.cut) + '" y="22" width="' + (x(1) - x(st.cut)) + '" height="16" fill="#3CC7B4" opacity=".12"/>';
+    packed.forEach((p, i) => s += '<circle cx="' + x(p.s).toFixed(1) + '" cy="30" r="' + (i ? 4 : 7) + '" fill="' + (i ? "#98A0B0" : (pass ? "#3CC7B4" : "#FF8A65")) + '" opacity="' + (i ? .55 : 1) + '"/>');
+    s += '<line x1="' + x(st.cut) + '" y1="12" x2="' + x(st.cut) + '" y2="48" stroke="#F2A93B" stroke-width="2"/><text x="' + (x(st.cut) + 4) + '" y="12" style="fill:#F2A93B;font-size:10px">cut-off</text>';
+    s += '<text x="10" y="52" style="fill:#68707F;font-size:10px">0 · poor match</text><text x="' + (W - 10) + '" y="52" text-anchor="end" style="fill:#68707F;font-size:10px">1 · strong match</text></svg>';
+    $("#ab-gate").innerHTML = s + '<p><span class="verdict ' + (pass ? "pass" : "stop") + '">' + (pass ? "pass: go on to layer 2" : "stop: no model call, show the closest passages") + '</span> <span class="small muted">best of ' + packed.length + ' packed passages: <span class="mono">' + best.toFixed(3) + '</span> (' + (packed[0] ? packed[0].id : "none") + ')</span></p>' +
+      (q.id === "Q2" && st.leak ? '<p class="small muted">Q2 is the near miss: with its own Q&amp;A passage excluded, the best packed passage (about checking that a kernel is valid) scores only ' + best.toFixed(3) + '. Untick the leakage rule and the professor\'s own answer comes back at 0.991. Whether the rest of the course answers Q2 is not checked here; a low score only says the search found nothing close.</p>' : '');
+    $("#ab-close").innerHTML = packed.slice(0, 3).map((p, i) => { const c = C(p.id); return '<div class="card"><div class="hd"><span class="mono">' + (i + 1) + ' · ' + esc(c.id) + '</span><span>' + esc(c.lec.replace(/^L0?/, "Lecture ")) + ', 5-minute window from ' + esc(c.loc) + '</span><span>score ' + p.s.toFixed(3) + '</span></div><p>' + esc(snip(c.text, 200)) + '</p></div>'; }).join("");
+    // risk-coverage drawing (illustration): coverage falls and risk falls as the cut-off rises
+    const RW = 560, RH = 200, px = c => 46 + c * (RW - 66), py = r => 16 + (1 - r / 0.4) * (RH - 50), curve = c => 0.02 + 0.3 * Math.pow(c, 2.2);
+    let r = '<svg viewBox="0 0 ' + RW + ' ' + RH + '" role="img" aria-label="Illustration of a risk-coverage curve">';
+    r += '<line x1="46" y1="' + py(0) + '" x2="' + (RW - 20) + '" y2="' + py(0) + '" stroke="#68707F"/><line x1="46" y1="' + py(0) + '" x2="46" y2="16" stroke="#68707F"/>';
+    let d = ""; for (let k = 0; k <= 40; k++) { const c = 0.1 + 0.9 * k / 40; d += (k ? "L" : "M") + px(c).toFixed(1) + " " + py(curve(c)).toFixed(1); }
+    r += '<path d="' + d + '" fill="none" stroke="#C28BFF" stroke-width="2.5" stroke-dasharray="6 4"/>';
+    const cov = 1 - 0.9 * st.cut; r += '<circle cx="' + px(cov) + '" cy="' + py(curve(cov)) + '" r="7" fill="#F2A93B"/>';
+    r += '<text x="' + ((RW + 26) / 2) + '" y="' + (RH - 8) + '" text-anchor="middle" style="fill:#98A0B0">coverage: share of questions answered →</text>';
+    r += '<text x="14" y="' + (RH / 2) + '" transform="rotate(-90 14 ' + (RH / 2) + ')" text-anchor="middle" style="fill:#98A0B0">risk: wrong among answered →</text>';
+    r += '<text x="' + (px(0.12) + 4) + '" y="' + (py(curve(0.12)) - 30) + '" style="fill:#68707F;font-size:10px">strict: few answers, few errors</text><text x="' + (px(1) - 4) + '" y="' + (py(curve(1)) - 10) + '" text-anchor="end" style="fill:#68707F;font-size:10px">loose: answers all, more errors</text></svg>';
+    $("#ab-rc").innerHTML = r;
+  }
+  function howSearched() {
+    const q = D.questions[st.q], res = QF.run(D, q, "H", opt()), rset = new Set(res.R.list.map(x => x.id)), gset = new Set(res.gl.map(x => x.id));
+    const found = res.context.ids.slice(0, 4).map(id => id + ' (' + (gset.has(id) && rset.has(id) ? "graph and text search" : gset.has(id) ? "graph walk" : "text search") + ')');
+    $("#howsearched").innerHTML = '<div class="mh">How I searched</div>' +
+      '<div class="mline"><b>Your question</b>' + esc(q.question) + '</div>' +
+      '<div class="mline"><b>Concepts found</b>' + (res.seeds.length ? res.seeds.map(s => esc(N(s.id)) + ' <span class="faint small">(' + s.how + (s.score ? ' ' + s.score.toFixed(2) : '') + ')</span>').join(", ") : '<span class="faint">none: the answer would come from text search only</span>') + '</div>' +
+      '<div class="mline"><b>Search strategy</b>keyword + meaning search, plus a graph walk from these concepts (relations: ' + esc(res.route.mask.join(", ")) + '; up to ' + res.route.depth + ' hops)</div>' +
+      '<div class="mline"><b>First passages, found by</b>' + found.map(esc).join(" · ") + '</div>';
+  }
+  const QZ = [
+    ["What is the only difference between H and Hc?", ["Hc uses a smaller budget", "eligible(edge, route): H follows the router's relations, Hc follows all of them", "Hc uses another answer model"], 1, "Same seeds, same direction and depth, same ranking, fusion, budget and prompt."],
+    ["Why are the question's own Q&A passages excluded?", ["They are too long", "The professor's answer is in them, so retrieving them would leak the answer", "They contain no concepts"], 1, "The leakage rule: a question's source unit is excluded from retrieval for that question."],
+    ["Why does the request to the answer model hold only (opaque id, text) pairs?", ["To save tokens", "So that relation names, hops and paths cannot tell the model which arm it serves", "Because the model cannot read JSON"], 1, "Rule 1 of the protocol: labels in the prompt would leak the treatment."]];
+  function quiz() {
+    $("#qz").innerHTML = QZ.map((q, i) => '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(q[0]) + '</b><div class="opts">' + q[1].map((o, j) => '<button data-j="' + j + '">' + esc(o) + '</button>').join("") + '</div><p class="small muted fb" aria-live="polite"></p></div>').join("");
+    $("#qz").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; const box = b.closest(".q"), q = QZ[+box.dataset.i], ok = +b.dataset.j === q[2]; box.querySelectorAll("button").forEach(x => x.classList.remove("right", "wrong")); b.classList.add(ok ? "right" : "wrong"); box.querySelector(".fb").textContent = (ok ? "Right. " : "Not quite. ") + q[3]; });
+  }
+  const SRC = [
+    ["edge2024", "Edge et al., From Local to Global: A Graph RAG Approach to Query-Focused Summarization (arXiv 2404.16130)", "GraphRAG indexing and answering", true],
+    ["guo2024", "Guo et al., LightRAG: Simple and Fast Retrieval-Augmented Generation (arXiv 2410.05779)", "arm G", true],
+    ["han2025", "Han et al., RAG vs. GraphRAG: A Systematic Evaluation and Key Insights", "each wins on different question types", true],
+    ["gao2023", "Gao et al., Enabling Large Language Models to Generate Text with Citations (ALCE, EMNLP)", "citation quality by entailment", true],
+    ["wallat2024", "Wallat et al., Correctness is not Faithfulness in RAG Attributions (arXiv 2412.18004)", "support is not use", true],
+    ["tang2024", "Tang, Laban and Durrett, MiniCheck (EMNLP; arXiv 2404.10774)", "the citation checker", true],
+    ["hhem", "Vectara, HHEM-2.1-open model card", "the second checker", true],
+    ["protocol", "Our claim protocol (arms L, R, G, H, Hc; fourteen rules; ten harness tests)", "every step of the shared pipeline", true],
+    ["pilot", "Our KG pilot slice on CS 156 Lectures 14-15 (passages, graph, gate scores)", "all data on this page", true],
+    ["kaggle", "Our query-time scoring run: bge-m3 and bge-reranker-v2-m3 on the 116 passages and the concept names", "dense, concept and rerank scores", true],
+    ["chen2023rgb", "Chen et al., Benchmarking Large Language Models in Retrieval-Augmented Generation (RGB, AAAI 2024; arXiv 2309.01431)", "refusal rate with noise-only passages", true],
+    ["joren2025", "Joren et al., Sufficient Context: A New Lens on Retrieval Augmented Generation Systems (ICLR 2025; arXiv 2411.06037)", "models abstain less with passages", true],
+    ["weller2023", "Weller et al., When do Generative Query and Document Expansions Fail? (arXiv 2309.08541)", "expansion helps weak retrievers, hurts strong ones", true],
+    ["gutierrez2025", "Gutiérrez et al., From RAG to Memory: Non-Parametric Continual Learning for LLMs (HippoRAG 2, arXiv 2502.14802)", "query-to-node vs query-to-triple linking", true],
+    ["cs156", "Abu-Mostafa, Caltech CS 156 Learning From Data, Lectures 14 and 15 (captions; CC BY in the video licence field)", "the questions and the passages", true]];
+  function sources() { $("#srcrows").innerHTML = SRC.map(s => '<tr><td class="m">' + s[0] + '</td><td>' + esc(s[1]) + '</td><td>' + esc(s[2]) + '</td><td class="' + (s[3] ? "vtrue" : "vfalse") + '">' + (s[3] ? "yes" : "no") + '</td></tr>').join(""); }
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

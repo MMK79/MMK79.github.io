@@ -1,0 +1,608 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Our data pipeline</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.wide{max-width:1120px;margin:0 auto;padding:0 16px}
+code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,54px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:14px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
+.hero{padding:52px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.who{color:var(--faint);font-size:13px}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
+.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
+.pin b{display:block;font-size:13px;color:var(--amber)}
+.pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
+/* badges */
+.b{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap}
+.b.done,.b.measured{color:var(--teal);border-color:var(--teal)}
+.b.pilot{color:var(--amber);border-color:var(--amber)}
+.b.planned{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.b.running{color:var(--blue);border-color:var(--blue)}
+.b.count,.b.inferred,.b.external,.b[class*="model"]{color:var(--muted);border-color:var(--line);text-transform:none;letter-spacing:0;font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin:8px 0}
+/* the map */
+#mapsec{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:18px;align-items:start}
+#map,#panel{min-width:0}
+#map{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px}
+.mrow{display:flex;justify-content:center}
+.mcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.mcol{display:flex;flex-direction:column;align-items:stretch}
+.lane-h{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:center;margin:2px 0 4px}
+.st{width:100%;text-align:left;display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:44px;transition:opacity .2s,border-color .2s}
+.st .nm{font-size:14px}.st .no{font:12px var(--mono);color:var(--faint);margin-right:6px}
+.st.planned{border-style:dashed}
+.st.sel{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber) inset}
+.st.dim{opacity:.28}
+.arr{text-align:center;color:var(--faint);font-size:14px;line-height:1;margin:3px 0}
+.qt{display:block;text-align:center;border:1px dashed var(--blue);border-radius:10px;padding:10px;color:var(--blue);text-decoration:none;font-size:14px}
+#panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:110px;max-height:calc(100vh - 130px);overflow:auto}
+#panel h3{margin-top:0}
+#panel dl{margin:0}#panel dt{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:12px}
+#panel dd{margin:4px 0 0;font-size:14.5px}
+.nums{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13.5px;margin-top:4px}
+.nums td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top;overflow-wrap:anywhere}
+.nums td:nth-child(2){font-family:var(--mono);font-size:12.5px}
+.lost{border-left:3px solid var(--warn);padding:2px 0 2px 10px}
+.srcs{font-size:12.5px;color:var(--muted)}
+#route-note{min-height:24px;color:var(--muted);font-size:14px}
+/* story */
+.story{counter-reset:s;list-style:none;padding:0;margin:0}
+.story li{position:relative;padding:0 0 18px 34px;border-left:1px solid var(--line);margin-left:10px}
+.story li::before{counter-increment:s;content:counter(s);position:absolute;left:-12px;top:0;width:24px;height:24px;border-radius:50%;background:var(--panel2);border:1px solid var(--amber);color:var(--amber);font:12px/22px var(--mono);text-align:center}
+.story .pr{color:var(--warn)}.story .fx{color:var(--teal)}
+.story .open{font-size:13px;padding:2px 8px;min-height:26px;margin-top:4px}
+/* full table as stacked cards */
+.rec{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0;font-size:14px}
+.rec .k{color:var(--faint);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.rec h4{grid-column:1/-1;margin:0 0 4px;font:500 15px var(--body)}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
+.q .opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q button{text-align:left}.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+.vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+@media (max-width:960px){#mapsec{grid-template-columns:minmax(0,1fr)}#panel{position:static;max-height:none}}
+@media (max-width:640px){.pin{grid-template-columns:1fr}.rec{grid-template-columns:1fr}.mcols{gap:6px}.st{padding:7px 8px;flex-wrap:wrap;gap:4px}.st .nm{font-size:13px}.st .b{font-size:9.5px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.st{transition:none}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
+      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Done vs planned:</b> every stage carries a status. <span class="b done">done</span> ran on the real CS 156 data · <span class="b pilot">pilot</span> ran on a small slice only · <span class="b planned">planned</span> decided, not built · <span class="b running">running</span> in progress. Each number has its own evidence label.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1 story</a><a href="#map-s">Map</a><a href="#route-s">Routes</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">A layered lesson on our own pipeline</div>
+  <h1>Our data pipeline</h1>
+  <p class="lead">How a scanned textbook, slides, homework and lecture videos become passages a retriever can search and a knowledge graph a tutor can walk. Sixteen stages. Click any stage for what it does, why we chose it, what we rejected, the real numbers and what is lost.</p>
+</header>
+
+<section class="step" id="tldr"><div class="kicker">TL;DR</div><h2>Two branches from one passage store</h2>
+<ol>
+  <li><b>Text first.</b> Scans go through OCR (MinerU2.5-Pro on free remote GPUs); born-digital keys use their text layer; lectures use their caption tracks. OCR output becomes Markdown with the page markers it found; captions keep timestamps; questions become rows. <span class="b done">done</span>: 1,075 OCR pages (898 course + 177 third-party solution pages).</li>
+  <li><b>Structure next.</b> Books get a table-of-contents tree (book → chapter → section → page), and the section becomes the unit of cutting. <span class="b planned">planned</span></li>
+  <li><b>Search branch.</b> Units will be packed into chunks of at most 1,024 bge-m3 tokens, embedded with bge-m3, and stored in Postgres + pgvector next to a BM25 index; the two lists are fused with RRF. Dense embedding of the transcript chunks is <span class="b done">done</span>; the unit rule and the store are <span class="b planned">planned</span>.</li>
+  <li><b>Graph branch.</b> An LLM extracts typed edges with a verbatim quote, entity resolution merges names, two checkers gate the non-prerequisite edges (prerequisite edges wait for review), and the files live in git. <span class="b pilot">pilot</span> on two lectures, with the walk in plain Python; the Neo4j load is <span class="b planned">planned</span>.</li>
+  <li><b>Same input for both.</b> The RAG arm and the graph arms read the same passage snapshot and differ only in how they retrieve. What happens at question time is the companion page, <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks</a>. It also shows the product design for <a href="/thesis/assets/stories/query-flow/build/index.html#abstain">saying "I don't know"</a> when the material has no answer, and <a href="/thesis/assets/stories/query-flow/build/index.html#variants">why we do not rewrite the question</a>.</li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div><h2>A library that builds its own card catalogue</h2>
+<p class="who">For anyone. No technical words.</p>
+<p>A librarian receives a box of old photocopied books and a pile of lecture recordings. She wants two things: a card index where any sentence can be found, and a wall map that shows which idea depends on which.</p>
+<div class="pin">
+  <div><b>1 · Read</b><p>Photocopies cannot be searched, so a fast reader types them out, page by page, and writes the page number on each sheet.</p></div>
+  <div><b>2 · Sort</b><p>She files the sheets by chapter and section, using the book's own contents page.</p></div>
+  <div><b>3 · Cards</b><p>She cuts each section into cards small enough to read at once. Each card keeps its book, section and page.</p></div>
+  <div><b>4 · Two indexes</b><p>One drawer is sorted by words; another is sorted by meaning, so "wide gap" finds "large margin".</p></div>
+  <div><b>5 · The map</b><p>A helper reads each card and draws arrows on the wall map: "soft margin uses slack variables". Each arrow points to its card.</p></div>
+  <div><b>6 · Check</b><p>Two proof-readers check every arrow against its card. Doubtful arrows wait for the librarian.</p></div>
+</div>
+<p class="muted" style="margin-top:14px">The fast reader is the OCR model. The two drawers are BM25 and the vector index. The wall map is the knowledge graph. The proof-readers are the entailment checkers.</p>
+</section>
+
+<section class="step" id="l1"><div class="kicker"><span class="lv">Level 1</span>for a student</div><h2>The story: each stage fixes the last stage's problem</h2>
+<p class="who">Problem, then why the next idea came, then what it fixes. Each step opens its stage on the map.</p>
+<ol class="story" id="story"></ol>
+</section>
+</div>
+
+<section class="step" id="map-s"><div class="wide">
+  <div class="kicker">Touch</div><h2>The map: click a stage</h2>
+  <div class="legend"><span><span class="b done">done</span> ran on real CS 156 data</span><span><span class="b pilot">pilot</span> small slice only</span><span><span class="b planned">planned</span> decided, not built</span><span><span class="b running">running</span></span></div>
+  <div id="mapsec">
+    <div id="map" role="group" aria-label="Pipeline stages"></div>
+    <aside id="panel" aria-live="polite"></aside>
+  </div>
+</div></section>
+
+<div class="wrap">
+<section class="step" id="route-s"><div class="kicker">Touch</div><h2>Which way does a document go?</h2>
+<p>The first decision is the text layer. Pick a document type: the map above lights its path.</p>
+<div class="row" id="routes" role="group" aria-label="Document types"></div>
+<p id="route-note"></p>
+<p class="small faint">Path lighting dims every stage that the document does not pass through. Click a lit stage for its numbers.</p>
+</section>
+
+<section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>The full record and the evidence behind it</h2>
+<p>Each stage below gives the tool, the reason, what we rejected and the evidence label. Labels: <b>count</b> = counted from a named file; <b>measured</b> = a timing or score from our own run; <b>model assessment</b> = an LLM's verdict, no human check; <b>inferred</b> = our arithmetic; <b>external</b> = reported by others, not reproduced.</p>
+<h3>What the outside evidence says, and how far it carries</h3>
+<div class="ev"><b class="h">External</b>On the OmniDocBench leaderboard, MinerU2.5-Pro scores 95.75 overall; its own paper reports 95.69 and a formula score (CDM) of 97.29 (Table 2). The gap between the two is not explained. Several other models score higher (PaddleOCR-VL-1.6: 96.34). Benchmarks decided the shortlist; <b>our own 14-page pilot decided the model</b>. <span class="small">[MinerU2.5-Pro paper; OmniDocBench README]</span></div>
+<div class="ev"><b class="h">External, unverified</b>On the arXiv subset of the READoc converter benchmark, markitdown scored 35.2 against 73.1 for the MinerU pipeline (Table 3; we saw the numbers, not the full paper). An external subset result on other documents: it motivates our choice and a test, not a measured gain on our corpus. <span class="small">[READoc]</span></div>
+<div class="ev"><b class="h">External, provisional</b>Structure-aware chunking helped in small or single-domain studies, not on text without real hierarchy (papers not read in full). No rule wins everywhere. Our own six-rule pilot was inconclusive. So "section first" is a <b>testable default</b>, and four tests on the development split come before it is fixed.</div>
+<div class="ev"><b class="h">Documentation</b>PostgreSQL's <code>ts_rank</code> does not use corpus-wide term statistics, so it is not BM25; pgvector supports half-precision vectors and an exact scan or HNSW. Reciprocal Rank Fusion scores a passage by the sum of 1/(k + rank) over the lists; its original paper used k = 60, which is not shown to be best for our corpus. <span class="small">[PostgreSQL docs; pgvector README; Cormack et al.]</span></div>
+<div class="ev"><b class="h">Ours, measured</b>bge-m3: macro recall@10 0.474 against Qwen3-Embedding-0.6B 0.444 and EmbeddingGemma 2 (768-d) 0.353, on the 32 of 40 homework queries with a top-grade passage in the judged pool, over transcript chunks, one LLM judge, paired bootstrap; bge-m3 vs Qwen3 is not resolved. EmbeddingGemma 2 is 12.0 points lower (95% interval −24.9 to −0.3). This is a pilot: no book prose, no formulas, no Persian.</div>
+<div class="ev"><b class="h">Ours, measured</b>Entailment checkers on long premises (76 pairs of 925-1,318 tokens, partly constructed): MiniCheck reached balanced accuracy 0.732 on the whole premise and 0.454 and 0.501 under two ways of truncating it at 512 tokens. Labels are by an LLM, not human gold. Provisional rule: score the whole premise within MiniCheck's 2,048-token cap, never truncate at 512, calibrate on human labels.</div>
+<h3>Stage by stage</h3>
+<div id="records"></div>
+</section>
+
+<section class="step" id="l3"><div class="kicker"><span class="lv">Level 3</span>our thesis choice</div><h2>What is decided, what is open</h2>
+<div class="take"><b>Freeze the schema and the leakage rules before the first row is indexed.</b> Tables for documents, units, passages, vectors, solutions and questions; deterministic chunk ids; each question's own exercise excluded from retrieval; solutions never in the passages; one permitted-source list per evaluation condition for every arm, including graph construction.</div>
+<table class="tbl" aria-label="Decisions">
+<thead><tr><th>decision</th><th>choice</th><th>status</th></tr></thead>
+<tbody>
+<tr><td>Track split</td><td>thesis corpus now; the whole library (Zotero, Calibre) separately, never blocking the thesis</td><td>accepted; library deferred</td></tr>
+<tr><td>Schema and leakage rules</td><td>freeze before any index row</td><td>accepted</td></tr>
+<tr><td>Book and paper units</td><td>section first, token-aware packing; verified by a test on the development split</td><td>accepted</td></tr>
+<tr><td>Transcript unit</td><td>sentence-aligned 5-minute windows; topic segments as metadata</td><td>accepted</td></tr>
+<tr><td>BM25</td><td>one fully specified BM25 (settings in the run file), not <code>ts_rank</code></td><td>accepted</td></tr>
+<tr><td>Tier 2 books</td><td>OCR now, with a table-of-contents structure per book; question bank gets golden passages and golden triplets</td><td>changed by you: now on the critical path</td></tr>
+<tr><td>Where the text runs</td><td>thesis books on the university server only; Zotero papers on Kaggle, batched over the accounts</td><td>decided by you</td></tr>
+<tr><td>Video timestamps</td><td>every video unit, chunk, gold passage and citation keeps the video id and start and end times</td><td>decided by you</td></tr>
+<tr><td>Library vector store</td><td>pgvector or LanceDB, decided after five measurements</td><td>accepted (measure first)</td></tr>
+</tbody></table>
+<div class="ours"><b class="h">Our reading</b>The ingest half is real and measured at full course scale. The two halves that make the thesis comparison (the passage store and the graph at full size) are designed and piloted, not built. The order now: Tier 2 OCR and table-of-contents structure run now, alongside the schema and leakage rules → index CS 156 in Postgres → BM25 and dense baselines and a small graph comparison → chunking tests; golden passages and golden triplets for the question bank.</div>
+</section>
+
+<section class="step" id="quiz"><div class="kicker">Check yourself</div><h2>Three questions</h2><div id="qz"></div></section>
+
+<section class="step" id="src"><div class="kicker">Sources</div><h2>Where every number comes from</h2>
+<table class="tbl"><thead><tr><th>source</th><th>used for</th><th>read?</th></tr></thead><tbody id="srcrows"></tbody></table>
+<p class="small faint" style="margin-top:12px">Vault notes: Thesis - Next Pipeline Steps Proposal (the stage table and the mermaid diagram), Thesis - Corpus and Question Bank Process (the process record), OCR and Document Parsing Models - Research Note, Building the Knowledge Graph - Pilot Slice, the experiment registry. Book text, homework text and solutions are never shown.</p>
+</section>
+</div>
+</main>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const base=(new URLSearchParams(location.search).get("data")||"../data").replace(/\/$/,"");
+const STORY=[
+ ["sources","The course exists as a scanned book, slide PDFs, homework PDFs and 18 lecture videos.","The book scan has no text at all; the keys and captions do, but in different forms.","Collect one file per item, and record which tier it belongs to."],
+ ["compute","Our chosen OCR model is a GPU model, and the Mac has 8 GB of memory.","An OCR test on the Mac did 3 pages in 10 minutes.","A batch pipeline sends work units to free remote GPUs and records each unit in a ledger, so a finished unit is not run again."],
+ ["route","Some PDFs already contain text, others are pictures of pages.","Running OCR on everything wastes GPU time; trusting every text layer lets garbage in.","Route each file by its text layer: scans to OCR, clean keys to their text layer."],
+ ["ocr","A generic OCR read the book but garbled the inline maths.","A machine-learning textbook is half formulas.","A vision-language OCR model, chosen on our own pages, writes LaTeX and keeps page and problem numbers."],
+ ["markdown","OCR gives text per page.","The citation and the graph need headings, page numbers and tables in a form code can read.","Markdown with page markers makes that structure explicit."],
+ ["toc","A page is where the printer cut, not where the topic ends.","A chunk that starts mid-section mixes two topics and gives a vague citation.","Match the headings to the book's table of contents: book → chapter → section → page."],
+ ["chunks","A section can be many pages long.","Our encoder setting reads at most 1,024 tokens; longer text would be cut.","Pack paragraphs inside each unit up to a token limit, never across a unit."],
+ ["embed","A keyword search misses a paraphrase (\"wide gap\" vs \"large margin\").","Students do not use the book's words.","bge-m3 turns each chunk into a vector, so similar meaning lands close together."],
+ ["index","Vectors miss exact rare words (\"KKT\"); keywords miss paraphrases.","Each method fails where the other works.","Store both in Postgres: pgvector for meaning, BM25 for words, fused with RRF."],
+ ["extract","Similar passages do not say what to learn first.","A prerequisite question needs relations between concepts, not similar text.","An LLM writes typed edges, each with a verbatim quote."],
+ ["er","The LLM calls one idea by many names.","One concept split into three nodes breaks every walk.","Entity resolution merges names; doubtful merges go to review."],
+ ["nli","An LLM can write an edge that its quote does not support.","A wrong edge sends the tutor to the wrong passage.","Two checkers gate each edge; doubtful ones wait for a human."],
+ ["git","A graph changes as it is fixed.","An experiment must name the exact graph it used.","Plain files in git with one snapshot hash."],
+ ["neo4j","The tutor must walk the graph while a student waits.","The pilot walked plain files in Python; the thesis needs typed queries over a growing graph.","Load the snapshot into Neo4j for bounded typed walks (its speed-up is not measured)."]
+];
+const ROWS=[["sources"],["compute"],["route"],{cols:[["ocr","markdown","toc"],["transcripts","qbank"]],h:["pages","lectures and questions"]},["chunks"],["embed"],{cols:[["index"],["extract","er","nli","git","neo4j"]],h:["search branch","graph branch"]}];
+let D=null, sel=null, lit=null;
+fetch(base+"/pipeline.json").then(r=>r.json()).then(d=>{D=d;init()}).catch(e=>{document.querySelector("main").insertAdjacentHTML("afterbegin",'<p class="wrap" style="color:var(--warn)">Could not load the data ('+esc(e)+'). Serve the folder over http.</p>')});
+const S=id=>D.stages.find(s=>s.id===id);
+function badge(k){return '<span class="b '+esc(k).replace(/\s+/g,"-")+'">'+esc(k)+'</span>'}
+function btn(id){const s=S(id);return '<button class="st '+s.badge+'" data-id="'+id+'" aria-label="Stage '+s.n+': '+esc(s.title)+'"><span><span class="no">'+s.n+'</span><span class="nm">'+esc(s.title)+'</span></span>'+badge(s.badge)+'</button>'}
+function col(ids){return ids.map((id,i)=>(i?'<div class="arr" aria-hidden="true">↓</div>':'')+btn(id)).join("")}
+function init(){
+  let h="";
+  ROWS.forEach((r,i)=>{ if(i) h+='<div class="arr" aria-hidden="true">↓</div>';
+    if(Array.isArray(r)) h+='<div class="mrow">'+btn(r[0])+'</div>';
+    else h+='<div class="mcols">'+r.cols.map((c,j)=>'<div class="mcol"><div class="lane-h">'+esc(r.h[j])+'</div>'+col(c)+'</div>').join("")+'</div>'; });
+  h+='<div class="arr" aria-hidden="true">↓</div><a class="qt" href="/thesis/assets/stories/query-flow/build/index.html">Question time: both branches answer one student question →</a><p class="small" style="margin:6px 0 0;text-align:center"><a href="/thesis/assets/stories/query-flow/build/index.html#abstain">When the tutor says &quot;I don&#39;t know&quot; (product design) →</a></p>';
+  $("#map").innerHTML=h;
+  $("#map").addEventListener("click",e=>{const b=e.target.closest(".st");if(b)show(b.dataset.id,true)});
+  $("#story").innerHTML=STORY.map(([id,a,p,f])=>'<li><b>'+esc(S(id).title)+'.</b> '+esc(a)+' <span class="pr">Problem:</span> '+esc(p)+' <span class="fx">Fix:</span> '+esc(f)+' '+badge(S(id).badge)+'<br><button class="open" data-id="'+id+'">Open this stage on the map</button></li>').join("");
+  $("#story").addEventListener("click",e=>{const b=e.target.closest(".open");if(b){show(b.dataset.id,false);$("#map-s").scrollIntoView()}});
+  $("#routes").innerHTML=D.route_cases.map(c=>'<button data-r="'+c.id+'" aria-pressed="false">'+esc(c.label)+'</button>').join("")+'<button data-r="" aria-pressed="true">Show all</button>';
+  $("#routes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;route(b.dataset.r)});
+  $("#records").innerHTML=D.stages.map(s=>'<div class="rec"><h4>'+s.n+' · '+esc(s.title)+' '+badge(s.badge)+'</h4><div class="k">what</div><div>'+esc(s.what)+'</div><div class="k">why</div><div>'+esc(s.why)+'</div><div class="k">rejected</div><div>'+esc(s.rejected)+'</div><div class="k">what is lost</div><div>'+esc(s.lost)+'</div><div class="k">evidence</div><div class="srcs">'+s.src.map(esc).join(" · ")+'</div></div>').join("");
+  quiz(); sources(); show("ocr",false);
+}
+function show(id,scroll){
+  sel=id; const s=S(id);
+  document.querySelectorAll(".st").forEach(b=>b.classList.toggle("sel",b.dataset.id===id));
+  $("#panel").innerHTML='<div class="kicker">Stage '+s.n+'</div><h3>'+esc(s.title)+' '+badge(s.badge)+'</h3><dl>'+
+   '<dt>What it does</dt><dd>'+esc(s.what)+'</dd><dt>Why this way</dt><dd>'+esc(s.why)+'</dd><dt>Rejected</dt><dd>'+esc(s.rejected)+'</dd>'+
+   '<dt>Real numbers</dt><dd><table class="nums">'+s.numbers.map(n=>'<tr><td>'+esc(n[0])+'</td><td>'+esc(n[1])+'</td><td>'+badge(n[2])+'</td></tr>').join("")+'</table></dd>'+
+   '<dt>What is lost or open</dt><dd class="lost">'+esc(s.lost)+'</dd><dt>Evidence</dt><dd class="srcs">'+s.src.map(esc).join(" · ")+'</dd></dl>';
+  if(scroll&&matchMedia("(max-width:960px)").matches) $("#panel").scrollIntoView({block:"start"});
+}
+function route(rid){
+  document.querySelectorAll("#routes button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.r===rid));
+  const c=D.route_cases.find(x=>x.id===rid);
+  document.querySelectorAll(".st").forEach(b=>b.classList.toggle("dim",!!c&&!c.path.includes(b.dataset.id)));
+  $("#route-note").textContent=c?c.note+" Path: "+c.path.map(id=>S(id).title).join(" → ")+".":"";
+}
+const QZ=[
+ ["Why did the e-chapters go through OCR although the PDF has a text layer?",["The text layer is a phone scan's garbage, so it cannot be trusted","OCR is always more accurate than a text layer","The text layer had no page numbers"],0,"Routing asks whether the text layer is usable, not whether it exists."],
+ ["What does the OCR audit establish about the maths?",["No error anywhere in the corpus","47 notation-style losses in 278 spans on 15 selected pages, checked by an LLM; no corpus-wide error bound","An error rate of 17% of all symbols"],1,"A spot check by a model is not a benchmark, and the share of styled symbols was not counted."],
+ ["Why must the RAG and graph arms read the same passage snapshot?",["To save disk space","To remove different source text as a confound, while the other settings are held fixed too","Because Neo4j cannot store text"],1,"Same text, same budget, same answer model and prompt: then a difference points at retrieval."]];
+function quiz(){
+  $("#qz").innerHTML=QZ.map((q,i)=>'<div class="q" data-i="'+i+'"><b>'+(i+1)+'. '+esc(q[0])+'</b><div class="opts">'+q[1].map((o,j)=>'<button data-j="'+j+'">'+esc(o)+'</button>').join("")+'</div><p class="small muted fb" aria-live="polite"></p></div>').join("");
+  $("#qz").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const box=b.closest(".q"),q=QZ[+box.dataset.i],ok=+b.dataset.j===q[2];
+    box.querySelectorAll("button").forEach(x=>x.classList.remove("right","wrong"));b.classList.add(ok?"right":"wrong");box.querySelector(".fb").textContent=(ok?"Right. ":"Not quite. ")+q[3]});
+}
+const SRC=[
+ ["MinerU2.5-Pro paper (arXiv 2604.04771), Table 2","overall 95.69, formula CDM 97.29",true],
+ ["OmniDocBench README leaderboard","MinerU2.5-Pro 95.75, PaddleOCR-VL-1.6 96.34",true],
+ ["READoc benchmark, Table 3 (arXiv subset)","markitdown 35.2 vs MinerU pipeline 73.1",false],
+ ["PostgreSQL text-search docs","ts_rank is not BM25",true],
+ ["pgvector README","halfvec, exact scan, HNSW, hybrid search with RRF",true],
+ ["Cormack, Clarke and Buettcher (SIGIR), Reciprocal Rank Fusion","the RRF formula and k = 60",false],
+ ["Our runs: experiment registry and pipeline ledger","every measured number on this page",true],
+ ["Thesis - Corpus and Question Bank Process","counts, OCR audit, question bank",true],
+ ["Building the Knowledge Graph - Pilot Slice","the graph branch numbers",true]];
+function sources(){ $("#srcrows").innerHTML=SRC.map(s=>'<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td class="'+(s[2]?"vtrue":"vfalse")+'">'+(s[2]?"read":"not read by us")+'</td></tr>').join("") }
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

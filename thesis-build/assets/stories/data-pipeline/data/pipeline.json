@@ -1,0 +1,729 @@
+{
+ "stages": [
+  {
+   "id": "sources",
+   "n": 1,
+   "title": "Sources",
+   "badge": "done",
+   "lane": "in",
+   "what": "One file per item. Tier 1 is Caltech CS 156: the book scan, its e-chapters, 18 slide decks, 8 homeworks, the final, and the 18 lecture videos. Tier 2 is five widely used textbooks, mapped chapter by chapter to the course.",
+   "why": "The thesis asks about one course. CS 156 was chosen for fit, not popularity: in our adoption pilot only 1 of 43 universities lists its book.",
+   "rejected": "Taking the most-adopted books as Tier 1 (they fit the course less well).",
+   "numbers": [
+    [
+     "Book scan pages (whole PDF)",
+     "216",
+     "count"
+    ],
+    [
+     "e-Chapter pages",
+     "231",
+     "count"
+    ],
+    [
+     "Slide pages (18 decks)",
+     "401",
+     "count"
+    ],
+    [
+     "Homework pages / final pages",
+     "41 / 9",
+     "count"
+    ],
+    [
+     "Course pages sent to OCR",
+     "898",
+     "count"
+    ],
+    [
+     "Lecture caption tracks",
+     "18 of 18 (23.6 h)",
+     "count"
+    ]
+   ],
+   "lost": "Rights are not cleared by use: the book, slides and keys say \"all rights reserved\". Their text stays in private folders; the site shows ids, counts and short quotes only.",
+   "src": [
+    "Thesis - Corpus and Question Bank Process §1",
+    "Thesis - Corpus Manifest"
+   ]
+  },
+  {
+   "id": "compute",
+   "n": 2,
+   "title": "Where compute runs",
+   "badge": "done",
+   "lane": "in",
+   "what": "The Mac plans, cuts pages out of PDFs, uploads, checks and merges. Heavy work runs remotely: OCR and embedding on free GPUs (Kaggle, Colab, the university server); the graph pilot's two checkers on a Kaggle CPU. A small SQLite ledger records every unit of batch-pipeline work; some one-off experiments ran outside it.",
+   "why": "The Mac has 8 GB of memory. OCR on it did 3 pages in 10 minutes before it was stopped; embedding ran at 0.25 chunks per second under swap. The ledger gives deduplication and retries: a finished unit with the same inputs and configuration is not leased again; a failed unit can be retried.",
+   "rejected": "OCR and embedding on the Mac (too slow, swap).",
+   "numbers": [
+    [
+     "Production OCR units",
+     "104, all done on the first attempt",
+     "count"
+    ],
+    [
+     "Worker lifetime, production OCR",
+     "6.22 h (3 workers)",
+     "count"
+    ],
+    [
+     "Vector agreement, university GPU vs Kaggle",
+     "cosine at least 0.99998 on 350 chunks",
+     "measured"
+    ]
+   ],
+   "lost": "Private text goes to private remote datasets and kernels. Dataset privacy is read back; kernel privacy is not, and complete remote erasure is not established.",
+   "src": [
+    "Thesis - Batch Pipeline",
+    "Thesis - Corpus and Question Bank Process §2",
+    "EXP-005"
+   ]
+  },
+  {
+   "id": "route",
+   "n": 3,
+   "title": "Route by text layer",
+   "badge": "done",
+   "lane": "in",
+   "what": "Each PDF is sorted by one question: does it have a usable text layer? A scan (no text, or garbage text) goes to OCR. A born-digital answer key is read from its text layer. Captions come straight from YouTube.",
+   "why": "OCR takes about 20 seconds of OCR-call time per page on a T4 and can make mistakes. A clean text layer is cheaper and is the preferred source, subject to validation. But a text layer can be garbage: one copy of the e-chapters is a phone scan with a broken text layer, so it went to OCR too.",
+   "rejected": "One tool for every file (wastes GPU time, or misses scans).",
+   "numbers": [
+    [
+     "Answer keys",
+     "text layer of the official PDFs (100 items mapped)",
+     "count"
+    ],
+    [
+     "Library rule for papers (planned)",
+     "GROBID for text-layer PDFs up to 60 pages; MinerU for scans and maths-heavy papers",
+     "planned"
+    ],
+    [
+     "Library books without text (planned scope)",
+     "53 files with no text (18,180 pages) + 36 low-text files (8,689 pages)",
+     "count"
+    ]
+   ],
+   "lost": "The library quality score for garbage text layers is not built yet: it must first pass a 20 good / 20 garbage page test.",
+   "src": [
+    "OCR and Document Parsing Models - Research Note (Answer 1)",
+    "Thesis - Next Pipeline Steps Proposal §6"
+   ]
+  },
+  {
+   "id": "ocr",
+   "n": 4,
+   "title": "OCR with MinerU2.5-Pro",
+   "badge": "done",
+   "lane": "in",
+   "what": "Pages are rendered at 200 dpi on the remote worker and read by MinerU2.5-Pro, a 1.2-billion-parameter vision-language model, on its GPU. It writes Markdown with LaTeX maths, keeps page headers, page numbers and problem numbers in the pages we checked, and crops figures (275 of the 699 course crops have a linked caption).",
+   "why": "The first run (docling with EasyOCR) garbled inline maths and dropped words next to maths. In a 14-page pilot, four vision-language models were attempted and two gave output. MinerU2.5-Pro was preferred on our own pages (LaTeX, page and problem numbers, figure crops), it has Apache-2.0 weights and it fits a free T4 GPU.",
+   "rejected": "docling + EasyOCR (garbled inline maths); DeepSeek-OCR 2 (slower, 13.9 GB, dropped page numbers); PaddleOCR-VL-1.6 (environment failure, not a quality verdict); LightOnOCR-2 (timeout); Mistral OCR (paid, text leaves the machine).",
+   "numbers": [
+    [
+     "Pages through MinerU2.5-Pro (CS 156 + solution pages)",
+     "1,075",
+     "count"
+    ],
+    [
+     "Summed OCR-call time (wall time around the model call; rendering, install and model load excluded)",
+     "5.954 h, mean 19.9 s per page",
+     "measured"
+    ],
+    [
+     "Peak GPU memory",
+     "4.9 GB",
+     "measured"
+    ],
+    [
+     "Empty outputs",
+     "4 (pages rendered and found blank)",
+     "count"
+    ],
+    [
+     "Pilot: MinerU vs DeepSeek-OCR 2 on 14 pages",
+     "321.7 s vs 475.5 s; 3.3 GB vs 13.9 GB",
+     "measured"
+    ],
+    [
+     "Textbook OCR (Tier 2 + three more books + solution PDFs)",
+     "4,594 of 5,694 pages marked done at the last page build",
+     "running"
+    ]
+   ],
+   "lost": "A 15-page visual audit by an LLM (not a human) recorded 47 notation-style losses in 278 maths spans: \\mathcal, \\mathbb and bold letters became plain (a vector can look like a scalar). It recorded no symbol, index or operator errors, but no corpus-wide error bound exists. Italics are not kept. Algorithm boxes become code blocks. Figure descriptions can invent content (one plot got a made-up data table), so all 661 descriptions are flagged unverified.",
+   "src": [
+    "Thesis - Corpus and Question Bank Process §4-6",
+    "OCR and Document Parsing Models - Research Note",
+    "EXP-006",
+    "EXP-007",
+    "EXP-015"
+   ]
+  },
+  {
+   "id": "markdown",
+   "n": 5,
+   "title": "Markdown with page markers",
+   "badge": "done",
+   "lane": "in",
+   "what": "Each OCR'd source becomes one Markdown file with headings, LaTeX and figure links, and the page markers the OCR found: PDF-page markers in the book-scan file, printed page numbers where the model read them. Captions keep timestamps instead; questions become JSONL rows.",
+   "why": "Markdown makes the extracted structure explicit: headings (future sections), page markers (future citations) and tables. This choice is inferred: no controlled study compares Markdown with structured plain text for graph extraction.",
+   "rejected": ".txt (flattens structure); markitdown as a corpus converter (text-layer only, no layout or maths).",
+   "numbers": [
+    [
+     "Book scan file: headings / x.y sections / x.y.z sections",
+     "163 / 22 / 38",
+     "count"
+    ],
+    [
+     "e-Chapters file: headings / x.y / x.y.z",
+     "188 / 23 / 40",
+     "count"
+    ],
+    [
+     "Figure crops (course / third-party)",
+     "699 / 79",
+     "count"
+    ]
+   ],
+   "lost": "Headings come from the OCR, so some are wrong (a sentence fragment can become a heading). They must be checked against the printed table of contents before they become section units.",
+   "src": [
+    "OCR and Document Parsing Models - Research Note (Answer 2)",
+    "cs156 book Markdown (structure counts only)"
+   ]
+  },
+  {
+   "id": "toc",
+   "n": 6,
+   "title": "Table-of-contents structure",
+   "badge": "planned",
+   "lane": "in",
+   "what": "Each book gets a tree: book, chapter, section, page. MinerU headings are matched to the printed table of contents or the PDF outline; running headers and hyphenated page joins are cleaned. The lowest numbered section (x.y or x.y.z) becomes the unit.",
+   "why": "A page is a cut of the printer, not of the topic. A section keeps one topic, gives the graph its \"part of\" provenance, and gives the citation book, chapter, section and page. You decided to build this for the Tier 2 books now.",
+   "rejected": "Page-bound units (today's rule for library books without an outline).",
+   "numbers": [
+    [
+     "e-Chapter 8 outline (from the OCR headings)",
+     "8.1 The Optimal Hyperplane; 8.1.1 Finding the Fattest Separating Hyperplane; 8.1.2 Is a Fat Separator Better?; 8.1.3 Non-Separable Data; 8.2 Dual Formulation of the SVM; 8.2.1 Lagrange Dual for a QP-Problem …",
+     "count"
+    ],
+    [
+     "Status",
+     "decided, not built",
+     "planned"
+    ]
+   ],
+   "lost": "Outlines can be coarse or wrong, and definitions often sit in an earlier section than the question needs. Section-first is a testable default, not a measured gain.",
+   "src": [
+    "Thesis - Next Pipeline Steps Proposal §3 and User decisions"
+   ]
+  },
+  {
+   "id": "transcripts",
+   "n": 7,
+   "title": "Lecture transcripts",
+   "badge": "done",
+   "lane": "in",
+   "what": "The uploaded English caption tracks are downloaded with yt-dlp and grouped into timestamped paragraphs: a new paragraph starts at a sentence end after 40 seconds, or after a gap above 6 seconds.",
+   "why": "All 18 lectures have uploaded (not automatic) captions, so no speech recognition was needed.",
+   "rejected": "Whisper, automatic captions (not needed).",
+   "numbers": [
+    [
+     "Caption tracks",
+     "18 of 18",
+     "count"
+    ],
+    [
+     "Lecture time",
+     "23.6 h",
+     "count"
+    ]
+   ],
+   "lost": "Captions are not proofread: spoken formulas and names can be wrong. Who wrote them is not known; the CC BY field is the video licence.",
+   "src": [
+    "Thesis - Corpus and Question Bank Process §3"
+   ]
+  },
+  {
+   "id": "qbank",
+   "n": 8,
+   "title": "Question bank",
+   "badge": "done",
+   "lane": "side",
+   "what": "Questions that already exist (homework, final, book exercises and problems) are parsed from the OCR into one row per item, with id, page, shared set-up, LaTeX text, answer and answer source.",
+   "why": "A question set that we wrote ourselves is hard to defend. Existing questions with official keys are the strongest gold we have.",
+   "rejected": "Writing our own questions as the main set.",
+   "numbers": [
+    [
+     "Items",
+     "413",
+     "count"
+    ],
+    [
+     "With an official key",
+     "100",
+     "count"
+    ],
+    [
+     "Originally mapped to a third-party solution set (private; many answers since amended by models)",
+     "142",
+     "count"
+    ],
+    [
+     "Working scoring tier: official keys (mappings not yet checked against the PDFs) + items where two LLM families agree (49 of 57 by a keyword heuristic)",
+     "157 = 100 + 57; not validated gold",
+     "inferred"
+    ]
+   ],
+   "lost": "No answer has human validation yet. Planned leakage controls: solutions never enter the passages, and each question's own exercise is excluded from its retrieval (reported with and without). Not implemented yet: the passage store is not built.",
+   "src": [
+    "Thesis - Corpus and Question Bank Process §8-9",
+    "Thesis - Next Pipeline Steps Proposal §2"
+   ]
+  },
+  {
+   "id": "chunks",
+   "n": 9,
+   "title": "Units and chunks",
+   "badge": "planned",
+   "lane": "in",
+   "what": "First cut on the document's own unit (book section, slide, exercise, transcript window), then pack paragraphs inside the unit up to a token limit: target 512 bge-m3 tokens, hard limit 1,024 with any prefix (our encoder setting; the model itself accepts longer input), about 1,600 characters, with up to 200 characters of overlap. Never across a unit.",
+   "why": "One citation per chunk, and every chunk fits in the embedder's window. Transcripts keep sentence-aligned 5-minute windows; topic segments become parent metadata until a test shows they help.",
+   "rejected": "Not adopted, but not ruled out: five other rules in a six-arm pilot. The pilot was inconclusive and confounded (every interval included 0), so they stay open for matched-size, token-controlled tests.",
+   "numbers": [
+    [
+     "Transcript chunks today (at most 1,600 characters, never across a 5-minute window)",
+     "1,076",
+     "count"
+    ],
+    [
+     "Chunking pilot: share of top-grade contexts across six rules",
+     "23-30%; inconclusive, not equal",
+     "measured"
+    ],
+    [
+     "Expected chunks, CS 156 + Tier 2 books",
+     "about 12,000-15,000",
+     "inferred"
+    ]
+   ],
+   "lost": "Long tables or derivations above the hard limit become a parent unit with child chunks; the chunker logs every split and the embedder every truncation (target: none).",
+   "src": [
+    "Thesis - Next Pipeline Steps Proposal §3",
+    "Chunking Strategies",
+    "EXP-010"
+   ]
+  },
+  {
+   "id": "embed",
+   "n": 10,
+   "title": "Embedding with bge-m3",
+   "badge": "done",
+   "lane": "in",
+   "what": "Each chunk becomes a 1,024-number dense vector with BAAI bge-m3 (fp16, pinned revision) on a remote GPU. Its sparse output is a planned test arm, not run yet.",
+   "why": "Over the transcript chunks, bge-m3 had the highest observed macro recall@10 of four arms from three models, on the 32 of 40 homework questions that had a top-grade passage in the judged pool; its lead over Qwen3 was not statistically resolved. It also has Persian evidence.",
+   "rejected": "EmbeddingGemma 2 (12 points lower; our rule needed +10 to switch); Qwen3-Embedding-0.6B (no statistically resolved difference, stays the challenger).",
+   "numbers": [
+    [
+     "Recall@10 on 32 queries: bge-m3 / Qwen3 / EmbeddingGemma 2",
+     "0.474 / 0.444 / 0.353",
+     "measured"
+    ],
+    [
+     "Throughput on a T4",
+     "71-75 chunks per second",
+     "measured"
+    ],
+    [
+     "University GPU slice",
+     "20-21 chunks per second",
+     "measured"
+    ],
+    [
+     "Dense-only T4 inference for 12,000-15,000 chunks (setup, transfer and retries excluded)",
+     "about 2.7-3.5 minutes",
+     "inferred"
+    ]
+   ],
+   "lost": "One LLM judge, transcripts only (no book prose, no formulas, no Persian). A human check of 20 pairs is still waiting.",
+   "src": [
+    "EmbeddingGemma-2 - Evaluation for the Thesis",
+    "EXP-002",
+    "Thesis - Next Pipeline Steps Proposal §4"
+   ]
+  },
+  {
+   "id": "index",
+   "n": 11,
+   "title": "Postgres + pgvector, BM25, RRF",
+   "badge": "planned",
+   "lane": "rag",
+   "what": "Passages and vectors go into PostgreSQL with pgvector (half-precision vectors). Keyword search will be one BM25 whose implementation, tokenizer, stemmer, stopwords, IDF variant, k1 and b are pinned before evaluation. The two ranked lists are joined with Reciprocal Rank Fusion (k = 60, depth 50 per list) over passage ids.",
+   "why": "At the estimated 12-15 thousand chunks an exact vector scan is the reference; HNSW is added only if measured latency needs it. Postgres's own ranking (ts_rank) does not use corpus-wide statistics, so it is not BM25. Both the RAG and the graph arms will read the same passage snapshot.",
+   "rejected": "Postgres ts_rank as BM25 (not BM25); a graph store inside Postgres (superseded by Neo4j); a separate library store before measuring.",
+   "numbers": [
+    [
+     "Status",
+     "decided, never built",
+     "planned"
+    ],
+    [
+     "Fusion",
+     "RRF k = 60, depth 50 per list",
+     "planned"
+    ]
+   ],
+   "lost": "The hybrid's gain over BM25 alone is to be measured, not assumed.",
+   "src": [
+    "Thesis - Next Pipeline Steps Proposal §5",
+    "Intelligent Educator v2 - Architecture Plan"
+   ]
+  },
+  {
+   "id": "extract",
+   "n": 12,
+   "title": "Extraction of typed edges",
+   "badge": "pilot",
+   "lane": "kg",
+   "what": "An LLM reads each passage and writes edges from a closed list of three relations: PREREQUISITE_OF (learn this first), IS_A and USES. Every edge must quote its passage word for word; code drops edges whose quote or endpoints do not check.",
+   "why": "A closed relation list keeps the graph comparable and testable. The verbatim quote keeps every edge tied to a passage that can be cited.",
+   "rejected": "Open relation names (cannot be checked against the ontology).",
+   "numbers": [
+    [
+     "Pilot (Lectures 14-15): chunks / mentions / edges kept",
+     "116 / 900 / 471",
+     "count"
+    ],
+    [
+     "Edges dropped by code checks",
+     "66",
+     "count"
+    ],
+    [
+     "Pilot extraction cost",
+     "US$ 0.044",
+     "measured"
+    ],
+    [
+     "Thesis run",
+     "extraction by Claude (planned; model not pinned). The pilot used Gemini 2.5 Flash Lite",
+     "planned"
+    ]
+   ],
+   "lost": "\"Implied\" edges (240 of 471 in the pilot) are the extractor's own label. Course text goes to the LLM provider.",
+   "src": [
+    "Building the Knowledge Graph - Pilot Slice",
+    "Presentations/Building the Knowledge Graph/data/run-log.json"
+   ]
+  },
+  {
+   "id": "er",
+   "n": 13,
+   "title": "Entity resolution",
+   "badge": "pilot",
+   "lane": "kg",
+   "what": "Names that mean one thing become one node: a normaliser, an alias table of seed concepts, fuzzy and bge-m3 similarity, and an LLM judge on the uncertain band. Every merge is logged.",
+   "why": "\"SVM\" and \"support vector machines\" must be one node, or the graph splits one idea in two. \"Hard margin\" and \"soft margin\" must stay apart.",
+   "rejected": "Auto-merging on the judge's \"same\": an LLM review rejected 14 of 30 such merges.",
+   "numbers": [
+    [
+     "Normalised names",
+     "237",
+     "count"
+    ],
+    [
+     "Mentions linked by the alias table",
+     "488 of 900",
+     "count"
+    ],
+    [
+     "Judge merges rejected by review",
+     "14 of 30",
+     "model assessment"
+    ]
+   ],
+   "lost": "The merge review is an LLM, not a human gold set.",
+   "src": [
+    "Building the Knowledge Graph - Pilot Slice",
+    "EXP-008"
+   ]
+  },
+  {
+   "id": "nli",
+   "n": 14,
+   "title": "Entailment gate",
+   "badge": "pilot",
+   "lane": "kg",
+   "what": "Two small checkers (HHEM and MiniCheck) score whether the passage supports each edge sentence. An edge is accepted when both support it. Prerequisite edges are not decided by the checkers: they wait for a human.",
+   "why": "An LLM can write an edge that its own quote does not support. The gate tests the quote, not the world.",
+   "rejected": "Trusting the extractor's edges without a check.",
+   "numbers": [
+    [
+     "Evidence records: supported by both / rejected by both / disagree / prerequisite, not gated",
+     "390 = 172 / 43 / 104 / 71",
+     "model assessment"
+    ],
+    [
+     "Separate long-premise test (76 pairs, 925-1,318 tokens, partly constructed, labels by an LLM): MiniCheck balanced accuracy, whole premise vs two 512-token truncations",
+     "0.732 vs 0.454 and 0.501",
+     "measured"
+    ]
+   ],
+   "lost": "The two checkers disagree on 104 of 390; thresholds must be calibrated per relation on human labels.",
+   "src": [
+    "Building the Knowledge Graph - Pilot Slice",
+    "EXP-009",
+    "EXP-014"
+   ]
+  },
+  {
+   "id": "git",
+   "n": 15,
+   "title": "Git master copy",
+   "badge": "pilot",
+   "lane": "kg",
+   "what": "All nodes, assertions (with status and evidence), passages and merges are written as plain CSV and JSONL files in git, with a hash per file and one snapshot hash.",
+   "why": "A text master copy can be diffed, reviewed and rolled back, and the experiment config can name the exact snapshot it used.",
+   "rejected": "The graph database as the only copy (hard to review and to reproduce).",
+   "numbers": [
+    [
+     "Pilot concepts / assertions / marked accepted-by-gate",
+     "183 / 301 / 146",
+     "count"
+    ]
+   ],
+   "lost": "Rule checks found cycles (26 in USES, 4 in PREREQUISITE_OF, 3 in IS_A) that need a sample read before any snapshot is frozen.",
+   "src": [
+    "Building the Knowledge Graph - Pilot Slice"
+   ]
+  },
+  {
+   "id": "neo4j",
+   "n": 16,
+   "title": "Neo4j graph database",
+   "badge": "planned",
+   "lane": "kg",
+   "what": "The snapshot is loaded into Neo4j for typed traversal at question time. Concepts link to passages by passage id; the passage text itself stays in Postgres.",
+   "why": "Bounded typed walks (two hops, chosen relations) are what the graph arms need, and a graph database does them directly. The pilot ran its walk in plain Python; Neo4j's advantage over that is not measured.",
+   "rejected": "Postgres tables as the graph store; Apache AGE; SQL/PGQ.",
+   "numbers": [
+    [
+     "Status",
+     "load script exists, never run",
+     "planned"
+    ]
+   ],
+   "lost": "Memory: Neo4j, Postgres, the query encoder and the browser must fit together on the 8 GB Mac (to measure).",
+   "src": [
+    "Intelligent Educator v2 - Architecture Plan",
+    "Building the Knowledge Graph - Pilot Slice"
+   ]
+  }
+ ],
+ "route_cases": [
+  {
+   "id": "scan",
+   "label": "Book scan (chapters 1-5)",
+   "path": [
+    "sources",
+    "route",
+    "ocr",
+    "markdown",
+    "toc",
+    "chunks",
+    "embed"
+   ],
+   "note": "Image-only scan: OCR is the only way to text."
+  },
+  {
+   "id": "echap",
+   "label": "e-Chapters (phone scan with a garbage text layer)",
+   "path": [
+    "sources",
+    "route",
+    "ocr",
+    "markdown",
+    "toc",
+    "chunks",
+    "embed"
+   ],
+   "note": "A text layer exists, but it is garbage, so the route is OCR."
+  },
+  {
+   "id": "slides",
+   "label": "Slides",
+   "path": [
+    "sources",
+    "route",
+    "ocr",
+    "markdown",
+    "chunks",
+    "embed"
+   ],
+   "note": "OCR crops the diagrams with captions; the unit is one slide."
+  },
+  {
+   "id": "hw",
+   "label": "Homework and final (questions)",
+   "path": [
+    "sources",
+    "route",
+    "ocr",
+    "markdown",
+    "qbank"
+   ],
+   "note": "The questions go to the question bank; what retrieval may read follows the permitted-source list and the per-question exclusion of its own exercise."
+  },
+  {
+   "id": "keys",
+   "label": "Official answer keys",
+   "path": [
+    "sources",
+    "route",
+    "qbank"
+   ],
+   "note": "Born-digital: read from the text layer, no OCR."
+  },
+  {
+   "id": "captions",
+   "label": "Lecture captions",
+   "path": [
+    "sources",
+    "transcripts",
+    "chunks",
+    "embed"
+   ],
+   "note": "No PDF at all: yt-dlp, then timestamped paragraphs."
+  },
+  {
+   "id": "tier2",
+   "label": "Tier 2 textbooks",
+   "path": [
+    "sources",
+    "route",
+    "ocr",
+    "markdown",
+    "toc",
+    "chunks",
+    "embed"
+   ],
+   "note": "OCR in progress (the books now run on the university server, by your decision); the table-of-contents step is decided, not built."
+  },
+  {
+   "id": "paper",
+   "label": "Zotero paper (library, later)",
+   "path": [
+    "sources",
+    "route",
+    "markdown",
+    "chunks",
+    "embed"
+   ],
+   "note": "Planned: GROBID if the text layer is usable and the paper is at most 60 pages; MinerU for scans and maths-heavy papers. Deferred."
+  }
+ ],
+ "badges": {
+  "done": "done: ran on the real CS 156 data",
+  "pilot": "pilot: ran on a small slice only",
+  "planned": "planned: decided, not built",
+  "running": "running now",
+  "external": "external"
+ },
+ "books_ocr": {
+  "done": 4594,
+  "all": 5694
+ },
+ "book_structure": {
+  "lfd-book.md": {
+   "headings": 163,
+   "sections_xy": 22,
+   "sections_xyz": 38,
+   "exercise_headings": 53,
+   "pdfpage_markers": 216,
+   "page_number_markers": 206
+  },
+  "lfd-echapters.md": {
+   "headings": 188,
+   "sections_xy": 23,
+   "sections_xyz": 40,
+   "exercise_headings": 78,
+   "pdfpage_markers": 0,
+   "page_number_markers": 231
+  },
+  "ch8_outline": [
+   "8.1 The Optimal Hyperplane",
+   "8.1.1 Finding the Fattest Separating Hyperplane",
+   "8.1.2 Is a Fat Separator Better?",
+   "8.1.3 Non-Separable Data",
+   "8.2 Dual Formulation of the SVM",
+   "8.2.1 Lagrange Dual for a QP-Problem",
+   "8.2.2 Dual of the Hard-Margin SVM",
+   "8.2.3 Recovering the SVM from the Dual Solution",
+   "8.3 Kernel Trick for SVM",
+   "8.3.1 Kernel Trick via Dual SVM",
+   "8.3.2 Choice of Kernels",
+   "8.4 Soft-margin SVM",
+   "8.5 Problems"
+  ]
+ },
+ "exp": {
+  "EXP-002": {
+   "id": "EXP-002",
+   "title": "Embedding pilot on CS 156: EmbeddingGemma-2 vs bge-m3 vs Qwen3-0.6B",
+   "status": "done",
+   "result": "EG2 768-d recall@10 0.35 vs bge-m3 0.47 (-12.0 points, paired bootstrap 95% CI -24.9 to -0.3). n=40, one LLM judge, transcripts only, dense retrieval only.",
+   "decision": "Keep bge-m3 as primary embedder. EG2 256-d not recommended for storage. Re-test only on the 50-question set with book prose, Persian and BM25 fusion."
+  },
+  "EXP-005": {
+   "id": "EXP-005",
+   "title": "IUST vs Kaggle vector agreement (bge-m3)",
+   "status": "done",
+   "result": "All 350 chunks cosine >= 0.99998 (min 0.999989, mean 0.999999). IUST throughput about 20-21 chunks/s, peak 1.5 GB.",
+   "decision": "Treat IUST and Kaggle bge-m3 vectors as interchangeable. Kaggle vs Colab not measured."
+  },
+  "EXP-006": {
+   "id": "EXP-006",
+   "title": "OCR model pilot: 4 models on 14 pages",
+   "status": "done",
+   "result": "MinerU2.5-Pro and DeepSeek-OCR-2 ran (MinerU best LaTeX, 3.3 GB). PaddleOCR-VL failed 3 times on the Kaggle image (CUDA library clash, PaddleX re-init; third attempt hung 3 h). LightOnOCR-2 returned nothing in 105 min on Colab. Read by eye, no error rate.",
+   "decision": "MinerU2.5-Pro for the whole corpus (provisional). Do not re-run Paddle or LightOn on Kaggle; Paddle on IUST only with an isolated cu126 venv, and only if the benefit is worth it."
+  },
+  "EXP-007": {
+   "id": "EXP-007",
+   "title": "OCR production run: CS 156 course and solution pages",
+   "status": "done",
+   "result": "104 units done on first attempt, 0 failed pages, 4 blank outputs; 20 s/page mean, peak 4.9 GB. 15-page spot check: 0 content errors in 278 math spans.",
+   "decision": "OCR corpus accepted. Not re-run: dedup key (pdf sha1, page) per model, revision and dpi stops it."
+  },
+  "EXP-009": {
+   "id": "EXP-009",
+   "title": "Knowledge-graph pilot: NLI gate (HHEM + MiniCheck) on Kaggle CPU",
+   "status": "done",
+   "result": "HHEM 481 s, MiniCheck 1,518 s; 172 supported by both, 43 rejected by both, 104 disagree. First run lost MiniCheck (helper named minicheck.py shadowed the package); MiniCheck re-run alone. Off-ledger: hours = sum of the two stated model times, install and re-run not counted.",
+   "decision": "Gate used in the pilot. Codex review: publish only as an auditable pilot demonstration."
+  },
+  "EXP-010": {
+   "id": "EXP-010",
+   "title": "Chunking strategies pilot: six arms over 18 lectures",
+   "status": "done",
+   "result": "Grade-2 share 23-30% across six arms; every paired-bootstrap interval vs our rule includes 0 (width up to 20 points). Inconclusive, not equal. Design confounds: sizes differ, 4,800-char cap truncates, overlap counted twice, no reference answers, correlated questions. 8 of 11 workers failed on adapter bugs (IUST lock HTTP 400, missing modules, Colab refusals).",
+   "decision": "Do not cite as a finding. Do not re-run as designed; redo only with matched-size arms and token caps. Contextual retrieval and late chunking not run."
+  },
+  "EXP-014": {
+   "id": "EXP-014",
+   "title": "Long premises: HHEM + MiniCheck, whole vs chunked vs 512-truncated (76 pairs)",
+   "status": "done",
+   "result": "MiniCheck bal.acc whole 0.73, own chunking 0.61, splits 0.54-0.61; HHEM whole 0.58; 512 truncation 0.45-0.54. Split-evidence case (constructed): whole 17-18/20 vs splits 0-4/20. Labels by Claude, not human gold. Bespoke-MiniCheck-7B run broken (all 0.0).",
+   "decision": "Provisional: score whole premise up to MiniCheck's 2,048-token cap; never truncate at 512; HHEM as robustness score only; calibrate thresholds on human labels before reporting"
+  },
+  "EXP-015": {
+   "id": "EXP-015",
+   "title": "Book corpus OCR: 8 books + 3 solution PDFs with MinerU2.5-Pro (parse to Markdown only)",
+   "status": "running",
+   "result": null,
+   "decision": null
+  }
+ }
+}

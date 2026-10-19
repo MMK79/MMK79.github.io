@@ -1,0 +1,29 @@
+{
+ "about": "Three real questions asked in Caltech CS 156 (the moderator relays the online audience in the Q&A at the end of Lectures 14 and 15). Text copied from the caption chunks of the knowledge-graph pilot (CC BY video licence field). Each question's own Q&A passages hold the professor's answer, so they are excluded from retrieval for that question (leakage rule: derived_from). The reference points are our reading of the professor's answer (one rater).",
+ "questions": [
+  {"id": "Q1", "question": "What happens when the points are not linearly separable?",
+   "asked_in": "L14-c51", "lecture": "Lecture 14 (Support Vector Machines)", "time": "01:05:00",
+   "exclude": ["L14-c51", "L14-c52"],
+   "reference": [
+     {"point": "If the data are badly non-separable, apply a nonlinear transformation (go to a Z space).", "concepts": ["nonlinear-transform", "kernel-trick", "kernel-function"]},
+     {"point": "If they are only slightly non-separable, use the soft-margin SVM, which allows a few margin errors and penalizes them.", "concepts": ["soft-margin-svm", "slack-variable"]},
+     {"point": "In practice, both together: a nonlinear transformation plus the soft version.", "concepts": ["soft-margin-svm", "nonlinear-transform"]}
+   ],
+   "stratum": "cross-concept (ours): the answer joins Lecture 14 (hard margin) with Lecture 15 (soft margin, kernels)"},
+  {"id": "Q2", "question": "Is it possible to combine kernels to produce new, different kernels?",
+   "asked_in": "L15-c59", "lecture": "Lecture 15 (Kernel Methods)", "time": "01:15:00",
+   "exclude": ["L15-c59"],
+   "reference": [
+     {"point": "Yes, if the combination is legitimate: there must still be a Z space in which it is an inner product (a valid kernel).", "concepts": ["kernel-function", "new:valid kernel", "nonlinear-transform"]}
+   ],
+   "stratum": "definition-like (ours)"},
+  {"id": "Q3", "question": "So is it safe to assume, then, that if you do the transformation to an infinite-dimensional space, the data will be linearly separable there?",
+   "asked_in": "L15-c57", "lecture": "Lecture 15 (Kernel Methods)", "time": "01:10:00",
+   "exclude": ["L15-c57", "L15-c59"],
+   "reference": [
+     {"point": "Safe but not certain: counter-examples can be built.", "concepts": ["linear-separability", "rbf-kernel"]},
+     {"point": "You do not need to know in advance: apply the machinery and check whether the points are classified correctly.", "concepts": ["svm", "rbf-kernel"]}
+   ],
+   "stratum": "cross-concept (ours)"}
+ ]
+}

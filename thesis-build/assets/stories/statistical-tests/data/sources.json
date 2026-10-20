@@ -113,6 +113,85 @@
    "zotero_key": null,
    "in_zotero": false,
    "note": "regulatory guidance, not a paper; not added to Zotero"
+  },
+  "bloom1984": {
+   "short": "Bloom 1984",
+   "authors": "Benjamin S. Bloom",
+   "year": 1984,
+   "title": "The 2 Sigma Problem: The Search for Methods of Group Instruction as Effective as One-to-One Tutoring",
+   "venue": "Educational Researcher 13(6):4-16",
+   "doi": "10.3102/0013189X013006004",
+   "citekey": null,
+   "zotero_key": "5RAKUV9Q",
+   "in_zotero": true
+  },
+  "kraft2020": {
+   "short": "Kraft 2020",
+   "authors": "Matthew A. Kraft",
+   "year": 2020,
+   "title": "Interpreting Effect Sizes of Education Interventions",
+   "venue": "Educational Researcher 49(4):241-253",
+   "doi": "10.3102/0013189X20912798",
+   "citekey": null,
+   "zotero_key": "5HNWJQEQ",
+   "in_zotero": true
+  },
+  "nickow2024": {
+   "short": "Nickow et al. 2024",
+   "authors": "Andre Nickow, Philip Oreopoulos, Vincent Quan",
+   "year": 2024,
+   "title": "The Promise of Tutoring for PreK-12 Learning: A Systematic Review and Meta-Analysis of the Experimental Evidence",
+   "venue": "American Educational Research Journal 61(1):74-107",
+   "doi": "10.3102/00028312231208687",
+   "citekey": null,
+   "zotero_key": "K27MPRRM",
+   "in_zotero": true
+  },
+  "kulik2016": {
+   "short": "Kulik & Fletcher 2016",
+   "authors": "James A. Kulik, J. D. Fletcher",
+   "year": 2016,
+   "title": "Effectiveness of Intelligent Tutoring Systems: A Meta-Analytic Review",
+   "venue": "Review of Educational Research 86(1):42-78",
+   "doi": "10.3102/0034654315581420",
+   "citekey": null,
+   "zotero_key": "985DAW7R",
+   "in_zotero": true
+  },
+  "kestin2025": {
+   "short": "Kestin et al. 2025",
+   "authors": "Gregory Kestin, Kelly Miller, Anna Klales, Timothy Milbourne, Gregorio Ponti",
+   "year": 2025,
+   "title": "AI tutoring outperforms in-class active learning: an RCT introducing a novel research-based design in an authentic educational setting",
+   "venue": "Scientific Reports 15:17458",
+   "doi": "10.1038/s41598-025-97652-6",
+   "citekey": null,
+   "zotero_key": "PQIRDEVJ",
+   "in_zotero": true
+  },
+  "desimone2025": {
+   "short": "De Simone et al. 2025",
+   "authors": "Martin De Simone et al.",
+   "year": 2025,
+   "title": "From Chalkboards to Chatbots: Evaluating the Impact of Generative AI on Learning Outcomes in Nigeria",
+   "venue": "World Bank Policy Research Working Paper 11125",
+   "url": "https://doi.org/10.1596/1813-9450-11125",
+   "citekey": null,
+   "zotero_key": "MI3NH9SI",
+   "in_zotero": true,
+   "note": "link built from the working-paper number; check before relying on it"
+  },
+  "oreopoulos2026": {
+   "short": "Oreopoulos & Low 2026",
+   "authors": "Philip Oreopoulos, Corinne Low",
+   "year": 2026,
+   "title": "Khanmigo 2-year cluster RCT (Tennessee middle schools)",
+   "venue": "NBER Working Paper w35620",
+   "url": "https://www.nber.org/papers/w35620",
+   "citekey": null,
+   "zotero_key": null,
+   "in_zotero": false,
+   "note": "abstract only; import pending"
   }
  }
 }

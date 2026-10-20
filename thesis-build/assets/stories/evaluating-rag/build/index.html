@@ -134,15 +134,14 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
 #so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
-@media (min-width:1180px){
-  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
-  #so button{display:none}
-}
-@media (max-width:1179px){
-  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
-  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
-  #so.open ol{display:block}
-}
+/* Rail vs toggle is decided by story-shell.js from the page's real content edge (stories use .wrap widths of 760-860 px), never from a fixed width:
+   the rail is used only when it fits left of the content with a gap; otherwise a collapsed toggle opens the list over the page on demand. */
+#so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+#so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
 
 /* ?embed=1 (iframe on another page): no site header, back links or outline */
@@ -760,6 +759,11 @@ window.QUIZ = [
     e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
     (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
     history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  // Rail only when it fits left of the real content edge (16 px gap, 12 px from the window edge); else a collapsed toggle. Never covers text.
+  const fit = () => { const edge = Math.min(...[...document.querySelectorAll("#story-root .wrap")].map(e => { const r = e.getBoundingClientRect(), cs = getComputedStyle(e); return r.width ? r.left + parseFloat(cs.paddingLeft) : Infinity; }).concat(Infinity));
+    const left = edge - 16 - 230, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail); if (rail) { aside.style.setProperty("--so-left", left + "px"); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } };
+  addEventListener("resize", fit); fit();
   const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
     links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
   addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();

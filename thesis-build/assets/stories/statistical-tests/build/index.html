@@ -127,15 +127,14 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
 #so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
-@media (min-width:1180px){
-  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
-  #so button{display:none}
-}
-@media (max-width:1179px){
-  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
-  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
-  #so.open ol{display:block}
-}
+/* Rail vs toggle is decided by story-shell.js from the page's real content edge (stories use .wrap widths of 760-860 px), never from a fixed width:
+   the rail is used only when it fits left of the content with a gap; otherwise a collapsed toggle opens the list over the page on demand. */
+#so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+#so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px)}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
 
 /* ?embed=1 (iframe on another page): no site header, back links or outline */
@@ -431,6 +430,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <li>In our example, <i>b</i> = 5 and <i>c</i> = 2. For teaching, we take the direction that favours our rule (chosen after seeing the data; the pilot fixed no test in advance): the exact one-sided tail is 29/128 &asymp; 0.23, above 0.05. With 40 questions this is <b>inconclusive, not "no difference"</b>: such a small sample has little power for modest effects.</li>
       <li>For a given test, &alpha; and number of questions, <b>power</b> depends on how often the systems disagree (&psi;) and on the true difference (&delta;). For &psi; = 0.30 and &delta; = 0.10 the exact minimum is 269 questions for power 0.90; the thesis target is 270.</li>
       <li>The thesis claim needs two tests in a <b>fixed order</b> (graph vs text first, then typed vs collapsed labels). The claim holds only if both reject, so neither test needs a smaller &alpha;. If the first test does not reject, the second is not tested.</li>
+      <li><b>"+0.3 SD"</b> (Cohen's <i>d</i>) is a gap between two group averages measured in standard deviations: the average treated student would sit at about the 62nd percentile of the control group. Bloom's 2 SD is the 98th. See <a href="#le">Effect size</a>.</li>
       <li><b>Bootstrap intervals</b> show how big the difference may be; they are reported but never decide. <b>Cohen's &kappa;</b> checks how well the LLM judge agrees with a human.</li>
     </ul>
   </div>
@@ -544,6 +544,49 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <h2>Watch: from 40 questions to one decision</h2>
   <p class="who">The running example in motion: the 2&times;2 table, the coin-toss distribution, the power curve, and the fixed sequence. All numbers are read from this page's data files.</p>
   <figure class="sv" id="video-McNemarTest"><video controls preload="none" playsinline poster="/thesis/videos/McNemarTest.10edfb8d.jpg" width="1920" height="1080" aria-label="Video (English, no sound)"><source src="/thesis/videos/McNemarTest.10edfb8d.mp4" type="video/mp4"></video><figcaption data-i18n="ex.tw_video_cap">Video, English, no sound.</figcaption></figure>
+</section>
+
+<!-- ===================== Effect size ===================== -->
+<section class="step" id="le" data-nav="Effect size"><div class="kicker"><span class="lv">Effect size</span>what "+0.3 SD" means</div>
+  <h2>What "+0.3 SD" means</h2>
+  <p class="who">Papers on tutoring and AI tutors report their gains in "SD". This section explains the unit. Our own thesis claim is a different unit (a difference in the share of questions answered correctly), see Level 3.</p>
+
+  <h3>The problem: points on one test are not points on another</h3>
+  <p>A study says "the tutored students gained 6 points". On a 20-point quiz that is a lot. On a 200-point exam it is little. To compare studies, we need a unit that does not depend on the test.</p>
+
+  <h3>The idea: measure the gap in units of the spread</h3>
+  <p>The <b>standard deviation (SD)</b> says how far students typically sit from their group's average. Divide the gap between the two group averages by that spread. The result is the <b>standardised mean difference</b>, also called <b>Cohen's <i>d</i></b>.</p>
+  <div class="eq">d = (mean<sub>treated</sub> &minus; mean<sub>control</sub>) / SD<sub>pooled</sub></div>
+  <p>"+0.3 SD" therefore means: the average treated student scores 0.3 standard deviations above the average control student. If scores are roughly bell-shaped with the same spread in both groups, that student sits at about the <b>62nd percentile of the control group</b>. Move the slider and watch it.</p>
+
+  <div class="fig" id="es">
+    <h3>Two bell curves and one slider</h3>
+    <div class="row" id="es-pre"></div>
+    <label class="sl"><span class="nm">effect size <i>d</i> (SD)</span><input id="es-d" type="range" min="0" max="2.5" step="0.01" value="0.3" aria-label="effect size d in standard deviations"><b id="es-d-v"></b></label>
+    <div id="es-svg"></div>
+    <div class="legend"><span><i style="background:#68707F"></i>control group</span><span><i style="background:var(--amber)"></i>treated group</span><span><i style="background:var(--teal);opacity:.55"></i>control students below the average treated student</span></div>
+    <div class="out" id="es-out" aria-live="polite"></div>
+    <p class="cap">Both groups are drawn as normal curves with SD = 1; only the treated curve moves. The percentile is exact only under that assumption (bell-shaped scores, equal spread). Real score distributions are rarely exactly so, and a ceiling or floor on the test changes the picture. The Kraft label is meant for causal pre-K-12 studies with standardised tests; the other presets are shown for scale and do not all fit that description.</p>
+  </div>
+
+  <h3>How to read sizes in education</h3>
+  <p>Cohen's old rule of thumb (0.2 small, 0.5 medium, 0.8 large) came from psychology, not from schools. For education, Kraft looked at causal studies of pre-K-12 achievement on standardised tests and proposed: <b>below 0.05 small, 0.05 to below 0.20 medium, 0.20 or above large</b> <a class="cite" data-c="kraft2020|EdWorkingPaper pp.21-22"></a>. Typical effects in that literature are small in SD terms, so an effect of 0.2 SD already counts as large there. The labels are for that kind of study; they do not carry over to a 3-week lab lesson or a university physics class.</p>
+
+  <h3>Examples from the studies we cite</h3>
+  <div class="hscroll"><table class="tbl" aria-label="Effect sizes of studies in AI and tutoring">
+   <tr><th>Study</th><th>Effect</th><th>What was compared</th><th>Percentile of control</th></tr>
+   <tr><td>Bloom 1984 <a class="cite" data-c="bloom1984|p.4"></a></td><td class="n">2.0 SD</td><td>tutoring with mastery learning (1 to 3 pupils per tutor) vs a class of about 30; 3-week units, narrow tests</td><td class="n" data-d="2">&nbsp;</td></tr>
+   <tr><td>Kestin et al. 2025 <a class="cite" data-c="kestin2025|pp.2-3"></a></td><td class="n">0.63 SD</td><td>AI tutor vs in-class active learning; 194 Harvard physics students; two short lessons; immediate test</td><td class="n" data-d="0.63">&nbsp;</td></tr>
+   <tr><td>De Simone et al. 2025 <a class="cite" data-c="desimone2025|p.2"></a></td><td class="n">0.31 SD</td><td>Nigeria, 6 weeks after school; the programme bundles extra class time, supervision, computers and the AI</td><td class="n" data-d="0.31">&nbsp;</td></tr>
+   <tr><td>Nickow et al. 2024 <a class="cite" data-c="nickow2024|abstract"></a></td><td class="n">0.29 SD</td><td>pooled effect of tutoring RCTs in pre-K-12</td><td class="n" data-d="0.288">&nbsp;</td></tr>
+   <tr><td>Kulik &amp; Fletcher 2016 <a class="cite" data-c="kulik2016|Table 3"></a></td><td class="n">0.13 SD</td><td>intelligent tutoring systems, on standardised tests (0.73 on local tests; median 0.66 over 50 evaluations)</td><td class="n" data-d="0.13">&nbsp;</td></tr>
+   <tr><td>Oreopoulos &amp; Low 2026 <a class="cite" data-c="oreopoulos2026|abstract"></a></td><td class="n">0.06 to 0.08 SD a year</td><td>Khanmigo, 2-year cluster RCT in 18 Tennessee middle schools</td><td class="n" data-d="0.07">&nbsp;</td></tr>
+  </table></div>
+  <p class="small muted">Each row has its own population, comparator, test and length, so the rows are separate findings, not one range. The percentile column assumes bell curves and uses the middle value for the Khanmigo range. The two preprints in the last rows are known from abstracts or working-paper versions only (see Sources).</p>
+
+  <h3>Why Bloom's 2 SD is huge</h3>
+  <p>At 2 SD the average tutored student beats about 98% of the control class. That is ten times Kraft's threshold for a "large" effect (0.20) and about three times the next-largest effect in the table (0.63). Later syntheses find far less for tutoring (0.29 SD pooled over RCTs), and the original rests on a few short studies with narrow tests that bundled mastery learning with tutoring <a class="cite" data-c="bloom1984|p.4"></a>. This is why this thesis states Bloom's number as what he reported, not as what to expect.</p>
+  <div class="take"><b>Take-away.</b> "+0.3 SD" is a gap measured in units of the students' own spread. Always ask four things: which test, which comparison group, how long, and whether the SD is the pooled spread of one group or of a whole population.</div>
 </section>
 
 <!-- ===================== Level 2 ===================== -->
@@ -778,6 +821,31 @@ const kpSet = () => ["a", "b", "c", "d"].forEach(k => $("kp-" + k).value = KP[k]
 function kpDraw() { const {a, b, c, d} = KP, N = a + b + c + d, [k, po, pe] = S.kappa([[a, b], [c, d]]);
   $("kp-out").innerHTML = N ? `observed agreement p<sub>o</sub> = <b>${pct(po)}</b> · chance agreement p<sub>e</sub> = ${pct(pe)} · <b>κ = ${isFinite(k) ? k.toFixed(3) : "undefined (p_e = 1)"}</b><br>false accepts (judge says fully correct, author does not): <b>${b}</b>; that is ${b + d ? pct(b / (b + d)) : "n/a"} of the ${b + d} answers the author rejects (one possible denominator; the protocol must fix it)` : "enter counts"; }
 
+/* effect size: two bell curves, d slider, percentile shift (Phi via the Abramowitz-Stegun 7.1.26 erf, |error| < 1.5e-7) */
+const erfA = x => { const s = x < 0 ? -1 : 1, z = Math.abs(x), t = 1 / (1 + 0.3275911 * z);
+  return s * (1 - (((((1.061405429 * t - 1.453152027) * t) + 1.421413741) * t - 0.284496736) * t + 0.254829592) * t * Math.exp(-z * z)); };
+const Phi = z => 0.5 * (1 + erfA(z / Math.SQRT2));
+const ESPRE = [["Bloom 1984: 2.0", 2], ["Kestin 2025: 0.63", 0.63], ["Nigeria 2025: 0.31", 0.31], ["Tutoring RCTs: 0.29", 0.29], ["ITS standardised: 0.13", 0.13], ["Khanmigo: 0.07", 0.07]];
+$("es-pre").innerHTML = ESPRE.map((p, i) => `<button type="button" data-i="${i}">${p[0]}</button>`).join("");
+$("es-pre").onclick = ev => { const i = ev.target.dataset.i; if (i == null) return; $("es-d").value = ESPRE[i][1]; esDraw(); };
+$("es-d").addEventListener("input", () => esDraw());
+const ordinal = n => { const k = n % 100, s = (k >= 11 && k <= 13) ? "th" : ({1: "st", 2: "nd", 3: "rd"})[n % 10] || "th"; return n + s; };
+function esDraw() {
+  const d = +$("es-d").value; $("es-d-v").textContent = d.toFixed(2);
+  const W = wOf("es-svg"), H = 210, L = 12, R = 12, T = 14, B = 176, lo = -3.5, hi = 6, X = v => L + (v - lo) / (hi - lo) * (W - L - R), Y = p => B - p / 0.4 * (B - T);
+  const pdf = (v, m) => Math.exp(-0.5 * (v - m) * (v - m)) / Math.sqrt(2 * Math.PI), pts = (m, a, b) => { const o = []; for (let v = a; v <= b + 1e-9; v += 0.05) o.push(X(v).toFixed(1) + "," + Y(pdf(v, m)).toFixed(1)); return o; };
+  let s = `<line x1="${L}" y1="${B}" x2="${W - R}" y2="${B}" stroke="#242B38"/>`;
+  s += `<polygon fill="#3CC7B4" fill-opacity=".45" points="${X(lo)},${B} ${pts(0, lo, d).join(" ")} ${X(d)},${B}"/>`;
+  s += `<polyline fill="none" stroke="#68707F" stroke-width="2" points="${pts(0, lo, hi).join(" ")}"/><polyline fill="none" stroke="#F2A93B" stroke-width="2" points="${pts(d, lo, hi).join(" ")}"/>`;
+  s += `<line x1="${X(0)}" y1="${T}" x2="${X(0)}" y2="${B}" stroke="#68707F" stroke-dasharray="4 4"/><line x1="${X(d)}" y1="${T}" x2="${X(d)}" y2="${B}" stroke="#F2A93B" stroke-dasharray="4 4"/>`;
+  [-3, -2, -1, 0, 1, 2, 3, 4, 5].forEach(v => s += `<text x="${X(v)}" y="${B + 16}" text-anchor="middle" fill="#98A0B0">${v}</text>`);
+  s += `<text x="${W - R}" y="${B + 32}" text-anchor="end" fill="#98A0B0">score, in SD of the control group (0 = control average)</text>`;
+  $("es-svg").innerHTML = svgEl(W, H + 20, s, "Two normal curves, control at 0 and treated at d standard deviations; the shaded part is the share of control students below the treated average");
+  const p = Phi(d), c = Phi(d / Math.SQRT2), lab = d < 0.05 ? "small" : d < 0.2 ? "medium" : "large";
+  $("es-out").innerHTML = `the average treated student scores above <b>${pct(p)}</b> of the control group (${ordinal(Math.round(100 * p))} percentile; the control average is the 50th)<br>a random treated student beats a random control student with probability <b>${pct(c)}</b><br>Kraft's label (causal pre-K-12 studies): <b>${lab}</b>`;
+}
+document.querySelectorAll("td[data-d]").forEach(td => { td.textContent = ordinal(Math.round(100 * Phi(+td.dataset.d))); });
+
 /* quiz */
 const QUIZ = [
  {q: "Two arms answer the same 100 questions. Arm A is right on 60, arm B on 55. Which numbers does McNemar's test need?", o: ["60 and 55", "The number of questions where only A is right and where only B is right", "The 100 questions and the 5-point difference"], a: 1,
@@ -814,7 +882,7 @@ Promise.all(["running-example.json", "power-table.json", "sources.json", "claims
   if (pt) $("pw-table").innerHTML = `<tr><th>ψ</th>${pt.rows.map(r => `<th>${r.psi.toFixed(2)}</th>`).join("")}</tr><tr><td>n for power 0.80</td>${pt.rows.map(r => `<td class="n">${r.n80}</td>`).join("")}</tr><tr><td>n for power 0.90</td>${pt.rows.map(r => `<td class="n">${r.n90}</td>`).join("")}</tr>`;
   if (src) cites(src.sources || {}, (cl && (cl.claims || cl)) || []); else document.querySelectorAll("a.cite").forEach(a => a.textContent = "[" + a.dataset.c.split("|")[0] + "]");
 });
-drawExample(); mcSet(); mcDraw(); pwSet(); pwDraw(); fsSet(); fsRun(); kpSet(); kpDraw();
+drawExample(); mcSet(); mcDraw(); pwSet(); pwDraw(); fsSet(); fsRun(); kpSet(); kpDraw(); esDraw();
 })();
 </script>
 <p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
@@ -833,6 +901,11 @@ drawExample(); mcSet(); mcDraw(); pwSet(); pwDraw(); fsSet(); fsRun(); kpSet(); 
     e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
     (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
     history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  // Rail only when it fits left of the real content edge (16 px gap, 12 px from the window edge); else a collapsed toggle. Never covers text.
+  const fit = () => { const edge = Math.min(...[...document.querySelectorAll("#story-root .wrap")].map(e => { const r = e.getBoundingClientRect(), cs = getComputedStyle(e); return r.width ? r.left + parseFloat(cs.paddingLeft) : Infinity; }).concat(Infinity));
+    const left = edge - 16 - 230, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail); if (rail) { aside.style.setProperty("--so-left", left + "px"); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } };
+  addEventListener("resize", fit); fit();
   const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
     links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
   addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();

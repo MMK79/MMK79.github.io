@@ -1,0 +1,1405 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Placement test simulation</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--know:#4CC38A;--part:#E8C547;--miss:#F06A6A;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(32px,7.5vw,52px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:16px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+ol,ul{padding-left:22px}li{margin:4px 0}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+section.step{padding:56px 0 34px;border-top:1px solid var(--line)}
+.hero{padding:48px 0 28px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.mm{font-family:var(--display);font-size:clamp(22px,4.6vw,30px);font-weight:300;line-height:1.3;border-left:3px solid var(--amber);padding:6px 0 6px 16px;margin:18px 0}
+.who{color:var(--faint);font-size:13px}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:36px;max-width:100%}
+button{cursor:pointer}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:disabled{opacity:.4;cursor:default}
+button.pri{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+select{min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.lbl{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
+label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
+input[type=range]{width:200px;max-width:100%;accent-color:var(--amber)}
+.take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
+.ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:10px 0;font-size:14.5px}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:10px 0;font-size:14.5px}
+.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
+.pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
+.pin b{display:block;font-size:13px;color:var(--amber)}
+.pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.m{font-family:var(--mono);font-size:12.5px}
+.yes{color:var(--know)}.no{color:var(--miss)}.uns{color:var(--part)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.card h3{margin-top:0}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.cond{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.cond h3{font-size:17px;margin:0 0 4px}
+.cond p{font-size:14px;color:var(--muted);margin:6px 0 0}
+.tag{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid var(--line);color:var(--faint);white-space:nowrap}
+.tag.gen{color:var(--teal);border-color:var(--teal)}.tag.arm{color:var(--amber);border-color:var(--amber)}.tag.par{color:var(--purple);border-color:var(--purple)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font-family:var(--body)}
+.cap{font-size:12.5px;color:var(--faint);margin:6px 0 0;line-height:1.45}
+.cap b{color:var(--muted);font-weight:500}
+.leg{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;color:var(--muted);margin:8px 0}
+.leg button{font-size:13px;padding:2px 8px;min-height:30px;display:inline-flex;gap:6px;align-items:center}
+.leg i{display:inline-block;width:12px;height:12px;border-radius:3px}
+.leg button[aria-pressed=false]{opacity:.45}
+.leg button[aria-pressed=true]{color:var(--text);border-color:var(--line)}
+.chart{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;margin:10px 0}
+.box{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0;background:var(--panel)}
+.box.claim{border-color:var(--teal)}.box.noclaim{border-color:var(--warn)}
+.box h3{margin-top:0}
+/* watch */
+#watch-ui{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:14px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}
+.stat{font:13px/1.5 var(--mono);color:var(--muted);margin:8px 0 0}
+.stat b{color:var(--text);font-weight:500}
+.qtext{font-size:15px;margin:6px 0}
+.opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.opts button{text-align:left;font-size:14px}
+.opts button.key{border-color:var(--know);color:var(--know)}
+.opts button.picked{border-color:var(--miss);color:var(--miss)}
+.opts .opt{border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:14px;color:var(--muted)}
+.opts .opt.key{border-color:var(--know);color:var(--know)}
+.dice{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font:13px var(--mono);color:var(--muted);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:8px 0}
+.dice .die{font-size:20px;line-height:1}
+.dice b.ok{color:var(--know)}.dice b.bad{color:var(--miss)}
+.eig{display:grid;grid-template-columns:minmax(0,1fr) 90px 52px;gap:4px 8px;align-items:center;font-size:12.5px;margin:6px 0}
+.eig .tr{background:var(--panel2);border:1px solid var(--line);border-radius:4px;height:12px;overflow:hidden}
+.eig .tr i{display:block;height:100%;background:var(--blue)}
+.eig .on{color:var(--amber)}.eig .on .tr i{background:var(--amber)}
+.eig .v{font:12px var(--mono);text-align:right}
+.eig .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hist{font-size:12.5px}
+.verdict{border-radius:10px;padding:10px 12px;margin:10px 0;border:1px solid var(--amber);background:var(--panel2);font-size:14px}
+.pill{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 4px 4px 0}
+.grid512{display:grid;gap:1px;margin:10px 0}
+.grid512 button{min-height:0;padding:0;border:0;border-radius:2px;aspect-ratio:1;background:#1d2330}
+.grid512 button.c{background:var(--amber)}
+.grid512 button.sel{outline:2px solid var(--text);outline-offset:0}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips span{font-size:12px;border:1px solid var(--line);border-radius:6px;padding:2px 6px;color:var(--faint)}
+.chips span.k{border-color:var(--know);color:var(--know)}
+.chips span.f{border-color:var(--warn);color:var(--warn)}
+.chips span.d{border-color:var(--miss);color:var(--miss);text-decoration:line-through}
+.gs{display:grid;grid-template-columns:minmax(0,120px) minmax(0,1fr);gap:6px 10px;align-items:start;font-size:13px;margin:8px 0}
+.gs .gl{color:var(--faint);font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding-top:3px}
+details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+.prov{font-size:13px;color:var(--muted)}
+.prov td.m{word-break:break-all}
+@media (max-width:820px){#watch-ui{grid-template-columns:1fr}}
+@media (max-width:640px){.pin{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}#nav{display:none}.gs{grid-template-columns:1fr}.gs .gl{padding-top:6px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{font:500 12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.06em;text-transform:uppercase;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;padding:9px 14px;cursor:pointer}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+@media (min-width:1180px){
+  #so{left:max(12px,calc(50% - 380px - 250px));top:calc(var(--hdr,54px) + 120px);width:230px}
+  #so button{display:none}
+}
+@media (max-width:1179px){
+  #so{left:14px;bottom:14px;max-width:calc(100vw - 28px)}
+  #so ol{display:none;position:absolute;left:0;bottom:46px;width:min(320px,calc(100vw - 28px));max-height:60vh;overflow-y:auto}
+  #so.open ol{display:block}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
+html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.fa-banner a{color:#FFB38F}
+.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:#2A1E18;color:#fff}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
+      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
+      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
+      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
+      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
+      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
+      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
+      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
+      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
+      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
+      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
+      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
+      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
+      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
+      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
+      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
+      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
+      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
+      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
+      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
+      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation, not reviewed" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Simulation only.</b> The questions were drafted by a language model and the students are simulated: no real student took this test. Every number is an operating characteristic under stated assumptions, not evidence that the test places real students correctly.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#map">The map</a><a href="#l1">Story</a><a href="#watch">Watch the test</a><a href="#conds">Conditions</a><a href="#res-curves">Results</a><a href="#claims">Claims</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#prov">Provenance</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">A layered lesson on the placement test</div>
+  <h1>Placement test simulation</h1>
+  <p class="mm">"You answer a few questions and the test finds your map: where you are lacking."</p>
+  <p class="lead">That is the idea. The output is a <b>mastery map</b> over the concept graph of one CS 156 topic, kernel methods (9 concepts). Each concept gets a probability that you know it, and a ring marks the <b>start point</b>: the first concept to learn next. This page shows how the map is made, how we tested the method on simulated students, and what those tests show and do not show.</p>
+  <div class="chart" id="hero-map" aria-label="Example mastery map"></div>
+  <p class="cap" id="hero-cap">Loading the example…</p>
+</header>
+
+<section class="step" id="tldr"><div class="kicker">TL;DR</div><h2>A short test that returns a map, tested only in simulation</h2>
+<ol>
+  <li><b>The method.</b> The test keeps a belief over all 512 sets of the 9 concepts. Each answer updates the whole belief. The output is a map (green ≥ 0.8 knows, yellow 0.4-0.8 partly, red &lt; 0.4 missing) and a start point.</li>
+  <li><b>The graph is used twice.</b> It makes prerequisite-closed sets more likely before the first answer (160 of 512 sets), and it defines the start point: a concept you lack whose prerequisites you know, earliest lecture first.</li>
+  <li><b>It is a standard method</b>, a cognitive-diagnosis adaptive test (CD-CAT) with the DINA model and a hierarchy-informed prior. It is not our contribution.</li>
+  <li><b>Results, simulation only</b> (2,000 simulated students × 25 replications per condition). After 12 items the start point was right in 0.45-0.78 of cases with the audited graph in the base scenario, depending on item noise and parameter error.</li>
+  <li><b>Mixed findings.</b> The audited graph beat no graph by 0.04-0.06 only when the simulated students follow that graph. With elicited item parameters the adaptive test did not beat a fixed lecture-order test. The q ≥ 0.8 stop rule was over-confident: 22-56% of confident stops were wrong.</li>
+  <li><b>Try it</b> in <a href="#watch">Watch the test</a>: follow a simulated student step by step, or answer the questions yourself.</li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div><h2>A teacher who asks before teaching</h2>
+<p class="who">For anyone. No technical words.</p>
+<div class="pin">
+  <div><b>Ask</b><p>A good teacher asks you a few questions before the lesson. Each question is the one that tells the teacher the most right now.</p></div>
+  <div><b>Think about the whole map</b><p>If you answer an SVM question correctly, you probably know what the SVM is built on, so the teacher does not ask those easy questions.</p></div>
+  <div><b>Point to the start</b><p>At the end the teacher colours a map of the topic, green, yellow or red, and points at the first thing you should learn.</p></div>
+</div>
+</section>
+
+<section class="step" id="map"><div class="kicker">The output</div><h2>Your mastery map, and how the graph is used</h2>
+<p>The map is what a <b>cognitive-diagnosis computerized adaptive test (CD-CAT)</b> gives. The hidden quantity is not one score. It is the <b>set of concepts you know</b>. After each answer, the test computes for each concept the probability that it is in your set (its posterior marginal). The colours are fixed bands:</p>
+<div class="leg"><span><i style="background:var(--know)"></i> green: p ≥ 0.8, knows</span><span><i style="background:var(--part)"></i> yellow: 0.4 ≤ p &lt; 0.8, partly</span><span><i style="background:var(--miss)"></i> red: p &lt; 0.4, missing</span><span><i style="background:none;border:2px solid var(--amber);border-radius:50%"></i> ring: the start point</span></div>
+<p>The concept graph (prerequisite edges between the 9 concepts) enters in exactly two places:</p>
+<div class="grid2">
+  <div class="cond"><h3>(a) The prior over sets</h3><p>Before any answer, the test gives most of the probability to <b>prerequisite-closed</b> sets: if a set holds a concept, it holds that concept's prerequisites. With the 5 audited edges, 160 of the 512 sets are closed. A small mixture weight ε = 0.02 is spread over all 512 sets, so every set stays possible and answers can overrule the graph.</p></div>
+  <div class="cond"><h3>(b) The start-point rule</h3><p>The start point is a concept on your <b>outer fringe</b>: you do not know it, but you know all its prerequisites. If several concepts qualify, the earliest in lecture order wins. The test reports the most probable start point and its probability <b>q</b>.</p></div>
+</div>
+<p class="small muted">The graph does not change the response model or the item choice rule. Two other parts use it only through the prior: which question is asked next, and when the test stops.</p>
+</section>
+
+<section class="step" id="l1"><div class="kicker"><span class="lv">Level 1</span>for a student</div><h2>The story: from one score to a map</h2>
+<ol>
+  <li><b>Problem:</b> a classic adaptive test gives one ability score. One number cannot say <i>where</i> you should start. <b>Next idea:</b> make the hidden state a set of known concepts. <b>Fix:</b> 9 concepts give 2<sup>9</sup> = 512 possible sets, few enough to compute exactly.</li>
+  <li><b>Problem:</b> 512 sets and only about 12 questions. <b>Next idea:</b> students rarely know a concept without its prerequisites. <b>Fix:</b> a prior that puts most mass on the 160 closed sets (<a href="#prior">see the grid</a>).</li>
+  <li><b>Problem:</b> answers are noisy. People slip on things they know and guess on things they do not. <b>Fix:</b> the DINA response model with a slip and a guess per item (<a href="#dina">worked example</a>).</li>
+  <li><b>Problem:</b> which question next? <b>Fix:</b> ask the item that is expected to shrink the uncertainty over the 512 sets most (Shannon entropy, SHE). At most 2 items per concept.</li>
+  <li><b>Problem:</b> when to stop? <b>Fix:</b> stop when the start point is confident (q ≥ 0.8) after at least 4 items, or after 12 items.</li>
+  <li><b>Problem:</b> we have no real students to check it. <b>Fix:</b> a simulation study with known hidden states (<a href="#sim">simulated students</a>), many conditions (<a href="#conds">explained here</a>) and confidence intervals. It measures how the method behaves under stated assumptions; it cannot show that it works for real students.</li>
+</ol>
+</section>
+
+<section class="step" id="sim"><div class="kicker">Inside the simulation</div><h2>What a simulated student is</h2>
+<p>A simulated student has a <b>hidden true set</b> of known concepts. The test never sees it; we use it only to score the test. The base generator (G1) has three steps:</p>
+<ol>
+  <li><b>Progress:</b> draw a point in lecture order; the student knows every concept before it.</li>
+  <li><b>Random flips:</b> each concept flips (known ↔ unknown) with probability 0.15, so students are not perfect lecture followers.</li>
+  <li><b>Closed downwards:</b> drop every known concept whose prerequisites are not all known, until the set is closed under the graph.</li>
+</ol>
+<p>Then the student answers each item with the response model below: with a slip probability if they know every tagged concept, with a guess probability otherwise. Answers are drawn once per item, so every arm of the study sees the same student and the same answers.</p>
+<div class="card" id="gen-demo">
+  <div class="row"><button type="button" id="gen-btn" class="pri">Draw a student</button><label class="ck">graph used for step 3 <select id="gen-graph" aria-label="Graph for closure"><option value="audited">audited (5 edges)</option><option value="proposed">proposed (11 edges)</option><option value="raw">raw extractor (8 edges)</option></select></label></div>
+  <div id="gen-out" aria-live="polite"></div>
+</div>
+<p class="small muted">The generator is not the test's prior: the test assumes a uniform prior over closed sets, while the students come from this progress model. That mismatch is deliberate and realistic.</p>
+</section>
+
+<section class="step" id="dina"><div class="kicker">Inside the test</div><h2>The DINA model: slip and guess</h2>
+<p>DINA ("deterministic input, noisy and-gate") is a conjunctive rule. An item tags one or more concepts. If the student knows <b>all</b> of them, they answer correctly with probability 1 − slip. If any is missing, they can still be right by a guess.</p>
+<div class="card">
+  <p class="qtext" id="dina-q"></p>
+  <div class="row"><span class="lbl">slip s</span><input type="range" id="dina-s" min="0.01" max="0.4" step="0.01" value="0.05" aria-label="slip"><span class="mono" id="dina-sv"></span></div>
+  <div class="row"><span class="lbl">guess g</span><input type="range" id="dina-g" min="0.01" max="0.5" step="0.01" value="0.2" aria-label="guess"><span class="mono" id="dina-gv"></span></div>
+  <div id="dina-out"></div>
+</div>
+</section>
+
+<section class="step" id="prior"><div class="kicker">Inside the test</div><h2>How the graph shapes the prior</h2>
+<p>Each square is one of the 512 subsets of the 9 concepts, sorted by size (empty set first, all 9 last). Amber squares are closed under the chosen graph. Click a square to see its set.</p>
+<div class="row"><span class="lbl">Graph</span><select id="prior-graph" aria-label="Graph"><option value="audited">audited, 5 edges (used by the test)</option><option value="proposed">proposed, 11 edges</option><option value="raw">raw extractor, 8 edges</option><option value="none">no graph</option></select></div>
+<div id="prior-grid" class="grid512" role="group" aria-label="512 subsets"></div>
+<div id="prior-info" aria-live="polite"></div>
+</section>
+</div>
+
+<section class="step" id="watch"><div class="wrap">
+  <div class="kicker">Touch</div><h2>Watch the test</h2>
+  <p>Pick a simulated student, or click concepts on the map to build one, then step through the adaptive test. The engine is the thesis engine re-written in JavaScript (same prior, DINA likelihood, SHE selection, at most 2 items per concept, stop at q ≥ 0.8 after 4 items or at 12). It uses the <b>32 public drafted items</b> only; the simulation study used the full pool of 46 accepted items.</p>
+  <div class="row"><span class="lbl">Mode</span><button type="button" id="m-sim" aria-pressed="true">Simulated student</button><button type="button" id="m-you" aria-pressed="false">I answer myself</button></div>
+  <div id="sim-ctl">
+    <div class="row"><span class="lbl">Student</span><select id="w-preset" aria-label="Simulated student"></select></div>
+    <div class="row"><span class="lbl">Answers</span><select id="w-noise" aria-label="Item noise"><option value="matched">slip and guess as the test assumes</option><option value="q25">noisy items, true s, g ~ U(.05, .25)</option><option value="q45">noisier items, true s, g ~ U(.05, .45)</option></select><select id="w-resp" aria-label="Response model"><option value="dina">conjunctive (DINA)</option><option value="comp">compensatory (G2)</option></select></div>
+    <div class="row"><label class="ck"><input type="checkbox" id="w-truth" checked> show the hidden truth</label><label class="ck"><input type="checkbox" id="w-drop"> show the 7 dropped edges</label><span class="small faint" id="w-seed"></span><button type="button" id="w-dice">New dice</button></div>
+  </div>
+  <div class="row"><button type="button" id="w-next" class="pri">Next question</button><button type="button" id="w-auto" aria-pressed="false">Auto</button><button type="button" id="w-reset">Reset</button></div>
+  <div id="watch-ui">
+    <div class="panel"><div id="w-map"></div><p class="stat" id="w-stat" aria-live="polite"></p><p class="small faint" id="w-truthline"></p></div>
+    <div class="panel" id="w-step" aria-live="polite"></div>
+  </div>
+  <details id="w-histd"><summary>All steps so far</summary><div id="w-hist"></div></details>
+  <p class="cap">Simulation only. q is the test's own probability for its start point; in the study it was over-confident (<a href="#res-stop">see the stop-rule results</a>), so do not read it as the chance of being right.</p>
+</div></section>
+
+<div class="wrap">
+<section class="step" id="conds"><div class="kicker">The study design</div><h2>Each condition, in one picture</h2>
+<p>A condition is one combination of <span class="tag gen">how students are generated</span>, <span class="tag par">item quality</span> and <span class="tag par">parameter error</span>. In each condition several <span class="tag arm">test arms</span> run on the same students and the same answers, so their differences are paired.</p>
+<h3>How the simulated students are generated</h3>
+<div class="grid2" id="cond-gen"></div>
+<h3>Which structure the test uses (arms)</h3>
+<div class="grid2" id="cond-arm"></div>
+<h3>Item quality and parameter error</h3>
+<div class="grid2" id="cond-par"></div>
+<h3 id="rules">Item-selection rules</h3>
+<p>The selection study keeps the audited graph and changes only the rule that picks the next item. The last column is computed in your browser: the first item each rule would ask from the 32 public items.</p>
+<div id="rules-tbl"></div>
+</section>
+
+<section class="step" id="res-curves"><div class="kicker">Results · simulation-conditional</div><h2>Accuracy as the test gets longer</h2>
+<div class="row"><span class="lbl">Condition</span><select id="c-cond" aria-label="Condition"></select></div>
+<div class="row"><span class="lbl">Measure</span><select id="c-metric" aria-label="Measure"><option value="start_acc">start-point accuracy</option><option value="accr">per-concept accuracy (ACCR)</option><option value="pccr">whole-set accuracy (PCCR)</option><option value="brier">Brier score (lower is better)</option><option value="q">mean q (the test's confidence)</option></select></div>
+<div class="chart"><div id="c-leg" class="leg"></div><div id="c-svg"></div><p class="cap" id="c-cap"></p></div>
+</section>
+
+<section class="step" id="res-n12"><div class="kicker">Results · simulation-conditional</div><h2>Start point at a fixed length, with paired differences</h2>
+<p>Same condition as the chart above. Left: start-point accuracy per arm. Right: the paired difference from the audited arm (arm minus audited, same students and answers). A CI that crosses 0 means no clear difference.</p>
+<div class="row"><span class="lbl">Items</span><select id="n-n" aria-label="Number of items"><option value="N4">4</option><option value="N8">8</option><option value="N12" selected>12</option><option value="N18">18</option></select></div>
+<div class="chart"><div id="n-acc"></div><p class="cap" id="n-cap1"></p></div>
+<div class="chart"><div id="n-diff"></div><p class="cap" id="n-cap2"></p></div>
+</section>
+
+<section class="step" id="res-forest"><div class="kicker">Results · simulation-conditional</div><h2>Does the graph advantage hold across conditions?</h2>
+<p>One row per condition: the paired difference of one arm from the audited arm. Negative means the audited arm was better.</p>
+<div class="row"><span class="lbl">Arm</span><select id="f-arm" aria-label="Arm"><option value="nograph">no graph</option><option value="fixed">fixed lecture-order test</option><option value="proposed">proposed graph</option><option value="raw">raw extractor graph</option><option value="shuffled">shuffled graphs</option></select><span class="lbl" style="min-width:0">Items</span><select id="f-n" aria-label="Number of items"><option value="N4">4</option><option value="N12" selected>12</option><option value="N18">18</option></select></div>
+<div class="chart"><div id="f-svg"></div><p class="cap" id="f-cap"></p></div>
+<div class="take" id="f-take"></div>
+</section>
+
+<section class="step" id="res-sel"><div class="kicker">Results · simulation-conditional</div><h2>Item-selection rules</h2>
+<p>Six scenarios only, all with elicited parameters. Hollow dot: after 4 items; filled dot: after 12 items.</p>
+<div class="row"><span class="lbl">Scenario</span><select id="s-cond" aria-label="Scenario"></select></div>
+<div class="chart"><div id="s-svg"></div><p class="cap" id="s-cap"></p></div>
+<details><summary>Table: rule minus SHE at 12 items, all six scenarios</summary><div id="s-tbl"></div></details>
+<div class="take">EIG on the start point was the best rule here at 12 items (+0.01 to +0.05 over SHE), but only six scenarios were run, and it tied or trailed the fixed test in the G2 cells at 4 items. It is a <b>candidate</b> for further tests, not an established best rule.</div>
+</section>
+
+<section class="step" id="res-stop"><div class="kicker">Results · simulation-conditional</div><h2>Is the stop rule's confidence honest?</h2>
+<p>The test stops when q ≥ 0.8 after at least 4 items. If q were calibrated, at most 20% of those confident stops would have a wrong start point. The <b>false-confidence rate (FCR)</b> is the share of confident stops that were wrong.</p>
+<div class="row"><span class="lbl">Arm</span><select id="r-arm" aria-label="Arm"><option value="audited">audited graph</option><option value="nograph">no graph</option><option value="proposed">proposed graph</option><option value="raw">raw extractor graph</option><option value="shuffled">shuffled graphs</option><option value="fixed">fixed lecture-order test</option></select></div>
+<div class="chart"><div id="r-fcr"></div><p class="cap" id="r-cap1"></p></div>
+<h3>One condition in detail</h3>
+<div class="row"><span class="lbl">Condition</span><select id="r-cond" aria-label="Condition"></select></div>
+<div class="grid2">
+  <div class="chart"><div id="r-rho"></div><p class="cap" id="r-cap2"></p></div>
+  <div class="chart"><div id="r-rel"></div><p class="cap" id="r-cap3"></p></div>
+</div>
+<div id="r-tbl"></div>
+<div class="take">Over-confidence remains with the true item parameters, so the item parameters alone do not explain it. A mismatch between the test's prior and the generator is a candidate cause; it was not tested.</div>
+</section>
+
+<section class="step" id="audit"><div class="kicker">Inputs</div><h2>The edge audit: which edges survived</h2>
+<p>Two language models rated each of 11 proposed instructional edges with one question: does mastering the target <i>require</i> mastering the source? Rater 1 (Claude) also proposed the graph; rater 2 (Codex) was blind to rater 1. An edge was kept only if both said yes. One edge outside the proposal (inner products → linear models) came from a sample of 8 non-edges; rater 1 said yes to it after seeing Codex's answer, so that rating is not blind.</p>
+<div class="chart"><div id="a-svg"></div><p class="cap">Solid amber: the 5 kept edges, used by the test. Dashed: proposed edges that were dropped. Model ratings, not human ratings: agreement on the 11 proposed edges 0.45, κ = 0.18. Every edge still needs human review.</p></div>
+<div id="a-tbl"></div>
+<details><summary>The 8 sampled non-edges</summary><div id="a-non"></div></details>
+</section>
+
+<section class="step" id="claims"><div class="kicker">Honesty</div><h2>What it claims, and what it does not</h2>
+<div class="box claim"><h3>Claims (simulation pilot only)</h3><ul>
+  <li>Conditional operating characteristics: how often the start point is right, under stated assumptions about learners and items.</li>
+  <li>In simulation, the procedure is sensitive to whether its structure matches the learners: structure helps when it matches them.</li>
+  <li>The q ≥ 0.8 stop rule was over-confident in every condition we ran.</li>
+  <li>The two model raters kept few edges as mastery implications (model judgment, κ = 0.18).</li>
+</ul></div>
+<div class="box noclaim"><h3>Does not claim</h3><ul>
+  <li>Validity for real CS 156 students, calibrated items, or any learning gain.</li>
+  <li>That the audited edges are a valid mastery structure. The audited graph both defines the target (the start point) and generates the G1 students, so G1 results are <b>circular</b> as evidence that the graph is right.</li>
+  <li>That the adaptive test beats a fixed lecture-order test with uncalibrated items.</li>
+  <li>That EIG on the start point is the best selection rule.</li>
+  <li>That q is the probability of being right. The app shows q with the stop reason and the label "prototype, not calibrated".</li>
+</ul></div>
+</section>
+
+<section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>Where the method sits</h2>
+<div class="ev"><b class="h">Literature</b>A placement test is classification into latent states, not estimation of one trait. Cognitive diagnosis models this directly: DINA is a conjunctive latent-class model with one slip and one guess per item (Junker &amp; Sijtsma 2001). CD-CAT selects items adaptively for such models (Cheng 2009, which also introduced PWKL); Shannon-entropy selection goes back to Xu, Chang &amp; Douglas (2003); GDI is from Kaplan, de la Torre &amp; Barrada (2015); nonparametric selection (Chang, Chiu &amp; Tsai 2019) needs no calibrated parameters.</div>
+<div class="ev"><b class="h">Literature</b>An attribute hierarchy restricts the permissible attribute patterns (Leighton, Gierl &amp; Hunka 2004). Knowledge space theory reaches the same place from the other side: feasible knowledge states closed under prerequisites (Doignon &amp; Falmagne 1985; Falmagne &amp; Doignon 2011), with slip and guess in the basic local independence model; a DINA model on a hierarchy equals a competence-based BLIM (Heller et al. 2015). ALEKS is the deployed instance (Cosyn et al. 2021).</div>
+<div class="ev"><b class="h">Literature</b>The q ≥ ρ stop is a Tatsuoka-type rule (Tatsuoka 2002) applied to a function of the state. Such rules become unstable as attributes grow, and a posterior-entropy rule is recommended instead (Guo &amp; Zheng 2019); plug-in parameter errors shorten tests and inflate confidence (Sun et al. 2020). The study follows the ADEMP structure for simulation studies (Morris, White &amp; Crowther 2019).</div>
+<div class="ours"><b class="h">Ours</b>Because ε = 0.02 gives every subset positive prior mass, the exact name is a saturated DINA CD-CAT with a hierarchy-informed prior. The start point is computed from the posterior restricted to closed sets; the mass outside them (V) is reported, and above V = 0.3 the test gives no start point ("the map does not fit this learner"). "I don't know" is scored as a wrong answer with the same slip and guess.</div>
+</section>
+
+<section class="step" id="l3"><div class="kicker"><span class="lv">Level 3</span>our thesis choice</div><h2>A bounded simulation pilot, not a thesis claim</h2>
+<p>The placement test is Stage B of the thesis: a second use of the course graph, beside retrieval. It runs in parallel with the main claim and never blocks it. The results may enter the thesis only as a <b>bounded simulation pilot</b> in the future-work chapter, with three points: the model raters kept few mastery edges; the procedure is sensitive to whether its structure matches the learners; the confidence was miscalibrated. All three are conditional on the generators.</p>
+<table class="tbl"><thead><tr><th>part</th><th>status</th></tr></thead><tbody>
+<tr><td>Engine and simulator (8 selection rules, stop rules, session replay)</td><td>built and tested; the design note's 4-concept worked example is reproduced</td></tr>
+<tr><td>Item pool</td><td>46 accepted items (33 drafted, 10 adapted from book exercises, 7 official); keys agreed by a second model, blind; no human review yet. This page shows the 32 public drafted items.</td></tr>
+<tr><td>Edge audit</td><td>two model raters; human rating (author or mentor, with blind non-edges) pending</td></tr>
+<tr><td>Next analyses</td><td>split by real vs resampled pool and per shuffle; a log score; lecture-prior sensitivity; a fully matched condition; a crossed simulation (generating graph × inference graph × graph-independent target)</td></tr>
+<tr><td>Real data</td><td>none. Student calibration and an external placement criterion are future work.</td></tr>
+</tbody></table>
+</section>
+
+<section class="step" id="src"><div class="kicker">Sources</div><h2>Sources</h2>
+<table class="tbl"><thead><tr><th>source</th><th>used for</th></tr></thead><tbody id="srcrows"></tbody></table>
+<p class="small faint">Read levels are recorded in the design note; several of these were read from the abstract or metadata only.</p>
+</section>
+
+<section class="step" id="prov"><div class="kicker">Provenance</div><h2>Where the numbers come from</h2>
+<div class="prov" id="prov-body"></div>
+</section>
+</div>
+</main>
+
+<script id="pt-engine">
+// Placement engine in JavaScript: a line-by-line port of the thesis engine (DINA CD-CAT with a hierarchy-informed prior).
+// States are bitmasks over the n concepts (bit c = concept c known). Exact enumeration of all 2^n states.
+var PT = (function () {
+  function argsortRank(order) {
+    var idx = order.map(function (_, i) { return i; }).sort(function (a, b) { return order[a] - order[b] || a - b; });
+    var rank = new Array(order.length); idx.forEach(function (c, pos) { rank[c] = pos; }); return rank;
+  }
+  function parentsOf(concepts, edges) {
+    var id = {}; concepts.forEach(function (c, j) { id[c.id] = j; });
+    var p = concepts.map(function () { return []; });
+    (edges || []).forEach(function (e) { p[id[e[1]]].push(id[e[0]]); });
+    return p;
+  }
+  function isClosed(k, P) {
+    for (var c = 0; c < P.length; c++) if ((k >> c) & 1) for (var j = 0; j < P[c].length; j++) if (!((k >> P[c][j]) & 1)) return false;
+    return true;
+  }
+  function recOf(k, Pref, rank, n) {
+    var best = n, br = n + 1;
+    for (var c = 0; c < n; c++) {
+      if ((k >> c) & 1) continue;
+      var ok = true; for (var j = 0; j < Pref[c].length; j++) if (!((k >> Pref[c][j]) & 1)) { ok = false; break; }
+      if (ok && rank[c] < br) { best = c; br = rank[c]; }
+    }
+    return best;
+  }
+  function model(D, opt) {
+    opt = Object.assign({eps: 0.02, edges: D.graphs.audited, refEdges: D.graphs.audited, nMin: 4, nMax: 12, rho: 0.8, vMax: 0.3, maxPer: 2}, opt || {});
+    var C = D.closure.concepts, n = C.length, S = 1 << n, id = {};
+    C.forEach(function (c, j) { id[c.id] = j; });
+    var order = C.map(function (c) { return c.order; }), rank = argsortRank(order);
+    var parents = opt.edges ? parentsOf(C, opt.edges) : C.map(function () { return []; });
+    var pref = parentsOf(C, opt.refEdges);
+    var closed = new Uint8Array(S), nc = 0;
+    for (var k = 0; k < S; k++) { closed[k] = isClosed(k, parents) ? 1 : 0; nc += closed[k]; }
+    var prior = new Float64Array(S);
+    for (k = 0; k < S; k++) prior[k] = (1 - opt.eps) * (closed[k] / nc) + opt.eps / S;
+    var rec = new Int32Array(S);
+    for (k = 0; k < S; k++) rec[k] = recOf(k, pref, rank, n);
+    var items = D.items, I = items.length, qm = new Int32Array(I), L1 = [], prim = new Int32Array(I);
+    items.forEach(function (it, i) {
+      var m = 1 << id[it.primary]; (it.secondary || []).forEach(function (s) { m |= 1 << id[s]; });
+      qm[i] = m; prim[i] = id[it.primary];
+      var row = new Float64Array(S);
+      for (var k = 0; k < S; k++) row[k] = ((k & m) === m) ? 1 - it.slip : it.guess;
+      L1.push(row);
+    });
+    // deterministic tie break, as in the Python session: earlier lecture, then difficulty (3 for all public items), then id
+    var keyOrder = items.map(function (_, i) { return i; }).sort(function (a, b) {
+      return (order[prim[a]] - order[prim[b]]) || (items[a].id < items[b].id ? -1 : items[a].id > items[b].id ? 1 : 0);
+    });
+    var tie = new Int32Array(I); keyOrder.forEach(function (i, pos) { tie[i] = pos; });
+    return {n: n, S: S, C: C, id: id, order: order, rank: rank, parents: parents, pref: pref, closed: closed, nClosed: nc,
+            prior: prior, rec: rec, items: items, qm: qm, L1: L1, prim: prim, tie: tie, opt: opt};
+  }
+  function xlogx(p) { return p > 0 ? p * Math.log(p) : 0; }
+  function entropy(post) { var h = 0; for (var k = 0; k < post.length; k++) h -= xlogx(post[k]); return h; }
+  function expPostEntropy(M, post, i) {
+    var L = M.L1[i], out = 0;
+    for (var r = 0; r < 2; r++) {
+      var Z = 0, s = 0, k, a;
+      for (k = 0; k < M.S; k++) { a = post[k] * (r ? L[k] : 1 - L[k]); Z += a; }
+      if (Z <= 0) continue;
+      for (k = 0; k < M.S; k++) { a = post[k] * (r ? L[k] : 1 - L[k]) / Z; s -= xlogx(a); }
+      out += Z * s;
+    }
+    return out;
+  }
+  function update(M, post, i, r) {
+    var L = M.L1[i], out = new Float64Array(M.S), Z = 0;
+    for (var k = 0; k < M.S; k++) { out[k] = post[k] * (r ? L[k] : 1 - L[k]); Z += out[k]; }
+    for (k = 0; k < M.S; k++) out[k] /= Z;
+    return out;
+  }
+  function marginals(M, post) {
+    var m = new Float64Array(M.n);
+    for (var k = 0; k < M.S; k++) if (post[k]) for (var c = 0; c < M.n; c++) if ((k >> c) & 1) m[c] += post[k];
+    return Array.from(m);
+  }
+  function startPoint(M, post) {
+    var probs = new Float64Array(M.n + 1), tot = 0;
+    for (var k = 0; k < M.S; k++) if (M.closed[k]) { tot += post[k]; probs[M.rec[k]] += post[k]; }
+    var V = 1 - tot, best = 0;
+    for (var c = 0; c <= M.n; c++) { probs[c] /= Math.max(tot, 1e-300); if (probs[c] > probs[best]) best = c; }
+    return {rec: best, q: probs[best], V: V, probs: Array.from(probs)};
+  }
+  function session(M) { return {post: Float64Array.from(M.prior), attempts: []}; }
+  function eligible(M, s) {
+    var used = {}, per = new Array(M.n).fill(0);
+    s.attempts.forEach(function (a) { used[a.i] = 1; per[M.prim[a.i]]++; });
+    return M.items.map(function (_, i) { return !used[i] && per[M.prim[i]] < M.opt.maxPer; });
+  }
+  function status(M, s) {
+    var sp = startPoint(M, s.post), n = s.attempts.length, el = eligible(M, s), reason = null;
+    if (n >= M.opt.nMax) reason = "max length";
+    else if (n >= M.opt.nMin && sp.q >= M.opt.rho) reason = "start point confident";
+    else if (!el.some(Boolean)) reason = "pool exhausted";
+    var fit = sp.V <= M.opt.vMax;
+    return {m: marginals(M, s.post), rec: sp.rec, q: sp.q, V: sp.V, fit: fit, start: fit ? sp.rec : null, n: n, stop: reason !== null, reason: reason};
+  }
+  function candidates(M, s) {
+    var el = eligible(M, s), H0 = entropy(s.post), out = [];
+    el.forEach(function (ok, i) { if (ok) { var e = expPostEntropy(M, s.post, i); out.push({i: i, eh: e, eig: (H0 - e) / Math.LN2}); } });
+    return out;
+  }
+  function next(M, s) {
+    if (status(M, s).stop) return -1;
+    var cs = candidates(M, s); if (!cs.length) return -1;
+    var best = null;
+    cs.forEach(function (c) {
+      var sc = Math.round(-c.eh * 1e12) / 1e12;
+      if (best === null || sc > best.sc || (sc === best.sc && M.tie[c.i] < M.tie[best.i])) best = {sc: sc, i: c.i};
+    });
+    return best.i;
+  }
+  function answer(M, s, i, r, outcome) {
+    s.post = update(M, s.post, i, r ? 1 : 0);
+    s.attempts.push({i: i, r: r ? 1 : 0, outcome: outcome || (r ? "correct" : "wrong")});
+  }
+  return {model: model, session: session, eligible: eligible, status: status, candidates: candidates, next: next, answer: answer,
+          entropy: entropy, expPostEntropy: expPostEntropy, update: update, marginals: marginals, startPoint: startPoint, isClosed: isClosed,
+          parentsOf: parentsOf, recOf: recOf};
+})();
+if (typeof module !== "undefined") module.exports = PT;
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]; }); };
+  var f2 = function (x) { return x == null ? "–" : x.toFixed(2); };
+  var f3 = function (x) { return x == null ? "–" : x.toFixed(3); };
+  var sg = function (x) { return (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(2); };
+  var D, M;
+  var SHORT = {"inner-product": ["Inner", "products"], "linear-models": ["Linear", "models"], "nonlinear-transformation": ["Nonlinear", "transform"],
+    "vc-dimension": ["VC", "dimension"], "margin": ["Margin"], "lagrangian-qp": ["Lagrangian,", "KKT, QP"], "hard-margin-svm": ["Hard-margin", "SVM"],
+    "kernel-trick": ["Kernel", "trick"], "soft-margin-svm": ["Soft-margin", "SVM"]};
+  var shortName = function (cid) { return SHORT[cid].join(" ").replace(", KKT", "/KKT"); };
+  var cname = function (c) { return c === M.n ? "done (knows all 9)" : shortName(M.C[c].id); };
+  var bandOf = function (p) { return p >= 0.8 ? "know" : p >= 0.4 ? "part" : "miss"; };
+  var BANDC = {know: "#4CC38A", part: "#E8C547", miss: "#F06A6A"};
+  var ARMS = {audited: ["Audited graph (5 edges)", "#F2A93B"], proposed: ["Proposed graph (11, unaudited)", "#7C9CFF"], raw: ["Raw extractor graph (8)", "#C28BFF"],
+    nograph: ["No graph (matched marginals)", "#3CC7B4"], shuffled: ["Shuffled graphs (5 relabellings)", "#FF8A65"], fixed: ["Fixed lecture-order test", "#98A0B0"],
+    she: ["SHE (Shannon entropy)", "#F2A93B"], pwkl: ["PWKL", "#7C9CFF"], gdi: ["GDI", "#C28BFF"], halfsplit: ["Half-split", "#3CC7B4"], random: ["Random", "#68707F"],
+    eigrec: ["EIG on the start point", "#FF8A65"], nps: ["NPS (nonparametric)", "#E8C547"]};
+  var GEN = {G1: "students follow the audited graph", G2: "compensatory answers", G3prop: "students follow the proposed graph", G3raw: "students follow the raw extractor graph",
+    G3rand: "students follow a random graph", G4: "no structure (independent concepts)"};
+  function condLabel(r) {
+    var s = r.spec, g = s.generator + (s.generator === "G1" ? " " + Math.round(s.off_share * 100) + "% off-graph" : "");
+    var pn = s.param_noise === "prior" ? "elicited parameters" : s.param_noise === 0 ? "true parameters" : "near-true parameters (noise " + s.param_noise + ")";
+    return g + " · items U(.05, " + String(s.quality[1]).replace("0.", ".") + ") · " + pn;
+  }
+  function condShort(r) {   // row label inside a generator group
+    var s = r.spec, pn = s.param_noise === "prior" ? "elicited" : s.param_noise === 0 ? "true params" : "near-true";
+    return (s.generator === "G1" ? Math.round(s.off_share * 100) + "% off · " : "") + "U(.05," + String(s.quality[1]).replace("0.", ".") + ") · " + pn;
+  }
+  function condLong(r) { return condLabel(r) + " — " + GEN[r.spec.generator] + (r.spec.generator === "G1" && r.spec.off_share ? ", " + Math.round(r.spec.off_share * 100) + "% get a set that breaks it" : ""); }
+  var SIMNOTE = "Simulation-conditional: 2,000 simulated students × 25 replications; 95% CI = mean ± 1.96 Monte Carlo SE over replications. Not evidence of placement validity.";
+
+  // ---------- seeded RNG (mulberry32)
+  function rngOf(seed) { var a = seed >>> 0; return function () { a = (a + 0x6D2B79F5) >>> 0; var t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+
+  // ---------- generator (as sim.py)
+  function closeDown(K, P) {
+    var steps = [];
+    for (;;) {
+      var bad = 0;
+      for (var c = 0; c < P.length; c++) if ((K >> c) & 1) for (var j = 0; j < P[c].length; j++) if (!((K >> P[c][j]) & 1)) { bad |= 1 << c; break; }
+      if (!bad) return {K: K, dropped: steps};
+      for (c = 0; c < P.length; c++) if ((bad >> c) & 1) steps.push(c);
+      K &= ~bad;
+    }
+  }
+  function drawStudent(rng, edges) {
+    var n = M.n, L = Math.floor(rng() * (n + 1)), K0 = 0, flips = 0;
+    for (var c = 0; c < n; c++) { if (M.rank[c] < L) K0 |= 1 << c; if (rng() < 0.15) flips |= 1 << c; }
+    var K1 = K0 ^ flips, cd = closeDown(K1, PT.parentsOf(M.C, edges));
+    return {L: L, K0: K0, flips: flips, K1: K1, K: cd.K, dropped: cd.dropped};
+  }
+  function setOf(K) { var a = []; for (var c = 0; c < M.n; c++) if ((K >> c) & 1) a.push(c); return a; }
+  function brokenEdges(K, edges) { return edges.filter(function (e) { return ((K >> M.id[e[1]]) & 1) && !((K >> M.id[e[0]]) & 1); }); }
+
+  // ---------- concept map SVG
+  // grid cell [row, col] of each concept: placed so that every audited arrow joins neighbouring cells (L = lecture)
+  var CELL = {"linear-models": [0, 0], "margin": [0, 1], "lagrangian-qp": [0, 2], "nonlinear-transformation": [1, 0], "inner-product": [1, 1],
+    "hard-margin-svm": [1, 2], "vc-dimension": [2, 0], "kernel-trick": [2, 1], "soft-margin-svm": [2, 2]};
+  var NW = 170, NH = 100;
+  function posOf(c) { var g = CELL[M.C[c].id]; return [100 + g[1] * 200, 62 + g[0] * 138]; }
+  function edgePath(a, b, bend) {
+    var p = posOf(a), q = posOf(b), dx = q[0] - p[0], dy = q[1] - p[1];
+    var clip = function (x, y, ux, uy) { var tx = ux ? (NW / 2 + 6) / Math.abs(ux) : 1e9, ty = uy ? (NH / 2 + 6) / Math.abs(uy) : 1e9, t = Math.min(tx, ty); return [x + ux * t, y + uy * t]; };
+    var len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
+    var mx = (p[0] + q[0]) / 2, my = (p[1] + q[1]) / 2;
+    if (bend) { mx += -uy * bend; my += ux * bend; }
+    var s0 = clip(p[0], p[1], (mx - p[0]) / Math.hypot(mx - p[0], my - p[1]), (my - p[1]) / Math.hypot(mx - p[0], my - p[1]));
+    var e0 = clip(q[0], q[1], (mx - q[0]) / Math.hypot(mx - q[0], my - q[1]), (my - q[1]) / Math.hypot(mx - q[0], my - q[1]));
+    return "M" + s0[0].toFixed(1) + "," + s0[1].toFixed(1) + " Q" + mx.toFixed(1) + "," + my.toFixed(1) + " " + e0[0].toFixed(1) + "," + e0[1].toFixed(1);
+  }
+  function bendFor(a, b) {
+    var p = posOf(a), q = posOf(b);
+    var dc = Math.abs(p[0] - q[0]) / 200, dr = Math.abs(p[1] - q[1]) / 138;
+    if (dc > 1.5 || dr > 1.5) return 40;
+    return 0;
+  }
+  function drawMap(o) {
+    // o: {m: marginals|null, start: index|null, truth: mask|null, edges, dropped: edges|null, editable, id}
+    var uid = o.id || "m", big = window.innerWidth < 600, FL = big ? 21 : 17, FV = big ? 22 : 18, FT = big ? 16 : 13, LH = big ? 25 : 20;
+    var s = '<svg viewBox="0 0 600 400" role="img" aria-label="Concept map with mastery colours"><defs>' +
+      '<marker id="ah-' + uid + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#F2A93B"/></marker>' +
+      '<marker id="ad-' + uid + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#68707F"/></marker></defs>';
+    (o.dropped || []).forEach(function (e) { var a = M.id[e[0]], b = M.id[e[1]];
+      s += '<path d="' + edgePath(a, b, bendFor(a, b) || 18) + '" fill="none" stroke="#68707F" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ad-' + uid + ')"/>'; });
+    (o.edges || []).forEach(function (e) { var a = M.id[e[0]], b = M.id[e[1]];
+      s += '<path d="' + edgePath(a, b, bendFor(a, b)) + '" fill="none" stroke="#F2A93B" stroke-width="2.4" marker-end="url(#ah-' + uid + ')"/>'; });
+    for (var c = 0; c < M.n; c++) {
+      var p = posOf(c), x = p[0] - NW / 2, y = p[1] - NH / 2, cid = M.C[c].id, lines = SHORT[cid];
+      var pr = o.m ? o.m[c] : null, b = pr == null ? null : bandOf(pr), col = b ? BANDC[b] : "#242B38";
+      s += '<g' + (o.editable ? ' class="node" data-c="' + c + '" role="button" tabindex="0" aria-label="' + esc(shortName(cid)) + ': toggle known" style="cursor:pointer"' : "") + '>';
+      if (o.start === c) s += '<rect x="' + (x - 7) + '" y="' + (y - 7) + '" width="' + (NW + 14) + '" height="' + (NH + 14) + '" rx="18" fill="none" stroke="#F2A93B" stroke-width="4"/>';
+      s += '<rect x="' + x + '" y="' + y + '" width="' + NW + '" height="' + NH + '" rx="12" fill="#121620"/>';
+      s += '<rect x="' + x + '" y="' + y + '" width="' + NW + '" height="' + NH + '" rx="12" fill="' + col + '" fill-opacity="' + (b ? 0.22 : 1) + '" stroke="' + (b ? col : "#3a4252") + '" stroke-width="2"/>';
+      s += '<text x="' + (x + 10) + '" y="' + (y + NH - 12) + '" font-size="' + FT + '" fill="#98A0B0">L' + M.C[c].lecture + '</text>';
+      lines.forEach(function (t, j) { s += '<text x="' + p[0] + '" y="' + (y + 30 + j * LH - (lines.length === 1 ? -8 : 0)) + '" font-size="' + FL + '" text-anchor="middle">' + esc(t) + '</text>'; });
+      if (pr != null) s += '<text x="' + p[0] + '" y="' + (y + NH - 12) + '" font-size="' + FV + '" text-anchor="middle" font-family="JetBrains Mono,monospace" fill="' + col + '">' + pr.toFixed(2) + '</text>';
+      if (o.truth != null) {
+        var k = (o.truth >> c) & 1;
+        s += '<circle cx="' + (x + NW - 16) + '" cy="' + (y + 16) + '" r="10" fill="' + (k ? "#4CC38A" : "#0B0D12") + '" stroke="' + (k ? "#4CC38A" : "#98A0B0") + '" stroke-width="1.5"/>';
+        s += '<text x="' + (x + NW - 16) + '" y="' + (y + 21) + '" font-size="13" text-anchor="middle" fill="' + (k ? "#0B0D12" : "#98A0B0") + '">' + (k ? "✓" : "✕") + '</text>';
+      }
+      s += '</g>';
+    }
+    return s + '</svg>';
+  }
+  function miniGraph(edges, opt) {
+    opt = opt || {};
+    var s = '<svg viewBox="0 0 300 150" role="img" aria-label="' + esc(opt.label || "graph thumbnail") + '"><defs><marker id="mk' + (opt.id || "") + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="' + (opt.color || "#F2A93B") + '"/></marker></defs>';
+    var P = function (c) { var g = CELL[M.C[c].id]; return [50 + g[1] * 100, 25 + g[0] * 50]; };
+    edges.forEach(function (e) {
+      var a = P(typeof e[0] === "number" ? e[0] : M.id[e[0]]), b = P(typeof e[1] === "number" ? e[1] : M.id[e[1]]);
+      var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L, bend = 0;
+      if (Math.abs(dx) > 150 || Math.abs(dy) > 75) bend = 22;
+      var mx = (a[0] + b[0]) / 2 - uy * bend, my = (a[1] + b[1]) / 2 + ux * bend;
+      var sx = a[0] + (mx - a[0]) / Math.hypot(mx - a[0], my - a[1]) * 11, sy = a[1] + (my - a[1]) / Math.hypot(mx - a[0], my - a[1]) * 11;
+      var ex = b[0] + (mx - b[0]) / Math.hypot(mx - b[0], my - b[1]) * 12, ey = b[1] + (my - b[1]) / Math.hypot(mx - b[0], my - b[1]) * 12;
+      s += '<path d="M' + sx + ',' + sy + ' Q' + mx + ',' + my + ' ' + ex + ',' + ey + '" fill="none" stroke="' + (opt.color || "#F2A93B") + '" stroke-width="1.8" marker-end="url(#mk' + (opt.id || "") + ')"/>';
+    });
+    for (var c = 0; c < M.n; c++) { var p = P(c), hi = opt.fill ? opt.fill(c) : null;
+      s += '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="9" fill="' + (hi || "#171C28") + '" stroke="#98A0B0" stroke-width="1.2"/>';
+      if (opt.labels) s += '<text x="' + p[0] + '" y="' + (p[1] + 4) + '" font-size="9" text-anchor="middle" fill="#0B0D12">' + opt.labels(c) + '</text>'; }
+    return s + '</svg>';
+  }
+
+  // ---------- generic charts (measured in real pixels so text stays readable on phones)
+  function widthOf(el) { return Math.max(280, Math.min(820, el.clientWidth || 600)); }
+  function niceTicks(a, b, n) { var step = (b - a) / n, mag = Math.pow(10, Math.floor(Math.log10(step))), r = step / mag; step = (r > 5 ? 10 : r > 2 ? 5 : r > 1 ? 2 : 1) * mag; var t = []; for (var v = Math.ceil(a / step) * step; v <= b + 1e-9; v += step) t.push(+v.toFixed(10)); return t; }
+  function lineChart(el, cfg) {
+    var W = widthOf(el), H = Math.round(Math.min(360, Math.max(240, W * 0.55))), l = 46, r = 14, t = 12, b = 40, iw = W - l - r, ih = H - t - b;
+    var X = function (x) { return l + (x - cfg.x0) / (cfg.x1 - cfg.x0) * iw; }, Y = function (y) { return t + ih - (y - cfg.y0) / (cfg.y1 - cfg.y0) * ih; };
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + esc(cfg.aria || "line chart") + '">';
+    niceTicks(cfg.y0, cfg.y1, 5).forEach(function (v) { s += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="#242B38"/><text x="' + (l - 6) + '" y="' + (Y(v) + 4) + '" font-size="12" text-anchor="end" fill="#98A0B0">' + (cfg.yfmt ? cfg.yfmt(v) : v) + '</text>'; });
+    (cfg.xt || niceTicks(cfg.x0, cfg.x1, 6)).forEach(function (v) { s += '<text x="' + X(v) + '" y="' + (H - b + 16) + '" font-size="12" text-anchor="middle" fill="#98A0B0">' + v + '</text>'; });
+    s += '<text x="' + (l + iw / 2) + '" y="' + (H - 6) + '" font-size="12" text-anchor="middle" fill="#68707F">' + esc(cfg.xlab || "") + '</text>';
+    (cfg.vref || []).forEach(function (v) { s += '<line x1="' + X(v) + '" x2="' + X(v) + '" y1="' + t + '" y2="' + (t + ih) + '" stroke="#3a4252" stroke-dasharray="3 3"/>'; });
+    (cfg.ref || []).forEach(function (rf) {
+      if (rf.pts) s += '<polyline fill="none" stroke="' + rf.color + '" stroke-width="1.5" stroke-dasharray="6 4" points="' + rf.pts.map(function (p) { return X(p[0]) + "," + Y(p[1]); }).join(" ") + '"/>';
+      else s += '<line x1="' + l + '" x2="' + (W - r) + '" y1="' + Y(rf.y) + '" y2="' + Y(rf.y) + '" stroke="' + rf.color + '" stroke-width="1.5" stroke-dasharray="6 4"/>';
+      if (rf.label) s += '<text x="' + (W - r - 4) + '" y="' + (Y(rf.pts ? rf.pts[rf.pts.length - 1][1] : rf.y) - 6) + '" font-size="12" text-anchor="end" fill="' + rf.color + '">' + esc(rf.label) + '</text>';
+    });
+    cfg.series.forEach(function (se) {
+      s += '<polyline fill="none" stroke="' + se.color + '" stroke-width="2.2"' + (se.dash ? ' stroke-dasharray="' + se.dash + '"' : "") + ' points="' + se.pts.map(function (p) { return X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1); }).join(" ") + '"/>';
+      (se.ci || []).forEach(function (c) { s += '<line x1="' + X(c[0]) + '" x2="' + X(c[0]) + '" y1="' + Y(c[1]) + '" y2="' + Y(c[2]) + '" stroke="' + se.color + '" stroke-width="2"/><line x1="' + (X(c[0]) - 4) + '" x2="' + (X(c[0]) + 4) + '" y1="' + Y(c[1]) + '" y2="' + Y(c[1]) + '" stroke="' + se.color + '"/><line x1="' + (X(c[0]) - 4) + '" x2="' + (X(c[0]) + 4) + '" y1="' + Y(c[2]) + '" y2="' + Y(c[2]) + '" stroke="' + se.color + '"/>'; });
+      (se.dots || []).forEach(function (p) { s += '<circle cx="' + X(p[0]) + '" cy="' + Y(p[1]) + '" r="' + (p[2] || 3.5) + '" fill="' + se.color + '" fill-opacity="0.85"/>'; });
+    });
+    return el.innerHTML = s + '</svg>';
+  }
+  function dotChart(el, cfg) {
+    // rows: [{label, mean, lo, hi, color, hollow, group, note}] ; cfg: x0, x1, ref:[{x, color, label}], fmt
+    var W = widthOf(el), wide = W >= 600, lw = wide ? Math.round(W * 0.4) : 0, l = wide ? lw + 10 : 12, r = 54, rowH = wide ? 26 : 40, t = 10;
+    var rows = cfg.rows, H = t + rows.length * rowH + 34;
+    var X = function (x) { return l + (Math.max(cfg.x0, Math.min(cfg.x1, x)) - cfg.x0) / (cfg.x1 - cfg.x0) * (W - l - r); };
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="' + esc(cfg.aria || "dot chart") + '">';
+    niceTicks(cfg.x0, cfg.x1, wide ? 6 : 4).forEach(function (v) { s += '<line x1="' + X(v) + '" x2="' + X(v) + '" y1="' + t + '" y2="' + (H - 28) + '" stroke="#242B38"/><text x="' + X(v) + '" y="' + (H - 12) + '" font-size="12" text-anchor="middle" fill="#98A0B0">' + (cfg.fmt ? cfg.fmt(v) : v) + '</text>'; });
+    (cfg.ref || []).forEach(function (rf) { s += '<line x1="' + X(rf.x) + '" x2="' + X(rf.x) + '" y1="' + t + '" y2="' + (H - 28) + '" stroke="' + rf.color + '" stroke-width="1.5" stroke-dasharray="6 4"/>' + (rf.label ? '<text x="' + (X(rf.x) + 4) + '" y="' + (t + 10) + '" font-size="11" fill="' + rf.color + '">' + esc(rf.label) + '</text>' : ""); });
+    rows.forEach(function (rw, j) {
+      var y0 = t + j * rowH, yc = wide ? y0 + rowH / 2 : y0 + 27;
+      if (rw.header) { s += '<text x="' + 4 + '" y="' + (y0 + (wide ? 17 : 24)) + '" font-size="12" font-weight="600" fill="#F2A93B">' + esc(rw.header) + '</text>'; return; }
+      s += '<text x="' + (wide ? lw : 4) + '" y="' + (wide ? yc + 4 : y0 + 12) + '" font-size="12.5"' + (wide ? ' text-anchor="end"' : "") + ' fill="#E9ECF2">' + esc(rw.label) + '</text>';
+      if (rw.mean == null) return;
+      var col = rw.color || "#F2A93B";
+      if (rw.lo != null) s += '<line x1="' + X(rw.lo) + '" x2="' + X(rw.hi) + '" y1="' + yc + '" y2="' + yc + '" stroke="' + col + '" stroke-width="2"/>';
+      s += '<circle cx="' + X(rw.mean) + '" cy="' + yc + '" r="5" fill="' + (rw.hollow ? "#121620" : col) + '" stroke="' + col + '" stroke-width="2"/>';
+      s += '<text x="' + (W - 4) + '" y="' + (yc + 4) + '" font-size="12" text-anchor="end" font-family="JetBrains Mono,monospace" fill="' + (rw.textColor || "#98A0B0") + '">' + (cfg.fmt ? cfg.fmt(rw.mean) : rw.mean) + '</text>';
+    });
+    return el.innerHTML = s + '</svg>';
+  }
+
+  // ---------- results helpers
+  var STRUCT, SEL, REF;
+  function condById(name, study) { return D.results.find(function (r) { return r.condition === name && r.study === study; }); }
+  function fillCondSelect(sel, list, withStudy) {
+    var groups = {};
+    list.forEach(function (r, i) { var g = r.study === "reference" ? "Reference: true item parameters" : r.study === "selection" ? "Selection study" : "Structure study · " + r.spec.generator + " · " + GEN[r.spec.generator]; (groups[g] = groups[g] || []).push([i, r]); });
+    sel.innerHTML = Object.keys(groups).map(function (g) { return '<optgroup label="' + esc(g) + '">' + groups[g].map(function (x) { return '<option value="' + x[0] + '">' + esc(condLabel(x[1])) + '</option>'; }).join("") + '</optgroup>'; }).join("");
+  }
+
+  // ===== hero
+  function hero() {
+    var K = presetMask("upto-margin"), rng = rngOf(11), s = PT.session(M), st;
+    for (;;) { var i = PT.next(M, s); if (i < 0) break; var it = M.items[i]; var p = ((K & M.qm[i]) === M.qm[i]) ? 1 - it.slip : it.guess; PT.answer(M, s, i, rng() < p); }
+    st = PT.status(M, s);
+    $("#hero-map").innerHTML = drawMap({m: st.m, start: st.start, edges: D.graphs.audited, id: "h"});
+    $("#hero-cap").innerHTML = "<b>Example, computed in your browser:</b> a simulated student who knows everything up to the margin (true start point: " + esc(cname(M.rec[K])) + ") after " + st.n + " questions. The test stopped (" + esc(st.reason) + ") with start point <b>" + esc(st.start == null ? "none" : cname(st.start)) + "</b>, q = " + f2(st.q) + ". Arrows are the 5 audited prerequisite edges; boxes are placed so that the arrows stay short, and L gives the lecture. Simulation only.";
+  }
+
+  // ===== generator demo
+  function genDemo() {
+    var seed = 1, render = function () {
+      var g = $("#gen-graph").value, rng = rngOf(seed * 7919), d = drawStudent(rng, D.graphs[g]);
+      var chips = function (mask, cls) { var out = ""; for (var r = 0; r < M.n; r++) { var c = M.rank.indexOf(r); var k = (mask >> c) & 1; out += '<span class="' + (cls(c, k) || "") + '">' + esc(shortName(M.C[c].id)) + '</span>'; } return '<div class="chips">' + out + '</div>'; };
+      var rec = PT.recOf(d.K, M.pref, M.rank, M.n);
+      $("#gen-out").innerHTML = '<div class="gs">' +
+        '<div class="gl">1 · progress</div><div>Knows the first ' + d.L + ' of 9 concepts in lecture order.' + chips(d.K0, function (c, k) { return k ? "k" : ""; }) + '</div>' +
+        '<div class="gl">2 · flips</div><div>' + (setOf(d.flips).length ? setOf(d.flips).length + " flipped (orange)." : "No flips this time.") + chips(d.K1, function (c, k) { return (d.flips >> c) & 1 ? "f" : k ? "k" : ""; }) + '</div>' +
+        '<div class="gl">3 · closed</div><div>' + (d.dropped.length ? "Dropped because a prerequisite is missing: " + d.dropped.map(function (c) { return esc(shortName(M.C[c].id)); }).join(", ") + "." : "Already closed: nothing dropped.") + chips(d.K, function (c, k) { return d.dropped.indexOf(c) >= 0 ? "d" : k ? "k" : ""; }) + '</div>' +
+        '<div class="gl">truth</div><div>Hidden set of ' + setOf(d.K).length + ' concepts. True start point (audited graph, earliest lecture): <b>' + esc(cname(rec)) + '</b>.</div></div>';
+    };
+    $("#gen-btn").onclick = function () { seed++; render(); };
+    $("#gen-graph").onchange = render;
+    render();
+  }
+
+  // ===== DINA example
+  function dina() {
+    var it = M.items.find(function (x) { return x.id === "d-lm-1"; });
+    $("#dina-q").innerHTML = '<b>Item ' + esc(it.id) + '</b> tags <b>linear models</b> and <b>inner products</b>: "' + esc(it.text) + '"';
+    var render = function () {
+      var s = +$("#dina-s").value, g = +$("#dina-g").value; $("#dina-sv").textContent = s.toFixed(2); $("#dina-gv").textContent = g.toFixed(2);
+      var pc = (1 - s) * 0.5 / ((1 - s) * 0.5 + g * 0.5), pw = s * 0.5 / (s * 0.5 + (1 - g) * 0.5);
+      $("#dina-out").innerHTML = '<table class="tbl"><thead><tr><th>the student knows</th><th>all tagged concepts?</th><th>P(correct)</th></tr></thead><tbody>' +
+        '<tr><td>inner products and linear models</td><td class="yes">yes</td><td class="m">1 − s = ' + (1 - s).toFixed(2) + '</td></tr>' +
+        '<tr><td>inner products only</td><td class="no">no</td><td class="m">g = ' + g.toFixed(2) + '</td></tr>' +
+        '<tr><td>nothing</td><td class="no">no</td><td class="m">g = ' + g.toFixed(2) + '</td></tr></tbody></table>' +
+        '<p style="margin-top:10px"><b>One Bayes update.</b> Say the test is 50:50 between {inner products, linear models} and {inner products}. A <span class="yes">correct</span> answer moves the first set to <b class="mono">' + pc.toFixed(3) + '</b>; a <span class="no">wrong</span> answer moves it to <b class="mono">' + pw.toFixed(3) + '</b>. The test does exactly this over all 512 sets at once, then adds up the sets that contain each concept to get the map.</p>' +
+        '<p class="small muted">Make slip and guess larger and one answer moves the belief less: that is why noisy items need more questions. The public items use guess 0.2 (one in five choices) and slip 0.05-0.125 from a rated difficulty: elicited values, not calibrated on students.</p>';
+    };
+    $("#dina-s").oninput = render; $("#dina-g").oninput = render; render();
+  }
+
+  // ===== prior grid
+  function priorGrid() {
+    var ks = []; for (var k = 0; k < M.S; k++) ks.push(k);
+    var pc = function (k) { var c = 0; while (k) { c += k & 1; k >>= 1; } return c; };
+    ks.sort(function (a, b) { return pc(a) - pc(b) || a - b; });
+    var grid = $("#prior-grid"), sel = -1;
+    var cols = function () { return grid.clientWidth < 500 ? 16 : 32; };
+    var render = function () {
+      var g = $("#prior-graph").value, P = g === "none" ? M.C.map(function () { return []; }) : PT.parentsOf(M.C, D.graphs[g]);
+      grid.style.gridTemplateColumns = "repeat(" + cols() + ",minmax(0,1fr))";
+      var nc = 0, html = "";
+      ks.forEach(function (k) { var c = PT.isClosed(k, P); nc += c; html += '<button type="button" class="' + (c ? "c" : "") + (k === sel ? " sel" : "") + '" data-k="' + k + '" aria-label="set ' + k + (c ? ", closed" : "") + '"></button>'; });
+      grid.innerHTML = html;
+      var cl = 0.98 / nc + 0.02 / 512, op = 0.02 / 512;
+      var info = '<p><b>' + nc + ' of 512</b> sets are closed under this graph (' + (Math.log2(nc)).toFixed(1) + ' bits of uncertainty if they were all equally likely). ';
+      if (g !== "none") info += 'Prior of each closed set: 0.98/' + nc + ' + 0.02/512 = <span class="mono">' + cl.toFixed(5) + '</span>; of each other set: 0.02/512 = <span class="mono">' + op.toFixed(5) + '</span>, about ' + Math.round(cl / op) + ' times smaller, never zero.</p>';
+      else info += 'With no graph every set is allowed; the no-graph arm of the study uses independent concepts whose prior marginals match the audited prior.</p>';
+      if (sel >= 0) { var br = g === "none" ? [] : brokenEdges(sel, D.graphs[g]);
+        info += '<p class="small">Selected set: {' + setOf(sel).map(function (c) { return esc(shortName(M.C[c].id)); }).join(", ") + '} — ' + (br.length ? '<span class="no">not closed</span>: it breaks ' + br.map(function (e) { return esc(shortName(e[0]) + " → " + shortName(e[1])); }).join("; ") : '<span class="yes">closed</span>') + '. Start point under the audited graph: <b>' + esc(cname(PT.recOf(sel, M.pref, M.rank, M.n))) + '</b>.</p>'; }
+      $("#prior-info").innerHTML = info;
+    };
+    grid.onclick = function (e) { var b = e.target.closest("button[data-k]"); if (!b) return; sel = +b.dataset.k; render(); };
+    $("#prior-graph").onchange = render; render();
+    addEventListener("resize", debounce(render, 200));
+  }
+
+  // ===== watch the test
+  var PRESETS = [
+    ["upto-margin", "Knows everything up to the margin (closed)"],
+    ["lin-no-ip", "Knows linear models but not inner products (off-graph)"],
+    ["beginner", "Knows nothing yet"],
+    ["almost", "Knows all but the soft-margin SVM"],
+    ["svm-no-kernel", "Knows the SVM chain, not the kernel trick"],
+    ["random", "Random draw (progress model, closed under the audited graph)"],
+    ["random-off", "Random off-graph set (breaks an audited edge)"],
+    ["custom", "Custom: click concepts on the map"]];
+  function presetMask(p, rng) {
+    var by = function (ids) { return ids.reduce(function (m, x) { return m | (1 << M.id[x]); }, 0); };
+    if (p === "upto-margin") return by(["inner-product", "linear-models", "nonlinear-transformation", "vc-dimension", "margin"]);
+    if (p === "lin-no-ip") return by(["linear-models", "nonlinear-transformation", "vc-dimension"]);
+    if (p === "beginner") return 0;
+    if (p === "almost") return (1 << M.n) - 1 - (1 << M.id["soft-margin-svm"]);
+    if (p === "svm-no-kernel") return by(["inner-product", "linear-models", "margin", "lagrangian-qp", "hard-margin-svm"]);
+    if (p === "random") return drawStudent(rng, D.graphs.audited).K;
+    if (p === "random-off") { var P = M.pref, opts = []; for (var k = 0; k < M.S; k++) if (!PT.isClosed(k, P)) opts.push(k); return opts[Math.floor(rng() * opts.length)]; }
+    return 0;
+  }
+  var W = {mode: "sim", K: 0, seed: 42, timer: null, pending: -1, steps: []};
+  function trueP(i) {
+    var it = M.items[i], s = W.sTrue[i], g = W.gTrue[i], m = M.qm[i];
+    if ($("#w-resp").value === "comp") {
+      var have = 0, need = 0; for (var c = 0; c < M.n; c++) if ((m >> c) & 1) { need++; if ((W.K >> c) & 1) have++; }
+      var lo = Math.log(g / (1 - g)), hi = Math.log((1 - s) / s), z = lo + (have / need) * (hi - lo); return 1 / (1 + Math.exp(-z));
+    }
+    return ((W.K & m) === m) ? 1 - s : g;
+  }
+  function wReset(keepK) {
+    stopAuto();
+    W.rng = rngOf(W.seed);
+    var nz = $("#w-noise").value, hi = nz === "q45" ? 0.45 : 0.25;
+    W.sTrue = M.items.map(function (it) { return nz === "matched" ? it.slip : 0.05 + W.rng() * (hi - 0.05); });
+    W.gTrue = M.items.map(function (it) { return nz === "matched" ? it.guess : 0.05 + W.rng() * (hi - 0.05); });
+    if (!keepK) { var p = $("#w-preset").value; if (p !== "custom") W.K = presetMask(p, W.rng); }
+    W.sess = PT.session(M); W.steps = []; W.pending = -1;
+    $("#w-seed").textContent = "dice seed " + W.seed;
+    wRender();
+  }
+  function wStep() {
+    var st = PT.status(M, W.sess); if (st.stop) { stopAuto(); return; }
+    var cands = PT.candidates(M, W.sess), i = PT.next(M, W.sess); if (i < 0) { stopAuto(); return; }
+    if (W.mode === "you") { W.pending = i; W.pendCands = cands; wRender(); return; }
+    var p = trueP(i), u = W.rng(), r = u < p;
+    PT.answer(M, W.sess, i, r);
+    W.steps.push({i: i, p: p, u: u, r: r, cands: cands, st: PT.status(M, W.sess)});
+    wRender();
+    if (W.steps[W.steps.length - 1].st.stop) stopAuto();
+  }
+  function youAnswer(choice) {
+    var i = W.pending, it = M.items[i], r = choice === it.key, outcome = choice === "dk" ? "dont_know" : r ? "correct" : "wrong";
+    PT.answer(M, W.sess, i, r, outcome);
+    W.steps.push({i: i, choice: choice, r: r, outcome: outcome, cands: W.pendCands, st: PT.status(M, W.sess)});
+    W.pending = -1; wRender();
+  }
+  function stopAuto() { if (W.timer) { clearInterval(W.timer); W.timer = null; } var b = $("#w-auto"); if (b) b.setAttribute("aria-pressed", "false"); }
+  function eigBars(cands, chosen) {
+    var top = cands.slice().sort(function (a, b) { return b.eig - a.eig || M.tie[a.i] - M.tie[b.i]; }).slice(0, 8), mx = Math.max(1e-9, top[0] ? top[0].eig : 1);
+    if (top.findIndex(function (c) { return c.i === chosen; }) < 0) { var ch = cands.find(function (c) { return c.i === chosen; }); if (ch) top[top.length - 1] = ch; }
+    return '<p class="small muted" style="margin:10px 0 2px">Why this question: expected information (bits) of the eligible items at that moment (top 8 of ' + cands.length + ')</p><div class="eig">' + top.map(function (c) {
+      var it = M.items[c.i], on = c.i === chosen ? ' class="on"' : "";
+      return '<span' + on + ' style="display:contents"><span class="nm' + (on ? " on" : "") + '" title="' + esc(it.id) + '">' + esc(it.id) + ' · ' + esc(shortName(it.primary)) + '</span><span class="tr' + (on ? " on" : "") + '"><i style="width:' + (100 * c.eig / mx).toFixed(1) + '%' + (on ? ';background:var(--amber)' : "") + '"></i></span><span class="v' + (on ? " on" : "") + '">' + c.eig.toFixed(3) + '</span></span>';
+    }).join("") + '</div>';
+  }
+  function itemBlock(i, opts) {
+    var it = M.items[i], tags = [it.primary].concat(it.secondary || []).map(function (c) { return '<span class="pill">' + esc(shortName(c)) + '</span>'; }).join("");
+    var ch = Object.keys(it.choices).map(function (k) {
+      if (opts.clickable) return '<button type="button" data-ch="' + k + '">' + k + ') ' + esc(it.choices[k]) + '</button>';
+      var cls = "opt" + (opts.reveal && k === it.key ? " key" : "") ; var pick = opts.picked === k && k !== it.key ? ' style="border-color:var(--miss);color:var(--miss)"' : "";
+      return '<div class="' + cls + '"' + pick + '>' + k + ') ' + esc(it.choices[k]) + '</div>';
+    }).join("");
+    return '<div class="small faint">' + esc(it.id) + ' · tags ' + tags + ' · slip ' + it.slip + ', guess ' + it.guess + '</div><p class="qtext">' + esc(it.text) + '</p><div class="opts">' + ch + (opts.clickable ? '<button type="button" data-ch="dk">I don\'t know</button>' : "") + '</div>' +
+      (opts.reveal ? '<p class="small muted">Key: ' + esc(it.key) + '. ' + esc(it.rationale) + '</p>' : "");
+  }
+  function wRender() {
+    var st = PT.status(M, W.sess), sim = W.mode === "sim", showT = sim && $("#w-truth").checked;
+    var dropped = $("#w-drop").checked ? D.graphs.proposed.filter(function (e) { return !D.graphs.audited.some(function (a) { return a[0] === e[0] && a[1] === e[1]; }); }) : null;
+    $("#w-map").innerHTML = drawMap({m: st.m, start: st.start, truth: showT ? W.K : null, edges: D.graphs.audited, dropped: dropped, editable: sim, id: "w"});
+    $("#w-stat").innerHTML = "items <b>" + st.n + "</b> / 12 · start point <b>" + esc(st.start == null ? (st.fit ? "–" : "none (map does not fit)") : cname(st.start)) + "</b> · q <b>" + f2(st.q) + "</b> · off-graph mass V <b>" + f2(st.V) + "</b>" + (st.stop ? " · stopped: <b>" + esc(st.reason) + "</b>" : "");
+    if (sim) {
+      var tr = PT.recOf(W.K, M.pref, M.rank, M.n), br = brokenEdges(W.K, D.graphs.audited);
+      $("#w-truthline").innerHTML = showT ? "Hidden truth (✓ known): " + (br.length ? '<span class="no">off-graph</span>, breaks ' + br.map(function (e) { return esc(shortName(e[0]) + " → " + shortName(e[1])); }).join("; ") : '<span class="yes">closed under the audited graph</span>') + ". True start point: <b>" + esc(cname(tr)) + "</b>. Click a concept to change the student (this restarts the test)." : "The hidden truth is hidden. Click a concept to change the student.";
+    } else $("#w-truthline").textContent = "Your own map. Nothing is stored or sent.";
+    var box = $("#w-step"), html = "";
+    if (!sim && W.pending >= 0) {
+      html = '<div class="kicker">Question ' + (st.n + 1) + '</div>' + itemBlock(W.pending, {clickable: true}) + eigBars(W.pendCands, W.pending);
+    } else if (!W.steps.length) {
+      html = '<div class="kicker">Before the first question</div><p>The map shows the prior: what the test believes before any answer. Concepts with no prerequisites start higher, because more closed sets contain them.</p>' +
+        '<p class="small muted">Press <b>Next question</b>' + (sim ? ' to let the simulated student answer, or <b>Auto</b> to run the test to its end.' : ' to get the first question.') + '</p>';
+    } else {
+      var s = W.steps[W.steps.length - 1];
+      html = '<div class="kicker">Question ' + W.steps.length + '</div>' + itemBlock(s.i, {reveal: true, picked: s.choice});
+      if (sim) {
+        var known = (W.K & M.qm[s.i]) === M.qm[s.i];
+        html += '<div class="dice"><span class="die" aria-hidden="true">🎲</span><span>P(correct) = <b>' + s.p.toFixed(3) + '</b> (' + ($("#w-resp").value === "comp" ? "compensatory" : known ? "knows every tagged concept: 1 − slip" : "a tagged concept is missing: guess") + ')</span><span>draw u = ' + s.u.toFixed(3) + ' → ' + (s.r ? '<b class="ok">correct</b>' : '<b class="bad">wrong</b>') + '</span></div>';
+      } else html += '<div class="dice"><span>Your answer: ' + (s.outcome === "dont_know" ? "I don't know (scored as wrong)" : s.r ? '<b class="ok">correct</b>' : '<b class="bad">wrong</b>') + '</span></div>';
+      html += eigBars(s.cands, s.i);
+      if (s.st.stop) {
+        html += '<div class="verdict"><b>Stopped: ' + esc(s.st.reason) + '</b> after ' + s.st.n + ' items, q = ' + f2(s.st.q) + '. Start point: <b>' + esc(s.st.start == null ? "none: the map does not fit (V > 0.3)" : cname(s.st.start)) + '</b>.' +
+          (sim ? ' True start point: <b>' + esc(cname(PT.recOf(W.K, M.pref, M.rank, M.n))) + '</b> → ' + (s.st.start === PT.recOf(W.K, M.pref, M.rank, M.n) ? '<span class="yes">right</span>' : '<span class="no">wrong</span>') + '.' : '') +
+          '<br><span class="small muted">Prototype, not calibrated: in the study 22-56% of confident stops were wrong.</span></div>';
+      } else if (!sim) html += '<p class="small muted">Press <b>Next question</b> to continue.</p>';
+    }
+    box.innerHTML = html;
+    $("#w-hist").innerHTML = W.steps.length ? '<table class="tbl hist"><thead><tr><th>#</th><th>item</th><th>concept</th><th>answer</th><th>q after</th><th>start point after</th></tr></thead><tbody>' + W.steps.map(function (s, j) {
+      return '<tr><td>' + (j + 1) + '</td><td class="m">' + esc(M.items[s.i].id) + '</td><td>' + esc(shortName(M.items[s.i].primary)) + '</td><td class="' + (s.r ? "yes" : "no") + '">' + (s.outcome === "dont_know" ? "don't know" : s.r ? "correct" : "wrong") + '</td><td class="m">' + f2(s.st.q) + '</td><td>' + esc(s.st.start == null ? "–" : cname(s.st.start)) + '</td></tr>'; }).join("") + '</tbody></table>' : '<p class="small faint">No steps yet.</p>';
+    $("#w-next").disabled = st.stop || (!sim && W.pending >= 0);
+    $("#w-auto").disabled = !sim || st.stop;
+  }
+  function watch() {
+    $("#w-preset").innerHTML = PRESETS.map(function (p) { return '<option value="' + p[0] + '">' + esc(p[1]) + '</option>'; }).join("");
+    $("#w-next").onclick = wStep;
+    $("#w-reset").onclick = function () { wReset(false); };
+    $("#w-dice").onclick = function () { W.seed = (W.seed * 48271 + 11) % 2147483647; wReset($("#w-preset").value === "custom"); };
+    $("#w-auto").onclick = function () { if (W.timer) { stopAuto(); return; } this.setAttribute("aria-pressed", "true"); wStep(); W.timer = setInterval(wStep, 900); };
+    $("#w-preset").onchange = function () { wReset(false); };
+    $("#w-noise").onchange = $("#w-resp").onchange = function () { wReset(true); };
+    $("#w-truth").onchange = $("#w-drop").onchange = wRender;
+    var setMode = function (m) { W.mode = m; $("#m-sim").setAttribute("aria-pressed", m === "sim"); $("#m-you").setAttribute("aria-pressed", m === "you"); $("#sim-ctl").style.display = m === "sim" ? "" : "none"; wReset(true); };
+    $("#m-sim").onclick = function () { setMode("sim"); }; $("#m-you").onclick = function () { setMode("you"); };
+    var toggle = function (c) { stopAuto(); W.K ^= 1 << c; $("#w-preset").value = "custom"; wReset(true); };
+    $("#w-map").addEventListener("click", function (e) { var g = e.target.closest(".node"); if (g) toggle(+g.dataset.c); });
+    $("#w-map").addEventListener("keydown", function (e) { var g = e.target.closest(".node"); if (g && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); toggle(+g.dataset.c); } });
+    $("#w-step").addEventListener("click", function (e) { var b = e.target.closest("button[data-ch]"); if (b && W.pending >= 0) youAnswer(b.dataset.ch); });
+    wReset(false);
+  }
+
+  // ===== conditions
+  function conditions() {
+    var rng = rngOf(5), randEdges = [];
+    var pairs = []; for (var a = 0; a < M.n; a++) for (var b = 0; b < M.n; b++) if (M.rank[a] < M.rank[b]) pairs.push([a, b]);
+    while (randEdges.length < 5) { var pk = pairs.splice(Math.floor(rng() * pairs.length), 1)[0]; randEdges.push(pk); }
+    var perm = [0, 1, 2, 3, 4, 5, 6, 7, 8]; for (var i = 8; i > 0; i--) { var j = Math.floor(rng() * (i + 1)), t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+    var shuf = D.graphs.audited.map(function (e) { return [perm[M.id[e[0]]], perm[M.id[e[1]]]]; });
+    var people = function (k) { var s = '<svg viewBox="0 0 300 40" role="img" aria-label="' + k + ' of 10 learners off-graph">'; for (var q = 0; q < 10; q++) s += '<circle cx="' + (18 + q * 29) + '" cy="20" r="10" fill="' + (q < k ? "#FF8A65" : "#3CC7B4") + '"/>'; return s + '</svg>'; };
+    var comp = (function () {
+      var g = 0.2, s = 0.1, W2 = 300, H2 = 130, X = function (x) { return 40 + x * 240; }, Y = function (y) { return 110 - y * 95; };
+      var lo = Math.log(g / (1 - g)), hi = Math.log((1 - s) / s), cp = [0, 0.5, 1].map(function (h) { return [h, 1 / (1 + Math.exp(-(lo + h * (hi - lo))))]; });
+      return '<svg viewBox="0 0 ' + W2 + ' ' + H2 + '" role="img" aria-label="DINA step versus compensatory ramp"><line x1="40" x2="280" y1="110" y2="110" stroke="#242B38"/>' +
+        '<polyline fill="none" stroke="#F2A93B" stroke-width="2" points="' + X(0) + ',' + Y(g) + ' ' + X(0.5) + ',' + Y(g) + ' ' + X(1) + ',' + Y(1 - s) + '"/>' +
+        '<polyline fill="none" stroke="#3CC7B4" stroke-width="2" stroke-dasharray="5 3" points="' + cp.map(function (p) { return X(p[0]) + ',' + Y(p[1]); }).join(" ") + '"/>' +
+        cp.map(function (p) { return '<circle cx="' + X(p[0]) + '" cy="' + Y(p[1]) + '" r="3.5" fill="#3CC7B4"/>'; }).join("") +
+        '<text x="40" y="126" font-size="11" fill="#98A0B0">0 of 2 tags known</text><text x="280" y="126" font-size="11" text-anchor="end" fill="#98A0B0">2 of 2</text>' +
+        '<text x="44" y="14" font-size="11" fill="#F2A93B">DINA: all or nothing</text><text x="44" y="28" font-size="11" fill="#3CC7B4">compensatory: each tag helps</text></svg>';
+    })();
+    var nogMarg = PT.marginals(M, M.prior);
+    var bars = '<svg viewBox="0 0 300 120" role="img" aria-label="Matched prior marginals">' + nogMarg.map(function (p, c) { var r = M.rank[c]; return '<rect x="' + (12 + r * 31) + '" y="' + (100 - p * 85) + '" width="22" height="' + (p * 85) + '" fill="#3CC7B4" fill-opacity=".7"/><text x="' + (23 + r * 31) + '" y="114" font-size="10" text-anchor="middle" fill="#98A0B0">' + (r + 1) + '</text>'; }).join("") + '</svg>';
+    var fixedStrip = (function () {
+      var byC = {}; M.items.forEach(function (it, i) { (byC[M.prim[i]] = byC[M.prim[i]] || []).push(i); });
+      var seq = []; for (var k = 0; k < 4; k++) for (var r = 0; r < M.n; r++) { var c = M.rank.indexOf(r); if (byC[c] && byC[c][k] != null) seq.push(c); }
+      var cols = ["#F2A93B", "#7C9CFF", "#3CC7B4", "#C28BFF", "#FF8A65", "#E8C547", "#4CC38A", "#F06A6A", "#98A0B0"];
+      return '<svg viewBox="0 0 300 50" role="img" aria-label="Fixed order of the first 18 items">' + seq.slice(0, 18).map(function (c, k) { return '<rect x="' + (4 + k * 16.4) + '" y="10" width="14" height="22" rx="3" fill="' + cols[M.rank[c]] + '"/>'; }).join("") + '<text x="4" y="46" font-size="10" fill="#98A0B0">item 1 → 18 (colour = concept, lecture order, round-robin)</text></svg>';
+    })();
+    var quality = (function () {
+      var X = function (x) { return 20 + x / 0.5 * 260; };
+      return '<svg viewBox="0 0 300 96" role="img" aria-label="Item quality ranges"><line x1="20" x2="280" y1="80" y2="80" stroke="#242B38"/>' + [0, 0.1, 0.2, 0.3, 0.4, 0.5].map(function (v) { return '<text x="' + X(v) + '" y="93" font-size="10" text-anchor="middle" fill="#98A0B0">' + v + '</text>'; }).join("") +
+        '<rect x="' + X(0.05) + '" y="14" width="' + (X(0.25) - X(0.05)) + '" height="14" fill="#7C9CFF" fill-opacity=".7"/><text x="' + (X(0.25) + 4) + '" y="25" font-size="11" fill="#7C9CFF">U(.05,.25)</text>' +
+        '<rect x="' + X(0.05) + '" y="36" width="' + (X(0.45) - X(0.05)) + '" height="14" fill="#FF8A65" fill-opacity=".7"/><text x="' + (X(0.45) - 4) + '" y="47" font-size="11" text-anchor="end" fill="#0B0D12">U(.05,.45)</text>' +
+        '<circle cx="' + X(0.2) + '" cy="64" r="4" fill="#F2A93B"/><text x="' + (X(0.2) + 8) + '" y="68" font-size="11" fill="#F2A93B">elicited guess 0.2</text>' +
+        '<rect x="' + X(0.05) + '" y="60" width="' + (X(0.125) - X(0.05)) + '" height="8" fill="#F2A93B"/></svg>';
+    })();
+    var perr = (function () {
+      var r2 = rngOf(9), s = '<svg viewBox="0 0 300 120" role="img" aria-label="True versus used guess values"><text x="4" y="12" font-size="10" fill="#98A0B0">true guess</text><text x="4" y="60" font-size="10" fill="#98A0B0">used by the test</text>';
+      var X = function (x) { return 20 + x / 0.5 * 260; };
+      for (var k = 0; k < 8; k++) { var tg = 0.05 + r2() * 0.2, z = Math.log(tg / (1 - tg)) + 0.3 * (r2() + r2() + r2() - 1.5) * 2, nt = Math.min(0.5, 1 / (1 + Math.exp(-z)));
+        s += '<circle cx="' + X(tg) + '" cy="24" r="3.5" fill="#E9ECF2"/><line x1="' + X(tg) + '" y1="28" x2="' + X(nt) + '" y2="70" stroke="#7C9CFF" stroke-opacity=".6"/><circle cx="' + X(nt) + '" cy="74" r="3.5" fill="#7C9CFF"/><line x1="' + X(tg) + '" y1="28" x2="' + X(0.2) + '" y2="98" stroke="#F2A93B" stroke-opacity=".35"/>'; }
+      return s + '<circle cx="' + X(0.2) + '" cy="102" r="4" fill="#F2A93B"/><text x="' + (X(0.2) + 8) + '" y="106" font-size="10" fill="#F2A93B">"prior": always 0.2</text><text x="200" y="78" font-size="10" fill="#7C9CFF">"0.3": near-true</text></svg>';
+    })();
+    var card = function (tag, title, vis, text) { return '<div class="cond"><span class="tag ' + tag + '">' + (tag === "gen" ? "students" : tag === "arm" ? "test arm" : "items") + '</span><h3>' + title + '</h3>' + vis + '<p>' + text + '</p></div>'; };
+    $("#cond-gen").innerHTML =
+      card("gen", "G1 0%: graph match", miniGraph(D.graphs.audited, {id: "g1", label: "audited graph"}), "Students' sets are closed under the audited graph (progress model with flips). This is the scenario the test assumes, and the same graph defines the start point: circular as evidence for the graph.") +
+      card("gen", "G1 10% / 30%: off-graph learners", people(1) + people(3), "Same, but 10% or 30% of students get a set drawn at random from those that break an audited edge (for example linear models known, inner products not).") +
+      card("gen", "G2: compensatory answers", comp, "Sets as in G1, but answers follow a compensatory rule: each known tagged concept raises the chance of a correct answer. The test still assumes DINA.") +
+      card("gen", "G3prop: the proposed graph", miniGraph(D.graphs.proposed, {id: "g3p", color: "#7C9CFF", label: "proposed graph"}), "Students follow the denser, unaudited 11-edge graph. The test may use a different one.") +
+      card("gen", "G3raw: the raw extractor graph", miniGraph(D.graphs.raw, {id: "g3r", color: "#C28BFF", label: "raw extractor graph"}), "Students follow the 8-edge graph that the language-model extractor produced from Lectures 14-15 (mapped to the 9 concepts). It has no edge into the kernel trick.") +
+      card("gen", "G3rand: a random graph", miniGraph(randEdges, {id: "g3x", color: "#FF8A65", label: "random graph"}), "A random 5-edge graph whose edges go forward in lecture order, drawn anew in each replication (one draw shown).") +
+      card("gen", "G4: no structure", miniGraph([], {id: "g4", fill: function (c) { return c % 2 ? "#3CC7B4" : null; }, label: "no edges"}), "Each concept is known with probability 0.5, independently. Any graph is wrong here.");
+    $("#cond-arm").innerHTML =
+      card("arm", "Audited graph", miniGraph(D.graphs.audited, {id: "a1", label: "audited"}), "The 5 edges both model raters kept. The reference arm: every other arm is compared with it, on the same students and answers.") +
+      card("arm", "Proposed and raw graphs", miniGraph(D.graphs.proposed, {id: "a2", color: "#7C9CFF", label: "proposed"}), "The same test with the unaudited 11-edge graph, or with the raw extractor graph (the G3raw picture). The start point is still scored under the audited graph.") +
+      card("arm", "Shuffled graphs", miniGraph(shuf, {id: "a3", color: "#FF8A65", label: "shuffled"}), "The audited graph's shape with the concept labels permuted at random: 5 different shuffles, each on a fifth of the students. A placebo structure.") +
+      card("arm", "No graph", bars, "No prerequisite structure: concepts are independent, with prior marginals matched to the audited prior (bars, concepts in lecture order). Same DINA likelihood and same selection rule.") +
+      card("arm", "Fixed lecture-order test", fixedStrip, "No adaptivity: items in lecture order, one per concept per pass. It still uses the audited prior to compute the map.") +
+      card("arm", "Raw extractor graph as a test", miniGraph(D.graphs.raw, {id: "a4", color: "#C28BFF", label: "raw"}), "What the pipeline gives with no audit at all. Two of its edges go against course order.");
+    $("#cond-par").innerHTML =
+      card("par", "Item quality", quality, "In each replication the true slip and guess of every item are drawn from U(.05, .25) or from the noisier U(.05, .45). The amber marks are the elicited values the test assumes.") +
+      card("par", "Parameter error", perr, "<b>\"prior\"</b>: the test uses the elicited values (guess 1/5, slip from rated difficulty), unrelated to the truth. <b>\"0.3\"</b>: the test uses the true values plus logit noise with SD 0.3, i.e. near-true. One reference condition uses the true values.");
+    // selection rules: first pick at the prior
+    var post = M.prior, L = M.L1, I = M.items.length, firstOf = function (score) { var b = -1, bs = -Infinity; for (var i = 0; i < I; i++) if (score[i] > bs + 1e-12 || (Math.abs(score[i] - bs) <= 1e-12 && M.tie[i] < M.tie[b])) { bs = score[i]; b = i; } return b; };
+    var p1 = L.map(function (row) { var s = 0; for (var k = 0; k < M.S; k++) s += post[k] * row[k]; return s; });
+    var she = L.map(function (_, i) { return -PT.expPostEntropy(M, post, i); });
+    var gdi = L.map(function (row, i) { var s = 0; for (var k = 0; k < M.S; k++) s += post[k] * row[k] * row[k]; return s - p1[i] * p1[i]; });
+    var half = p1.map(function (p) { return -Math.abs(p - 0.5); });
+    var kh = 0; for (var k = 1; k < M.S; k++) if (post[k] > post[kh]) kh = k;
+    var pwkl = L.map(function (row) { var ph = row[kh], s = ph * Math.log(ph) + (1 - ph) * Math.log(1 - ph); for (var k = 0; k < M.S; k++) s -= post[k] * (ph * Math.log(row[k]) + (1 - ph) * Math.log(1 - row[k])); return s; });
+    var eigrec = L.map(function (row) { var tot = 0; for (var k = 0; k < M.S; k++) if (M.closed[k]) tot += post[k]; var sc = 0;
+      for (var r = 0; r < 2; r++) { var pr = new Float64Array(M.n + 1), Z = 0; for (k = 0; k < M.S; k++) if (M.closed[k]) { var a = post[k] / tot * (r ? row[k] : 1 - row[k]); Z += a; pr[M.rec[k]] += a; } var h = 0; for (var c = 0; c <= M.n; c++) { var q = pr[c] / Z; if (q > 0) h -= q * Math.log(q); } sc -= Z * h; } return sc; });
+    var fixedFirst = M.items.map(function (_, i) { return i; }).sort(function (a, b) { return M.rank[M.prim[a]] - M.rank[M.prim[b]] || (M.items[a].id < M.items[b].id ? -1 : 1); })[0];
+    var nm = function (i) { return '<span class="mono">' + esc(M.items[i].id) + '</span> (' + esc(shortName(M.items[i].primary)) + ')'; };
+    var R = [["SHE", "Shannon entropy: minimise the expected entropy of the posterior over all 512 sets. The default.", "Xu, Chang & Douglas 2003", nm(firstOf(she))],
+      ["PWKL", "Posterior-weighted Kullback-Leibler: how far the item's answer distribution under the current best set is from the others.", "Cheng 2009", nm(firstOf(pwkl))],
+      ["GDI", "G-DINA discrimination index: the variance of P(correct) across sets, weighted by the posterior.", "Kaplan et al. 2015", nm(firstOf(gdi))],
+      ["Half-split", "ALEKS-style: the item whose predicted P(correct) is nearest 0.5.", "Falmagne et al.; Cosyn et al. 2021", nm(firstOf(half))],
+      ["Random", "Any eligible item. A floor.", "–", "any item"],
+      ["EIG on the start point", "Minimise the expected entropy of the start point, not of the whole set (our labelled non-standard variant).", "ours", nm(firstOf(eigrec))],
+      ["NPS", "Nonparametric: separate the two closed sets nearest (Hamming distance) to the answers so far. Needs no slip or guess.", "Chang, Chiu & Tsai 2019", "random tie at the start"],
+      ["Fixed", "Lecture order, one item per concept per pass. No adaptivity.", "–", nm(fixedFirst)]];
+    $("#rules-tbl").innerHTML = '<table class="tbl"><thead><tr><th>rule</th><th>what it picks</th><th>source</th><th>first item here</th></tr></thead><tbody>' + R.map(function (r) { return '<tr><td><b>' + r[0] + '</b></td><td>' + esc(r[1]) + '</td><td class="small">' + esc(r[2]) + '</td><td>' + r[3] + '</td></tr>'; }).join("") + '</tbody></table>';
+  }
+
+  // ===== results: curves + N12 dots
+  var curState = {legendOff: {}};
+  function curves() {
+    var r = STRUCT.concat(REF)[+$("#c-cond").value], metric = $("#c-metric").value, arms = r.arms;
+    $("#c-leg").innerHTML = arms.map(function (a) { return '<button type="button" data-a="' + a + '" aria-pressed="' + !curState.legendOff[a] + '"><i style="background:' + ARMS[a][1] + '"></i>' + esc(ARMS[a][0]) + '</button>'; }).join("");
+    var series = [], lo = 1, hi = 0;
+    arms.forEach(function (a) {
+      if (curState.legendOff[a]) return;
+      var d = r.data[a], y = d.curve[metric], pts = y.map(function (v, j) { return [j + 1, v]; }), ci = [];
+      y.forEach(function (v) { lo = Math.min(lo, v); hi = Math.max(hi, v); });
+      if (metric !== "q") ["N4", "N8", "N12", "N18"].forEach(function (N) { var c = d.at[N] && d.at[N][metric]; if (c) { ci.push([+N.slice(1), c.ci95[0], c.ci95[1]]); lo = Math.min(lo, c.ci95[0]); hi = Math.max(hi, c.ci95[1]); } });
+      series.push({color: ARMS[a][1], pts: pts, ci: ci, dash: a === "fixed" ? "6 4" : null});
+    });
+    var y0 = metric === "brier" ? 0 : Math.max(0, Math.floor(lo * 10) / 10), y1 = metric === "brier" ? Math.ceil(hi * 20) / 20 : Math.min(1, Math.ceil(hi * 10) / 10);
+    lineChart($("#c-svg"), {series: series, x0: 1, x1: 18, y0: y0, y1: Math.max(y1, y0 + 0.1), xt: [1, 4, 8, 12, 18], vref: [12], xlab: "number of items asked", aria: "metric versus number of items"});
+    $("#c-cap").innerHTML = "<b>Condition:</b> " + esc(condLong(r)) + ". Bars: 95% CI at 4, 8, 12 and 18 items. Dashed vertical line: the 12-item cap of the real test (the curves run on to 18 to show the trend). " + (metric === "q" ? "q has no CI in the data. " : "") + SIMNOTE;
+    n12();
+  }
+  function n12() {
+    var r = STRUCT.concat(REF)[+$("#c-cond").value], N = $("#n-n").value, n = N.slice(1);
+    var rows = r.arms.map(function (a) { var c = r.data[a].at[N].start_acc; return {label: ARMS[a][0], mean: c.mean, lo: c.ci95[0], hi: c.ci95[1], color: ARMS[a][1]}; });
+    dotChart($("#n-acc"), {rows: rows, x0: 0, x1: 1, fmt: f2, aria: "start-point accuracy per arm"});
+    var drows = r.arms.filter(function (a) { return a !== "audited"; }).map(function (a) { var c = r.data[a].at[N].diff_vs_audited; var ex = c.ci95[0] > 0 || c.ci95[1] < 0; return {label: ARMS[a][0] + " − audited", mean: c.mean, lo: c.ci95[0], hi: c.ci95[1], color: ARMS[a][1], hollow: !ex}; });
+    var m = Math.max(0.1, Math.max.apply(null, drows.map(function (d) { return Math.max(Math.abs(d.lo), Math.abs(d.hi)); })));
+    m = Math.ceil(m * 20) / 20;
+    dotChart($("#n-diff"), {rows: drows, x0: -m, x1: m, fmt: sg, ref: [{x: 0, color: "#98A0B0"}], aria: "paired differences from the audited arm"});
+    $("#n-cap1").innerHTML = "<b>Condition:</b> " + esc(condLong(r)) + ". Start-point accuracy after " + n + " items, 95% CI. " + SIMNOTE;
+    $("#n-cap2").innerHTML = "Paired difference, arm minus audited, after " + n + " items, 95% CI. Filled dot: the CI excludes 0; hollow: it does not. Same condition. " + SIMNOTE;
+  }
+  function forest() {
+    var arm = $("#f-arm").value, N = $("#f-n").value, rows = [], lastGen = null, lo = 0, hi = 0, nNeg = 0, nPos = 0, nAll = 0;
+    STRUCT.concat(REF).forEach(function (r) {
+      if (!r.data[arm]) return;
+      var gen = r.study === "reference" ? "Reference (true parameters)" : r.spec.generator + ": " + GEN[r.spec.generator];
+      if (gen !== lastGen) { rows.push({header: gen}); lastGen = gen; }
+      var c = r.data[arm].at[N].diff_vs_audited, ex = c.ci95[0] > 0 || c.ci95[1] < 0;
+      lo = Math.min(lo, c.ci95[0]); hi = Math.max(hi, c.ci95[1]); nAll++; if (ex && c.mean < 0) nNeg++; if (ex && c.mean > 0) nPos++;
+      var lab = condShort(r);
+      rows.push({label: lab, mean: c.mean, lo: c.ci95[0], hi: c.ci95[1], color: ex ? (c.mean < 0 ? "#F2A93B" : "#3CC7B4") : "#98A0B0", hollow: !ex});
+    });
+    var m = Math.ceil(Math.max(Math.abs(lo), Math.abs(hi), 0.05) * 20) / 20;
+    dotChart($("#f-svg"), {rows: rows, x0: -m, x1: m, fmt: sg, ref: [{x: 0, color: "#98A0B0"}], aria: "paired differences across conditions"});
+    $("#f-cap").innerHTML = "<b>" + esc(ARMS[arm][0]) + " minus audited</b>, start-point accuracy after " + N.slice(1) + " items, one row per condition (off-graph share for G1 · range of the true slip and guess · parameters the test uses: elicited, near-true = true plus logit noise 0.3, or true), 95% CI. Amber: audited clearly better; teal: this arm clearly better; grey hollow: CI includes 0. " + SIMNOTE;
+    var TAKE = {nograph: "Audited beat no graph by 0.04-0.06 at 12 items in all four G1 0% cells. With 30% off-graph learners the contrasts were +0.01, +0.05, −0.01 and −0.00 and reversed clearly in one cell: the advantage is not robust.",
+      fixed: "With elicited parameters in G1 0%, fixed minus audited was +0.01 ± 0.02 and +0.00 ± 0.02 at 12 items: no clear difference. The adaptive test was ahead by 0.09 and 0.17 only with near-true parameters, and not in every G1 cell. At 4 items the fixed test was ahead in most cells.",
+      proposed: "In G1 0% the unaudited proposed graph lost 0.02-0.07 at 12 items. When students follow the proposed graph (G3prop) it gained 0.07-0.10: structure helps when it matches the students.",
+      raw: "In G1 0% the raw extractor graph lost up to 0.26 at 12 items. When students follow it (G3raw) it gained 0.10-0.17 over the audited arm.",
+      shuffled: "Shuffled graphs lost against the audited graph in G1 0%; with 30% off-graph learners some cells show small gains. Under G4 (no structure) the audited arm is among the worst."};
+    $("#f-take").innerHTML = "<b>Read with care.</b> " + TAKE[arm] + " <span class=\"small muted\">Here: " + nNeg + " of " + nAll + " conditions favour the audited arm clearly, " + nPos + " favour " + esc(ARMS[arm][0].toLowerCase()) + ".</span>";
+  }
+  function selection() {
+    var r = SEL[+$("#s-cond").value], rows = [];
+    r.arms.forEach(function (a) {
+      var c4 = r.data[a].at.N4.start_acc, c12 = r.data[a].at.N12.start_acc;
+      rows.push({label: ARMS[a][0] + " · 4 items", mean: c4.mean, lo: c4.ci95[0], hi: c4.ci95[1], color: ARMS[a][1], hollow: true});
+      rows.push({label: ARMS[a][0] + " · 12 items", mean: c12.mean, lo: c12.ci95[0], hi: c12.ci95[1], color: ARMS[a][1]});
+    });
+    dotChart($("#s-svg"), {rows: rows, x0: 0, x1: 1, fmt: f2, aria: "selection rules"});
+    $("#s-cap").innerHTML = "<b>Scenario:</b> " + esc(condLong(r)) + ". Start-point accuracy with 95% CI; all rules use the audited graph. " + SIMNOTE;
+    var arms = SEL[0].arms.filter(function (a) { return a !== "she"; });
+    $("#s-tbl").innerHTML = '<table class="tbl"><thead><tr><th>scenario</th>' + arms.map(function (a) { return '<th>' + esc(ARMS[a][0]) + '</th>'; }).join("") + '</tr></thead><tbody>' + SEL.map(function (r) {
+      return '<tr><td class="small">' + esc(condLabel(r)) + '</td>' + arms.map(function (a) { var c = r.data[a].at.N12.diff_vs_she, ex = c.ci95[0] > 0 || c.ci95[1] < 0; return '<td class="m' + (ex ? (c.mean > 0 ? " yes" : " no") : "") + '">' + sg(c.mean) + '<br><span class="faint">±' + (1.96 * c.mcse).toFixed(2) + '</span></td>'; }).join("") + '</tr>'; }).join("") + '</tbody></table><p class="cap">Rule minus SHE after 12 items, paired, ± 1.96 MCSE. Green or red: the CI excludes 0. ' + SIMNOTE + '</p>';
+  }
+  function stopRule() {
+    var arm = $("#r-arm").value, rows = [], last = null;
+    STRUCT.concat(REF).forEach(function (r) {
+      if (!r.data[arm]) return;
+      var gen = r.study === "reference" ? "Reference (true parameters)" : r.spec.generator + ": " + GEN[r.spec.generator];
+      if (gen !== last) { rows.push({header: gen}); last = gen; }
+      var c = r.data[arm].stop["q0.8"].fcr, lab = condShort(r);
+      rows.push({label: lab, mean: c.mean, lo: c.ci95[0], hi: c.ci95[1], color: c.ci95[0] > 0.2 ? "#FF8A65" : "#3CC7B4"});
+    });
+    dotChart($("#r-fcr"), {rows: rows, x0: 0, x1: 0.8, fmt: f2, ref: [{x: 0.2, color: "#4CC38A", label: "≤ 0.20 if calibrated"}], aria: "false-confidence rate across conditions"});
+    $("#r-cap1").innerHTML = "<b>" + esc(ARMS[arm][0]) + "</b>: false-confidence rate of the q ≥ 0.8 stop rule (minimum 4, maximum 12 items), one row per condition (off-graph share for G1 · range of the true slip and guess · parameters the test uses: elicited, near-true = true plus logit noise 0.3, or true), 95% CI. Green dashed line: the most a calibrated q would allow. Orange: the whole CI is above it. " + SIMNOTE;
+    stopDetail();
+  }
+  function stopDetail() {
+    var r = STRUCT.concat(REF)[+$("#r-cond").value], arm = $("#r-arm").value; if (!r.data[arm]) arm = "audited";
+    var d = r.data[arm], rhos = [0.6, 0.7, 0.8, 0.85, 0.9, 0.95];
+    var fcr = rhos.map(function (x) { return d.stop["q" + x].fcr; }), conf = rhos.map(function (x) { return d.stop["q" + x].conf_rate; });
+    lineChart($("#r-rho"), {series: [{color: "#FF8A65", pts: rhos.map(function (x, j) { return [x, fcr[j].mean]; }), ci: rhos.map(function (x, j) { return [x, fcr[j].ci95[0], fcr[j].ci95[1]]; }), dots: rhos.map(function (x, j) { return [x, fcr[j].mean]; })},
+      {color: "#7C9CFF", pts: rhos.map(function (x, j) { return [x, conf[j].mean]; }), dots: rhos.map(function (x, j) { return [x, conf[j].mean]; }), dash: "4 3"}],
+      ref: [{pts: rhos.map(function (x) { return [x, 1 - x]; }), color: "#4CC38A", label: "calibrated: ≤ 1 − ρ"}], x0: 0.6, x1: 0.95, y0: 0, y1: 1, xt: rhos, xlab: "threshold ρ", aria: "false-confidence rate versus threshold"});
+    $("#r-cap2").innerHTML = "<span style=\"color:#FF8A65\">●</span> FCR with 95% CI and <span style=\"color:#7C9CFF\">●</span> share of students stopped confidently within 12 items, for each threshold ρ. Green dashed: the most a calibrated q would allow. <b>" + esc(ARMS[arm][0]) + "</b>, " + esc(condLabel(r)) + ". Simulation-conditional.";
+    var rel = d.reliability_q_at_12 || [], pts = rel.filter(function (b) { return b.n > 0; }), nmax = Math.max.apply(null, pts.map(function (b) { return b.n; }));
+    lineChart($("#r-rel"), {series: [{color: "#F2A93B", pts: pts.map(function (b) { return [+b.q_bin.split("-")[0] + 0.05, b.acc]; }), dots: pts.map(function (b) { return [+b.q_bin.split("-")[0] + 0.05, b.acc, 3 + 7 * Math.sqrt(b.n / nmax)]; })}],
+      ref: [{pts: [[0, 0], [1, 1]], color: "#4CC38A", label: "calibrated"}], x0: 0, x1: 1, y0: 0, y1: 1, xt: [0, 0.2, 0.4, 0.6, 0.8, 1], xlab: "q at 12 items (bin middle)", aria: "reliability of q"});
+    $("#r-cap3").innerHTML = "Reliability of q after 12 items: share of right start points per q bin (dot size = number of simulated students, pooled over replications; no CI in the data). On the green line q would be calibrated. <b>" + esc(ARMS[arm][0]) + "</b>, " + esc(condLabel(r)) + ". Simulation-conditional.";
+    var RN = {q: "q ≥ 0.8 (used)", tatsuoka: "Tatsuoka: max posterior ≥ 0.8", two: "two-criterion: max ≥ 0.7, second ≤ 0.1", she: "posterior entropy ≤ 1 bit"};
+    $("#r-tbl").innerHTML = '<table class="tbl"><thead><tr><th>stop rule (4 to 12 items)</th><th>mean length</th><th>accuracy at stop</th><th>stopped confidently</th><th>FCR</th></tr></thead><tbody>' + ["q", "tatsuoka", "two", "she"].map(function (k) { var s = d.stop[k];
+      return '<tr><td>' + RN[k] + '</td><td class="m">' + s.length.mean.toFixed(1) + '</td><td class="m">' + f2(s.acc.mean) + '</td><td class="m">' + (100 * s.conf_rate.mean).toFixed(1) + '%</td><td class="m">' + (s.conf_rate.mean > 0 ? f2(s.fcr.mean) : "–") + '</td></tr>'; }).join("") + '</tbody></table><p class="cap">Same arm and condition. A rule that rarely fires has an accuracy at stop close to the 12-item accuracy. Simulation-conditional.</p>';
+  }
+  function audit() {
+    var dropped = D.graphs.proposed.filter(function (e) { return !D.graphs.audited.some(function (a) { return a[0] === e[0] && a[1] === e[1]; }); });
+    $("#a-svg").innerHTML = drawMap({m: null, edges: D.graphs.audited, dropped: dropped, id: "a"});
+    var cls = function (v) { return v === "yes" ? "yes" : v === "no" ? "no" : "uns"; };
+    $("#a-tbl").innerHTML = '<table class="tbl"><thead><tr><th>edge</th><th>rater 1 (proposer)</th><th>rater 2 (blind): mastery</th><th>rater 2: instructional</th><th>kept</th></tr></thead><tbody>' + D.edge_audit.map(function (e) {
+      return '<tr><td><span class="mono faint">' + esc(e.id) + '</span> ' + esc(shortName(e.source)) + ' → ' + esc(shortName(e.target)) + (e.id === "E12" ? ' <span class="small faint">(from the non-edge sample N04; rater 1 not blind)</span>' : "") +
+        '<details><summary class="small">reasons</summary><p class="small muted">Rater 1: ' + esc(e.rater1_note || "") + '</p><p class="small muted">Rater 2: ' + esc(e.codex_reason || "") + '</p></details></td><td class="' + cls(e.rater1) + '">' + esc(e.rater1) + '</td><td class="' + cls(e.codex) + '">' + esc(e.codex) + '</td><td class="' + cls(e.codex_instructional) + '">' + esc(e.codex_instructional || "–") + '</td><td class="' + (e.use ? "yes" : "no") + '">' + (e.use ? "kept" : "dropped") + '</td></tr>'; }).join("") + '</tbody></table>';
+    $("#a-non").innerHTML = '<table class="tbl"><thead><tr><th>pair</th><th>rater 1</th><th>rater 2</th></tr></thead><tbody>' + D.non_edges.map(function (e) { return '<tr><td><span class="mono faint">' + esc(e.id) + '</span> ' + esc(shortName(e.source)) + ' → ' + esc(shortName(e.target)) + '</td><td class="' + cls(e.rater1) + '">' + esc(e.rater1) + '</td><td class="' + cls(e.codex) + '">' + esc(e.codex) + '</td></tr>'; }).join("") + '</tbody></table>';
+  }
+  function sources() {
+    var S = [["Junker & Sijtsma 2001, Cognitive assessment models with few assumptions (Applied Psychological Measurement)", "the DINA model"],
+      ["Cheng 2009, When cognitive diagnosis meets computerized adaptive testing: CD-CAT (Psychometrika)", "CD-CAT; PWKL selection"],
+      ["Xu, Chang & Douglas 2003, A simulation study to compare CAT strategies for cognitive diagnosis (AERA paper)", "Shannon-entropy (SHE) selection"],
+      ["Kaplan, de la Torre & Barrada 2015, New item selection methods for CD-CAT (Applied Psychological Measurement)", "GDI selection"],
+      ["Chang, Chiu & Tsai 2019, Nonparametric CAT for cognitive diagnosis (Applied Psychological Measurement)", "NPS selection"],
+      ["Tatsuoka 2002, Data analytic methods for latent partially ordered classification models (JRSS C)", "the posterior-threshold stop rule"],
+      ["Guo & Zheng 2019, Termination rules in CD-CAT", "instability of threshold stop rules; SHE stop"],
+      ["Hsu, Wang & Chen 2013, Variable-length CD-CAT", "the two-criterion stop rule"],
+      ["Sun et al. 2020, item parameter error in CD-CAT", "plug-in parameter error inflates confidence"],
+      ["Leighton, Gierl & Hunka 2004, The attribute hierarchy method (Journal of Educational Measurement)", "attribute hierarchies"],
+      ["Doignon & Falmagne 1985, Spaces for the assessment of knowledge (IJMMS); Falmagne & Doignon 2011, Learning Spaces (Springer)", "knowledge space theory; fringes"],
+      ["Heller, Stefanutti, Anselmi & Robusto 2015, On the link between cognitive diagnostic models and knowledge space theory (Psychometrika)", "DINA on a hierarchy = competence-based BLIM"],
+      ["Cosyn et al. 2021, a practical perspective on knowledge space theory: ALEKS", "the deployed instance; half-split selection"],
+      ["Morris, White & Crowther 2019, Using simulation studies to evaluate statistical methods (Statistics in Medicine)", "the ADEMP structure of the study"],
+      ["Abu-Mostafa, Caltech CS 156 Learning From Data", "the 9 concepts and their lecture order"],
+      ["Ours: Stage B engine, simulator, drafted items and edge audit", "everything computed on this page"]];
+    $("#srcrows").innerHTML = S.map(function (s) { return '<tr><td>' + esc(s[0]) + '</td><td>' + esc(s[1]) + '</td></tr>'; }).join("");
+  }
+  function provenance() {
+    var f = D.manifest_files || {}, h = Object.keys(f).sort().map(function (k) { return '<tr><td class="m">' + esc(k) + '</td><td class="m">' + esc(f[k].sha256) + '</td><td class="m">' + f[k].bytes.toLocaleString("en") + '</td></tr>'; }).join("");
+    $("#prov-body").innerHTML = '<ul><li>Experiment <b>EXP-024</b>: the Stage B simulation study (ADEMP). Code commit <code>' + esc(D.code_commit) + '</code> of the thesis pipeline (engine and simulator).</li>' +
+      '<li>Run: a private Kaggle CPU kernel, about 4.2 hours wall clock (' + Math.round(D.meta.seconds).toLocaleString("en") + ' s), deleted after the download.</li>' +
+      '<li>Design: ' + D.meta.n_sim.toLocaleString("en") + ' simulated students × ' + D.meta.reps + ' replications per condition; 32 structure conditions, 6 selection scenarios, 1 reference condition; ε = ' + D.fixed_settings.eps_mix + ', at most ' + D.fixed_settings.max_per_concept + ' items per concept, curves to ' + D.fixed_settings.n_max_curve + ' items. In 5 of 25 replications the real tag matrix is used; the others resample the secondary tags, so pooled results describe a mixture of real and synthetic pools.</li>' +
+      '<li>Data folder <code>data/thesis/placement/e1/</code> in the research vault, with <code>MANIFEST.json</code> (hashes below). The page data is built from it by <code>build_data.py</code>: numbers and the 32 public drafted items only; adapted and official item texts are not published.</li>' +
+      '<li>The interactive test on this page runs a JavaScript port of the engine in your browser; it reproduces the Python engine on fixed answer sequences.</li></ul>' +
+      '<details><summary>MANIFEST.json file hashes (sha256)</summary><table class="tbl"><thead><tr><th>file</th><th>sha256</th><th>bytes</th></tr></thead><tbody>' + h + '</tbody></table></details>';
+  }
+  function debounce(f, ms) { var t; return function () { clearTimeout(t); t = setTimeout(f, ms); }; }
+
+  function init() {
+    M = PT.model(D);
+    STRUCT = D.results.filter(function (r) { return r.study === "structure"; });
+    SEL = D.results.filter(function (r) { return r.study === "selection"; });
+    REF = D.results.filter(function (r) { return r.study === "reference"; });
+    hero(); genDemo(); dina(); priorGrid(); watch(); conditions();
+    fillCondSelect($("#c-cond"), STRUCT.concat(REF)); fillCondSelect($("#r-cond"), STRUCT.concat(REF)); fillCondSelect($("#s-cond"), SEL);
+    $("#c-cond").onchange = curves; $("#c-metric").onchange = curves; $("#n-n").onchange = n12;
+    $("#c-leg").onclick = function (e) { var b = e.target.closest("button[data-a]"); if (!b) return; curState.legendOff[b.dataset.a] = !curState.legendOff[b.dataset.a]; curves(); };
+    $("#f-arm").onchange = forest; $("#f-n").onchange = forest; $("#s-cond").onchange = selection; $("#r-arm").onchange = stopRule; $("#r-cond").onchange = stopDetail;
+    var all = function () { curves(); forest(); selection(); stopRule(); };
+    all(); audit(); sources(); provenance();
+    addEventListener("resize", debounce(function () { all(); wRender(); }, 200));
+  }
+  fetch("../data/page.json").then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); }).then(function (d) { D = d; init(); })
+    .catch(function (e) { $("#hero-cap").innerHTML = '<span style="color:var(--warn)">Could not load the data (' + esc(e) + '). Serve the folder over http.</span>'; });
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+</div>
+<script>// Section outline for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", "Sections");
+  aside.innerHTML = `<button type="button" aria-expanded="false">Sections</button><ol>${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  btn.onclick = () => { const o = aside.classList.toggle("open"); btn.setAttribute("aria-expanded", o); };
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); aside.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); }));
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+})();
+</script>
+</body>
+</html>

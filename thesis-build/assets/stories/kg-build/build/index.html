@@ -111,6 +111,12 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
 .lesson-video:empty::before{content:"Video: BuildingKnowledgeGraph (English, silent; shown on the thesis website build)";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
 #factory-fig:empty::before{content:"Figure: the graph factory";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+.bd{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.bd.meas{color:var(--teal);border-color:var(--teal)}.bd.pend{color:var(--blue);border-color:var(--blue);border-style:dashed}.bd.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.fstat{border:1px solid var(--blue);border-radius:10px;padding:8px 12px;margin:10px 0 16px;font-size:14px;color:var(--muted)}.fstat b{color:var(--blue)}
+.vs{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 14px}.vs th,.vs td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.vs th{color:var(--muted);font-weight:500;font-size:12px}.vs td.n{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.story2{padding-left:20px}.story2 li{margin:0 0 12px}.story2 .pr{color:var(--warn)}.story2 .fx{color:var(--teal)}
+@media (max-width:640px){.vs .rel{display:none}.vs td.n{white-space:normal}}
 @media (max-width:640px){.grid2,.pin{grid-template-columns:1fr}.stage-tbl td:first-child{white-space:normal}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
@@ -416,9 +422,9 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>Pilot slice, not the thesis graph:</b> two lectures of Caltech CS 156 (14: SVM, 15: kernel methods). Every number below comes from one real run of the pipeline on them. Some steps use our own modelling; each place says which.</p>
+  <p id="caveat"><b>Two runs on one page:</b> the <a href="#full">full build</a> (all nine sources, the thesis graph, not frozen yet) and the <b>pilot slice</b> that the rest of the page opens step by step (two lectures of Caltech CS 156). Each number says which run it comes from and whether it is measured.</p>
   <nav id="nav" aria-label="Sections">
-    <a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#watch">Watch</a><a href="#factory">Factory</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a>
+    <a href="#tldr">TL;DR</a><a href="#full">Full build</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#watch">Watch</a><a href="#factory">Factory</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a>
   </nav>
 </div></div>
 
@@ -427,7 +433,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <header class="hero">
   <div class="kicker">A layered lesson on a real pilot run</div>
   <h1>How a knowledge graph is built</h1>
-  <p class="lead">From a lecture transcript to a graph that can answer "what must I learn first?", in six stages. We ran every stage on real data and kept every intermediate file. You can open each one below.</p>
+  <p class="lead">From a lecture transcript to a graph that can answer "what must I learn first?", in six stages. We first ran every stage on two lectures and kept every intermediate file; you can open each one below. Then we ran the same stages on the whole course and eight textbooks: the <a href="#full">full build</a> shows those numbers next to the pilot.</p>
 </header>
 
 <section class="step" id="tldr" data-nav="TL;DR">
@@ -438,10 +444,46 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <li><b>Extraction.</b> An LLM reads each passage and writes typed edges from a closed list of three relations. Every edge must quote its passage. It wrote <span data-n="s2.mentions"></span> mentions and kept <span data-n="s2.edges_kept"></span> edges.</li>
     <li><b>Entity resolution.</b> Names that mean one thing ("SVM", "support vector machines") become one node. <span data-n="s3.distinct_keys"></span> normalised names ended as <span data-n="s5.nodes"></span> concept nodes (<span data-n="s5.candidate_nodes"></span> of them still candidates). An LLM review then rejected <span data-n="s3.review_rejected"></span> of the 30 merges the LLM judge proposed; no human checked either side.</li>
     <li><b>Entailment gate.</b> Two small checkers score whether the passage supports each edge. <span data-n="s5.assertion_status.accepted-by-gate"></span> of <span data-n="s5.assertions"></span> assertions pass. By our policy, "learn this first" edges are not decided by the checkers; they wait for a human (none reviewed them in this pilot).</li>
-    <li><b>Graph files.</b> All assertions, with their status and evidence, are written as plain CSV and JSONL files (the master copy). A Neo4j load script exists; it was not run.</li>
+    <li><b>Graph files.</b> All assertions, with their status and evidence, are written as plain CSV and JSONL files (the master copy). A Neo4j load script exists; this run did not use it (the tutor app later loaded the pilot graph into Neo4j).</li>
     <li><b>A question.</b> "What must I understand before the kernel trick?" The strict walk over PREREQUISITE_OF edges finds nothing. A wider walk over USES finds one related concept, the kernel function: related, not a verified prerequisite.</li>
   </ol>
   <p class="small muted">LLM cost: US$ <span data-n="cost_usd_total"></span> for the extraction and judge calls of the final run; US$ <span data-n="spend_all_calls.usd"></span> for all <span data-n="spend_all_calls.calls"></span> calls, trials and reruns included. The extraction and judge models were called through APIs (the course text went to those providers). The embedding model and the two checkers ran on free Kaggle machines, not on this computer.</p>
+</section>
+
+
+<section class="step" id="full" data-nav="Full build"><div class="kicker">From the pilot to the thesis graph</div>
+  <h2>The full build: nine sources, one graph</h2>
+  <div class="fstat" id="f-status"><b>Before the freeze.</b> The extraction, the rule checks and the gate are finished; the last merges are still running. The graph counts and the snapshot hash are filled in when the graph is frozen.</div>
+  <p>The pilot showed that every stage works on two lectures. The thesis needs the whole course and the eight textbooks that the course maps to. Scaling up raised three new problems; each one had a fix.</p>
+  <ol class="story2">
+    <li><b>Which extractor?</b> <span class="pr">Problem:</span> a large model for 8,000 passages is slow and costly, so we tried to teach a small open model (Qwen3-4B) from the large model's labels. <span class="fx">Result:</span> it did not reach its teacher: on held-out passages it lost 0.18 F1 on IS_A and 0.08 on USES. It copied the teacher's recall, not its precision. <span class="fx">Fix:</span> keep the large model (Claude Opus 5.5) as the extractor, with the same fixed prompt for every passage. <span class="bd meas">measured</span></li>
+    <li><b>Thousands of names.</b> <span class="pr">Problem:</span> the extractor wrote <span id="f-mentions"></span> mentions under <span id="f-groups"></span> different names. A first judge model decided merges from the names alone, with copied reasons. <span class="fx">Fix:</span> that judge was rejected and a stronger one read the passages; a model from another family audited a sample; a random sample of near-misses showed that about 7% of them were real duplicates, so the whole band is judged before the freeze. <span class="bd meas">measured</span></li>
+    <li><b>Long passages.</b> <span class="pr">Problem:</span> a book section is much longer than a lecture window. In an earlier test, cutting long passages at 512 tokens dropped the checker's balanced accuracy from 0.73 to about 0.5. <span class="fx">Fix:</span> both checkers read the whole passage (the longest is <span id="f-maxtok"></span> tokens, nothing cut), on the university GPU. <span class="bd meas">measured</span></li>
+  </ol>
+  <h3>Pilot and full build side by side</h3>
+  <table class="vs" aria-label="Pilot and full build"><thead><tr><th>stage</th><th>pilot (two lectures)</th><th>full build (nine sources)</th></tr></thead><tbody>
+    <tr><td>Input passages</td><td class="n"><span data-n="s1.chunks"></span> caption windows</td><td class="n"><span id="f-units"></span> units (course + 8 books)</td></tr>
+    <tr><td>Extractor</td><td>Gemini 2.5 Flash Lite</td><td id="f-extractor"></td></tr>
+    <tr><td>Mentions</td><td class="n"><span data-n="s2.mentions"></span></td><td class="n" id="f-m2"></td></tr>
+    <tr><td>Edges kept by the rule checks</td><td class="n"><span data-n="s2.edges_kept"></span></td><td class="n" id="f-kept"></td></tr>
+    <tr><td>Concepts after entity resolution</td><td class="n"><span data-n="s5.nodes"></span></td><td class="n" id="f-concepts"></td></tr>
+    <tr><td>Evidence pairs scored by the gate</td><td class="n"><span data-n="s4.pairs"></span></td><td class="n" id="f-pairs"></td></tr>
+    <tr><td>Gate: both checkers support</td><td class="n"><span data-n="s4.gate.supported"></span></td><td class="n" id="f-sup"></td></tr>
+    <tr><td>Where the checkers ran</td><td>Kaggle CPU</td><td id="f-where"></td></tr>
+    <tr><td>Assertions in the graph</td><td class="n"><span data-n="s5.assertions"></span></td><td class="n" id="f-assert"></td></tr>
+    <tr><td>Snapshot hash (S<sub>G</sub>)</td><td class="n">pilot hash only</td><td class="n" id="f-sg"></td></tr>
+  </tbody></table>
+  <h3>Extraction per source <span class="bd meas">measured</span></h3>
+  <table class="vs" id="f-books" aria-label="Extraction per source"></table>
+  <p class="small muted" id="f-rules"></p>
+  <h3>What the gate said <span class="bd meas">measured</span></h3>
+  <p id="f-gate"></p>
+  <h3>What happens at the freeze</h3>
+  <ul>
+    <li><b>Load rule.</b> <span id="f-loadrule"></span>. Statuses stay in three separate fields: who made the edge (asserted or inferred), what the gate said, and whether a person reviewed it (nobody has yet). <span class="bd dsg">design</span></li>
+    <li><b>The collapsed copy.</b> Arm Hc reads the same graph with the relation names replaced by one opaque label, made from it by a fixed rule, so H and Hc differ only in the relation types. <span class="bd dsg">design</span></li>
+    <li><b>One hash.</b> The graph files get one snapshot hash, S<sub>G</sub>, written into a manifest before any gold triple or test question is written. A merge after that would change the hash, which is why the last merges run first. Then the snapshot is loaded into Neo4j and the export is checked against the hash. <span class="bd pend">pending</span></li>
+  </ul>
 </section>
 
 <section class="step" id="l0" data-nav="L0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div>
@@ -1945,6 +1987,46 @@ window.KGFactory = function (P) {
   fetch(base + '/page.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(boot).catch(function (e) {
     $('#err').innerHTML = '<div class="ans warn">Could not load the data (' + esc(e.message) + '). Open this page through a web server, for example <code>python3 -m http.server</code> in the folder, then <code>/build/index.html</code>.</div>';
   });
+})();
+</script>
+<script id="kg-full">/* The "full build" section (#full): reads ../data/full-build.json, so the numbers can be refreshed after the S_G freeze
+   by editing that file only (no code change). null in the file = not known yet → "pending". */
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var fmt = function (v) { return v == null ? null : (typeof v === 'number' ? v.toLocaleString('en-US') : String(v)); };
+  var PEND = '<span class="bd pend">pending</span>';
+  var put = function (id, v, html) { var e = document.getElementById(id); if (e) e.innerHTML = v == null ? PEND : (html ? v : esc(fmt(v))); };
+  var pct = function (a, b) { return (100 * a / b).toFixed(1) + '%'; };
+  var q = /[?&]data=([^&]+)/.exec(location.search), base = q ? decodeURIComponent(q[1]) : '../data';
+  fetch(base + '/full-build.json').then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (F) {
+    var X = F.extraction || {}, R = F.rule_checks || {}, E = F.er || {}, G = F.gate || {}, GR = F.graph || {}, Z = F.freeze || {};
+    var frozen = F.status === 'frozen';
+    var st = $('#f-status');
+    if (st) st.innerHTML = frozen
+      ? '<b>Frozen.</b> These are the numbers of the frozen thesis graph' + (F.as_of ? ' (as of ' + esc(F.as_of) + ')' : '') + '.'
+      : '<b>Before the freeze' + (F.as_of ? ', as of ' + esc(F.as_of) : '') + '.</b> The extraction, the rule checks and the gate are finished; the last merges are still running. The graph counts and the snapshot hash are filled in when the graph is frozen, so these numbers can still change.';
+    put('f-mentions', X.mentions); put('f-groups', E.name_groups); put('f-maxtok', G.max_premise_tokens);
+    put('f-units', X.units); put('f-extractor', X.extractor); put('f-m2', X.mentions); put('f-kept', R.kept);
+    var conc = E.concepts_final != null ? E.concepts_final : GR.concepts;
+    put('f-concepts', conc != null ? esc(fmt(conc)) : (E.concepts_after_fuzzy != null ? esc(fmt(E.concepts_after_fuzzy)) + ' after the first pass ' + PEND : null), true);
+    put('f-pairs', G.pairs); put('f-sup', G.both_support != null ? esc(fmt(G.both_support)) + ' (' + pct(G.both_support, G.pairs) + ')' : null, true);
+    put('f-where', G.where); put('f-assert', GR.assertions);
+    put('f-sg', Z.s_g ? '<code>' + esc(String(Z.s_g).slice(0, 12)) + '</code>' : null, true);
+    var cols = X.book_cols || [], rel = function (i) { return i >= 3 && i <= 5 ? ' class="rel"' : ''; };
+    var tb = $('#f-books');
+    if (tb && X.books) {
+      var h = '<thead><tr>' + cols.map(function (c, i) { return '<th' + rel(i) + '>' + esc(c) + '</th>'; }).join('') + '</tr></thead><tbody>';
+      h += X.books.map(function (r) { return '<tr>' + r.map(function (v, i) { return '<td' + (i ? ' class="n' + (i >= 3 && i <= 5 ? ' rel' : '') + '"' : '') + '>' + esc(fmt(v)) + '</td>'; }).join('') + '</tr>'; }).join('');
+      h += '<tr><td><b>Total</b></td>' + [X.units, X.mentions, X.uses, X.is_a, X.prerequisite_of, X.edges].map(function (v, i) { return '<td class="n' + (i >= 2 && i <= 4 ? ' rel' : '') + '"><b>' + esc(fmt(v)) + '</b></td>'; }).join('') + '</tr></tbody>';
+      tb.innerHTML = h;
+    }
+    var rr = $('#f-rules');
+    if (rr) rr.textContent = X.batches_valid + ' of ' + X.batches + ' batches passed the validator; ' + fmt(X.reused_units) + ' units reuse labels from the same extractor and prompt in an earlier experiment (checked by text hash). Rule checks kept ' + fmt(R.kept) + ' edges and dropped ' + fmt(R.dropped) + ' (' + R.dropped_reason + '); ' + R.quote_failures + ' quotes failed. On a phone the three relation columns are hidden.';
+    var g = $('#f-gate');
+    if (g && G.pairs) g.innerHTML = 'HHEM and MiniCheck scored ' + fmt(G.pairs) + ' evidence pairs (USES ' + fmt(G.uses_pairs) + ', IS_A ' + fmt(G.is_a_pairs) + ') against ' + fmt(G.premises) + ' whole passages. Both supported ' + fmt(G.both_support) + ' (' + pct(G.both_support, G.pairs) + '), both rejected ' + fmt(G.both_reject) + ', and they disagreed on ' + fmt(G.disagree) + '. That is ' + G.note + '; the threshold 0.5 is the checkers\' own boundary, not tuned on our text. Time on the GPU: HHEM ' + Math.round(G.hhem_seconds / 60) + ' min, MiniCheck ' + Math.round(G.minicheck_seconds / 60) + ' min. In the pilot the checkers agreed far less (they disagreed on about a third of the gated records).';
+    var lr = $('#f-loadrule'); if (lr && GR.load_rule) lr.textContent = GR.load_rule.charAt(0).toUpperCase() + GR.load_rule.slice(1);
+  }).catch(function (e) { var st = $('#f-status'); if (st) st.textContent = 'Could not load the full-build numbers (' + e.message + ').'; });
 })();
 </script>
 <p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>

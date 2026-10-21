@@ -53,7 +53,8 @@ button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
 .b.done,.b.measured{color:var(--teal);border-color:var(--teal)}
 .b.pilot{color:var(--amber);border-color:var(--amber)}
 .b.planned{color:var(--purple);border-color:var(--purple);border-style:dashed}
-.b.running{color:var(--blue);border-color:var(--blue)}
+.b.running{color:var(--blue);border-color:var(--blue);border-style:dashed}
+.b.app{color:var(--blue);border-color:var(--blue)}
 .b.count,.b.inferred,.b.external,.b[class*="model"]{color:var(--muted);border-color:var(--line);text-transform:none;letter-spacing:0;font-weight:500}
 .legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin:8px 0}
 /* the map */
@@ -405,8 +406,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>Done vs planned:</b> every stage carries a status. <span class="b done">done</span> ran on the real CS 156 data · <span class="b pilot">pilot</span> ran on a small slice only · <span class="b planned">planned</span> decided, not built · <span class="b running">running</span> in progress. Each number has its own evidence label.</p>
-  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1 story</a><a href="#map-s">Map</a><a href="#route-s">Routes</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+  <p id="caveat"><b>Done vs planned:</b> every stage carries a status. <span class="b done">done</span> ran on the real corpus · <span class="b app">app</span> built in the tutor app, untuned · <span class="b pilot">pilot</span> small slice only · <span class="b planned">planned</span> decided, not built · <span class="b running">running</span> in progress. Each number has its own evidence label.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1 story</a><a href="#map-s">Map</a><a href="#route-s">Routes</a><a href="#where-s">Where it runs</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
 </div></div>
 
 <main>
@@ -414,19 +415,19 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <header class="hero">
   <div class="kicker">A layered lesson on our own pipeline</div>
   <h1>Our data pipeline</h1>
-  <p class="lead">How a scanned textbook, slides, homework and lecture videos become passages a retriever can search and a knowledge graph a tutor can walk. Sixteen stages. Click any stage for what it does, why we chose it, what we rejected, the real numbers and what is lost.</p>
+  <p class="lead">How a course (scanned book, slides, homework, lecture videos), eight textbooks and two libraries become passages a retriever can search and a knowledge graph a tutor can walk. Eighteen stages. Click any stage for what it does, why we chose it, what we rejected, the real numbers and what is lost.</p>
 </header>
 
 <section class="step" id="tldr"><div class="kicker">TL;DR</div><h2>Two branches from one passage store</h2>
 <ol>
-  <li><b>Text first.</b> Scans go through OCR (MinerU2.5-Pro on free remote GPUs); born-digital keys use their text layer; lectures use their caption tracks. OCR output becomes Markdown with the page markers it found; captions keep timestamps; questions become rows. <span class="b done">done</span>: 1,075 OCR pages (898 course + 177 third-party solution pages).</li>
-  <li><b>Structure next.</b> Books get a table-of-contents tree (book → chapter → section → page), and the section becomes the unit of cutting. <span class="b planned">planned</span></li>
-  <li><b>Search branch.</b> Units will be packed into chunks of at most 1,024 bge-m3 tokens, embedded with bge-m3, and stored in Postgres + pgvector next to a BM25 index; the two lists are fused with RRF. Dense embedding of the transcript chunks is <span class="b done">done</span>; the unit rule and the store are <span class="b planned">planned</span>.</li>
-  <li><b>Graph branch.</b> An LLM extracts typed edges with a verbatim quote, entity resolution merges names, two checkers gate the non-prerequisite edges (prerequisite edges wait for review), and the files live in git. <span class="b pilot">pilot</span> on two lectures, with the walk in plain Python; the Neo4j load is <span class="b planned">planned</span>.</li>
-  <li><b>Same input for both.</b> The RAG arm and the graph arms read the same passage snapshot and differ only in how they retrieve. What happens at question time is the companion page, <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks</a>. It also shows the product design for <a href="/thesis/assets/stories/query-flow/build/index.html#abstain">saying "I don't know"</a> when the material has no answer, and <a href="/thesis/assets/stories/query-flow/build/index.html#variants">why we do not rewrite the question</a>.</li>
+  <li><b>Text first.</b> Scans and maths-heavy pages go through OCR (MinerU2.5-Pro on free remote GPUs); clean text layers are read directly; lectures use their caption tracks. <span class="b done">done</span>: 1,075 course pages and 5,694 textbook pages, with 0 failed units.</li>
+  <li><b>Structure next.</b> Every book has a table-of-contents tree (chapter, section, printed pages). Rules clean the text and cut one unit per section, children above 1,024 tokens. <span class="b done">done</span>: 8,515 searchable units over nine sources, exercises and solutions kept apart.</li>
+  <li><b>Search branch.</b> Each unit has a bge-m3 dense and sparse vector. <span class="b done">done</span>. The tutor app searches them with pgvector, BM25 and RRF <span class="b app">app</span>; the thesis run will read a pinned snapshot.</li>
+  <li><b>Graph branch.</b> Claude Opus 5.5 extracted 10,246 typed edges from 8,069 units, entity resolution merged the names, two checkers scored 7,661 evidence pairs on the university GPU. <span class="b done">done</span>. The last merges and the snapshot hash S<sub>G</sub> are <span class="b running">running</span>; then the graph is frozen and loaded into Neo4j.</li>
+  <li><b>Two libraries, same steps.</b> The Zotero library (5,186 + 121 papers, 585,574 vectors) and 37 learning books went through the same OCR, units and vectors. <span class="b done">done</span></li>
+  <li><b>Where it runs.</b> The Mac only orchestrates. OCR, embedding and the checkers run on Kaggle, Colab and the university's A100 slice; a ledger makes every unit run once. What happens at question time is the companion page, <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks</a>, with <a href="/thesis/assets/stories/query-flow/build/index.html#app">one turn as built in the app</a> and <a href="/thesis/assets/stories/query-flow/build/index.html#abstain">saying "I don't know"</a>.</li>
 </ol>
 </section>
-
 <section class="step" id="l0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div><h2>A library that builds its own card catalogue</h2>
 <p class="who">For anyone. No technical words.</p>
 <p>A librarian receives a box of old photocopied books and a pile of lecture recordings. She wants two things: a card index where any sentence can be found, and a wall map that shows which idea depends on which.</p>
@@ -449,7 +450,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 
 <section class="step" id="map-s"><div class="wide">
   <div class="kicker">Touch</div><h2>The map: click a stage</h2>
-  <div class="legend"><span><span class="b done">done</span> ran on real CS 156 data</span><span><span class="b pilot">pilot</span> small slice only</span><span><span class="b planned">planned</span> decided, not built</span><span><span class="b running">running</span></span></div>
+  <div class="legend"><span><span class="b done">done</span> ran on the real corpus</span><span><span class="b app">app</span> built in the tutor app</span><span><span class="b pilot">pilot</span> small slice only</span><span><span class="b planned">planned</span> decided, not built</span><span><span class="b running">running</span> in progress</span></div>
   <div id="mapsec">
     <div id="map" role="group" aria-label="Pipeline stages"></div>
     <aside id="panel" aria-live="polite"></aside>
@@ -462,6 +463,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <div class="row" id="routes" role="group" aria-label="Document types"></div>
 <p id="route-note"></p>
 <p class="small faint">Path lighting dims every stage that the document does not pass through. Click a lit stage for its numbers.</p>
+</section>
+<section class="step" id="where-s"><div class="kicker">Where it runs</div><h2>The Mac orchestrates; free remote machines do the work</h2>
+<p><b>Problem:</b> the Mac has 8 GB of memory, and a GPU model on it is too slow to finish. <b>Fix:</b> every heavy step runs on a remote machine. Each work unit is recorded in a ledger with its inputs and code version, so it runs once, and private text is deleted from the remote machine after download.</p>
+<table class="tbl" aria-label="Where each step runs"><thead><tr><th>step</th><th>where</th></tr></thead><tbody id="whererows"></tbody></table>
+<p class="small faint">The graph status above is read from the graph build file: <span id="kgstat"></span></p>
 </section>
 
 <section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>The full record and the evidence behind it</h2>
@@ -487,19 +493,21 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <tr><td>Book and paper units</td><td>section first, token-aware packing; verified by a test on the development split</td><td>accepted</td></tr>
 <tr><td>Transcript unit</td><td>sentence-aligned 5-minute windows; topic segments as metadata</td><td>accepted</td></tr>
 <tr><td>BM25</td><td>one fully specified BM25 (settings in the run file), not <code>ts_rank</code></td><td>accepted</td></tr>
-<tr><td>Tier 2 books</td><td>OCR now, with a table-of-contents structure per book; question bank gets golden passages and golden triplets</td><td>changed by you: now on the critical path</td></tr>
-<tr><td>Where the text runs</td><td>thesis books on the university server only; Zotero papers on Kaggle, batched over the accounts</td><td>decided by you</td></tr>
+<tr><td>Textbooks</td><td>OCR, table-of-contents structure, units and vectors for all eight books; question bank gets golden passages and golden triplets</td><td>done (gold not frozen)</td></tr>
+<tr><td>Where the text runs</td><td>remote machines only, private datasets deleted after download: textbook OCR and papers on Kaggle, thesis embeddings on Colab, the graph gate on the university GPU; the Mac only orchestrates</td><td>decided by you</td></tr>
+<tr><td>Graph extractor</td><td>Claude Opus 5.5 with one fixed prompt; a distilled 4B student was tested and rejected</td><td>done (measured)</td></tr>
+<tr><td>Graph freeze</td><td>one snapshot hash S<sub>G</sub> before any gold triple or test question; all merges before it</td><td>running</td></tr>
 <tr><td>Video timestamps</td><td>every video unit, chunk, gold passage and citation keeps the video id and start and end times</td><td>decided by you</td></tr>
-<tr><td>Library vector store</td><td>pgvector or LanceDB, decided after five measurements</td><td>accepted (measure first)</td></tr>
+<tr><td>Library vector store</td><td>Parquet files per set (body, references, figures) now; a database store only after measurements</td><td>accepted (measure first)</td></tr>
 </tbody></table>
-<div class="ours"><b class="h">Our reading</b>The ingest half is real and measured at full course scale. The two halves that make the thesis comparison (the passage store and the graph at full size) are designed and piloted, not built. The order now: Tier 2 OCR and table-of-contents structure run now, alongside the schema and leakage rules → index CS 156 in Postgres → BM25 and dense baselines and a small graph comparison → chunking tests; golden passages and golden triplets for the question bank.</div>
+<div class="ours"><b class="h">Our reading</b>The ingest half is done for all nine sources and both libraries, with every number counted from the run files. The graph is extracted, resolved and gated at full size; what remains is the freeze. The order now: the last merges → S<sub>G</sub> and the freeze manifest → Neo4j load checked against the hash → golden triplets and the question bank written after the freeze → the pinned thesis store and the main run.</div>
 </section>
 
 <section class="step" id="quiz"><div class="kicker">Check yourself</div><h2>Three questions</h2><div id="qz"></div></section>
 
 <section class="step" id="src"><div class="kicker">Sources</div><h2>Where every number comes from</h2>
 <table class="tbl"><thead><tr><th>source</th><th>used for</th><th>read?</th></tr></thead><tbody id="srcrows"></tbody></table>
-<p class="small faint" style="margin-top:12px">Vault notes: Thesis - Next Pipeline Steps Proposal (the stage table and the mermaid diagram), Thesis - Corpus and Question Bank Process (the process record), OCR and Document Parsing Models - Research Note, Building the Knowledge Graph - Pilot Slice, the experiment registry. Book text, homework text and solutions are never shown.</p>
+<p class="small faint" style="margin-top:12px">Vault notes: Thesis - Next Pipeline Steps Proposal (the first stage table), Thesis - Corpus and Question Bank Process, Thesis - Book Corpus OCR Run, Thesis - Corpus Cleaning and Units, Paper Ingestion - MinerU + GROBID, Learning Books - Ingest, Thesis - Full KG Build, Thesis - SLM Distillation Experiment, OCR and Document Parsing Models - Research Note, Building the Knowledge Graph - Pilot Slice, the experiment registry. Book text, homework text and solutions are never shown.</p>
 </section>
 </div>
 </main>
@@ -509,22 +517,23 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const base=(new URLSearchParams(location.search).get("data")||"../data").replace(/\/$/,"");
 const STORY=[
- ["sources","The course exists as a scanned book, slide PDFs, homework PDFs and 18 lecture videos.","The book scan has no text at all; the keys and captions do, but in different forms.","Collect one file per item, and record which tier it belongs to."],
- ["compute","Our chosen OCR model is a GPU model, and the Mac has 8 GB of memory.","An OCR test on the Mac did 3 pages in 10 minutes.","A batch pipeline sends work units to free remote GPUs and records each unit in a ledger, so a finished unit is not run again."],
- ["route","Some PDFs already contain text, others are pictures of pages.","Running OCR on everything wastes GPU time; trusting every text layer lets garbage in.","Route each file by its text layer: scans to OCR, clean keys to their text layer."],
+ ["sources","The course exists as a scanned book, slide PDFs, homework PDFs and 18 lecture videos; eight textbooks and two libraries come next.","Two lectures are too few voices for a graph, and every source arrives in a different form.","Collect one file per item, record its tier, and run the same steps for every source."],
+ ["compute","Our OCR model is a GPU model, and the Mac has 8 GB of memory.","An OCR test on the Mac did 3 pages in 10 minutes.","A batch pipeline sends work units to free remote GPUs and records each unit in a ledger; the Mac only orchestrates."],
+ ["route","Some pages already contain clean text, others are pictures or dense maths.","Running OCR on everything wastes GPU time; trusting every text layer lets garbage in.","Route each file, or each page, by its text layer."],
  ["ocr","A generic OCR read the book but garbled the inline maths.","A machine-learning textbook is half formulas.","A vision-language OCR model, chosen on our own pages, writes LaTeX and keeps page and problem numbers."],
  ["markdown","OCR gives text per page.","The citation and the graph need headings, page numbers and tables in a form code can read.","Markdown with page markers makes that structure explicit."],
- ["toc","A page is where the printer cut, not where the topic ends.","A chunk that starts mid-section mixes two topics and gives a vague citation.","Match the headings to the book's table of contents: book → chapter → section → page."],
- ["chunks","A section can be many pages long.","Our encoder setting reads at most 1,024 tokens; longer text would be cut.","Pack paragraphs inside each unit up to a token limit, never across a unit."],
- ["embed","A keyword search misses a paraphrase (\"wide gap\" vs \"large margin\").","Students do not use the book's words.","bge-m3 turns each chunk into a vector, so similar meaning lands close together."],
- ["index","Vectors miss exact rare words (\"KKT\"); keywords miss paraphrases.","Each method fails where the other works.","Store both in Postgres: pgvector for meaning, BM25 for words, fused with RRF."],
- ["extract","Similar passages do not say what to learn first.","A prerequisite question needs relations between concepts, not similar text.","An LLM writes typed edges, each with a verbatim quote."],
- ["er","The LLM calls one idea by many names.","One concept split into three nodes breaks every walk.","Entity resolution merges names; doubtful merges go to review."],
- ["nli","An LLM can write an edge that its quote does not support.","A wrong edge sends the tutor to the wrong passage.","Two checkers gate each edge; doubtful ones wait for a human."],
- ["git","A graph changes as it is fixed.","An experiment must name the exact graph it used.","Plain files in git with one snapshot hash."],
- ["neo4j","The tutor must walk the graph while a student waits.","The pilot walked plain files in Python; the thesis needs typed queries over a growing graph.","Load the snapshot into Neo4j for bounded typed walks (its speed-up is not measured)."]
+ ["toc","A page is where the printer cut, not where the topic ends.","A unit that starts mid-section mixes two topics and gives a vague citation.","Build each book's tree from its outline and the OCR headings: chapter, section, printed pages."],
+ ["chunks","A section can be many pages long, and OCR leaves headers and broken hyphens.","Our encoder reads at most 1,024 tokens, and noise would end up in the vectors.","Clean by rules, cut one unit per section, split long ones into children."],
+ ["embed","A keyword search misses a paraphrase (\"wide gap\" vs \"large margin\").","Students do not use the book's words.","bge-m3 turns each unit into a vector, so similar meaning lands close together."],
+ ["index","Vectors miss exact rare words (\"KKT\"); keywords miss paraphrases.","Each method fails where the other works.","Store both: pgvector for meaning, BM25 for words, fused with RRF and reranked."],
+ ["extract","Similar passages do not say what to learn first, and a small model could not learn to extract it.","A prerequisite question needs relations between concepts, not similar text.","A large LLM writes typed edges, each with a verbatim quote."],
+ ["er","The LLM calls one idea by thousands of names.","One concept split into three nodes breaks every walk.","Entity resolution merges names; a judge reads the passages, another model family audits."],
+ ["nli","An LLM can write an edge that its quote does not support.","A wrong edge sends the tutor to the wrong passage.","Two checkers score each edge against the whole passage."],
+ ["git","A graph changes as it is fixed.","An experiment must name the exact graph it used, and test questions must not see a moving graph.","Plain files with one snapshot hash, frozen before any test question is written."],
+ ["neo4j","The tutor must walk the graph while a student waits.","Plain files are slow to query by relation type.","Load the frozen snapshot into Neo4j for bounded typed walks."],
+ ["papers","Our notes cite thousands of papers that only exist as PDFs.","A claim should point at a page, not at a title.","Run the papers through the same steps: GROBID or MinerU, chunks, vectors, one command for new papers."]
 ];
-const ROWS=[["sources"],["compute"],["route"],{cols:[["ocr","markdown","toc"],["transcripts","qbank"]],h:["pages","lectures and questions"]},["chunks"],["embed"],{cols:[["index"],["extract","er","nli","git","neo4j"]],h:["search branch","graph branch"]}];
+const ROWS=[["sources"],["compute"],["route"],{cols:[["ocr","markdown","toc"],["transcripts","qbank"]],h:["pages","lectures and questions"]},["chunks"],["embed"],{cols:[["index"],["extract","er","nli","git","neo4j"]],h:["search branch","graph branch"]},{cols:[["papers"],["lbooks"]],h:["library: papers","library: books"]}];
 let D=null, sel=null, lit=null;
 fetch(base+"/pipeline.json").then(r=>r.json()).then(d=>{D=d;init()}).catch(e=>{document.querySelector("main").insertAdjacentHTML("afterbegin",'<p class="wrap" style="color:var(--warn)">Could not load the data ('+esc(e)+'). Serve the folder over http.</p>')});
 const S=id=>D.stages.find(s=>s.id===id);
@@ -544,6 +553,8 @@ function init(){
   $("#routes").innerHTML=D.route_cases.map(c=>'<button data-r="'+c.id+'" aria-pressed="false">'+esc(c.label)+'</button>').join("")+'<button data-r="" aria-pressed="true">Show all</button>';
   $("#routes").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;route(b.dataset.r)});
   $("#records").innerHTML=D.stages.map(s=>'<div class="rec"><h4>'+s.n+' · '+esc(s.title)+' '+badge(s.badge)+'</h4><div class="k">what</div><div>'+esc(s.what)+'</div><div class="k">why</div><div>'+esc(s.why)+'</div><div class="k">rejected</div><div>'+esc(s.rejected)+'</div><div class="k">what is lost</div><div>'+esc(s.lost)+'</div><div class="k">evidence</div><div class="srcs">'+s.src.map(esc).join(" · ")+'</div></div>').join("");
+  $("#whererows").innerHTML=(D.where||[]).map(w=>'<tr><td>'+esc(w[0])+'</td><td>'+esc(w[1])+'</td></tr>').join("");
+  const ks=D.kg_full||{}; $("#kgstat").textContent=ks.status==="frozen"?"the graph is frozen.":"the graph is not frozen yet; its last numbers can still change.";
   quiz(); sources(); show("ocr",false);
 }
 function show(id,scroll){
@@ -579,7 +590,11 @@ const SRC=[
  ["Cormack, Clarke and Buettcher (SIGIR), Reciprocal Rank Fusion","the RRF formula and k = 60",false],
  ["Our runs: experiment registry and pipeline ledger","every measured number on this page",true],
  ["Thesis - Corpus and Question Bank Process","counts, OCR audit, question bank",true],
- ["Building the Knowledge Graph - Pilot Slice","the graph branch numbers",true]];
+ ["Building the Knowledge Graph - Pilot Slice","the pilot graph numbers",true],
+ ["Thesis - Book Corpus OCR Run; Thesis - Corpus Cleaning and Units","textbook OCR, structure, units, embeddings",true],
+ ["Paper Ingestion - MinerU + GROBID; Learning Books - Ingest","the two libraries",true],
+ ["Thesis - Full KG Build; Thesis - SLM Distillation Experiment","the full graph build and the rejected student",true],
+ ["Intelligent Educator SPEC","what the tutor app runs",true]];
 function sources(){ $("#srcrows").innerHTML=SRC.map(s=>'<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td class="'+(s[2]?"vtrue":"vfalse")+'">'+(s[2]?"read":"not read by us")+'</td></tr>').join("") }
 })();
 </script>

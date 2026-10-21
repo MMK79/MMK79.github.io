@@ -56,6 +56,11 @@ label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-ite
 .b.ours{color:var(--amber);border-color:var(--amber)}
 .b.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
 .b.skip{color:var(--faint);border-color:var(--line)}
+.b.app{color:var(--blue);border-color:var(--blue)}
+.turn{list-style:none;padding:0;margin:12px 0;counter-reset:t}.turn>li{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px 10px 46px;margin:0 0 8px}
+.turn>li::before{counter-increment:t;content:counter(t);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);font:12px/22px var(--mono);text-align:center}
+.turn h3{margin:0 0 4px;font-size:17px}.turn p{margin:0 0 6px;font-size:14.5px}.turn .stop{color:var(--warn)}
+.model{display:inline-block;font:13px var(--mono);border:1px solid var(--blue);color:var(--blue);border-radius:6px;padding:1px 7px}
 .tbl{width:100%;border-collapse:collapse;font-size:13.5px}
 .tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 .tbl th{color:var(--muted);font-weight:500;font-size:12px}
@@ -424,8 +429,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>Real slice, partly designed system:</b> the question, the passages, the graph and every score come from the CS 156 Lecture 14-15 pilot. Each step says whether it is <span class="b comp">computed</span>, a <span class="b ours">stand-in (ours)</span> or a <span class="b dsg">design, not built</span>. No answer is generated on this page.</p>
-  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#system">System view</a><a href="#touch">Step through</a><a href="#compare">Compare arms</a><a href="#abstain">"I don't know"</a><a href="#variants">Query variants</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+  <p id="caveat"><b>Real slice, partly designed system:</b> the question, the passages, the graph and every score come from the CS 156 Lecture 14-15 pilot. Each step says whether it is <span class="b comp">computed</span>, a <span class="b ours">stand-in (ours)</span>, <span class="b app">built in the app</span> (the tutor app runs it; the thesis harness has not run it yet) or a <span class="b dsg">design, not built</span>. No answer is generated on this page.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#system">System view</a><a href="#touch">Step through</a><a href="#compare">Compare arms</a><a href="#app">In the app</a><a href="#abstain">"I don't know"</a><a href="#variants">Query variants</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
 </div></div>
 
 <main>
@@ -442,7 +447,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <li><b>The graph arms walk.</b> From the seeds they follow typed edges (PREREQUISITE_OF, IS_A, USES), at most two hops. The typed arm <b>H</b> follows only the relations the router picks; the collapsed arm <b>Hc</b> follows all three. Nothing else differs.</li>
   <li><b>Edges point to passages.</b> Each edge carries evidence records; their passage ids fetch the passage text. That list is fused with the text retriever's list.</li>
   <li><b>One cap for all.</b> The retrieval arms share one cap of 4,000 tokens for the passage text (counted here with the bge-m3 tokenizer, a proxy for the answer model's); the space used differs by arm. The request carries no relation, hop or path, though the choice of passages itself can still differ.</li>
-  <li><b>What is built.</b> Linking, walk, ranking, fusion and packing are <span class="b comp">computed</span> here on the pilot slice. The router is a <span class="b ours">stand-in</span>. Answer generation (an Alibaba-hosted LLM), book citations and the citation check are <span class="b dsg">design, not built</span>.</li>
+  <li><b>What is built.</b> Linking, walk, ranking, fusion and packing are <span class="b comp">computed</span> here on the pilot slice. The router is a <span class="b ours">stand-in</span>. In the tutor app, answer generation (an Alibaba-hosted model whose name is shown on every answer), book citations, the "I don't know" layers and the sentence-level support check are <span class="b app">built in the app</span>; the thesis harness has not run them yet. <a href="#app">The answer path as built</a> walks through one turn.</li>
   <li><b>A real finding.</b> In the pilot graph no PREREQUISITE_OF edge has passed review, so with the stand-in router's USES + IS_A mask, H and Hc load the same edges and send the same context on all three questions. A narrower mask (for example USES only, in step 3) separates them; so does the non-confirmatory "also load proposed edges" toggle on Q1.</li>
 </ol>
 </section>
@@ -466,7 +471,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <li><b>Problem:</b> walking every edge pulls in everything near the seed. <b>Fix:</b> a typed walk: the router picks which relations fit the question, and the walk stops after two hops.</li>
   <li><b>Problem:</b> the answer model needs text, not edges. <b>Fix:</b> every edge has evidence records pointing to passage ids; the passages are fetched by id.</li>
   <li><b>Problem:</b> a bigger context could win on its own. <b>Fix:</b> one token cap, B = 4,000, for every retrieval arm; passages are added in fused order until the next one does not fit.</li>
-  <li><b>Problem:</b> the answer could cite a passage that does not support it. <b>Fix (designed):</b> cite book, chapter, section and page, and check each cited sentence with an entailment checker.</li>
+  <li><b>Problem:</b> the answer could cite a passage that does not support it. <b>Fix (built in the app):</b> cite book, chapter, section and page, and check each cited sentence with an entailment checker.</li>
 </ol>
 </section>
 </div>
@@ -502,10 +507,35 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </div></section>
 
 
+<section class="step" id="app"><div class="wrap">
+  <div class="kicker">As built in the tutor app</div>
+  <h2>One turn in the app, from question to checked answer</h2>
+  <p>The steps above zoom into the graph arm on the pilot slice. The tutor app runs the whole turn on the course and the books. Each step fixes a problem that the step before it leaves open. The app's Text mode is arm R and its Hybrid mode is arm H, with settings that are not tuned yet; a third Graph mode (the typed walk alone) is labelled experimental and is not one of the evaluated arms.</p>
+  <ol class="turn">
+    <li><h3>Make the question stand alone <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> a follow-up such as "and why does that work?" means nothing to a search engine. <b>Fix:</b> the app rewrites a follow-up into one self-contained question and shows the student the rewritten text. This is the only rewrite: the first question is searched exactly as typed, and the thesis harness never rewrites.</p></li>
+    <li><h3>Search with the chosen arm <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> one search method misses what the other finds. <b>Fix:</b> Text mode (arm R) fuses BM25 and bge-m3 lists with RRF and reranks them with a cross-encoder; Hybrid mode (arm H) adds the linked concepts, the route and the typed walk, then fuses. Passages are packed up to the token cap. Only the course sources the admin has switched on are searched.</p></li>
+    <li><h3>Gate: is anything close enough? <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> if the search found nothing relevant, the model will still write something. <b>Fix:</b> before any model call, the best cross-encoder score of the packed passages is compared with a cut-off. Below it, the turn ends as <span class="stop">no answer</span>. The cut-off is a placeholder until it is tuned on labelled examples.</p></li>
+    <li><h3>Write the answer <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> the student must know which model wrote the answer, and the admin must be able to change it. <b>Fix:</b> one Alibaba-hosted model writes the answer from the passages only. The default is <span class="model">qwen3.8-flash</span>; an admin can pick another of the 58 Alibaba text models in our model catalogue. Every answer stores and shows the model it used, beside the mode and in "How I searched", and every call is logged with its tokens and cost. A turn that stopped before the model (gate, no sources, spending cap) shows no model.</p></li>
+    <li><h3>"Not in the material", wherever it appears <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> the prompt asks the model to reply <code>NOT_IN_MATERIAL</code> when the passages do not hold the answer. In one observed turn the model wrote a paragraph and put the token at the <i>end</i>, and the old rule read only the start of the reply, so the reply went on as if it were an answer. <b>Fix:</b> the token anywhere in the reply (start, middle or end) means <span class="stop">no answer</span>. The thesis protocol took the same rule for all five arms before the main run: an exact, case-sensitive match; near-miss spellings are logged, not counted.</p></li>
+    <li><h3>Check the citations <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> a citation marker can point at a passage the model never received. <b>Fix:</b> every marker must point to a packed passage. If one does not, the model gets one repair attempt; if it still fails, the answer is shown with a "citations invalid" flag.</p></li>
+    <li><h3>Check every sentence <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> a valid citation does not prove that the passage says what the sentence says. <b>Fix:</b> MiniCheck reads each sentence with the whole passages it cites and decides supported or not. Unsupported sentences are flagged; if no sentence is supported, the turn ends as <span class="stop">no answer</span>. A sentence made only of a formula cannot be checked and is marked so. HHEM scores each sentence too, but it is only logged. The cut-off (0.5) is not tuned yet.</p></li>
+    <li><h3>Show the answer, or the closest material <span class="b app">built in the app</span></h3>
+      <p><b>Problem:</b> "I don't know" alone is a dead end. <b>Fix:</b> on <span class="stop">no answer</span> the student reads "I could not find this in the enabled course material" and gets the three closest passages with their place in the book or lecture. Otherwise the answer comes with references (book · chapter · section · printed page, slide number, or lecture time) and a "How I searched" panel built from the real trace.</p></li>
+  </ol>
+  <div class="design"><b>What is still open.</b> The two cut-offs (layer 1 gate, sentence check) are placeholders: they need human-labelled development examples. The app's Text and Hybrid settings are untuned defaults, so they are not yet the evaluated arms R and H. In the thesis harness the gate and the sentence check only log their signals and never change an answer; only the <code>NOT_IN_MATERIAL</code> rule changes a label, the same way for every arm.</div>
+</div></section>
+
 <section class="step" id="abstain"><div class="wrap">
   <div class="kicker">Product design · not part of the thesis arms</div>
   <h2>When the tutor should say "I don't know"</h2>
-  <p class="design" style="margin-top:0"><b>What this section is.</b> The approved design for the tutor app: how it decides to answer or to say "this is not in the course material". It is <b>not built yet</b>, and it is <b>kept out of the five thesis arms</b> above (see the box at the end of this section). The passages and scores you see are real; every cut-off is a placeholder until we tune it.</p>
+  <p class="design" style="margin-top:0"><b>What this section is.</b> The approved design for the tutor app: how it decides to answer or to say "this is not in the course material". Layers 1 to 3 and the fallback are <b>built in the app</b>; layer 4, the tuning, is not done. It is <b>kept out of the five thesis arms</b> above (see the box at the end of this section). The passages and scores you see are real; every cut-off is a placeholder until we tune it.</p>
   <p><b>Plain words first.</b> A good student who cannot find the answer in the book says "it's not in the book". A weak one makes up something that sounds right. We want the tutor to be the good student, and we need a way to check it, because a language model is very good at sounding right.</p>
 
   <h3>Why "just tell the model" is not enough</h3>
@@ -521,37 +551,37 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <h3>The four layers: three checks for each question, one step before launch</h3>
   <div class="row"><span class="lbl">Question</span><span id="ab-q" class="small muted"></span></div>
   <ol class="layers" id="layers">
-    <li class="layer"><div class="ln">LAYER 1 · before writing</div><h3>Retrieval-score gate <span class="b dsg">design, not built</span></h3>
+    <li class="layer"><div class="ln">LAYER 1 · before writing</div><h3>Retrieval-score gate <span class="b app">built in the app</span></h3>
       <p>Look at the search results first. The reranker gives every packed passage a score; take the best one. If even the best passage is a poor match, do not ask the language model to write an answer. The scores already exist from the search, so this layer adds no model call, and it aims at the plainest case: the search found nothing close to the question. A low score does not prove that the answer is nowhere in the course; it only says the search did not find it.</p>
       <div class="gate"><label for="ab-cut" class="small">placeholder cut-off <b id="ab-cut-v" class="mono">0.50</b></label><input type="range" id="ab-cut" min="0" max="1" step="0.05" value="0.5"></div>
       <div id="ab-gate" aria-live="polite"></div>
       <p class="small faint">Real numbers: bge-reranker-v2-m3 scores of this question against the passages the selected arm packs (arm R when L or G is selected), shown on a 0-1 scale (the sigmoid of the raw score). The leakage switch above changes them. The cut-off is ours and not tuned.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
-    <li class="layer"><div class="ln">LAYER 2 · while writing</div><h3>Answer only from the passages <span class="b dsg">design, not built</span></h3>
-      <p>The prompt tells the model: use only the passages, and if they do not contain the answer (or part of it), reply with one fixed phrase, <code>NOT_IN_MATERIAL</code>. The app looks for that exact phrase. This layer is cheap, but as the bars above show, models do not always obey it, so it is never the only check.</p>
+    <li class="layer"><div class="ln">LAYER 2 · while writing</div><h3>Answer only from the passages <span class="b app">built in the app</span></h3>
+      <p>The prompt tells the model: use only the passages, and if they do not contain the answer (or part of it), reply with one fixed phrase, <code>NOT_IN_MATERIAL</code>. The app looks for that exact phrase <b>anywhere</b> in the reply: a model sometimes writes a paragraph first and puts the phrase at the end. This layer is cheap, but as the bars above show, models do not always obey it, so it is never the only check.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
-    <li class="layer"><div class="ln">LAYER 3 · after writing</div><h3>Check every sentence, retry once, then stop <span class="b dsg">design, not built</span></h3>
+    <li class="layer"><div class="ln">LAYER 3 · after writing</div><h3>Check every sentence, then stop <span class="b app">built in the app</span></h3>
       <p>A small checker model, MiniCheck, reads each sentence of the answer together with the passages it cites and asks: do these passages support this sentence? It reads the whole cited text up to its 2,048-token input limit and never cuts it shorter; a sentence whose cited text is longer is marked "unchecked" and logged, never counted as supported.</p>
       <div class="mini" role="img" aria-label="Sentence check flow"><span class="box">answer sentence + cited passages</span><span class="ar">→</span><span class="box">MiniCheck: supported?</span><span class="ar">→ yes →</span><span class="box">keep</span></div>
-      <div class="mini" role="img" aria-label="Retry flow"><span class="ar">no →</span><span class="box">write the answer once more</span><span class="ar">→ still not supported →</span><span class="box" style="border-color:var(--warn);color:var(--warn)">"I could not support an answer from the course material."</span></div>
-      <p class="small muted">Why only one retry: each retry costs another model call and more waiting, and a model that rewrites its own answer does not reliably fix it. HHEM, a second checker, is logged only and never decides.</p>
+      <div class="mini" role="img" aria-label="Stop flow"><span class="ar">no →</span><span class="box">flag the sentence</span><span class="ar">→ no sentence supported →</span><span class="box" style="border-color:var(--warn);color:var(--warn)">no answer: show the closest passages</span></div>
+      <p class="small muted">As built, the app does not ask the model to write the answer again after a failed sentence check: the one retry it makes is for invalid citation markers. A rewrite costs another model call and more waiting, and a model that rewrites its own answer does not reliably fix it. HHEM, a second checker, is logged only and never decides.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
-    <li class="layer"><div class="ln">LAYER 4 · before launch</div><h3>Tune the cut-offs on human-labelled examples <span class="b dsg">design, not built</span></h3>
+    <li class="layer"><div class="ln">LAYER 4 · before launch</div><h3>Tune the cut-offs on human-labelled examples <span class="b dsg">design, not done</span></h3>
       <p>Layers 1 and 3 each need a cut-off. We set them on development examples that a person has labelled (answerable or not, supported or not), never by guessing, and we report the result on separate held-out examples as a <b>risk-coverage curve</b>: coverage = the share of questions the tutor answers; risk = the share of those answers that are wrong. A stricter cut-off answers fewer questions; whether it also makes fewer mistakes is what the curve measures.</p>
       <div id="ab-rc"></div>
       <p class="small faint">A drawing of the idea, not our data: we have no human labels yet. The dot moves with the placeholder cut-off of layer 1.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
-    <li class="layer" style="border-color:var(--teal)"><div class="ln" style="color:var(--teal)">WHEN IT STOPS</div><h3>Show the three closest passages <span class="b dsg">design, not built</span></h3>
+    <li class="layer" style="border-color:var(--teal)"><div class="ln" style="color:var(--teal)">WHEN IT STOPS</div><h3>Show the three closest passages <span class="b app">built in the app</span></h3>
       <p>"I don't know" alone is a dead end. So the tutor says "I could not find this in the enabled course material" and then shows the three passages that came closest (the best-scoring of the passages it retrieved), with their place in the course, so the student can read on. For this question they would be:</p>
       <div id="ab-close"></div>
     </li>
   </ol>
 
-  <div class="design"><b>Kept out of the thesis arms.</b> In the experiment (arms L, R, G, H, Hc) the gate, the retry and the sentence check do not change any answer: a gate would fire differently for each arm and its cut-off would be one more tuned setting. The prompt is the same for all arms, including its one abstain phrase. The harness is planned to <b>log</b> the signals that apply (best reranker score, the abstain phrase, the checker scores; L has no passages to score) for every question and arm, so risk-coverage curves per arm can be drawn afterwards, with no extra model calls. LightRAG's own "Sorry, I'm not able to provide an answer" reply is scored as an abstention.</div>
+  <div class="design"><b>Kept out of the thesis arms.</b> In the experiment (arms L, R, G, H, Hc) the gate, the retry and the sentence check do not change any answer: a gate would fire differently for each arm and its cut-off would be one more tuned setting. The prompt is the same for all arms, including its one abstain phrase. A reply that contains that phrase anywhere (start, middle or end) is scored as "no answer" in every arm: a rule the protocol added before the main run, after the app showed a model putting the phrase at the end. The harness is planned to <b>log</b> the signals that apply (best reranker score, the abstain phrase, the checker scores; L has no passages to score) for every question and arm, so risk-coverage curves per arm can be drawn afterwards, with no extra model calls. LightRAG's own "Sorry, I'm not able to provide an answer" reply is scored as an abstention.</div>
 </div></section>
 
 <section class="step" id="variants"><div class="wrap">
@@ -582,7 +612,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <li><b>In the app, show only what really ran.</b> A "How I searched" panel under each answer, built from the trace. Here it is for the selected question (arm H, real linker output):</li>
   </ol>
   <div class="mock" id="howsearched" aria-live="polite"></div>
-  <p class="small faint">Product design, not built. The panel never lists variants that were not searched.</p>
+  <p class="small faint">Built in the tutor app from the real trace (the demo here uses the pilot linker). The panel never lists variants that were not searched.</p>
 </div></section>
 <div class="wrap">
 <section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>Why the protocol looks like this</h2>
@@ -600,13 +630,14 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <tbody>
 <tr><td>Entity linking</td><td>alias table + real bge-m3 scores over concept names; top 3 above 0.60 (ours)</td><td>designed; linker thresholds tuned on the development split</td></tr>
 <tr><td>Router</td><td>a keyword stand-in (ours); you can change the mask</td><td>not built; reads the question text only</td></tr>
-<tr><td>Typed walk, evidence, passage fetch</td><td>computed on the pilot graph files; Hc on a projection built in the page; "asserted" stands in as "accepted-by-gate"</td><td>designed; Neo4j load not run, passages from Postgres by id</td></tr>
+<tr><td>Typed walk, evidence, passage fetch</td><td>computed on the pilot graph files; Hc on a projection built in the page; "asserted" stands in as "accepted-by-gate"</td><td>designed; the app's Neo4j holds the pilot graph, the frozen thesis graph is loaded after its snapshot hash; passages from Postgres by id</td></tr>
 <tr><td>R (BM25 + dense, RRF, rerank)</td><td>BM25 in the page (ours); real bge-m3 and bge-reranker-v2-m3 scores</td><td>designed; BM25 settings and depth tuned on the development split</td></tr>
 <tr><td>Fusion and budget cut</td><td>computed: RRF k = 60, B = 4,000 bge-m3 tokens of passage text (request overhead not counted); R fills 90-98% of B on the three questions at 4,000 but only 80-82% at 2,000, below the protocol's fill test</td><td>frozen in the protocol (tokens of the answer model)</td></tr>
 <tr><td>G (LightRAG defaults)</td><td>not run on this slice</td><td>not built</td></tr>
-<tr><td>Answer generation</td><td>request shown, not sent</td><td>one Alibaba-hosted answer model for all arms, temperature 0 (model not pinned)</td></tr>
-<tr><td>Citations</td><td>lecture and 5-minute window</td><td>book · chapter · section · page after the table-of-contents step</td></tr>
-<tr><td>Citation check</td><td>design</td><td>MiniCheck on the whole cited context; thresholds from human labels</td></tr>
+<tr><td>Answer generation</td><td>request shown, not sent</td><td>one answer model for all arms, temperature 0, pinned at the main run; the app already answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>) and shows its name</td></tr>
+<tr><td>Citations</td><td>lecture and 5-minute window</td><td>book · chapter · section · printed page: built in the app (structure exists for all nine sources)</td></tr>
+<tr><td>Citation check</td><td>not run here</td><td>built in the app (MiniCheck per sentence on the whole cited context, cut-off 0.5 not tuned); in the harness it only logs</td></tr>
+<tr><td>"Not in the material"</td><td>the abstain phrase is in the prompt</td><td>the phrase anywhere in a reply scores as no answer in all five arms (protocol addendum, before the main run)</td></tr>
 </tbody></table>
 <p class="small muted" style="margin-top:10px">The passages and graph come from <a href="/thesis/assets/stories/kg-build/build/index.html">How a knowledge graph is built</a>; the stages that produce them are on <a href="/thesis/assets/stories/data-pipeline/build/index.html">Our data pipeline</a>.</p>
 </section>
@@ -787,9 +818,9 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const STEPS = [
     ["q", "Question", "comp"], ["link", "Entity linking", "comp"], ["route", "Route", "ours"], ["walk", "Typed traversal", "comp"],
     ["ev", "Evidence records", "comp"], ["fetch", "Passage fetch", "comp"], ["fuse", "Text list and fusion", "comp"], ["pack", "Budget cut (B)", "comp"],
-    ["answer", "Answer generation", "dsg"], ["cite", "Citations", "dsg"], ["nli", "Citation check", "dsg"]];
+    ["answer", "Answer generation", "app"], ["cite", "Citations", "app"], ["nli", "Citation check", "app"]];
   const USES = { L: ["q", "pack", "answer"], R: ["q", "fuse", "pack", "answer", "cite", "nli"], G: ["q"], H: STEPS.map(s => s[0]), Hc: STEPS.map(s => s[0]) };
-  const BL = { comp: "computed", ours: "stand-in (ours)", dsg: "design, not built", skip: "not used by this arm" };
+  const BL = { comp: "computed", ours: "stand-in (ours)", app: "built in the app", dsg: "design, not built", skip: "not used by this arm" };
   let D, st = { q: 0, arm: "H", step: 0, leak: true, prop: false, B: 4000, mask: null, cut: 0.5 };
   const badge = k => '<span class="b ' + k + '">' + BL[k] + '</span>';
   const C = id => D.chunks.find(c => c.id === id), N = id => (D.concepts.find(c => c.id === id) || { label: id.replace(/^new:/, "") }).label;
@@ -906,7 +937,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     answer(res, q) {
       const req = res.request, cov = QF.coverage(D, q, res.context.ids);
       const show = JSON.stringify({ system: req.system, question: req.question, passages: req.passages.map(p => ({ id: p.id, text: snip(p.text, 90) })) }, null, 1);
-      return '<div class="design"><b>Design, not built.</b> One answer model for every arm, an Alibaba-hosted LLM (not pinned yet), temperature 0, one prompt. Nothing was sent. Below is an abbreviated preview of the request that <code>serialize()</code> builds (passage text shortened, numbering field left out). It carries only the system prompt, the question and (opaque id, text) pairs: no arm, relation, hop or path. That removes the explicit labels; the choice and order of passages can still differ between arms.</div>' +
+      return '<div class="design"><b>Built in the app, not yet in the thesis harness.</b> In the experiment every arm uses one answer model (pinned at the main run), temperature 0, one prompt. The tutor app already writes answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>, chosen by the admin) and shows its name on every answer; see <a href="#app">one turn in the app</a>. On this page nothing was sent. Below is an abbreviated preview of the request that <code>serialize()</code> builds (passage text shortened, numbering field left out). It carries only the system prompt, the question and (opaque id, text) pairs: no arm, relation, hop or path. That removes the explicit labels; the choice and order of passages can still differ between arms.</div>' +
         '<div class="pre">' + esc(show) + '</div>' +
         '<h3>Coverage proxy against the professor\'s answer</h3><table class="tbl"><tbody>' + cov.map(c => '<tr><td>' + esc(c.point) + '</td><td class="m ' + (c.hits.length ? "vtrue" : "vfalse") + '">' + (c.hits.length ? c.hits.slice(0, 4).join(" ") + (c.hits.length > 4 ? " …" : "") : "no passage") + '</td></tr>').join("") + '</tbody></table><p class="small faint">A point counts when a packed passage mentions one of its concepts (pilot MENTIONS edges). It counts concept-mention overlap (one concept of a point is enough), not evidence that answers the point and not what the model would write.</p>';
     },
@@ -914,10 +945,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       const ids = res.context.ids, ol = D.book_outline || [];
       return '<p>Each passage the answer cites maps back to its source. For the lecture captions on this slice that is the lecture and its 5-minute window:</p>' +
         ids.slice(0, 6).map((id, i) => '<div class="card"><div class="hd"><span class="mono">[' + (i + 1) + ']</span><span>Caltech CS 156, ' + (C(id).lec === "L14" ? "Lecture 14, Support Vector Machines" : "Lecture 15, Kernel Methods") + ', window from ' + C(id).loc + '</span></div></div>').join("") +
-        '<div class="design"><b>Design, not built.</b> For book passages the citation is <i>book · chapter · section · page</i>, from the table-of-contents step of the pipeline. The book\'s e-Chapter 8 covers SVMs, kernels and the soft margin; relevant sections, as the OCR headings give them: ' + ol.filter(x => /^8\.(1\.3|3 |4 )/.test(x)).map(esc).join("; ") + '. A citation would read like <code>Learning From Data, e-Chapter 8, §8.4 Soft-margin SVM, p. N</code>; the page numbers are not yet checked against the print, and book passages are not yet indexed.</div>';
+        '<div class="design"><b>Built in the app.</b> For book passages the citation is <i>book · chapter · section · printed page</i>, from the table-of-contents structure of each book (built for all nine sources); the app renders it from the unit rows. The thesis harness has not run yet. The book\'s e-Chapter 8 covers SVMs, kernels and the soft margin; relevant sections, as the OCR headings give them: ' + ol.filter(x => /^8\.(1\.3|3 |4 )/.test(x)).map(esc).join("; ") + '. A citation would read like <code>Learning From Data, e-Chapter 8, §8.4 Soft-margin SVM, p. N</code>; in the app the printed page comes from the unit rows (a separate page map is not built yet).</div>';
     },
     nli(res) {
-      return '<div class="design"><b>Design, not built.</b> After the answer is written, each sentence with a citation is checked against the passages it cites: MiniCheck scores the whole cited context when it fits its 2,048-token input (longer cases are logged, never cut, and get no normal label; never cut at 512); HHEM gives a second, robustness score. A sentence below the threshold is flagged as unsupported. The thresholds must still be calibrated on human-labelled pairs; that is not done. ALCE also counts uncited statements and unneeded citations, which this check alone does not.</div>' +
+      return '<div class="design"><b>Built in the app; in the thesis harness it only logs.</b> After the answer is written, each sentence with a citation is checked against the passages it cites: MiniCheck scores the whole cited context when it fits its 2,048-token input (longer cases are logged, never cut, and get no normal label; never cut at 512); HHEM gives a second, robustness score. A sentence below the threshold is flagged as unsupported. The thresholds must still be calibrated on human-labelled pairs; that is not done. ALCE also counts uncited statements and unneeded citations, which this check alone does not.</div>' +
         '<p>Why this rule: on 76 claim-premise pairs in 23 clusters, MiniCheck reached balanced accuracy 0.732 on whole premises against 0.454 and 0.501 under two ways of truncating them at 512 tokens; in a constructed case with the evidence split over two chunks, whole premises passed 17-18 of 20 and single chunks 0-4 of 20 (labels by an LLM, not human gold).</p>' +
         '<p class="small faint">The same two checkers already scored the domain-relation evidence of the graph (step 5; prerequisite evidence waits for review); here they would check the answer instead.</p>';
     }

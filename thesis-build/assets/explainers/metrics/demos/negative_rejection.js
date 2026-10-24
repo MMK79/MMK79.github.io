@@ -79,7 +79,7 @@
     const ansq = Object.keys(D.qs).filter(id => D.qs[id].type !== 'unanswerable' && D.ans[id + '_A']);
     const st = { arm: 'B' };
     const shell = K.shell(el, 'Real example: negative rejection on 3 unanswerable questions',
-      'Scale: n = 12 questions (3 unanswerable), one run, temperature 0, answerer ' + D.m.answer_model + ', no human labels. n = 3 is tiny: one question moves the rate by 0.33. A demo, not a benchmark. Refusal is decided by code: the answer contains "answer is not in the sources" or "i do not know". The questions are unanswerable only relative to a 138-passage corpus sample. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (3 unanswerable), one run, temperature 0, answerer ' + D.m.answer_model + '. n = 3 is tiny: one question moves the rate by 0.33. A demo, not a benchmark. Refusal is decided by code: the answer contains "answer is not in the sources" or "i do not know". The questions are unanswerable only relative to a 138-passage corpus sample. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     aSel.value = st.arm;

@@ -85,7 +85,7 @@
     const qids = Object.keys(D.m.per_question.B);
     const st = { arm: 'B', q: 'q09', judge: 'A' };
     const shell = K.shell(el, 'Real example: faithfulness of real answers, claim by claim',
-      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run, temperature 0, no human labels. Answerer ' + D.m.answer_model + '; judge A ' + D.m.judge_A + ', judge B ' + D.m.judge_B + ' (both LLMs, they can be wrong). Claims were extracted by one LLM (judge A) and both judges classify the same claims.');
+      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run, temperature 0. Answerer ' + D.m.answer_model + '; judge A ' + D.m.judge_A + ', judge B ' + D.m.judge_B + ' (both LLMs, they can be wrong). Claims were extracted by one LLM (judge A) and both judges classify the same claims.');
     const caveats = K.el('ul', { class: 'hint', style: 'margin:0 0 12px;padding-left:18px' },
       K.el('li', {}, 'Arm C gets about 40% more context than arm B (dense top-5 plus graph passages vs hybrid RRF top-5), so B vs C does not isolate the graph.'),
       K.el('li', {}, 'Arm A has no retrieval. Its low score means "not in the corpus sample", not "false": many A claims are true world knowledge.'),

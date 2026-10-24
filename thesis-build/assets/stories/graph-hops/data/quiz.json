@@ -1,0 +1,23 @@
+{
+ "about": "Quiz for the Graph Hops and Ranking lesson. 'a' = index of the right option (0-based). Key: B C A D B B.",
+ "questions": [
+  {"q": "The walk reaches hop 2, but under rule 7 none of those passages reach the answer model. Where is the problem?",
+   "o": ["In the walk: depth 2 is too short.", "In the rank step: hop 0 alone fills all 10 slots before deeper hops are looked at.", "In the linker: it finds too few seed concepts.", "In the answer model: it ignores deep passages."],
+   "a": 1, "f": "The walk already returns hops 1 and 2. Rule 7 sorts by hop first, and one seed concept has 38 or more passages, so hop 0 takes every slot. A deeper walk would change nothing."},
+  {"q": "Depth 2, 10 slots, and every hop has plenty of passages. How does the balanced rule split the slots?",
+   "o": ["10 / 0 / 0", "3 / 3 / 4", "4 / 3 / 3", "5 / 5 / 0"],
+   "a": 2, "f": "Hop 0 gets ceil(10 / 3) = 4. Hop 1 gets ceil(6 / 2) = 3. Hop 2 gets the last 3. The ceiling puts the remainder on the lower hops."},
+  {"q": "Hop sizes are 500, 1 and 1. Why does the thesis rule give 8 / 1 / 1 and not 4 / 1 / 1?",
+   "o": ["Backfill: free slots after the quota pass are filled in rule-7 order, so the list still has 10 passages.", "Hop 0 has better scores.", "The quota formula gives hop 0 eight slots.", "The product rule has a bug."],
+   "a": 0, "f": "Without backfill only 6 slots are used. Backfill fills the 4 free slots from the remaining passages, hop 0 first. The reason is capacity only; the addendum claims no relevance gain."},
+  {"q": "Which system does NOT fix its depth in advance?",
+   "o": ["GRAG (2-hop ego-graphs)", "LightRAG (one-hop neighbours)", "GraphRAG local search (one hop)", "HippoRAG (Personalized PageRank)"],
+   "a": 3, "f": "HippoRAG has no depth limit. PageRank mass falls off with distance, so far nodes get small scores automatically."},
+  {"q": "Why does the thesis keep a fixed depth and a fixed quota, and not let an LLM decide when to stop?",
+   "o": ["An LLM cannot walk a graph.", "A confirmatory test needs one rule fixed before the data; a per-question decision adds a second moving part that could differ between arms.", "Fixed depth always gives better answers.", "LLM calls are not allowed in the product."],
+   "a": 1, "f": "The H versus Hc comparison must differ only in the edge labels. A stop rule that runs per question could change with the arm and hide the label effect. The product can still try adaptive options."},
+  {"q": "PPR has the stronger multi-hop record. Why does the thesis still walk with a masked BFS?",
+   "o": ["PPR needs an LLM call for every question.", "Plain PPR treats every edge type the same; weights per relation would add a tuned parameter, so H vs Hc would no longer test the labels alone.", "PPR cannot reach concepts two hops away.", "PPR takes minutes per question on a course graph."],
+   "a": 1, "f": "With a masked BFS, a masked edge is never followed, so the labels are the only difference between H and Hc. PPR needs no LLM and runs in under a second at 100K nodes; it stays a planned later stage."}
+ ]
+}

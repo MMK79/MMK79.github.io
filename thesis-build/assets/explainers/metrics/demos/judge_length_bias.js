@@ -100,7 +100,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit, st = { unit: 'words', eps: 5, sub: { AB: true, BC: true, AC: true } };
     const shell = K.shell(el, 'Real example: do longer answers win? 36 pairs, one judge',
-      'Scale: 12 questions x 3 arm pairs = 36 pairs, ONE LLM judge (deepseek-v4.1-flash, sees the evidence pool), temperature 0, both answer orders averaged (win 1, tie 0.5, loss 0), no human labels. The result is suggestive only. Length = words of the answer text (or completion tokens). No length control was applied by the judge. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: 12 questions x 3 arm pairs = 36 pairs, ONE LLM judge (deepseek-v4.1-flash, sees the evidence pool), temperature 0, both answer orders averaged (win 1, tie 0.5, loss 0). The result is suggestive only. Length = words of the answer text (or completion tokens). No length control was applied by the judge. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const col = { AB: '#7C9CFF', BC: '#3CC7B4', AC: '#C28BFF' };
     const host = K.el('div'), res = K.resultBox(), formula = K.el('div', { class: 'formula', 'aria-live': 'polite' }), note = K.el('p', { class: 'hint' }), tab = K.el('p', { class: 'hint' });
     const unit = K.el('select', { 'aria-label': 'length unit' }, [K.el('option', { value: 'words' }, 'length in words'), K.el('option', { value: 'tokens' }, 'length in completion tokens')]);

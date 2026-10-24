@@ -61,7 +61,7 @@
     const K = root.DemoKit, m = D.m;
     const st = { arm: 'B', q: D.ids[0] };
     const shell = K.shell(el, 'Real example: context relevance of retrieved passages',
-      'Demo scale: ' + D.ids.length + ' answerable questions, one run, answers by ' + m.answer_model + ', judge A = ' + m.judge_A + ' (an LLM, no human labels). The pack\'s verdicts are PASSAGE-level (each retrieved passage is relevant or not), not sentence-level as in the RAGAS paper, so this is the passage share, not the sentence share. Click a verdict to see how the score moves. Not a benchmark.');
+      'Demo scale: ' + D.ids.length + ' answerable questions, one run, answers by ' + m.answer_model + ', judge A = ' + m.judge_A + ' (an LLM). The pack\'s verdicts are PASSAGE-level (each retrieved passage is relevant or not), not sentence-level as in the RAGAS paper, so this is the passage share, not the sentence share. Click a verdict to see how the score moves. Not a benchmark.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph passages'));
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, D.ids.map(i => opt(i, i + ' (' + D.qs[i].type + '): ' + D.qs[i].question)));

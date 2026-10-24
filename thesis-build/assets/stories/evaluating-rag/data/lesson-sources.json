@@ -19,6 +19,15 @@
    "verified": true,
    "how": "our own research note"
   },
+  "decisions": {
+   "short": "Stage A decisions",
+   "title": "Decisions of the thesis experiment (vault _review)",
+   "url": "",
+   "kind": "ours",
+   "use": "the answer model and the two judges, list-price cost, the RAGAS appendix",
+   "verified": true,
+   "how": "our own decision record"
+  },
   "deepeval": {
    "short": "DeepEval docs",
    "title": "DeepEval documentation (G-Eval, faithfulness)",
@@ -105,9 +114,9 @@
    "title": "Final claim protocol of the thesis experiment (vault _review)",
    "url": "",
    "kind": "ours",
-   "use": "McNemar decision rule, blind-judge rule 13, judge gate 5",
+   "use": "McNemar decision rule, blind-judge rule 13, the two-judge rule, the two pools, judge gate 5 (LLM panel), the gold-evidence retrieval metrics, the C2 secondary proxy",
    "verified": true,
-   "how": "our own protocol"
+   "how": "our own protocol with its addenda"
   },
   "ragas_code": {
    "short": "RAGAS 0.4.3 code",

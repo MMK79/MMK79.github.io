@@ -166,7 +166,7 @@
         info.replaceChildren(
           K.el('div', { style: 'border-left:3px solid ' + pal(st.sel) + ';padding-left:10px;margin:8px 0' },
             K.el('b', {}, `c${String(st.sel + 1).padStart(2, '0')}  ${rep.title}`),
-            K.el('div', { class: 'hint' }, `real LLM community report (qwen3.7-plus; written from the community's entities, relations and 4 most-mentioned passages; not checked by a human): `),
+            K.el('div', { class: 'hint' }, `real LLM community report (qwen3.7-plus; written from the community's entities, relations and 4 most-mentioned passages): `),
             K.el('div', {}, rep.summary), K.el('ul', {}, ...rep.findings.map(f => K.el('li', {}, f))),
             K.el('div', { class: 'hint' }, `members now: ${sm} nodes (${members}). Stored size ${rep.size}. Source passages (top 4 of ${rep.n_passages}): ${rep.top_passages.map(p => p + (art[p] ? ' (' + art[p] + ')' : '')).join('; ')}.`),
             c ? K.el('div', { class: 'formula' }, `e_c = ${c.e} edges inside, K_c = ${c.K}   term = ${c.e}/${r.m} - ${fx(st.gamma, 2)} x (${c.K}/${2 * r.m})^2 = ${fx(c.share)} - ${fx(st.gamma * c.chance)} = ${fx(c.term)}\n(the report file counts ${rep.n_edges_inside} inside edges: it counts typed directed edges; the formula uses ${r.m} distinct undirected pairs)`) : ''));
@@ -179,7 +179,7 @@
       }
       const cav = K.el('details', { open: '' }, K.el('summary', {}, 'Caveats of this pack (read before you trust the numbers)'), K.el('ul', {},
         ...[`Demo scale: 138 passages from 15 English Wikipedia articles on machine learning. This is NOT an evaluation of the thesis system.`,
-          `The graph was extracted by an LLM (qwen3.8-flash), one call per passage, and not checked against a human graph. Near-duplicate nodes remain (for example "SVM" and "support vector machine"); ${g.nodes.length} nodes, ${edges.length} distinct undirected pairs from ${g.edges.length} typed edges.`,
+          `The graph was extracted by an LLM (qwen3.8-flash), one call per passage,. Near-duplicate nodes remain (for example "SVM" and "support vector machine"); ${g.nodes.length} nodes, ${edges.length} distinct undirected pairs from ${g.edges.length} typed edges.`,
           `One Leiden run (leidenalg 0.12.0, ModularityVertexPartition, seed 42, unweighted, gamma = 1). Another seed gives another partition. The graph has 40 connected components, so many communities are small leftovers.`,
           `Q = ${fx(base0.Q)} is high; a likely reason (inferred, not tested) is that the graph is sparse (mean degree 2.25). It says the cut is structurally clean, not that the groups are good topics: titles overlap (two "Support Vector Machines" communities, three on regression and regularization).`,
           `Only the ${nRep} largest communities (16 to 50 nodes) got an LLM report; the other ${C.n_communities - nRep} (under 16 nodes) have none. The reports are LLM text and were not checked.`,

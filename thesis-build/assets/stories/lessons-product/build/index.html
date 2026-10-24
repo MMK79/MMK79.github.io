@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Where a concept lives</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--line2:#3A4352;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;--amber-dim:#6A4A12;--teal-dim:#1E5A52;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.wide{max-width:1040px}
+code,.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:max(12px,.88em);overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,7.5vw,56px);letter-spacing:-.01em}
+h2{font-size:clamp(26px,5.5vw,36px);margin:6px 0 16px}
+h3{font-size:20px;margin:30px 0 8px}
+p{margin:0 0 14px;max-width:68ch;overflow-wrap:anywhere}
+ul{padding-left:20px;max-width:68ch}li{margin:0 0 8px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13.5px}
+.lvl{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lvl b{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px;font-weight:600}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;max-width:none}
+#nav{display:flex;flex-wrap:wrap;gap:6px;row-gap:8px}
+#nav a{position:relative;text-decoration:none;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 11px;white-space:nowrap}
+#nav a::after{content:"";position:absolute;inset:-6px -3px}
+#nav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 34px}
+.hero h1{margin:10px 0 16px}
+.hero p.lead{font-size:18.5px;color:var(--muted);max-width:60ch}
+.who{color:var(--faint);font-size:13.5px}
+.ledger{font:14px var(--mono);color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:22px 0 14px;max-width:680px;line-height:1.7}
+.ledger b{color:var(--amber);font-weight:500}
+.tldr{list-style:none;padding:0;margin:0;max-width:none;counter-reset:t}
+.tldr li{padding:11px 0 11px 28px;border-bottom:1px solid var(--line);position:relative;margin:0}
+.tldr li::before{content:counter(t);counter-increment:t;position:absolute;left:0;top:11px;font:500 13px var(--mono);color:var(--amber)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.card p:last-child{margin-bottom:0}
+.card .h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.card.ours .h{color:var(--purple)}
+.card.warn{border-color:rgba(255,138,101,.45)}.card.warn .h{color:var(--warn)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12.5px}
+.tbl td.m{font-family:var(--mono);font-size:13px}
+.hscroll{overflow-x:auto;max-width:100%}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.mk{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:0 6px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.mk.verified{color:var(--teal);border-color:var(--teal)}
+.mk.unverified{color:var(--warn);border-color:var(--warn)}
+.mk.inferred{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.mk.ours{color:var(--amber);border-color:var(--amber)}
+.st{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:1px 7px;white-space:nowrap}
+.st.built{background:var(--teal-dim);color:#BFF3EA}
+.st.planned{border:1px dashed var(--line2);color:var(--muted)}
+button{font:inherit;font-size:14px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:9px 14px;min-height:44px;max-width:100%;cursor:pointer;touch-action:manipulation;
+  transition:transform 160ms var(--ease),border-color 180ms var(--ease),background-color 180ms var(--ease),color 180ms var(--ease)}
+button:active{transform:scale(.97)}
+button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){button:hover{border-color:var(--amber)}}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:12px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel2)}
+.flow span.box.hl{border-color:var(--amber);color:var(--amber)}
+.flow span.ar{color:var(--faint)}
+.vs{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;margin:14px 0}
+.vs>div{border-top:1px solid var(--line);padding-top:10px}
+.vs b.v{font:500 13px var(--mono);color:var(--amber);margin-right:8px}
+@media (min-width:760px){.vs{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}}
+/* Touch A: concept picker */
+.pick-label{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin:18px 0 0}
+#chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px}
+#chips button{font-size:13.5px;padding:8px 12px;color:var(--text)}
+#chips button[aria-pressed=true]{background:var(--amber);border-color:var(--amber);color:var(--bg)}
+#ruleseg button .mono{font-size:12px;margin-right:6px;color:inherit;opacity:.8}
+#cm{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:14px 0 6px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.verdict .where{font-family:var(--display);font-weight:300;font-size:clamp(24px,5vw,30px);line-height:1.15;margin:4px 0 6px}
+.verdict .where .ln{font-family:var(--mono);font-size:.62em;color:var(--amber);margin-right:10px;vertical-align:.12em}
+.verdict .why{color:var(--muted);font-size:14.5px;margin:0}
+.verdict .why b{color:var(--text);font-weight:500}
+#rows{list-style:none;margin:14px 0 0;padding:0;max-width:none}
+#rows li{display:grid;grid-template-columns:3.1em minmax(0,1fr) auto;gap:2px 10px;align-items:center;padding:8px 0;border-top:1px solid var(--line);margin:0}
+#rows li .ln{font:500 13px var(--mono);color:var(--muted)}
+#rows li .lt{font-size:14px;line-height:1.3;overflow-wrap:anywhere}
+#rows li .lt i{font-style:normal;font-size:12px;color:var(--faint);margin-left:6px;white-space:nowrap}
+#rows li .w{font:13px var(--mono);color:var(--muted);text-align:right;white-space:nowrap}
+#rows li .track{grid-column:2 / 4;height:8px;border-radius:8px;background:var(--panel2);position:relative;overflow:hidden}
+#rows li .fill{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--line2);transition:width 220ms var(--ease)}
+#rows li .fill.d{background:var(--teal-dim)}
+#rows li .gate{position:absolute;top:0;bottom:0;width:2px;background:var(--warn)}
+#rows li.out .lt,#rows li.out .w{color:var(--faint)}
+#rows li.win .ln,#rows li.win .w{color:var(--amber)}
+#rows li.win .lt{color:var(--text);font-weight:500}
+#rows li.win .fill{background:var(--amber)}
+.rkey{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.rkey span::before{content:"";display:inline-block;width:14px;height:8px;border-radius:8px;margin-right:6px;vertical-align:0;background:var(--line2)}
+.rkey .kd::before{background:var(--teal-dim)}.rkey .kw::before{background:var(--amber)}.rkey .kg::before{width:2px;background:var(--warn);border-radius:0}
+#owner .h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+#owner .t{font-size:16px;font-weight:500;margin:0 0 4px}
+#owner .r{font-size:14px;color:var(--muted);margin:0 0 12px}
+#owner .rl{font:500 12px var(--mono);color:var(--teal);border:1px solid var(--teal);border-radius:8px;padding:0 6px;margin-right:6px}
+#owner .none{color:var(--muted);font-size:14.5px}
+@media (min-width:860px){#cm{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px}}
+/* Touch B: anatomy */
+#an{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:14px 0}
+#sheet{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:8px}
+#sheet .ex{font-size:12.5px;color:var(--faint);margin:0 4px 2px;max-width:none}
+#sheet button{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;text-align:left;width:100%;background:var(--panel);color:var(--text);border-radius:10px;padding:10px 12px}
+#sheet button .k{font:500 12px var(--mono);color:var(--faint);display:block}
+#sheet button .t{font-size:14.5px;line-height:1.3}
+#sheet button.planned{background:transparent;border-style:dashed}
+#sheet button[aria-pressed=true]{border-color:var(--amber);background:var(--bg)}
+#sheet button[aria-pressed=true] .k{color:var(--amber)}
+#bd h3{margin:2px 0 10px}
+#bd dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:2px}
+#bd dt{color:var(--faint);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:10px}
+#bd dd{margin:0;font-size:15px}
+@media (min-width:860px){#an{grid-template-columns:minmax(0,320px) minmax(0,1fr);gap:28px}#bd{position:sticky;top:110px;align-self:start}}
+.routes{list-style:none;padding:0;margin:10px 0;max-width:none}
+.routes li{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;border-top:1px solid var(--line);padding:12px 0;margin:0}
+.routes .from{font-weight:500}
+.routes .to{color:var(--muted);font-size:14.5px}
+@media (min-width:760px){.routes li{grid-template-columns:minmax(0,15em) minmax(0,1fr);gap:18px}}
+details{margin:12px 0}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
+.q{border-top:1px solid var(--line);padding:16px 0}
+.q .opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.q button{text-align:left;color:var(--text)}
+.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+#err{display:none;color:var(--warn);border:1px solid var(--warn);border-radius:10px;padding:10px;margin:10px 0}
+@media (max-width:640px){#caveat .more{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-property:color,border-color,background-color!important;transform:none!important}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real counts</b> from the frozen knowledge graph, the lessons and the tutor's own design file.<span class="more"> Marks: <span class="mk verified">verified</span> <span class="mk ours">ours</span> <span class="mk inferred">inferred</span> <span class="mk unverified">unverified</span>.</span></p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#anatomy">Anatomy</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="lvl">A layered story about the learner's side of the tutor</div>
+  <h1>Where a concept lives</h1>
+  <p class="lead">The knowledge graph knows thousands of concepts. A learner needs to know where each one is taught: in which lecture, in which lesson. This page shows the rules that decide it, why the first rules failed, and the lessons and book companions those rules point to.</p>
+  <p class="ledger"><b>6,814</b> concepts · <b>464</b> covered by a lecture · <b>233</b> on the course map · <b>84</b> lessons · <b>12</b> companions in phase 1</p>
+  <p class="who">How the graph itself was built is in <a href="/thesis/assets/stories/kg-build/build/index.html">Building the knowledge graph</a>. This page starts where that one ends.</p>
+  <div id="err"></div>
+</header>
+
+<section class="step" id="tldr"><div class="lvl"><b>TL;DR</b>the short version</div>
+<h2>In six lines</h2>
+<ol class="tldr">
+  <li>Two products place the same 6,814 concepts: the course map puts each under one lecture, the lessons give each one owning topic. <a class="cite" data-c="car|TL;DR" data-k="c01"></a></li>
+  <li>The first rules counted mentions. Lecture 1, an overview, then owned SVM and backpropagation, and a 2-mention aside put PCA in lecture 4. <a class="cite" data-c="car|§1" data-k="c02"></a></li>
+  <li>The rule now in use weighs a definition 3 and a mention 1, needs weight 3, and lets a defining lecture beat a mentioning one: 233 of 464 covered concepts are placed. <a class="cite" data-c="car|§1, v3" data-k="c06"></a></li>
+  <li>For lessons, a share over the whole corpus hid VC dimension from every topic. Now the share counts lecture video and only passages inside topics, plus a name match and a small alias table. <a class="cite" data-c="car|§2" data-k="c13"></a></li>
+  <li>84 lessons are authored: video, interactive on real data, the idea in each book, practice and sources. The tutor shows them after a placement test and under each answer. <a class="cite" data-c="lsv1|Log" data-k="c24"></a></li>
+  <li>Book companions are one page per chapter. The lessons and companions run in the local product; linking companions to the tutor is planned. <a class="cite" data-c="bc|§5" data-k="c44"></a></li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="lvl"><b>Level 0</b>like I am five</div>
+<h2>Which shelf does the book go on?</h2>
+<p>A library has many shelves. Each book goes on one shelf, so you know where to look.</p>
+<p>A cookbook says the word "garden" once. It does not go on the garden shelf. A book that <b>explains</b> gardens does.</p>
+<p>Our tutor does the same with ideas. An idea goes to the lecture that <b>explains</b> it, not to the lecture that only <b>says its name</b>. If no lecture explains it well enough, it gets no shelf. That is better than the wrong shelf.</p>
+<div class="flow" aria-label="The idea in four steps"><span class="box">find every lecture that talks about the idea</span><span class="ar">→</span><span class="box">explains it? 3 points</span><span class="ar">→</span><span class="box">only names it? 1 point</span><span class="ar">→</span><span class="box hl">most points wins, if 3 or more</span></div>
+</section>
+
+<section class="step" id="l1"><div class="lvl"><b>Level 1</b>student</div>
+<h2>Three rules, two failures, one worked example</h2>
+<p>A <b>concept</b> is a node in the knowledge graph (KG), such as "VC dimension". A <b>passage</b> is a piece of course text: a lecture transcript window, a slide or a book section. The KG records two links from a passage to a concept. <b>DEFINES</b>: the passage explains the concept. <b>MENTIONS</b>: the passage uses its name. A <b>COVERS</b> link says a lecture introduces or revisits a concept.</p>
+<p>The <b>course map</b> in the Intelligent Educator shows one column per CS 156 lecture. <a class="cite" data-c="spec|§20, course map" data-k="c47"></a> Each covered concept must sit in exactly one column. The rule changed twice.</p>
+<div class="vs">
+  <div><b class="v">v1</b>The first lecture that introduces the concept. Lecture 1 is an overview, so it took 61 of the 464 concepts, SVM and backpropagation among them. <a class="cite" data-c="ext|totals" data-k="c03"></a></div>
+  <div><b class="v">v2</b>At least 2 passages; the most passages win. PCA went to lecture 4 from a Q&amp;A aside: "This is a different subject". <a class="cite" data-c="car|§1, v2" data-k="c04"></a> Under v3 it has weight 2 there and leaves the map. <a class="cite" data-c="ext|concepts: PCA" data-k="c05"></a></div>
+  <div><b class="v">v3</b>A definition weighs 3, a mention 1. Below 3, no claim. A lecture that defines beats one that only mentions. The earliest wins a tie. Result: 233 of 464 placed. <a class="cite" data-c="car|§1, result" data-k="c07"></a></div>
+</div>
+<h3>One real example, worked: noise</h3>
+<div class="card"><span class="h">noise, a concept in the frozen KG</span>
+<p><b>The counts.</b> Lecture 4 defines noise once and mentions it 4 times: weight 3 + 4 = 7. Lecture 11 mentions it 21 times and never defines it: weight 21. <a class="cite" data-c="ext|concepts: noise" data-k="c48"></a></p>
+<p><b>v2 says lecture 11.</b> It has the most passages.</p>
+<p><b>v3 says lecture 4.</b> Both lectures pass the minimum of 3. Lecture 4 defines noise and lecture 11 only mentions it, so lecture 4 wins. Lecture 4, "Error and Noise", is where the course teaches it.</p>
+<p><b>What it shows.</b> Mentions pile up where a concept is <i>used</i>; definitions sit where it is <i>taught</i>. <a class="cite" data-c="car|§1, transferable lesson" data-k="c10"></a></p>
+</div>
+<h3>The same trap in the lessons</h3>
+<p>A <b>lesson</b> belongs to a <b>topic</b>, one of 84. Each concept gets an owning topic, so the tutor can say "learn this lesson". The first rule: a topic owns a concept when its core book sections hold at least 34 % of <i>all</i> the concept's defining passages. <a class="cite" data-c="car|§2, first rule" data-k="c11"></a></p>
+<p>VC dimension has 19 defining passages: 5 in lectures, 11 in book sections that no topic covers, 6 in the vc-dimension topic. Six of 19 is under 34 %, so no topic owned it, and the VC-dimension lesson was never suggested. <a class="cite" data-c="car|§2, what went wrong" data-k="c12"></a></p>
+</section>
+
+<section class="step" id="touch"><div class="lvl"><b>Touch</b>pick a concept</div>
+<h2>Where does it live, and which rule decided?</h2>
+<p>Pick a concept. The bars show each lecture that covers it: a definition adds 3, a mention adds 1. Switch the rule to see where v1 and v2 would have put it. The lesson panel shows its owning topic and the rule that gave it.</p>
+<p class="pick-label" id="pick-l">Concept</p>
+<div id="chips" role="group" aria-labelledby="pick-l"></div>
+<p class="pick-label" id="rule-l">Course-map rule</p>
+<div class="seg" id="ruleseg" role="group" aria-labelledby="rule-l"></div>
+</div>
+<div class="wrap wide">
+<div id="cm">
+  <div class="panel verdict" aria-live="polite">
+    <div class="lvl" id="v-k"></div>
+    <p class="where" id="v-where"></p>
+    <p class="why" id="v-why"></p>
+    <ul id="rows" aria-label="Lectures that cover the concept"></ul>
+    <p class="rkey"><span>mentions</span><span class="kd">definitions</span><span class="kw">chosen lecture</span><span class="kg" id="gate-k">minimum</span></p>
+  </div>
+  <div class="panel" id="owner" aria-live="polite"></div>
+</div>
+</div>
+<div class="wrap">
+<p class="small faint">Counts come from our re-run of the app's rule on the frozen KG files; it places 232 of 464 concepts where the app reports 233. <a class="cite" data-c="ext|totals" data-k="c08"></a> <a class="cite" data-c="svc|course_map()" data-k="c09"></a> Topic owners are copied from the lessons' ownership file.</p>
+
+<h3 id="anatomy">What a lesson is made of</h3>
+<p>Tap a block to see what it holds, a real example and how it reaches the learner. Switch to the book companion to compare. Every block shown is built, except the one marked planned.</p>
+<div class="seg" id="anseg" role="group" aria-label="Which page"></div>
+</div>
+<div class="wrap wide">
+<div id="an">
+  <div id="sheet" aria-label="Blocks, top to bottom"></div>
+  <div class="panel" id="bd" aria-live="polite"></div>
+</div>
+</div>
+<div class="wrap">
+<h3>How a learner reaches a lesson</h3>
+<ul class="routes">
+  <li><span class="from">After the placement test</span><span class="to">Concepts in red or yellow recommend their lessons, listed under "For you" on the Lessons page. <a class="cite" data-c="spec|§9e" data-k="c34"></a></span></li>
+  <li><span class="from">Under every answer</span><span class="to">"Learn more" shows up to 3 lessons for the concepts the question and the answer name. No model call: 1-44 ms. <a class="cite" data-c="spec|§20a" data-k="c33"></a></span></li>
+  <li><span class="from">On the course map</span><span class="to">A concept lists every destination: a full lesson as "Lesson", a reading fallback as "Sources". <a class="cite" data-c="spec|§19.5" data-k="c35"></a></span></li>
+  <li><span class="from">From any lecture</span><span class="to">Placement has a concept for every lecture; a concept with no lesson topic is matched to a lesson by its lecture. <a class="cite" data-c="spec|§9d, §9e" data-k="c49"></a></span></li>
+</ul>
+</section>
+
+<section class="step" id="l2"><div class="lvl"><b>Level 2</b>academic</div>
+<h2>Evidence weighting, not a threshold on counts</h2>
+<p>Both failures have one cause: a count that treats every occurrence as equal evidence. In the course map, mention counts track where a concept is used. In the lessons, a share over the whole corpus punished concepts whose evidence sits outside the curated sections. The fixes weigh definitional evidence above mentions, set a minimum support, and measure the share where the topics live. <a class="cite" data-c="car|§1, transferable lesson" data-k="c10"></a></p>
+<h3>The lesson rules, stated exactly</h3>
+<p>Any one of three rules gives ownership. (a) A topic's units include its lecture-video windows, and the share (at least 0.34) is taken over the defining passages that lie in some topic. (b) A concept whose label or alias fully matches a seed topic's title pattern belongs to it. (c) A 6-entry alias table covers names the KG spells differently: dot product, gradient, sigmoid, softmax, MAP estimation, hypothesis set. <a class="cite" data-c="car|§2, current rules" data-k="c13"></a> The ownership file adds an explicit override, which wins. <a class="cite" data-c="kgp|method" data-k="c14"></a></p>
+<p>The fix moved owned concepts from 1,565 to 1,821 or more, and learn-first links from 14 to 29 of 40 seed topics. <a class="cite" data-c="car|§2, result" data-k="c15"></a> The file in use today, after the topic list was rebuilt to 84 topics, lists 1,818 owned concepts. <a class="cite" data-c="kgp|topics" data-k="c16"></a> Broad concepts were left unowned on purpose. <a class="cite" data-c="car|§2, result" data-k="c17"></a> In today's file, generalization error still has no owner; the central limit theorem and partition function now belong to topics added after the course. <a class="cite" data-c="kgp|topics" data-k="c18"></a></p>
+<h3>Prerequisites need two votes</h3>
+<p>A "learn first" link between two lessons needs at least 2 PREREQUISITE_OF edges in the KG, because that relation is still about 8 % wrong in a blind sample. A single edge shows as a lighter "see also". <a class="cite" data-c="car|§3" data-k="c19"></a></p>
+<h3>How good is the topic map?</h3>
+<p>Topics come from a cross-book map: 2,828 sections of 9 books and the 18 CS 156 lectures. On 10 topics, precision is 0.81 strict and 0.98 lenient. Recall was not measured. <a class="cite" data-c="lsv1|TL;DR" data-k="c23"></a></p>
+<div class="card warn"><span class="h">Open</span>
+<p>The two products use different ownership rules for the same KG: a weighted lecture rule and a topic rule of share, name and alias. That is acceptable while they answer different questions; one shared, tested module would stop drift. <a class="cite" data-c="car|Open contradictions" data-k="c20"></a> For companions, script checks prove attribution and originality, not correctness: another model family found 26 problems in a draft that passed every script. <a class="cite" data-c="bc|Pilot, lesson" data-k="c41"></a></p></div>
+</section>
+
+<section class="step" id="l3"><div class="lvl"><b>Level 3</b>our thesis choice</div>
+<h2>Product features, kept outside the experiment</h2>
+<p>These rules are design rules from the KG to the learner-facing views, for the method chapter. They do not touch the C2 experiment: its arms read the frozen KG directly. <a class="cite" data-c="car|Relevance to thesis" data-k="c21"></a> The lessons are written ahead of time, one per topic. A lesson written by an agent for one student's gap was a feasibility study only: researched, not built, and there is no plan to build it now. <a class="cite" data-c="ahd|TL;DR and status" data-k="c22"></a></p>
+<h3>What exists, what is planned</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th>Feature</th><th>State</th><th>Evidence</th></tr>
+<tr><td>Course map with the v3 rule, one column per lecture</td><td><span class="st built">built</span></td><td class="small"><a class="cite" data-c="spec|§20" data-k="c47"></a></td></tr>
+<tr><td>84 lessons: video, interactive, comparison across books, explain layers, practice, sources</td><td><span class="st built">built</span></td><td class="small"><a class="cite" data-c="lsv1|Log" data-k="c24"></a></td></tr>
+<tr><td>Lessons inside the tutor, read from the lessons build</td><td><span class="st built">built</span></td><td class="small"><a class="cite" data-c="svc|README" data-k="c36"></a></td></tr>
+<tr><td>Lesson progress scored on the server, in the learner's bands</td><td><span class="st built">built</span></td><td class="small"><a class="cite" data-c="spec|§19.9" data-k="c32"></a></td></tr>
+<tr><td>Book companions: the pilot and 12 phase-1 chapters</td><td><span class="st built">built</span></td><td class="small"><a class="cite" data-c="bc|phase 1" data-k="c42"></a></td></tr>
+<tr><td>Companions: the full run, book by book</td><td><span class="st built">under way</span></td><td class="small"><a class="cite" data-c="bcdisk|chapter folders" data-k="c43"></a></td></tr>
+<tr><td>Companions inside the tutor: shared unit ids, concept nodes, check items</td><td><span class="st planned">planned</span></td><td class="small"><a class="cite" data-c="bc|§5" data-k="c44"></a></td></tr>
+<tr><td>One block library for lessons and companions</td><td><span class="st planned">planned</span></td><td class="small"><a class="cite" data-c="bc|Synthesis" data-k="c45"></a></td></tr>
+<tr><td>Lessons written by an agent in the app (version 2)</td><td><span class="st planned">feasibility study only</span></td><td class="small"><a class="cite" data-c="lsv1|Decisions" data-k="c46"></a></td></tr>
+</table></div>
+<div class="card ours"><span class="h">Where they run</span>
+<p>The lessons and the companions run in the local product: the lesson server binds to this machine, and book text stays on it. <a class="cite" data-c="lsread|intro" data-k="c37"></a> Companions are written in our own words; a quote is at most 25 words, with its page. <a class="cite" data-c="bc|§2" data-k="c39"></a></p></div>
+</section>
+
+<section class="step" id="quiz"><div class="lvl"><b>Quiz</b>check yourself</div>
+<h2>Four questions</h2>
+<div id="qz"></div>
+</section>
+
+<section class="step" id="src"><div class="lvl"><b>Sources</b>where every number comes from</div>
+<h2>Sources</h2>
+<p class="small muted">The concept-assignment note, the lessons and companions notes, the tutor's design file and code, the ownership file, thesis chapter 5, and our own re-run in this folder.</p>
+<div class="hscroll"><table class="tbl" id="srctbl"></table></div>
+<details><summary>All claims with their marks</summary><div class="hscroll"><table class="tbl" id="cltbl"></table></div></details>
+</section>
+</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var D, A, SRC, CL = {}, QZ, st = { c: 'c_f9366285a5d2', v: 'v3', view: 'lesson', blk: 'interactive' };
+  var RULES = [
+    { id: 'v1', label: 'v1 first introduction' },
+    { id: 'v2', label: 'v2 most passages' },
+    { id: 'v3', label: 'v3 weighted, in use' }
+  ];
+  var RULE_NAME = { a: 'rule (a): share', b: 'rule (b): name match', c: 'rule (c): alias table', override: 'override' };
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }); }
+  var base = '../data';
+  Promise.all([get(base + '/concepts.json'), get(base + '/anatomy.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json'), get(base + '/quiz.json')]).then(function (a) {
+    D = a[0]; A = a[1]; SRC = a[2].sources; a[3].claims.forEach(function (c) { CL[c.id] = c; }); QZ = a[4].questions;
+    cites(document); picker(); anatomy(); quiz(); sources();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load the data (' + e.message + '). Open the page through a web server, not as a file.'; });
+
+  function cites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]'), function (a) {
+      if (a.dataset.done) return; a.dataset.done = '1';
+      var p = a.getAttribute('data-c').split('|'), s = SRC[p[0]], c = CL[a.getAttribute('data-k')];
+      a.href = '#src-' + p[0];
+      a.textContent = '[' + (s ? s.short : p[0]) + (p[1] ? ', ' + p[1] : '') + ']';
+      if (s) a.title = s.title;
+      if (c) { var m = document.createElement('span'); m.className = 'mk ' + c.status; m.textContent = c.status; m.title = c.id + ': ' + c.text; a.after(m); }
+    });
+  }
+  function claimLinks(ids) { return ids.map(function (c) { return '<a class="cite"' + ' data-c="' + CL[c].key + '|' + esc(CL[c].loc) + '" data-k="' + c + '"></a>'; }).join(' '); }
+  function title(n) { return D.lecture_titles[String(n)] || ''; }
+
+  /* Touch A */
+  function picker() {
+    $('chips').innerHTML = D.concepts.map(function (c) {
+      return '<button type="button" data-id="' + c.id + '" aria-pressed="false">' + esc(c.label) + '</button>';
+    }).join('');
+    $('ruleseg').innerHTML = RULES.map(function (r) { return '<button type="button" data-v="' + r.id + '" aria-pressed="false">' + esc(r.label) + '</button>'; }).join('');
+    Array.prototype.forEach.call($('chips').querySelectorAll('button'), function (b) { b.addEventListener('click', function () { st.c = b.dataset.id; paintCM(); }); });
+    Array.prototype.forEach.call($('ruleseg').querySelectorAll('button'), function (b) { b.addEventListener('click', function () { st.v = b.dataset.v; paintCM(); }); });
+    paintCM();
+  }
+  function reasonFor(c, cm) {
+    var n = cm[st.v];
+    if (st.v === 'v1') return 'v1 takes the lecture that <b>introduces</b> the concept, whatever the counts.';
+    if (st.v === 'v2') return n == null ? 'No covering lecture has 2 passages.' : 'v2 takes the lecture with the <b>most passages</b> (at least 2): ' + count(cm, n) + ' in lecture ' + n + '.';
+    if (n == null) return 'No lecture reaches <b>weight 3</b>, so the concept stays off the map. Better no column than the wrong one.';
+    var r = cm.v3_reason;
+    if (r.indexOf('defines') >= 0) return 'Lecture ' + n + ' <b>defines</b> it; a heavier lecture only mentions it. A lecture that defines beats one that only mentions.';
+    if (r.indexOf('tie') >= 0) return 'Two lectures tie on weight; the <b>earliest</b> wins.';
+    return 'Lecture ' + n + ' has the <b>highest weight</b>, ' + weight(cm, n) + ', at or above the minimum of 3.';
+  }
+  function row(cm, n) { for (var i = 0; i < cm.lectures.length; i++) if (cm.lectures[i].lecture === n) return cm.lectures[i]; return null; }
+  function count(cm, n) { var r = row(cm, n); return r ? r.defines + r.mentions : 0; }
+  function weight(cm, n) { var r = row(cm, n); return r ? r.weight : 0; }
+  function paintCM() {
+    var c = D.concepts.filter(function (x) { return x.id === st.c; })[0], cm = c.course_map;
+    Array.prototype.forEach.call($('chips').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.id === st.c)); });
+    Array.prototype.forEach.call($('ruleseg').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === st.v)); });
+    var n = cm[st.v];
+    $('v-k').textContent = c.label + ' · ' + (st.v === 'v3' ? 'rule in use' : 'earlier rule ' + st.v);
+    $('v-where').innerHTML = n == null ? 'Not on the course map' : '<span class="ln">L' + n + '</span>' + esc(title(n));
+    $('v-why').innerHTML = reasonFor(c, cm);
+    var val = function (r) { return st.v === 'v2' ? r.defines + r.mentions : r.weight; };
+    var max = Math.max.apply(null, cm.lectures.map(val).concat([4]));
+    var gate = st.v === 'v1' ? null : (st.v === 'v2' ? 2 : 3);
+    var hasDef = cm.lectures.some(function (r) { return r.weight >= 3 && r.defines > 0; });
+    $('gate-k').textContent = gate ? 'minimum ' + gate : 'minimum (none in v1)';
+    $('rows').innerHTML = cm.lectures.map(function (r) {
+      var v = val(r), out = gate != null && (v < gate || (st.v === 'v3' && hasDef && !r.defines)), win = r.lecture === n;
+      var mw = r.mentions, dw = st.v === 'v2' ? r.defines : 3 * r.defines;
+      var label = st.v === 'v1' ? r.role : (st.v === 'v2' ? v + ' passages' : r.defines + '×3 + ' + r.mentions + ' = ' + v);
+      return '<li class="' + (win ? 'win' : '') + (out ? ' out' : '') + '"><span class="ln">L' + r.lecture + '</span><span class="lt">' + esc(title(r.lecture)) + (r.role === 'introduces' ? '<i>introduces</i>' : '') + '</span><span class="w">' + esc(label) + '</span>' +
+        '<span class="track" aria-hidden="true"><span class="fill d" style="width:' + (100 * dw / max).toFixed(1) + '%"></span><span class="fill" style="left:' + (100 * dw / max).toFixed(1) + '%;width:' + (100 * mw / max).toFixed(1) + '%"></span>' +
+        (gate ? '<span class="gate" style="left:' + (100 * gate / max).toFixed(1) + '%"></span>' : '') + '</span></li>';
+    }).join('');
+    var o = c.lesson_owners;
+    $('owner').innerHTML = '<span class="h">Lesson that owns it</span>' + (o.length ? o.map(function (x) {
+      var how = x.rule === 'a' ? Math.round(100 * x.share) + ' % of its defining passages that lie inside topics are in this one; 34 % is enough' :
+        x.rule === 'b' ? 'its name fully matches the topic title' : x.rule === 'c' ? 'listed in the alias table' : 'set by an explicit override';
+      return '<p class="t">' + esc(x.title) + (x.origin === 'phase2' ? ' <span class="faint small">(after the course)</span>' : '') + '</p><p class="r"><span class="rl">' + esc(RULE_NAME[x.rule]) + '</span>' + esc(how) + '</p>';
+    }).join('') : '<p class="none">No owner. The concept is too broad for one lesson, on purpose.</p>') +
+      '<p class="small faint" style="margin:0">' + (o.length > 1 ? 'Any rule suffices, so a concept can have two owners.' : 'Any one of the rules is enough.') + '</p>';
+  }
+
+  /* Touch B */
+  function anatomy() {
+    $('anseg').innerHTML = A.views.map(function (v) { return '<button type="button" data-v="' + v.id + '" aria-pressed="false">' + esc(v.label) + '</button>'; }).join('');
+    Array.prototype.forEach.call($('anseg').querySelectorAll('button'), function (b) {
+      b.addEventListener('click', function () { st.view = b.dataset.v; st.blk = view().blocks[st.view === 'lesson' ? 1 : 1].id; paintAn(); });
+    });
+    paintAn();
+  }
+  function view() { return A.views.filter(function (v) { return v.id === st.view; })[0]; }
+  function paintAn() {
+    var v = view();
+    Array.prototype.forEach.call($('anseg').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.v === st.view)); });
+    $('sheet').innerHTML = '<p class="ex">Example: ' + esc(v.example) + '</p>' + v.blocks.map(function (b) {
+      return '<button type="button" data-b="' + b.id + '" class="' + b.status + '" aria-pressed="' + (b.id === st.blk) + '"><span><span class="k">' + esc(b.kind) + '</span><span class="t">' + esc(b.title) + '</span></span>' + (b.status === 'planned' ? '<span class="st planned">planned</span>' : '') + '</button>';
+    }).join('');
+    Array.prototype.forEach.call($('sheet').querySelectorAll('button'), function (btn) {
+      btn.addEventListener('click', function () { st.blk = btn.dataset.b; paintAn(); if (window.innerWidth < 860) $('bd').scrollIntoView({ block: 'nearest' }); });
+    });
+    var b = v.blocks.filter(function (x) { return x.id === st.blk; })[0];
+    $('bd').innerHTML = '<div class="lvl">' + esc(v.label) + '</div><h3>' + esc(b.title) + '</h3><dl><dt>What it holds</dt><dd>' + esc(b.holds) + '</dd><dt>Real example</dt><dd>' + esc(b.example) + '</dd><dt>How the learner gets it</dt><dd>' + esc(b.reach) + '</dd><dt>Sources</dt><dd>' + claimLinks(b.claims) + '</dd></dl>';
+    cites($('bd'));
+  }
+
+  function quiz() {
+    $('qz').innerHTML = QZ.map(function (x, i) {
+      return '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(x.q) + '</b><div class="opts">' + x.o.map(function (o, j) { return '<button type="button" data-j="' + j + '">' + String.fromCharCode(65 + j) + '. ' + esc(o) + '</button>'; }).join('') + '</div><p class="small muted fb" hidden></p></div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qz .q'), function (box) {
+      var x = QZ[+box.dataset.i];
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (b) {
+        b.addEventListener('click', function () {
+          var j = +b.dataset.j; b.classList.add(j === x.a ? 'right' : 'wrong');
+          box.querySelectorAll('button')[x.a].classList.add('right');
+          var fb = box.querySelector('.fb'); fb.hidden = false; fb.textContent = (j === x.a ? 'Right. ' : 'Not quite. ') + x.f;
+        });
+      });
+    });
+  }
+
+  function sources() {
+    $('srctbl').innerHTML = '<tr><th>source</th><th>where</th><th>read?</th></tr>' + Object.keys(SRC).map(function (k) {
+      var s = SRC[k];
+      return '<tr id="src-' + k + '"><td><b>' + esc(s.short) + '</b><br>' + esc(s.title) + '</td><td class="small">' + esc(s.venue) + '</td><td class="small">' + (s.verified ? '<span class="mk verified">read</span> ' : '<span class="mk unverified">not read</span> ') + esc(s.how) + '</td></tr>';
+    }).join('');
+    $('cltbl').innerHTML = '<tr><th>id</th><th>claim</th><th>source, locator</th><th>mark</th></tr>' + Object.keys(CL).map(function (id) {
+      var c = CL[id]; return '<tr><td class="m">' + id + '</td><td>' + esc(c.text) + '</td><td class="small">' + esc((SRC[c.key] || {}).short || c.key) + ', ' + esc(c.loc) + '</td><td><span class="mk ' + c.status + '">' + c.status + '</span></td></tr>';
+    }).join('');
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

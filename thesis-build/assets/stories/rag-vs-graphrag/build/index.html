@@ -3,7 +3,7 @@
 <head><script>window.SITE_PUBLIC=true</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RAG vs GraphRAG, a scroll story</title>
+<title>RAG vs GraphRAG</title>
 <link rel="stylesheet" href="/thesis/assets/site.css">
 <style>
 :root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
@@ -27,7 +27,7 @@ a{color:var(--blue)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;gap:6px}
-#nav a{flex:1;text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#nav a{flex:1;text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:3px 2px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #nav a.on{border-color:var(--amber);color:var(--amber)}
 section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
 .hero{padding:56px 0 40px}
@@ -41,9 +41,9 @@ button[aria-pressed=true],button.on{border-color:var(--amber);color:var(--amber)
 button:focus-visible,input:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 input[type=range]{accent-color:var(--amber);flex:1;min-width:120px}
 .q{font-family:var(--display);font-weight:300;font-size:19px;line-height:1.35;margin:6px 0 10px;overflow-wrap:anywhere}
-.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:15px;overflow-wrap:anywhere}
+.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:15px;overflow-wrap:anywhere}
 .ans.warn{border-color:var(--warn)}.ans.good{border-color:var(--teal)}
-.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
 .tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}
 .card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px}
 .card.gold{border-color:var(--amber)}.card.dim{opacity:.55}
@@ -57,9 +57,9 @@ input[type=range]{accent-color:var(--amber);flex:1;min-width:120px}
 .bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
 .bridge b{color:var(--text)}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}
-.chip{font-size:13px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--muted)}
+.chip{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:2px 10px;color:var(--muted)}
 .strip{display:grid;grid-template-columns:repeat(20,minmax(0,1fr));gap:2px;margin:3px 0}
-.strip button{padding:0;min-height:26px;border-radius:3px;font:10px var(--mono);color:var(--faint);background:var(--panel2);border:1px solid var(--line)}
+.strip button{padding:0;min-height:26px;border-radius:8px;font:12px var(--mono);color:var(--faint);background:var(--panel2);border:1px solid var(--line)}
 .strip button.g1{background:var(--amber);color:#111;border-color:var(--amber)}
 .strip button.g2{background:var(--teal);color:#111;border-color:var(--teal)}
 .strip button.out{opacity:.28}
@@ -67,9 +67,9 @@ input[type=range]{accent-color:var(--amber);flex:1;min-width:120px}
 .lbl{font-size:12px;color:var(--muted);margin-top:8px}
 .bars{display:grid;gap:6px}
 .bar{display:grid;grid-template-columns:110px 1fr 46px;gap:8px;align-items:center;font-size:13px}
-.bar i{display:block;height:14px;border-radius:3px;background:var(--blue);transition:width .5s}
+.bar i{display:block;height:14px;border-radius:8px;background:var(--blue);transition:width .5s}
 .bar.graph i{background:var(--teal)}
-.bar .track{background:var(--panel2);border-radius:3px}
+.bar .track{background:var(--panel2);border-radius:8px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .cmp{display:grid;gap:8px;grid-template-columns:repeat(3,minmax(0,1fr));font-size:13px}
 .cmp>div{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px}
@@ -80,7 +80,7 @@ svg text{fill:var(--text);font:11px var(--body)}
 .legend{font-size:12px;color:var(--muted)}
 .ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
 .ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
-.ev b,.ours b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b,.ours b{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
 .ev b{color:var(--teal)}.ours b{color:var(--purple)}
 footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
 .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}
@@ -88,6 +88,13 @@ footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);f
 #err{display:none;background:#3a1d17;color:var(--warn);border-radius:8px;padding:10px 12px;margin:16px 0}
 @media(max-width:520px){.bar{grid-template-columns:84px 1fr 42px}.grid2{grid-template-columns:1fr}.cmp{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.bar i{transition:none}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+@media (max-width:560px){.strip{grid-template-columns:repeat(10,minmax(0,1fr))}}
 </style>
 <style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
    The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
@@ -95,23 +102,23 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
 .back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
 .sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
 .sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
 #so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
 #so button:hover,#so button:focus-visible{border-color:#F2A93B}
 #so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
              outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
 #so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
-#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
 #so.open ol{display:block}
 #so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
 #so.rail button{display:none}
@@ -124,6 +131,11 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
 #story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -147,13 +159,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -162,19 +174,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -185,7 +196,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -193,7 +204,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -207,14 +218,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -223,6 +234,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -233,30 +245,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -275,7 +268,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -302,7 +295,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -392,7 +385,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </script>
 
 <div id="story-root" lang="en" dir="ltr">
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
 <figure class="sv" id="video"><video controls preload="none" playsinline poster="/thesis/videos/RagVsGraphRag.d25ddfeb.jpg" width="1920" height="1080" aria-label="Video (English, no sound)"><source src="/thesis/videos/RagVsGraphRag.d25ddfeb.mp4" type="video/mp4"></video><figcaption data-i18n="ex.tw_video_cap">Video, English, no sound.</figcaption></figure>
 <div id="bar"><div class="wrap">
   <p id="caveat"><b>Demo scale:</b> 138 passages, 24 questions, 15 Wikipedia articles. This is NOT an evaluation of the thesis system.</p>
@@ -466,10 +459,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </section>
 
 <footer>
-  <p><b>Scale.</b> 138 passages (a sample of 15 Wikipedia articles, at most 10 passages each), 24 questions written by Claude, 12 of them answered by an LLM and judged by two LLM judges. One run, temperature 0, no human labels. Intervals are wide. This page explains an idea; it does not rank methods, and it does not evaluate the thesis system.</p>
+  <p><b>Scale.</b> 138 passages (a sample of 15 Wikipedia articles, at most 10 passages each), 24 questions written by Claude, 12 of them answered by an LLM and judged by two LLM judges. One run, temperature 0. Intervals are wide. This page explains an idea; it does not rank methods, and it does not evaluate the thesis system.</p>
   <p>Sources: Peng et al. 2024, <i>Graph Retrieval-Augmented Generation: A Survey</i> (conceptual framing, from our canvas notes). Edge et al. 2024 for local and global search as implemented in the pack. Wikipedia contributors, CC BY-SA 4.0; each passage links to its article revision. Everything numeric is copied from <code>../data/*.json</code>, produced by <code>build/extract.py</code> from the real-example pack.</p>
 </footer>
-<section class="an-embed" id="anatomy"><h2 data-i18n="an.h">Three pipelines, one question (isometric figure)</h2><p class="an-lede" data-i18n="an.lede">One question, "What must I understand before the SVM kernel trick?", runs through plain RAG, GraphRAG and our typed-KG tutor on one bench. Step through the stages, hover a part, and switch the types off to see what they change.</p><iframe src="/thesis/assets/figures/anatomy-system/index.html?embed=1" loading="lazy" title="Isometric figure: one question through plain RAG, GraphRAG and the typed-KG tutor"></iframe><p class="an-open"><a href="/thesis/assets/figures/anatomy-system/index.html" data-i18n="an.open">Open the figure full page</a></p><p class="an-cap" data-i18n="an.cap">Computed: the RAG top-3 passages and the budget cuts, from the 138-passage demo corpus (TF-IDF stand-in for the embedding). Illustrative: the GraphRAG extraction, communities and all answer sentences. The concept edges follow our ontology and still need the instructor's review.</p></section><style>.an-embed{margin:40px 0}.an-embed iframe{display:block;width:100%;height:min(82vh,760px);border:1px solid #242B38;border-radius:12px;background:#0B0D12}@media(max-width:600px){.an-embed iframe{height:960px}}.an-lede,.an-cap{color:#98A0B0;font-size:14.5px}.an-cap{font-size:12.5px;margin-top:6px}.an-open a{color:#F2A93B}</style></main>
+<section class="an-embed" id="anatomy"><h2 data-i18n="an.h">Three pipelines, one question (isometric figure)</h2><p class="an-lede" data-i18n="an.lede">One question, "What must I understand before the SVM kernel trick?", runs through plain RAG, GraphRAG and our typed-KG tutor on one bench. Step through the stages, hover a part, and switch the types off to see what they change.</p><iframe src="/thesis/assets/figures/anatomy-system/index.html?embed=1" loading="lazy" title="Isometric figure: one question through plain RAG, GraphRAG and the typed-KG tutor"></iframe><p class="an-open"><a href="/thesis/assets/figures/anatomy-system/index.html" data-i18n="an.open">Open the figure full page</a></p><p class="an-cap" data-i18n="an.cap">Computed: the RAG top-3 passages and the budget cuts, from the 138-passage demo corpus (TF-IDF stand-in for the embedding). Illustrative: the GraphRAG extraction, communities and all answer sentences. The concept edges follow our ontology.</p></section><style>.an-embed{margin:40px 0}.an-embed iframe{display:block;width:100%;height:min(82vh,760px);border:1px solid #242B38;border-radius:12px;background:#0B0D12}@media(max-width:600px){.an-embed iframe{height:960px}}.an-lede,.an-cap{color:#98A0B0;font-size:14.5px}.an-cap{font-size:12.5px;margin-top:6px}.an-open a{color:#F2A93B;display:inline-block;padding-block:4px}</style></main>
 
 <script>
 (function(){
@@ -710,7 +703,7 @@ function mountGraph(D){
       h('p',{class:'small muted'},'Global search (map-reduce over the 15 LLM-written community reports): '+g.n_map_calls+' map calls produced '+g.n_points+' scored points; the highest-scoring ones go into one final call.'),
       ...g.kept_points.map(p=>h('div',{class:'card'},h('span',{class:'tag gold',text:'score '+p.score}),' ',p.description)),
       h('div',{class:'lbl',text:'Final answer (reduce step)'}),h('div',{class:'ans good',text:g.reduce_answer}),
-      h('p',{class:'cap',text:'Real output of one run. It covers the whole corpus because each report summarises a community of linked nodes. We did not score it against a vector baseline, and the answer was not checked by a human. Cost: many LLM calls before the question is asked, plus map calls per question.'}));
+      h('p',{class:'cap',text:'Real output of one run. It covers the whole corpus because each report summarises a community of linked nodes. We did not score it against a vector baseline. Cost: many LLM calls before the question is asked, plus map calls per question.'}));
   }
   drawG();
 }
@@ -749,7 +742,7 @@ function mountCompare(D){
     E('ev','Evidenced','On this corpus, bridge questions are harder than single-hop ones for every retriever, including the graph one. The graph path for q09 exists and was found (pruned subgraph includes both gold passages).'),
     E('ev','Evidenced','Context cost grows: arm C used about 957 prompt tokens against 684 for B, and building the graph took 138 LLM calls before any question was asked.'),
     E('ours','Ours, not proven here','A graph helps most when the question needs a chain of linked facts or a view of the whole corpus, as Peng et al. argue. Here the chain exists in the graph, but our simple top-5 cut-offs did not use it. The pack gives no evidence that GraphRAG beats RAG at this scale.'),
-    E('ours','Not shown','No human labels. No test on the thesis corpus. No vector baseline for global questions. No tuned graph retriever (PCST prizes, PPR restart and community levels were one untuned setting). 12 answered questions, one run.'));
+    E('ours','Not shown','No test on the thesis corpus. No vector baseline for global questions. No tuned graph retriever (PCST prizes, PPR restart and community levels were one untuned setting). 12 answered questions, one run.'));
 }
 
 /* ---------- chrome ---------- */
@@ -766,7 +759,7 @@ load().then(D=>{mountLLM(D);mountRAG(D);mountProblems(D);mountGraph(D);mountComp
  .catch(e=>{const el=$('#err');el.style.display='block';el.textContent='Could not load ../data/*.json ('+e.message+'). Serve the folder over HTTP, for example: python3 -m http.server from the story folder, then open /build/index.html.';});
 })();
 </script>
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
 </div>
 <script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
 // Two modes, decided from the page's real content edge (never from a fixed width):

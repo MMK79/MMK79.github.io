@@ -1,0 +1,17 @@
+{
+ "about": "Quiz of the Rerankers lesson. a = index of the right option (0-based). Answer key: B A C B (as letters).",
+ "questions": [
+  {"q": "Why can a cross-encoder notice that a passage answers this question, while a bi-encoder may only see a shared topic?",
+   "o": ["It uses a bigger vector.", "It reads the question and the passage together, so every question word can attend to every passage word.", "It was trained on more data.", "It uses BM25 inside."],
+   "a": 1, "f": "The bi-encoder makes one vector per text before the two texts meet. The cross-encoder reads the pair as one input."},
+  {"q": "On Q3 (the paraphrase), the answer chunk is 33rd in the bge-m3 list. The reranker scores only the top 20. What happens?",
+   "o": ["The answer chunk stays out: the reranker can only reorder what the first stage gave it.", "The reranker finds it anyway, because it reads the whole corpus.", "The reranker puts it 1st.", "The first stage moves it up."],
+   "a": 0, "f": "A reranker orders a short list. It cannot promote a chunk that is not in the list. Try depth 50 in the Touch section."},
+  {"q": "The model card reports MIRACL Persian 57.7 → 62.49 for bge-reranker-v2-m3. What is the right way to read it?",
+   "o": ["It proves the model is best on our Persian lectures.", "It is a peer-reviewed result from the BGE M3 paper.", "It is a vendor number on Wikipedia text, after one first stage; it does not test lecture text.", "It shows the reranker always helps."],
+   "a": 2, "f": "The numbers come only from the card. MIRACL is Wikipedia. The Qwen3 card shows a case where this reranker made the order worse (MTEB-R 61.82 → 57.03)."},
+  {"q": "Where does our pipeline use the reranker score?",
+   "o": ["Only in the older chat path.", "In the R list (top 10 of the fused list), in the graph list (order inside each hop group) and in the G1 abstention gate.", "Only to build the index offline.", "Nowhere in the thesis arms."],
+   "a": 1, "f": "Three places: rerank_top = 10 in R, rank rule 7 inside each hop group of the graph list, and the highest packed score for the G1 gate."}
+ ]
+}

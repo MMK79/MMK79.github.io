@@ -124,7 +124,7 @@
     const st = { pid: 'p001', mode: 'schema', sel: -1, hide: {}, opid: 'p001' };
     const ids = Object.keys(D.passages);
     box.textContent = '';
-    box.append(E('p', { class: 'hint bad' }, 'Real: the model output, the counts, the off-list labels. Ours: the right / wrong labels on 8 triples (one labeller, read from the passage; not a gold set, no precision or recall is computed). The open view is a second real run (8 calls, no lists) compared by code with the stored answer; the open triples carry no right / wrong labels. Not in the pack: a human gold graph. One model, one prompt, demo scale: 138 passages (8 in the open run). NOT an evaluation of the thesis system.'));
+    box.append(E('p', { class: 'hint bad' }, 'Real: the model output, the counts, the off-list labels. Ours: the right / wrong labels on 8 triples (read from the passage; not a gold set, no precision or recall is computed). The open view is a second real run (8 calls, no lists) compared by code with the stored answer; the open triples carry no right / wrong labels. One model, one prompt, demo scale: 138 passages (8 in the open run). NOT an evaluation of the thesis system.'));
     box.append(E('div', { class: 'kpi' },
       ...[[T.entities, 'entity mentions'], [T.relations, 'relations'], [T.off_types, 'entity types outside the list of 9'], [T.off_relations, 'relation labels outside the list of 13'], [T.dangling, 'relations whose endpoint is not in the entity list']]
         .map(([v, l]) => E('span', {}, E('b', {}, String(v)), ' ' + l))));
@@ -180,7 +180,7 @@
       if (lab.length) {
         out.append(E('h4', {}, 'Our reading of this passage'));
         lab.forEach(l => out.append(E('p', { class: st.sel === -2 - D.labels.indexOf(l) ? 'changed' : '' }, E('span', { class: 'tag ' + l.kind }, l.kind), ' ', E('b', {}, l.s + ' | ' + l.r + ' | ' + l.t), ' ', l.why)));
-        out.append(E('p', { class: 'hint' }, 'Labels are ours (one labeller) and only on these passages. The real error rate is unknown: the pack has no gold triples, so no precision or recall is shown.'));
+        out.append(E('p', { class: 'hint' }, 'Labels are ours and only on these passages. The real error rate is unknown: the pack has no gold triples, so no precision or recall is shown.'));
       }
       out.append(E('h4', {}, 'Cost of this step (formula from the record, real token counts)'));
       const tin = E('input', { type: 'number', value: D.totals.tok_in, step: 1000, style: 'width:90px' }), tout = E('input', { type: 'number', value: D.totals.tok_out, step: 1000, style: 'width:90px' });

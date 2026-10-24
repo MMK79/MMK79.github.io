@@ -23,24 +23,45 @@ main{max-width:1320px}
 .layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);gap:28px;margin-top:18px}
 .mapwrap{position:relative}
 #map{width:100%;height:auto;display:block}
-#map path{stroke:#0B0D12;stroke-width:1.1;cursor:pointer;transition:fill .35s}
-#map path:hover{stroke:#E9ECF2;stroke-width:1.6}
+#map path[data-c]{stroke:#0B0D12;stroke-width:1.1;cursor:pointer;transition:fill .35s}
+#map path[data-c]:hover{stroke:#E9ECF2;stroke-width:1.6}
+/* sea boundaries: drawn in the text colour, never a data colour; the pattern (solid / dashed / hatched) carries the meaning */
+#map .mar{transition:opacity .25s cubic-bezier(.16,1,.3,1)}
+#map.mar-off .mar{opacity:0;pointer-events:none}
+#map .mar path{fill:none;stroke:#E9ECF2;stroke-width:1.4;vector-effect:non-scaling-stroke;stroke-linecap:round}
+#map .mar .mar-eez{fill:#E9ECF2;fill-opacity:.03;stroke:none}
+#map .mar .mar-overlap{fill:url(#mar-hatch);stroke:#E9ECF2;stroke-opacity:.5;stroke-width:.8}
+#map .mar .mar-treaty{stroke-opacity:.9}
+#map .mar .mar-median,#map .mar .mar-unsettled{stroke-dasharray:5 4;stroke-opacity:.85}
+.marbar{display:flex;justify-content:flex-end;margin-bottom:6px}
+.mar-btn{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 14px}
+.mar-btn[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.mar-btn:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.marleg{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.marleg[hidden]{display:none}
+.marleg ul{list-style:none;display:flex;flex-wrap:wrap;gap:8px 22px;margin:0;padding:0}
+.marleg li{display:flex;align-items:center;gap:8px;min-width:0}
+.marleg li svg{flex:none}
+.marleg p{margin:10px 0 0;max-width:68ch;line-height:1.5}
+.marleg .src{margin-top:8px}
+.marleg .src a{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){#map .mar{transition:none}}
 #map path.sel{stroke:#F2A93B;stroke-width:2.6}
 #map path.nodata{fill:#161B25!important}
-#map text{font:11px var(--body);fill:#E9ECF2;pointer-events:none;paint-order:stroke;stroke:#0B0D12;stroke-width:3px}
+#map text{font:12px var(--body);fill:#E9ECF2;pointer-events:none;paint-order:stroke;stroke:#0B0D12;stroke-width:3px}
 .legend{display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
 .legend .ramp{display:flex}
 .legend .ramp i{display:block;width:34px;height:10px}
-.legend .ramp span{font:11px var(--mono);color:var(--faint);width:34px;text-align:center}
+.legend .ramp span{font:12px var(--mono);color:var(--faint);width:34px;text-align:center}
 .tip{position:fixed;pointer-events:none;z-index:80;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-size:13px;display:none;max-width:260px}
 .tip b{font-weight:600}
 .panel{border-inline-start:1px solid var(--line);padding-inline-start:26px}
 .panel h2{margin-bottom:0}
-.panel .fa{font-family:"Vazirmatn",var(--body);color:var(--muted);font-size:17px}
+.panel .fa{font-family:"Vazirmatn",var(--body);color:var(--muted);font-size:18px}
 .big{display:grid;grid-template-columns:1fr 1fr;gap:14px 20px;margin:18px 0}
 .big div b{display:block;font:300 34px/1.1 var(--display)}
 .big div span{font-size:13px;color:var(--muted)}
-.gbar{margin:6px 0 4px;display:flex;height:12px;border-radius:6px;overflow:hidden;background:#1A2030}
+.gbar{margin:6px 0 4px;display:flex;height:12px;border-radius:8px;overflow:hidden;background:var(--panel2)}
 .gbar i{display:block;height:100%}
 .gleg{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
 .chart{margin-top:22px}
@@ -52,16 +73,17 @@ main{max-width:1320px}
 .rank ol{list-style:none;columns:2;column-gap:28px}
 .rank li{display:grid;grid-template-columns:22px 130px 1fr 58px;gap:8px;align-items:center;font-size:13px;padding:3px 0;break-inside:avoid;cursor:pointer}
 .rank li:hover{color:var(--ai)}
-.rank li i{display:block;height:8px;border-radius:4px}
+.rank li i{display:block;height:8px;border-radius:8px}
 .rank li .n{font:12px var(--mono);text-align:end}
-.rank li .r{font:11px var(--mono);color:var(--faint)}
+.rank li .r{font:12px var(--mono);color:var(--faint)}
 .rel{margin-top:40px;border-top:1px solid var(--line);padding-top:40px}
-.rel .cols{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:18px}
+.rel .cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;margin-top:18px}
+.rel .gleg{flex-wrap:wrap}
 .rel svg{width:100%;height:auto;display:block}
 .rel .fe{margin-top:22px;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
 .rel .fe div{background:var(--bg);padding:14px 16px;font-size:14px;color:var(--muted)}
-.rel .fe b{display:block;color:var(--text);font:500 22px var(--display)}
-@media (max-width:980px){.rel .cols{grid-template-columns:1fr}}
+.rel .fe b{display:block;color:var(--text);font:500 20px var(--display)}
+@media (max-width:980px){.rel .cols{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:980px){.layout{grid-template-columns:1fr}.panel{border-inline-start:none;padding-inline-start:0}.rank ol{columns:1}}
 html[lang="fa"] #map text{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:11.5px}
 html[lang="fa"] .year output{direction:rtl}
@@ -89,13 +111,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -104,19 +126,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -127,7 +148,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -135,7 +156,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -149,14 +170,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -165,6 +186,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -175,30 +197,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -217,7 +220,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -244,7 +247,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -335,7 +338,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 
 <main>
   <div class="top">
-    <h1 style="font-size:clamp(30px,3.6vw,46px)" data-i18n="nav.iran_map">Iran education map</h1>
+    <h1 style="font-size:clamp(26px,3.6vw,36px)" data-i18n="nav.iran_map">Iran education map</h1>
     <p data-i18n="map.lede">Students, teachers and university staff in each of Iran's 31 provinces, by year, with girls and boys (women and men) counted apart. Click a province to see its numbers and its trend; click the sea to go back to all of Iran.</p>
   </div>
   <div class="controls" id="controls">
@@ -350,8 +353,19 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <div id="empty" class="note-box" hidden></div>
   <div class="layout">
     <div class="mapwrap">
+      <div class="marbar"><button class="btn mar-btn" id="mar-btn" type="button" aria-pressed="true" aria-controls="map mar-leg"><svg aria-hidden="true" width="22" height="10" viewBox="0 0 22 10"><path d="M1 5h20" stroke="currentColor" stroke-width="1.6" stroke-dasharray="5 3"/></svg><span data-i18n="map.mar_toggle">Sea boundaries</span></button></div>
       <svg id="map" role="img" aria-label="Map of Iran&#x27;s provinces" data-i18n-attr="aria-label:map.map_aria"></svg>
       <div class="legend" id="legend"></div>
+      <div class="marleg" id="mar-leg">
+        <ul>
+          <li><svg aria-hidden="true" width="30" height="12" viewBox="0 0 30 12"><path d="M1 6h28" stroke="#E9ECF2" stroke-width="1.6"/></svg><span data-i18n="map.mar_treaty">Boundary set by a treaty</span></li>
+          <li><svg aria-hidden="true" width="30" height="12" viewBox="0 0 30 12"><path d="M1 6h28" stroke="#E9ECF2" stroke-width="1.6" stroke-dasharray="5 4"/></svg><span data-i18n="map.mar_notreaty">No treaty: a median line or an unsettled line</span></li>
+          <li><svg aria-hidden="true" width="30" height="14" viewBox="0 0 30 14"><defs><pattern id="mar-hatch-k" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="5" stroke="#E9ECF2" stroke-opacity=".6" stroke-width="1.4"/></pattern></defs><rect x="1" y="1" width="28" height="12" rx="2" fill="url(#mar-hatch-k)" stroke="#E9ECF2" stroke-opacity=".5" stroke-width=".8"/></svg><span data-i18n="map.mar_overlap">Area claimed by two states</span></li>
+          <li><svg aria-hidden="true" width="30" height="14" viewBox="0 0 30 14"><rect x="1" y="1" width="28" height="12" rx="2" fill="#E9ECF2" fill-opacity=".05" stroke="#3A4352"/></svg><span data-i18n="map.mar_zone">Iran's maritime zone</span></li>
+        </ul>
+        <p data-i18n="map.mar_note">Dashed lines have no boundary treaty in the source: Marine Regions draws a median line there or marks the line as unsettled. This holds for Iran's lines with Azerbaijan and Turkmenistan in the Caspian Sea, with Iraq, Kuwait and Pakistan, and for parts of the lines with Oman, the United Arab Emirates and Saudi Arabia.</p>
+        <p class="src"><span data-i18n="map.mar_src">Sea boundaries: Flanders Marine Institute (VLIZ), Marine Regions, Maritime Boundaries Geodatabase, exclusive economic zones; CC BY 4.0; simplified for this map.</span> <a href="https://doi.org/10.14284/632" lang="en" dir="ltr">doi.org/10.14284/632</a></p>
+      </div>
       <div class="rank"><h3 id="rank-h" style="font-size:16px;margin-bottom:8px"></h3><ol id="rank"></ol></div>
     </div>
     <aside class="panel" id="panel" aria-live="polite" data-reveal></aside>
@@ -361,7 +375,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </main>
 <div class="tip" id="tip"></div>
 <footer class="site-foot" id="foot"></footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "placement-simulation"], "figures": ["anatomy-system"]}, "map_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian text for export lines shown on /iran-map.html, keyed by the exact English text (a changed export line falls back to English with the «انگلیسی» tag). UI strings are in i18n/fa.json (map.*). Province names come from provinces.json name_fa. Machine-drafted not reviewed.", "text": {"ASSOCIATION, not effect. Correlations are ecological (province aggregates) and confounded by urbanisation, income, the teacher-definition break at 1394, composition of provinces, and data-definition changes. Primary pass rates are high and low-variance (descriptive evaluation), so primary is a weak outcome.": "ارتباط آماری، نه اثر علّی. همبستگی‌ها بوم‌شناختی‌اند (مجموع‌های استانی) و با شهرنشینی، درآمد، گسست در تعریف معلم در سال 1394، ترکیب استان‌ها و تغییر تعریف داده‌ها مخدوش شده‌اند. نرخ قبولی دوره ابتدایی بالا و کم‌واریانس است (ارزشیابی توصیفی)، بنابراین دوره ابتدایی پیامد ضعیفی برای سنجش است.", "ASSOCIATION, not effect. Province aggregates; students_per_staff is crude (students attend Azad / Payame Noor branches staffed from other provinces) and the completion ratio is a stock-flow ratio (see he_quality.json measures.completion). Only 3-4 graduation years exist at province level (t = 1397, 1400, 1401; 1398 has no province graduate table, 1399 fails the province-sum check).": "ارتباط آماری، نه اثر علّی. داده‌ها مجموع‌های استانی‌اند؛ شاخص students_per_staff خام است (دانشجویان در واحدهای دانشگاه آزاد / پیام نور درس می‌خوانند که اعضای هیئت علمی آن‌ها از استان‌های دیگر تأمین می‌شوند) و نرخ اتمام تحصیل یک نسبت موجودی به جریان است (بنگرید به he_quality.json measures.completion). در سطح استان فقط 3-4 سال دانش‌آموختگی وجود دارد (t = 1397، 1400، 1401؛ برای 1398 جدول استانی دانش‌آموختگان وجود ندارد و 1399 از آزمون جمع استانی رد می‌شود).", "Statistical Centre of Iran, Salname Amari Keshvar (statistical yearbook), parsed by education-stats ETL; every number traces to provenance.json": "مرکز آمار ایران، سالنامه آماری کشور، پردازش‌شده با ETL پروژه education-stats؛ هر عدد تا provenance.json قابل ردیابی است"}}};</script>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 141, "real_logos": 176, "rows": 201, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 25, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "answer-checkers", "rerankers", "graph-hops", "scoring-sources", "pilot-one", "answer-prompt", "lessons-product", "placement-simulation"], "figures": ["anatomy-system"]}, "map_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian text for export lines shown on /iran-map.html, keyed by the exact English text (a changed export line falls back to English with the «انگلیسی» tag). UI strings are in i18n/fa.json (map.*). Province names come from provinces.json name_fa. Machine-drafted not reviewed.", "text": {"ASSOCIATION, not effect. Correlations are ecological (province aggregates) and confounded by urbanisation, income, the teacher-definition break at 1394, composition of provinces, and data-definition changes. Primary pass rates are high and low-variance (descriptive evaluation), so primary is a weak outcome.": "ارتباط آماری، نه اثر علّی. همبستگی‌ها بوم‌شناختی‌اند (مجموع‌های استانی) و با شهرنشینی، درآمد، گسست در تعریف معلم در سال 1394، ترکیب استان‌ها و تغییر تعریف داده‌ها مخدوش شده‌اند. نرخ قبولی دوره ابتدایی بالا و کم‌واریانس است (ارزشیابی توصیفی)، بنابراین دوره ابتدایی پیامد ضعیفی برای سنجش است.", "ASSOCIATION, not effect. Province aggregates; students_per_staff is crude (students attend Azad / Payame Noor branches staffed from other provinces) and the completion ratio is a stock-flow ratio (see he_quality.json measures.completion). Only 3-4 graduation years exist at province level (t = 1397, 1400, 1401; 1398 has no province graduate table, 1399 fails the province-sum check).": "ارتباط آماری، نه اثر علّی. داده‌ها مجموع‌های استانی‌اند؛ شاخص students_per_staff خام است (دانشجویان در واحدهای دانشگاه آزاد / پیام نور درس می‌خوانند که اعضای هیئت علمی آن‌ها از استان‌های دیگر تأمین می‌شوند) و نرخ اتمام تحصیل یک نسبت موجودی به جریان است (بنگرید به he_quality.json measures.completion). در سطح استان فقط 3-4 سال دانش‌آموختگی وجود دارد (t = 1397، 1400، 1401؛ برای 1398 جدول استانی دانش‌آموختگان وجود ندارد و 1399 از آزمون جمع استانی رد می‌شود).", "Statistical Centre of Iran, Salname Amari Keshvar (statistical yearbook), parsed by education-stats ETL; every number traces to provenance.json": "مرکز آمار ایران، سالنامه آماری کشور، پردازش‌شده با ETL پروژه education-stats؛ هر عدد تا provenance.json قابل ردیابی است"}}};</script>
 <script src="/thesis/assets/iran-map.js"></script>
 </body>
 </html>

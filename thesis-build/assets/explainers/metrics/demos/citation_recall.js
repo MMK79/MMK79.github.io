@@ -98,7 +98,7 @@
     const qids = Object.keys(D.m.per_question.B).filter(id => D.qs[id].type !== 'unanswerable');
     const st = { arm: 'B', q: qids[0] };
     const shell = K.shell(el, 'Real example: Citation recall on real answers and a real judge',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Verdicts are the real judge output, not editable. Arm A has no retrieval, so it cites nothing and every claim counts as unsupported by citations. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '); wide intervals. A demo, not a benchmark. Verdicts are the real judge output, not editable. Arm A has no retrieval, so it cites nothing and every claim counts as unsupported by citations. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

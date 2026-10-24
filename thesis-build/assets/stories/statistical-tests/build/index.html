@@ -24,13 +24,13 @@ ul,ol{padding-left:22px}li{margin:0 0 6px}
 a{color:var(--blue)}
 .muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
 .kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
-.lv{display:inline-block;font:600 11px var(--mono);letter-spacing:.06em;border:1px solid var(--amber);color:var(--amber);border-radius:999px;padding:1px 8px;margin-right:6px;vertical-align:middle}
+.lv{display:inline-block;font:600 12px var(--mono);letter-spacing:.06em;border:1px solid var(--amber);color:var(--amber);border-radius:8px;padding:1px 8px;margin-right:6px;vertical-align:middle}
 .who{font-size:13px;color:var(--faint);margin:-6px 0 14px}
 #bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;flex-wrap:wrap;gap:5px}
-#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
 #nav a.on{border-color:var(--amber);color:var(--amber)}
 section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
 .hero{padding:56px 0 30px}
@@ -52,7 +52,7 @@ input[type=number]{width:5.2em;font-family:var(--mono)}
 label.sl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:4px 0}
 label.sl b{font:600 13px var(--mono);color:var(--text);min-width:4.5em}
 label.sl span.nm{min-width:9.5em}
-.tag{display:inline-block;white-space:nowrap;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag{display:inline-block;white-space:nowrap;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
 .tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}.tag.gold{border-color:var(--amber);color:var(--amber)}
 .take{background:var(--panel);border:1px solid var(--amber);border-radius:10px;padding:12px 14px;margin:16px 0;font-size:16px}
 .bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
@@ -60,7 +60,7 @@ label.sl span.nm{min-width:9.5em}
 .ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
 .ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
 .contra{border-left:3px solid var(--warn);padding:2px 0 2px 10px;margin:10px 0;font-size:15px}
-.ev b.h,.ours b.h,.contra b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h,.ours b.h,.contra b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
 .ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}.contra b.h{color:var(--warn)}
 svg{display:block;width:100%;height:auto}
 svg text{fill:var(--text);font:11px var(--body)}
@@ -76,14 +76,14 @@ svg text{fill:var(--text);font:11px var(--body)}
 .t22 td.disc{border-color:var(--amber)}
 .t22 td.conc{opacity:.6}
 .t22 td b{display:block;font:600 22px var(--mono)}
-.t22 td small{color:var(--muted);font-size:11px}
+.t22 td small{color:var(--muted);font-size:12px}
 .t22 input{width:4.6em;text-align:center;font:600 18px var(--mono)}
 .out{font:14px/1.6 var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;margin:10px 0;overflow-wrap:anywhere}
 .out b{color:var(--text)}
 .verdict{font:600 15px var(--body);margin:8px 0}
 .verdict.rej{color:var(--teal)}.verdict.no{color:var(--warn)}
 .legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:8px 0 0}
-.legend i{display:inline-block;width:16px;height:10px;border-radius:2px;vertical-align:middle;margin-right:4px}
+.legend i{display:inline-block;width:16px;height:10px;border-radius:8px;vertical-align:middle;margin-right:4px}
 .dots{display:flex;flex-wrap:wrap;gap:3px;margin:8px 0}
 .dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
 .dots i.h1{background:var(--amber)}.dots i.both{background:var(--teal)}
@@ -96,7 +96,7 @@ svg text{fill:var(--text);font:11px var(--body)}
 .strip3 h3{font-size:16px;margin:4px 0}.strip3 p{font-size:14px;color:var(--muted);margin:0}
 details{margin:6px 0}summary{cursor:pointer;color:var(--muted);font-size:13px}
 footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
-.cite{font:11px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
 .cite:hover{text-decoration:underline}
 .cite.unv::after{content:" (unverified)";color:var(--warn)}
 .lesson-video:empty::before{content:"Video: McNemarTest (English, silent). Final render pending; it appears here once encoded.";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
@@ -110,6 +110,12 @@ footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);f
 #src-list li{font-size:13px;color:var(--muted)}
 @media(max-width:640px){.strip3,.gate{grid-template-columns:1fr}.t22 td{min-width:70px;padding:6px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
 </style>
 <style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
    The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
@@ -117,23 +123,23 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
 .back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
 .sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
 .sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
 #so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
 #so button:hover,#so button:focus-visible{border-color:#F2A93B}
 #so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
              outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
 #so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
-#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
 #so.open ol{display:block}
 #so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
 #so.rail button{display:none}
@@ -146,6 +152,11 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
 #story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -169,13 +180,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -184,19 +195,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -207,7 +217,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -215,7 +225,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -229,14 +239,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -245,6 +255,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -255,30 +266,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -297,7 +289,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -324,7 +316,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -414,10 +406,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </script>
 
 <div id="story-root" lang="en" dir="ltr">
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>What is real here:</b> the running example is real data from our chunking pilot (40 homework questions, two retrieval rules, one LLM judge that graded the retrieved text). The thesis numbers (270, 269, power) are planning calculations; the thesis has no main result yet. The judge-agreement numbers are illustrative.</p>
+  <p id="caveat"><b>What is real here:</b> the running example is real data from our chunking pilot (40 homework questions, two retrieval rules, one LLM judge that graded the retrieved text). The thesis numbers (270, 269, power) are planning calculations; the thesis has no main result yet. The agreement numbers (&kappa;) are illustrative.</p>
   <nav id="nav" aria-label="Sections"></nav>
 </div></div>
 
@@ -435,7 +427,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <li>For a given test, &alpha; and number of questions, <b>power</b> depends on how often the systems disagree (&psi;) and on the true difference (&delta;). For &psi; = 0.30 and &delta; = 0.10 the exact minimum is 269 questions for power 0.90; the thesis target is 270.</li>
       <li>The thesis claim needs two tests in a <b>fixed order</b> (graph vs text first, then typed vs collapsed labels). The claim holds only if both reject, so neither test needs a smaller &alpha;. If the first test does not reject, the second is not tested.</li>
       <li><b>"+0.3 SD"</b> (Cohen's <i>d</i>) is a gap between two group averages measured in standard deviations: the average treated student would sit at about the 62nd percentile of the control group. Bloom's 2 SD is the 98th. See <a href="#le">Effect size</a>.</li>
-      <li><b>Bootstrap intervals</b> show how big the difference may be; they are reported but never decide. <b>Cohen's &kappa;</b> checks how well the LLM judge agrees with a human.</li>
+      <li><b>Bootstrap intervals</b> show how big the difference may be; they are reported but never decide. <b>Cohen's &kappa;</b> measures how far two raters of the same items agree beyond chance.</li>
     </ul>
   </div>
 </header>
@@ -476,8 +468,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <p><b>Power</b> is the probability that the test rejects H<sub>0</sub> when a real difference exists. For a given test, &alpha; and number of questions <i>n</i> (independent questions), McNemar's power depends on two numbers: the <b>discordance rate</b> &psi; (the share of questions on which the arms disagree) and the <b>true difference</b> &delta;. Our pilot observed &psi; &asymp; 7/40 = 0.175 and a difference of 0.075. <i>If</i> those were the true values, the exact power with 40 questions would be only about 0.17: about 5 of 6 such studies would miss the difference. The pilot does not establish these values; the point is that a sample this small has little power, so a non-rejection here is <b>inconclusive</b>.</p>
   <h3>Confidence intervals: how big could it be?</h3>
   <p>A <b>bootstrap</b> resamples the 40 questions with replacement many times, keeps each question's pair together, and recomputes the difference each time. The middle 95% of those differences is a <b>percentile interval</b>. For our example it runs from &minus;5 to +20 points: a wide range, from a small negative to a large positive difference. With only 40 questions, its real coverage can differ from the nominal 95%. The thesis reports such intervals as estimates; it never uses them to decide.</p>
-  <h3>Do the judge and a human agree?</h3>
-  <p>Our "correct" labels come from an LLM judge, so we must check the judge. <b>Cohen's &kappa;</b> compares the observed agreement between the judge and a human with the agreement that two independent raters with the same label rates would reach. When it is defined, &kappa; = 1 is perfect agreement and 0 is that chance level.</p>
+  <h3>Do two raters agree?</h3>
+  <p>When a label such as "correct" comes from a rater, a second rater on the same items shows how far the labels agree. <b>Cohen's &kappa;</b> compares the observed agreement between the two raters with the agreement that two independent raters with the same label rates would reach. When it is defined, &kappa; = 1 is perfect agreement and 0 is that chance level.</p>
   <div class="bridge"><b>Next:</b> touch the numbers. Change <i>b</i> and <i>c</i> and watch the p-value; change the agreements and see that it does not move.</div>
 </section>
 
@@ -531,12 +523,12 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   </div>
 
   <div class="fig" id="kp">
-    <h3>4. Judge vs human: Cohen's &kappa;</h3>
+    <h3>4. Two raters: Cohen's &kappa;</h3>
     <div class="row" id="kp-pre"></div>
-    <table class="t22" aria-label="Agreement table, judge vs author">
-      <tr><th></th><th>author: fully correct</th><th>author: not</th></tr>
-      <tr><th>judge: fully correct</th><td><input id="kp-a" type="number" min="0" max="500" aria-label="both say correct"></td><td class="disc"><input id="kp-b" type="number" min="0" max="500" aria-label="judge yes, author no"><small>false accepts</small></td></tr>
-      <tr><th>judge: not</th><td class="disc"><input id="kp-c" type="number" min="0" max="500" aria-label="judge no, author yes"></td><td><input id="kp-d" type="number" min="0" max="500" aria-label="both say not correct"></td></tr>
+    <table class="t22" aria-label="Agreement table, rater A vs rater B">
+      <tr><th></th><th>B: correct</th><th>B: not</th></tr>
+      <tr><th>A: correct</th><td><input id="kp-a" type="number" min="0" max="500" aria-label="both say correct"></td><td class="disc"><input id="kp-b" type="number" min="0" max="500" aria-label="A yes, B no"><small>only A says correct</small></td></tr>
+      <tr><th>A: not</th><td class="disc"><input id="kp-c" type="number" min="0" max="500" aria-label="A no, B yes"></td><td><input id="kp-d" type="number" min="0" max="500" aria-label="both say not correct"></td></tr>
     </table>
     <div class="out" id="kp-out" aria-live="polite"></div>
     <p class="cap">Illustrative numbers. The "high agreement, low &kappa;" preset shows that &kappa; depends on how often each rater says "correct": 90% raw agreement can be close to chance when almost everything is labelled correct.</p>
@@ -623,20 +615,22 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <p>The bootstrap estimates the sampling distribution of a statistic by resampling the observed units with replacement; the percentile interval takes the 2.5% and 97.5% points of the resampled statistic <a class="cite" data-c="efron1993"></a>. For paired data, a resample draws whole questions (all arm outcomes together). In general it should resample the independent sampling units: in the thesis these are source clusters (one homework stem, one book exercise). The interval answers "how big might the difference be"; the test answers "should we reject H<sub>0</sub>". They can disagree at small counts: with <i>b</i> = 4, <i>c</i> = 0 and 40 questions, the percentile interval from resampling questions (with infinitely many resamples) is [2.5, 20] points, which excludes 0, while the exact p = 0.0625 does not reject. The nominal 95% does not guarantee 95% coverage at such sizes. A pre-registered analysis must say in advance which one decides.</p>
 
   <h3>Agreement: Cohen's &kappa;</h3>
-  <p>Cohen defined &kappa; = (p<sub>o</sub> &minus; p<sub>e</sub>)/(1 &minus; p<sub>e</sub>), where p<sub>o</sub> is the observed share of agreement and p<sub>e</sub> the agreement expected by chance from the two raters' marginal rates <a class="cite" data-c="cohen1960"></a>. Because p<sub>e</sub> depends on the marginals, the same raw agreement gives very different &kappa; values when one label is rare (calculator 4). We therefore report &kappa; together with the raw agreement and the false-accept count with its denominator, by arm. The author is the reference here, which is not the same as the truth.</p>
+  <p>Cohen defined &kappa; = (p<sub>o</sub> &minus; p<sub>e</sub>)/(1 &minus; p<sub>e</sub>), where p<sub>o</sub> is the observed share of agreement and p<sub>e</sub> the agreement expected by chance from the two raters' marginal rates <a class="cite" data-c="cohen1960"></a>. Because p<sub>e</sub> depends on the marginals, the same raw agreement gives very different &kappa; values when one label is rare (calculator 4). So &kappa; is reported together with the raw agreement. A reference rater is not the truth: two raters can share errors.</p>
 </section>
 
 <!-- ===================== Level 3 ===================== -->
 <section class="step" id="l3" data-nav="L3"><div class="kicker"><span class="lv">Level 3</span>our thesis</div>
   <h2>The rules our thesis fixed in advance</h2>
   <p class="who">What the protocol says, word for word where it matters. These are planning rules, not results.</p>
-  <div class="ours"><b class="h">The two tests</b>On the locked primary stratum (prerequisite and cross-concept questions), H1: the typed hybrid H has a higher fully-correct rate than the text retriever R; H2: H has a higher rate than H-collapsed (the same retrieval code on the same graph with the three relation labels collapsed to one). Every test is an exact one-sided McNemar test on (<i>b</i>, <i>c</i>) at &alpha; = 0.05, for every value of <i>b</i> + <i>c</i> (no chi-square switch). Each report gives <i>b</i>, <i>c</i>, the p-value and the sidedness.</div>
+  <div class="ours"><b class="h">The two tests</b>On the locked question set, H1: the typed hybrid H has a higher fully-correct rate than the text retriever R; H2: H has a higher rate than H-collapsed (the same retrieval code on the same graph with the three relation labels collapsed to one). Every test is an exact one-sided McNemar test on (<i>b</i>, <i>c</i>) at &alpha; = 0.05, for every value of <i>b</i> + <i>c</i> (no chi-square switch). Each report gives <i>b</i>, <i>c</i>, the p-value and the sidedness.</div>
+  <div class="ours"><b class="h">The questions</b>30 to 60 questions, extracted from the 7 reference books.</div>
   <div class="ours"><b class="h">The decision</b>H1 is tested first; H2 only if H1 is rejected. The claim holds if and only if both are rejected. If H1 is not rejected, H2 is not tested. If H1 is rejected and H2 is not, the thesis says: "the graph helps under this cap; the labels add no detectable gain" (no evidence of an extra gain, which is not evidence of none). &delta; = 0.10 is a planning value for the sample size, not a minimum important effect.</div>
   <div class="ours"><b class="h">The sample size</b>Planning value &psi; = 0.30 for both contrasts. The exact minimum for power 0.90 is <b>269</b> (power 0.9000); the target is <b>270</b> (power 0.9010), which gives a joint power of at least 0.802. For power 0.80 the minimum is 199. The pilot can only raise the target (if the one-sided 80% upper Clopper-Pearson bound of the pilot &psi; is above 0.30), never lower it. A second model family recomputed these numbers and corrected the earlier table, whose values were not exact minima (for &psi; = 0.30: 202 &rarr; 199 and 270 &rarr; 269); 270 stays as the target.</div>
-  <div class="ours"><b class="h">Inconclusive, not no-effect</b>The expected supply is about 100 to 160 primary questions, below the target. The status line therefore says in advance: "below that target, a non-rejection is reported as inconclusive and not as evidence of no effect. A null or negative result is a finding." At &psi; between 0.20 and 0.30, independent items assumed, the exact test has power 0.80 for true differences of &Delta; &asymp; 0.115-0.141 with 100 questions, 0.101-0.124 with 130 and 0.091-0.112 with 160.</div>
+  <div class="ours"><b class="h">Inconclusive, not no-effect</b>The question set holds <b>30 to 60</b> questions, far below the target. The status line therefore says in advance: "below that target, a non-rejection is reported as inconclusive and not as evidence of no effect. A null or negative result is a finding." At power 0.80 and &psi; between 0.20 and 0.30, independent items assumed, the exact test with <i>n</i> = 60 detects a difference of &Delta; &asymp; 0.150 to 0.182; with <i>n</i> = 30 and &psi; = 0.20, no difference up to &psi; reaches power 0.80 (at &psi; = 0.30 it needs &Delta; &asymp; 0.256). Only large differences are detectable; the thesis reports this sentence for the achieved <i>n</i>.</div>
   <div class="ours"><b class="h">Intervals and independence</b>A paired cluster bootstrap (10,000 resamples, fixed seed) gives two-sided 95% percentile intervals; they never decide. The primary stratum keeps at most one item per source cluster (one homework stem, one book exercise). The test and the power numbers assume independent items; the cluster rule reduces dependence but cannot prove independence.</div>
-  <div class="ours"><b class="h">The judge check</b>On a blinded, arm-stratified sample of 40 to 60 open answers, the author's labels are compared with the judge's: Cohen's &kappa; and the false-accept rate (answers that the judge calls fully correct and the author does not), by arm. If false accepts exceed 0.15, or differ between arms by more than 0.10, the judge prompt gets one repair and a re-check; if it still fails, the primary endpoint becomes the multiple-choice items only, decided before the main run.</div>
-  <div class="ours"><b class="h">What is not tested</b>Strata, the other arms (closed book, LightRAG, exploratory variants), faithfulness and recall are reported as estimates with intervals and no p-values. They make no confirmatory claims, so the family stays at two tests and no multiplicity procedure such as Holm's is needed.</div>
+  <div class="ours"><b class="h">The manipulation check (gate 3), a precondition for H2</b>H2 compares H with H-collapsed. If the two arms send the same request to the answer model, the contrast says nothing about the labels. So <i>s</i> is the share of the 30 pilot-2 items on which the requests of H and H-collapsed differ; because |E(p<sub>H</sub> &minus; p<sub>Hc</sub>)| &le; <i>s</i>, if the exact one-sided 95% upper bound of <i>s</i> is below 0.10 (that is, <i>s</i> = 0/30; 1/30 gives 0.149), or if no primary item differs, the mechanism clause is removed from the claim before the main run, and H2 is reported as an estimate with the bound <i>s</i>. The gate is evaluated once and its decision is final. As first registered, pilot 1 measured <i>s</i> on its 20 primary items: 0/20, bound 0.139, not triggered; a 0/20 could never trigger, which is why the stricter rule replaced it.</div>
+  <div class="ours"><b class="h">The pilot power check (gate 4)</b>The pilot can only raise the target. On the 20 primary items of pilot 1, &psi;&#770;(H, R) = 3/20 with a one-sided 80% upper bound of 0.259, and &psi;&#770;(H, Hc) = 2/20 with an upper bound of 0.202. Both are at most 0.30, so the target stays 270.</div>
+  <div class="ours"><b class="h">What is not tested</b>Strata, the other arms (closed book, LightRAG, exploratory variants), faithfulness and recall are reported as estimates with intervals and no p-values. They make no confirmatory claims, so the family stays at two tests and no multiplicity procedure such as Holm's is needed. One exception is fixed in advance: a secondary proxy (fully correct <i>and</i> citing at least one gold passage) gets the exact one-sided McNemar test on H &minus; R and H &minus; Hc in every case, labelled "secondary, unadjusted"; it never enters the decision, and one decorative gold citation passes it, so it is not a measure of grounding.</div>
   <p>The running example shows why these rules exist. Our chunking pilot had 40 questions and an observed &psi; &asymp; 0.175; its best-looking contrast (5 vs 2, direction chosen after seeing the data) gave a tail of about 0.23 and an interval from &minus;5 to +20 points. With 40 questions, &psi; = 0.30 and a true gain of 10 points, the power would be only about 0.22: such a run usually can neither establish nor exclude a 10-point gain. Writing the decision rule, the sample-size target and the "inconclusive" wording before the main run is what keeps such a result honest.</p>
 </section>
 
@@ -654,7 +648,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </main>
 
 <footer><div class="wrap">
-  <p><b>Provenance.</b> Computed: every p-value, power value, interval and &kappa; on this page (browser code checked against a Python reference, which agrees with SciPy). Real data: the 2&times;2 counts of the chunking pilot (40 CS 156 homework questions; the outcome is an LLM judge's grade of the retrieved text, not of an answer, and no human checked the grades; the pilot pre-registered no test, so its p-values here are a teaching example). Ours: the thesis protocol (planning values, not results) and the illustrative agreement tables.</p>
+  <p><b>Provenance.</b> Computed: every p-value, power value, interval and &kappa; on this page (browser code checked against a Python reference, which agrees with SciPy). Real data: the 2&times;2 counts of the chunking pilot (40 CS 156 homework questions; the outcome is an LLM judge's grade of the retrieved text, not of an answer; the pilot pre-registered no test, so its p-values here are a teaching example). Ours: the thesis protocol (planning values, not results), the pilot-1 gate values it quotes and the illustrative agreement tables.</p>
 </div></footer>
 
 <script id="stats-core">
@@ -823,7 +817,7 @@ $("kp-pre").onclick = ev => { const i = ev.target.dataset.i; if (i == null) retu
 const kpSet = () => ["a", "b", "c", "d"].forEach(k => $("kp-" + k).value = KP[k]);
 ["a", "b", "c", "d"].forEach(k => $("kp-" + k).addEventListener("input", () => { KP[k] = Math.max(0, Math.floor(+$("kp-" + k).value || 0)); kpDraw(); }));
 function kpDraw() { const {a, b, c, d} = KP, N = a + b + c + d, [k, po, pe] = S.kappa([[a, b], [c, d]]);
-  $("kp-out").innerHTML = N ? `observed agreement p<sub>o</sub> = <b>${pct(po)}</b> · chance agreement p<sub>e</sub> = ${pct(pe)} · <b>κ = ${isFinite(k) ? k.toFixed(3) : "undefined (p_e = 1)"}</b><br>false accepts (judge says fully correct, author does not): <b>${b}</b>; that is ${b + d ? pct(b / (b + d)) : "n/a"} of the ${b + d} answers the author rejects (one possible denominator; the protocol must fix it)` : "enter counts"; }
+  $("kp-out").innerHTML = N ? `observed agreement p<sub>o</sub> = <b>${pct(po)}</b> · chance agreement p<sub>e</sub> = ${pct(pe)} · <b>κ = ${isFinite(k) ? k.toFixed(3) : "undefined (p_e = 1)"}</b>` : "enter counts"; }
 
 /* effect size: two bell curves, d slider, percentile shift (Phi via the Abramowitz-Stegun 7.1.26 erf, |error| < 1.5e-7) */
 const erfA = x => { const s = x < 0 ? -1 : 1, z = Math.abs(x), t = 1 / (1 + 0.3275911 * z);
@@ -889,7 +883,7 @@ Promise.all(["running-example.json", "power-table.json", "sources.json", "claims
 drawExample(); mcSet(); mcDraw(); pwSet(); pwDraw(); fsSet(); fsRun(); kpSet(); kpDraw(); esDraw();
 })();
 </script>
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
 </div>
 <script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
 // Two modes, decided from the page's real content edge (never from a fixed width):

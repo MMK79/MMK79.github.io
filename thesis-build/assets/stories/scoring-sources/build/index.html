@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>One scorer, set before tuning</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--line2:#3A4352;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+code,.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,7.5vw,56px);letter-spacing:-.01em}
+h2{font-size:clamp(26px,5.5vw,36px);margin:6px 0 16px}
+h3{font-size:20px;margin:26px 0 8px}
+p{margin:0 0 14px;max-width:68ch;overflow-wrap:anywhere}
+ul{padding-left:20px;max-width:68ch}li{margin:0 0 8px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13.5px}
+.lvl{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lvl b{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px;font-weight:600}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;max-width:none}
+#nav{display:flex;flex-wrap:wrap;gap:6px}
+#nav{row-gap:8px}#nav a{position:relative;text-decoration:none;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 11px;white-space:nowrap}
+#nav a::after{content:"";position:absolute;inset:-6px -3px}
+#nav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 34px}
+.hero p.lead{font-size:18.5px;color:var(--muted);max-width:60ch}
+.who{color:var(--faint);font-size:13.5px}
+/* hero figure: the three numbers that carry the lesson */
+.hero h1{margin:10px 0 16px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:24px 0 14px;max-width:640px}
+.facts div{padding:12px 12px 12px 0}
+.facts div+div{padding-left:14px;border-left:1px solid var(--line)}
+.facts .num{display:block;font-size:19px;color:var(--amber);line-height:1.3}
+.facts span.t{font-size:12.5px;color:var(--muted);line-height:1.35;display:block}
+.tldr{list-style:none;padding:0;margin:0;max-width:none}
+.tldr li{padding:11px 0 11px 28px;border-bottom:1px solid var(--line);position:relative;margin:0}
+.tldr li::before{content:counter(t);counter-increment:t;position:absolute;left:0;top:11px;font:500 13px var(--mono);color:var(--amber)}
+.tldr{counter-reset:t}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.card p:last-child{margin-bottom:0}
+.card .h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.card.ours .h{color:var(--purple)}
+.card.warn{border-color:rgba(255,138,101,.45)}.card.warn .h{color:var(--warn)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12.5px}
+.tbl td.m{font-family:var(--mono);font-size:13px}
+.hscroll{overflow-x:auto;max-width:100%}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.mk{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:0 6px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.mk.verified{color:var(--teal);border-color:var(--teal)}
+.mk.unverified{color:var(--warn);border-color:var(--warn)}
+.mk.inferred{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.mk.ours{color:var(--amber);border-color:var(--amber)}
+.mk.ill{color:var(--muted);border-color:var(--line2);border-style:dashed}
+/* buttons (DESIGN.md: transparent, 1px line, muted; pressed = inverted) */
+button{font:inherit;font-size:14px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:9px 14px;min-height:44px;max-width:100%;cursor:pointer;
+  transition:transform 160ms var(--ease),border-color 180ms var(--ease),background-color 180ms var(--ease),color 180ms var(--ease)}
+button:active{transform:scale(.97)}
+button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){button:hover{border-color:var(--amber)}}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+/* Touch: stage graph */
+#graph{position:relative;max-width:680px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:14px;row-gap:34px;padding:6px 18px;margin:18px 0 6px}
+#edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#edges path{fill:none;stroke:var(--line2);stroke-width:1.5;transition:stroke 200ms var(--ease)}
+#edges path.dash{stroke-dasharray:5 5}
+#edges path.on{stroke:var(--amber);stroke-width:2}
+#edges text{fill:var(--faint);font:11px var(--body)}
+.node{position:relative;z-index:1;text-align:left;background:var(--panel);color:var(--text);border-radius:12px;padding:10px 12px;min-height:64px;width:100%;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.node .t{font-size:14px;font-weight:500;line-height:1.3}
+.node .n{font:13px var(--mono);color:var(--muted);line-height:1.3}
+.node .k{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.node.span{grid-column:1 / span 2;justify-self:center;max-width:340px}
+.node.fallback,.node.diagnostic{border-style:dashed;background:transparent}
+.node.path{border-color:var(--line2)}
+.node.sel{border-color:var(--amber);background:var(--panel2)}
+.node.sel .n{color:var(--amber)}
+.node.void{opacity:.45}
+.node.void .n{text-decoration:line-through}
+.node.live{border-style:solid;background:var(--panel)}
+#detail{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0;min-height:180px}
+#detail h3{margin:0 0 4px}
+#detail .big{font:22px var(--mono);color:var(--amber);margin:2px 0 12px;line-height:1.3}
+#detail dl{margin:0;display:grid;grid-template-columns:minmax(0,7.5em) minmax(0,1fr);gap:6px 12px;font-size:14.5px}
+#detail dt{color:var(--faint);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:2px}
+#detail dd{margin:0}
+#demo-note{font-size:13.5px;color:var(--muted);min-height:1.5em}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:12px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel2)}
+.flow span.box.hl{border-color:var(--amber);color:var(--amber)}
+.flow span.ar{color:var(--faint)}
+details{margin:12px 0}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
+.q{border-top:1px solid var(--line);padding:16px 0}
+.q .opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.q button{text-align:left;color:var(--text)}
+.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+#err{display:none;color:var(--warn);border:1px solid var(--warn);border-radius:10px;padding:10px;margin:10px 0}
+@media (max-width:640px){#caveat .more{display:none}#graph{padding:6px 12px;column-gap:10px}.node{padding:9px 10px}.node .t{font-size:13.5px}.node .n{font-size:12px}#detail dl{grid-template-columns:1fr}#detail dt{padding-top:6px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-property:color,border-color,background-color,stroke!important;transform:none!important}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real counts</b> from our scoring run (EXP-037). Individual pair scores are not shown: they stay sealed until the pilot closes.<span class="more"> Marks: <span class="mk verified">verified</span> <span class="mk ours">ours</span> <span class="mk inferred">inferred</span> <span class="mk unverified">unverified</span>.</span></p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="lvl">A layered lesson on where the ranking scores come from</div>
+  <h1>One scorer, set before tuning</h1>
+  <p class="lead">The graph arm ranks passages by a relevance score. We needed 181,630 new scores on top of the ones we had. This page shows how we made sure that every score comes from one scorer, so no result depends on which machine did the scoring.</p>
+  <div class="facts" aria-label="Key numbers">
+    <div><span class="num">25/25</span><span class="t">kernels matched 200 old scores exactly</span></div>
+    <div><span class="num">197,073</span><span class="t">scores in one file</span></div>
+    <div><span class="num">100 %</span><span class="t">of collected pairs covered</span></div>
+  </div>
+  <p class="who">Builds on <a href="/thesis/assets/stories/rerankers/build/index.html">Rerankers</a> (what the scorer is) and <a href="/thesis/assets/stories/graph-hops/build/index.html">Graph hops and ranking</a> (where the scores are used).</p>
+  <div id="err"></div>
+</header>
+
+<section class="step" id="tldr"><div class="lvl"><b>TL;DR</b>the short version</div>
+<h2>In five lines</h2>
+<ol class="tldr">
+  <li>To rank passages, the system gives each (question, passage) pair a relevance score. A cross-encoder, bge-reranker-v2-m3, makes that score. <a class="cite" data-c="addd|D3" data-k="c03"></a></li>
+  <li>The balanced rank rule needs a score for every passage at hops 0 to 2. That meant 181,630 new pairs on top of 15,443 scored ones. <a class="cite" data-c="prog|Pairs (D3)" data-k="c14"></a></li>
+  <li>int8 scores can differ between CPU types. So the rule, fixed in advance: keep the old job (S1) only if every new machine reproduces 200 old scores exactly; otherwise re-score everything with one GPU job (S2). <a class="cite" data-c="addd|D3 switch rule" data-k="c07"></a></li>
+  <li>All 25 kernels, on Intel and AMD CPUs, matched 200 of 200. S1 was kept. <a class="cite" data-c="prog|S1 complete" data-k="c17"></a></li>
+  <li>The 197,073 merged scores cover 100 % of the pairs and were hashed before tuning, so the scores cannot change after a result is seen. <a class="cite" data-c="addd|D4b" data-k="c20"></a></li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="lvl"><b>Level 0</b>like I am five</div>
+<h2>Many graders, one grade book</h2>
+<p>Imagine a contest with thousands of essays. Each essay gets a grade, and the grades decide the winners.</p>
+<p>Some essays already have grades. Now many new graders must grade the rest. But what if a new grader is a little stricter? Then the winners depend on who graded which essay. Nobody chose that.</p>
+<p>So before a new grader starts, we give them 200 essays that already have grades. They must give exactly the same grades. If one grade is different, we stop all of them. Then one single grader grades every essay again, old and new.</p>
+<p>Every new grader matched all 200. So we kept the old grades and added the new ones. Then we locked the grade book before anyone looked at the winners.</p>
+<div class="flow" aria-label="The idea in five steps"><span class="box">old grades</span><span class="ar">→</span><span class="box hl">test: 200 exact</span><span class="ar">→</span><span class="box">grade the rest</span><span class="ar">→</span><span class="box">one grade book</span><span class="ar">→</span><span class="box">lock it</span></div>
+</section>
+
+<section class="step" id="l1"><div class="lvl"><b>Level 1</b>student</div>
+<h2>Why one scorer must be proven, not assumed</h2>
+<p>A <b>cross-encoder</b> reads a question and a passage together and gives one relevance number. Ours is bge-reranker-v2-m3. We run it in <b>int8</b>: the model's numbers are stored as small integers, which makes it fast on a CPU. <a class="cite" data-c="addd|D3 pinned settings" data-k="c03"></a></p>
+<p>A <b>key</b> is one (question, passage) pair. A <b>kernel</b> is one scoring job on one rented Kaggle machine. <b>Bit-equal</b> means the two numbers are the same in every binary digit, not only "close".</p>
+<p>int8 arithmetic can give slightly different results on different CPU instruction sets. <a class="cite" data-c="onnxq|quantization page" data-k="c04"></a> The machines that made the old scores did not record their instruction set. <a class="cite" data-c="addd|D3, kernel_meta" data-k="c05"></a> So "same model, same settings" did not guarantee the same numbers.</p>
+<h3>One real example, worked</h3>
+<div class="card"><span class="h">Same model file, two kinds of CPU</span>
+<p><b>On Kaggle (x86).</b> The first kernel, the timing probe, ran on an Intel Xeon 2.20 GHz. It re-scored the 200 sample keys and matched 200 of 200 bit for bit. Then it scored 1,000 new pairs at 0.632 pairs/s. <a class="cite" data-c="prog|Probe d-probe" data-k="c16"></a></p>
+<p><b>On a Mac (ARM).</b> A side test re-scored 50 of the same keys. The order agreed almost fully (Spearman 0.987). But 0 of 50 numbers were bit-equal, and the largest gap was 0.104. <a class="cite" data-c="prog|CE format diagnostic" data-k="c21"></a></p>
+<p><b>What it means.</b> The rank rule takes each hop's best passages by score. A score that moves can change which passages fill the slots. <a class="cite" data-c="addd|D1.3 (consequence)" data-k="c28"></a> The Mac was never a scoring machine; the test shows why every scoring machine had to pass the check first.</p>
+</div>
+</section>
+
+<section class="step" id="touch"><div class="lvl"><b>Touch</b>walk the pipeline</div>
+<h2>From two possible scorers to one locked file</h2>
+<p>Each box is one stage. Tap a stage to see what it does, what it checks and the real number. The path that feeds it lights up. Dashed boxes did not produce the scores we use.</p>
+<div class="seg" role="group" aria-label="View"><button type="button" id="v-run" aria-pressed="true">As run</button><button type="button" id="v-demo" aria-pressed="false">If one key had differed</button></div>
+<p id="demo-note" aria-live="polite"></p>
+<div id="graph"><svg id="edges" aria-hidden="true"></svg></div>
+<div id="detail" aria-live="polite"></div>
+<p class="small faint">Counts are copied from the run log and Addendum D; the page computes nothing. The "if one key had differed" view applies the frozen switch rule to an invented mismatch; it is a demo of the rule, not a run.</p>
+</section>
+
+<section class="step" id="l2"><div class="lvl"><b>Level 2</b>academic</div>
+<h2>A stop rule fixed before the data</h2>
+<h3>The two specifications</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th></th><th>S1 (primary)</th><th>S2 (conditional)</th></tr>
+<tr><td>Model</td><td>the inherited int8 ONNX file and tokenizer</td><td>the bge-reranker-v2-m3 checkpoint at a pinned revision, fp32</td></tr>
+<tr><td>Where</td><td>Kaggle CPU, sharded</td><td>one Kaggle GPU job</td></tr>
+<tr><td>Which keys</td><td>new keys only; old keys keep their score</td><td>all keys, the inherited 15,443 included</td></tr>
+<tr><td>Pinned</td><td>onnxruntime 1.31.0, CPU provider only, 4 threads, batch 1, no padding, truncation 512</td><td>code hash, revision, runtime, device, precision, threads, batch, padding, truncation</td></tr>
+</table></div>
+<p class="small">Sources: S1 <a class="cite" data-c="addd|D3 pinned settings" data-k="c03"></a>, S2 <a class="cite" data-c="addd|D3 option S2" data-k="c09"></a>. Both were bound in stage 1, before any pair was collected, together with the switch rule and the 200-key sample.</p>
+<h3>The switch rule</h3>
+<p>S1 stays if and only if every S1 kernel is bit-equal on all 200 keys. One mismatch on any kernel selects S2, with no retry. <a class="cite" data-c="addd|D3 switch rule" data-k="c07"></a> The decision is recorded before any new score is merged and before any tuning; on a switch, the S1 scores are discarded, never mixed with S2. <a class="cite" data-c="addd|D3 timing" data-k="c11"></a> One score source per key, never mixed by arm. <a class="cite" data-c="addd|D3 score policy" data-k="c01"></a></p>
+<p>Speed, cost and wall-clock time are explicitly not criteria; a slow S1 waits. <a class="cite" data-c="addd|D3 not criteria" data-k="c10"></a> This closes a quiet channel: a scorer chosen for convenience after some scores exist is still a choice that can move the ranking.</p>
+<h3>What the check proves, and what it does not</h3>
+<p>Exact equality is a defensible stop rule, not a shown feasibility. 200 equal keys support reproducibility; they do not prove equality on unseen keys. <a class="cite" data-c="addd|D3 (X3:30, X4:20)" data-k="c08"></a> The check ran on every kernel and on both CPU types in the run, which is the strongest form the rule allows. <a class="cite" data-c="prog|S1 complete" data-k="c17"></a></p>
+<h3>Cost</h3>
+<p>At about 0.5 pairs/s, 181.6k new pairs is about 100 kernel-hours; the protocol labels this an extrapolation. <a class="cite" data-c="addd|D3 [C]" data-k="c13"></a> The run measured 0.52-0.66 pairs/s. <a class="cite" data-c="prog|S1 complete" data-k="c17"></a> Kaggle session and concurrency limits set the wall-clock time. <a class="cite" data-c="addd|D3 cost [I]" data-k="c25"></a></p>
+<div class="card warn"><span class="h">Threat recorded</span><p>44 of 50 sampled pairs reach the 512-token cap, so long exercise stems are cut. The cap is the same for every arm and frozen in both specifications; its effect on ranking is not measured. <a class="cite" data-c="prog|Threats line" data-k="c22"></a></p></div>
+</section>
+
+<section class="step" id="l3"><div class="lvl"><b>Level 3</b>our thesis choice</div>
+<h2>Why this matters for the result</h2>
+<p>The thesis compares a text arm with graph arms that share rank, fusion and packing code. The balanced rank rule (Addendum D) ranks inside every hop, so it needs a score for every passage at hops 0 to 2, with no cap. <a class="cite" data-c="addd|D3 scope" data-k="c27"></a> That is where the 181,630 new pairs came from.</p>
+<div class="hscroll"><table class="tbl">
+<tr><th>Step</th><th>Real number</th><th>Source</th></tr>
+<tr><td>Pairs collected (dev 18 items, pilot 30)</td><td class="m">195,471 keys</td><td><a class="cite" data-c="prog|Pairs (D3)" data-k="c14"></a></td></tr>
+<tr><td>Kernels passing the 200-key check</td><td class="m">25/25</td><td><a class="cite" data-c="prog|S1 complete" data-k="c17"></a></td></tr>
+<tr><td>Switch</td><td class="m">S1</td><td><a class="cite" data-c="prog|Switch (D3)" data-k="c18"></a></td></tr>
+<tr><td>Merged file (inherited + new)</td><td class="m">197,073 = 15,443 + 181,630</td><td><a class="cite" data-c="prog|Merge" data-k="c19"></a></td></tr>
+<tr><td>Coverage of collected keys</td><td class="m">195,471/195,471</td><td><a class="cite" data-c="prog|Merge" data-k="c19"></a></td></tr>
+<tr><td>Dev re-tuning on that file</td><td class="m">s7-b/2, k_graph 30</td><td><a class="cite" data-c="prog|D4c, I4" data-k="c24"></a></td></tr>
+</table></div>
+<div class="card ours"><span class="h">What we gain</span><p>Every arm reads the same scores from the same source. The file was hashed (stage 2) before dev tuning, and the tuning code refuses any other file. So a difference between arms cannot come from which machine scored a pair, and the scores were fixed before any tuned result existed. <a class="cite" data-c="addd|D4b stage 2" data-k="c20"></a> A frozen shared-baseline comparison stays valid under either scorer. <a class="cite" data-c="addd|D3 option S2" data-k="c23"></a></p></div>
+<p class="small muted">Per-item tuning rows and retrieval traces are sealed until the pilot closes; the visible record holds aggregates and the winner. <a class="cite" data-c="addd|D4c sealing" data-k="c26"></a> The next stage of the path, how the scores fill the graph slots, is in <a href="/thesis/assets/stories/graph-hops/build/index.html">Graph hops and ranking</a>.</p>
+</section>
+
+<section class="step" id="quiz"><div class="lvl"><b>Quiz</b>check yourself</div>
+<h2>Four questions</h2>
+<div id="qz"></div>
+</section>
+
+<section class="step" id="src"><div class="lvl"><b>Sources</b>where every number comes from</div>
+<h2>Sources</h2>
+<p class="small muted">Only protocol Addendum D and the Stage A run log (EXP-037), plus the one document Addendum D cites for the CPU point.</p>
+<div class="hscroll"><table class="tbl" id="srctbl"></table></div>
+<details><summary>All claims with their marks</summary><div class="hscroll"><table class="tbl" id="cltbl"></table></div></details>
+</section>
+</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var G, SRC, CL = {}, QZ, st = { sel: 'ovl', demo: false };
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }); }
+  var base = '../data';
+  Promise.all([get(base + '/scoring.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json'), get(base + '/quiz.json')]).then(function (a) {
+    G = a[0]; SRC = a[1].sources; a[2].claims.forEach(function (c) { CL[c.id] = c; }); QZ = a[3].questions;
+    cites(document); graph(); quiz(); sources();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load the data (' + e.message + '). Open the page through a web server, not as a file.'; });
+
+  function cites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]'), function (a) {
+      var p = a.getAttribute('data-c').split('|'), s = SRC[p[0]], c = CL[a.getAttribute('data-k')];
+      a.href = '#src-' + p[0];
+      a.textContent = '[' + (s ? s.short : p[0]) + (p[1] ? ', ' + p[1] : '') + ']';
+      if (s) a.title = s.title;
+      if (c) { var m = document.createElement('span'); m.className = 'mk ' + c.status; m.textContent = c.status; m.title = c.id + ': ' + c.text; a.after(m); }
+    });
+  }
+
+  // switch rule as frozen in Addendum D (D3): S1 iff zero mismatches over all kernels
+  function source(mismatches) { return mismatches === 0 ? 'S1' : 'S2'; }
+
+  function S(id) { return G.stages.filter(function (s) { return s.id === id; })[0]; }
+  function view(s) {
+    var v = { num: s.num, real: s.real, cls: '' };
+    if (!st.demo) return v;
+    var src = source(G.demo.mismatches);
+    if (s.id === 'ovl') { v.num = '1 key differs (demo)'; v.real = 'Demo: one kernel finds 1 of its 200 keys with a different score.'; }
+    if (s.id === 'sw') { v.num = src + ' selected'; v.real = G.demo.outcome; }
+    if (s.id === 's1') v.cls = 'void';
+    if (s.id === 's2') { v.cls = 'live'; v.num = 're-scores every key'; v.real = G.demo.outcome; }
+    if (s.id === 'mrg' || s.id === 'cov' || s.id === 'st2') { v.num = 'S2 scores only'; v.real = 'This stage would hold S2 scores for every key, with no S1 score mixed in. The run itself kept S1.'; }
+    return v;
+  }
+  function ancestors(id) {
+    var set = {}; set[id] = 1; var grew = true;
+    while (grew) { grew = false; G.edges.forEach(function (e) { if (set[e[1]] && !set[e[0]] && live(e)) { set[e[0]] = 1; grew = true; } }); }
+    return set;
+  }
+  function live(e) { // which edges carry the scores in this view (dashed otherwise)
+    var k = e[0] + '>' + e[1];
+    if (st.demo) return k !== 'inh>mrg';           // S2 re-scores the inherited keys too
+    return k !== 'new>s2' && k !== 's2>sw';        // as run: S2 never used
+  }
+
+  function graph() {
+    var g = $('graph'), html = '';
+    G.stages.forEach(function (s) {
+      var span = s.row >= 4 ? ' span' : '';
+      html += '<button type="button" class="node ' + s.kind + span + '" data-id="' + s.id + '" style="grid-row:' + s.row + (span ? '' : ';grid-column:' + s.col) + '">' +
+        '<span class="k">' + esc(s.kind === 'diagnostic' ? 'outside the rule' : s.kind === 'fallback' ? 'fallback' : s.kind) + '</span><span class="t">' + esc(s.title) + '</span><span class="n"></span></button>';
+    });
+    g.insertAdjacentHTML('beforeend', html);
+    Array.prototype.forEach.call(g.querySelectorAll('.node'), function (b) { b.addEventListener('click', function () { st.sel = b.dataset.id; paint(true); }); });
+    $('v-run').addEventListener('click', function () { st.demo = false; paint(true); });
+    $('v-demo').addEventListener('click', function () { st.demo = true; if (st.sel === 'mac') st.sel = 'sw'; paint(true); });
+    var t; window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(function () { paint(false); }, 80); });
+    paint(false);
+  }
+
+  function paint(animate) {
+    $('v-run').setAttribute('aria-pressed', String(!st.demo)); $('v-demo').setAttribute('aria-pressed', String(st.demo));
+    $('demo-note').innerHTML = st.demo ? '<span class="mk ill">' + esc(G.demo.label) + '</span> ' + esc(G.demo.what) : 'The run as it happened: S1 kept, S2 never needed.';
+    var anc = ancestors(st.sel);
+    Array.prototype.forEach.call(document.querySelectorAll('#graph .node'), function (b) {
+      var s = S(b.dataset.id), v = view(s);
+      b.querySelector('.n').textContent = v.num;
+      b.classList.toggle('sel', s.id === st.sel); b.classList.toggle('path', !!anc[s.id] && s.id !== st.sel);
+      b.classList.remove('void', 'live'); if (v.cls) b.classList.add(v.cls);
+      b.setAttribute('aria-pressed', String(s.id === st.sel));
+      b.setAttribute('aria-label', s.title + ': ' + v.num);
+    });
+    edges(anc, animate);
+    detail();
+  }
+
+  function edges(anc, animate) {
+    var g = $('graph'), svg = $('edges'), R = g.getBoundingClientRect(), W = R.width, out = '';
+    function box(id) { var r = g.querySelector('[data-id="' + id + '"]').getBoundingClientRect(); return { l: r.left - R.left, r: r.right - R.left, t: r.top - R.top, b: r.bottom - R.top, cx: (r.left + r.right) / 2 - R.left, cy: (r.top + r.bottom) / 2 - R.top }; }
+    G.edges.forEach(function (e) {
+      var a = box(e[0]), b = box(e[1]), d, lab = '', on = anc[e[0]] && anc[e[1]] && live(e), dash = !live(e);
+      if (e[0] === 'inh' && (e[1] === 'mrg' || e[1] === 'ovl')) { var x = e[1] === 'ovl' ? 11 : 4, ya = e[1] === 'ovl' ? a.cy - 8 : a.cy + 8; d = 'M' + a.l + ' ' + ya + ' H' + x + ' V' + b.cy + ' H' + b.l; }
+      else if (e[0] === 's2' && e[1] === 'sw') { var xr = W - 5; d = 'M' + a.r + ' ' + a.cy + ' H' + xr + ' V' + b.cy + ' H' + b.r; }
+      else { var y1 = a.b, y2 = b.t, m = (y1 + y2) / 2; d = 'M' + a.cx + ' ' + y1 + ' C' + a.cx + ' ' + m + ' ' + b.cx + ' ' + m + ' ' + b.cx + ' ' + y2; }
+      out += '<path d="' + d + '" class="' + (on ? 'on' : '') + (dash ? ' dash' : '') + '"/>';
+      if (e[2] && W > 420 && e[0] !== 'inh') { lab = '<text x="' + ((a.cx + b.cx) / 2 + 6) + '" y="' + ((a.b + b.t) / 2 + 4) + '">' + esc(e[2]) + '</text>'; out += lab; }
+    });
+    svg.innerHTML = out;
+    if (animate && !reduce) Array.prototype.forEach.call(svg.querySelectorAll('path.on'), function (p) {
+      var L = p.getTotalLength(); p.animate([{ strokeDasharray: L + ' ' + L, strokeDashoffset: L }, { strokeDasharray: L + ' ' + L, strokeDashoffset: 0 }], { duration: 260, easing: 'cubic-bezier(.23,1,.32,1)' });
+    });
+  }
+
+  function detail() {
+    var s = S(st.sel), v = view(s);
+    $('detail').innerHTML = '<h3>' + esc(s.title) + '</h3><p class="big">' + esc(v.num) + '</p><dl><dt>What it does</dt><dd>' + esc(s.what) + '</dd><dt>What it checks</dt><dd>' + esc(s.checks) + '</dd><dt>' + (st.demo && v.real !== s.real ? 'Under the rule' : 'Real result') + '</dt><dd>' + esc(v.real) + '</dd><dt>Sources</dt><dd>' +
+      s.claims.map(function (c) { return '<a class="cite"' + ' data-c="' + CL[c].key + '|' + esc(CL[c].loc) + '" data-k="' + c + '"></a>'; }).join(' ') + '</dd></dl>';
+    cites($('detail'));
+  }
+
+  function quiz() {
+    $('qz').innerHTML = QZ.map(function (x, i) {
+      return '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(x.q) + '</b><div class="opts">' + x.o.map(function (o, j) { return '<button type="button" data-j="' + j + '">' + String.fromCharCode(65 + j) + '. ' + esc(o) + '</button>'; }).join('') + '</div><p class="small muted fb" hidden></p></div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qz .q'), function (box) {
+      var x = QZ[+box.dataset.i];
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (b) {
+        b.addEventListener('click', function () {
+          var j = +b.dataset.j; b.classList.add(j === x.a ? 'right' : 'wrong');
+          box.querySelectorAll('button')[x.a].classList.add('right');
+          var fb = box.querySelector('.fb'); fb.hidden = false; fb.textContent = (j === x.a ? 'Right. ' : 'Not quite. ') + x.f;
+        });
+      });
+    });
+  }
+
+  function sources() {
+    $('srctbl').innerHTML = '<tr><th>source</th><th>where</th><th>read?</th></tr>' + Object.keys(SRC).map(function (k) {
+      var s = SRC[k], t = s.url ? '<a href="' + esc(s.url) + '">' + esc(s.title) + '</a>' : esc(s.title);
+      return '<tr id="src-' + k + '"><td><b>' + esc(s.short) + '</b><br>' + t + '</td><td>' + esc(s.venue) + '</td><td class="small">' + (s.verified ? '<span class="mk verified">read</span> ' : '<span class="mk unverified">not read</span> ') + esc(s.how) + '</td></tr>';
+    }).join('');
+    $('cltbl').innerHTML = '<tr><th>id</th><th>claim</th><th>source, locator</th><th>mark</th></tr>' + Object.keys(CL).map(function (id) {
+      var c = CL[id]; return '<tr><td class="m">' + id + '</td><td>' + esc(c.text) + '</td><td class="small">' + esc((SRC[c.key] || {}).short || c.key) + ', ' + esc(c.loc) + '</td><td><span class="mk ' + c.status + '">' + c.status + '</span></td></tr>';
+    }).join('');
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1191 @@
+{
+ "what": "Course-map placement (v1, v2, v3) re-run by us on the frozen KG files with the app's v3 rule; lesson owners copied from lessons-site kg_prereqs.json. Counts are passages from the KG generation files.",
+ "kg_snapshot": "7f28a3a3",
+ "defines_weight": 3,
+ "min_support": 3,
+ "share": 0.34,
+ "totals": {
+  "covered": 464,
+  "placed_v3_rerun": 232,
+  "placed_app": 233,
+  "v1_lecture1": 61,
+  "owned_concepts": 1818,
+  "topics": 84
+ },
+ "lecture4_v3": [
+  "binary error",
+  "closed-form solution",
+  "error measure",
+  "false positive",
+  "false reject",
+  "input distribution",
+  "input space",
+  "learning diagram",
+  "noise",
+  "noisy target",
+  "out-of-sample error",
+  "overall error",
+  "pointwise error",
+  "probability distribution",
+  "signal",
+  "squared error",
+  "target distribution"
+ ],
+ "lecture_titles": {
+  "1": "The Learning Problem",
+  "2": "Is Learning Feasible?",
+  "3": "Linear Models I",
+  "4": "Error and Noise",
+  "5": "Training versus Testing",
+  "6": "Theory of Generalization",
+  "7": "The VC Dimension",
+  "8": "Bias-Variance Tradeoff",
+  "9": "The Linear Model II",
+  "10": "Neural Networks",
+  "11": "Overfitting",
+  "12": "Regularization",
+  "13": "Validation",
+  "14": "Support Vector Machines",
+  "15": "Kernel Methods",
+  "16": "Radial Basis Functions",
+  "17": "Three Learning Principles",
+  "18": "Epilogue"
+ },
+ "concepts": [
+  {
+   "id": "vc-dimension",
+   "label": "VC dimension",
+   "kind": "theory",
+   "course_map": {
+    "v1": 1,
+    "v2": 7,
+    "v3": 7,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 2,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 4,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 5,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 6,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 7,
+      "role": "revisits",
+      "defines": 4,
+      "mentions": 30,
+      "weight": 42
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 2,
+      "mentions": 4,
+      "weight": 10
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 10,
+      "weight": 10
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 6,
+      "weight": 6
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 17,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 12,
+      "weight": 15
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "vc-dimension",
+     "title": "The VC dimension and the VC generalization bound",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.67 of its in-topic defining passages (needs 0.34)",
+     "share": 0.667
+    }
+   ]
+  },
+  {
+   "id": "c_e8a6abb0d801",
+   "label": "principal component analysis",
+   "kind": "method",
+   "course_map": {
+    "v1": 4,
+    "v2": 4,
+    "v3": null,
+    "v3_reason": "no lecture reaches weight 3",
+    "lectures": [
+     {
+      "lecture": 4,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "pca",
+     "title": "Principal components and dimension reduction",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.90 of its in-topic defining passages (needs 0.34)",
+     "share": 0.9
+    }
+   ]
+  },
+  {
+   "id": "svm",
+   "label": "support vector machine",
+   "kind": "method",
+   "course_map": {
+    "v1": 1,
+    "v2": 15,
+    "v3": 15,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 5,
+      "weight": 5
+     },
+     {
+      "lecture": 2,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 3,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 4,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 8,
+      "weight": 8
+     },
+     {
+      "lecture": 15,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 13,
+      "weight": 13
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 11,
+      "weight": 11
+     },
+     {
+      "lecture": 17,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 7,
+      "weight": 7
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "margin-svm",
+     "title": "Maximum margin and the hard-margin SVM",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 1.00 of its in-topic defining passages (needs 0.34)",
+     "share": 1.0
+    }
+   ]
+  },
+  {
+   "id": "c_67b6fc955f3c",
+   "label": "backpropagation",
+   "kind": "method",
+   "course_map": {
+    "v1": 1,
+    "v2": 10,
+    "v3": 10,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 11,
+      "weight": 14
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 2,
+      "weight": 5
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "backpropagation",
+     "title": "Backpropagation",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.83 of its in-topic defining passages (needs 0.34)",
+     "share": 0.833
+    }
+   ]
+  },
+  {
+   "id": "c_f9366285a5d2",
+   "label": "noise",
+   "kind": "phenomenon",
+   "course_map": {
+    "v1": 4,
+    "v2": 11,
+    "v3": 4,
+    "v3_reason": "a lecture that defines it beats one that only mentions it",
+    "lectures": [
+     {
+      "lecture": 4,
+      "role": "introduces",
+      "defines": 1,
+      "mentions": 4,
+      "weight": 7
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 21,
+      "weight": 21
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "x-probability-densities-49",
+     "title": "Random variables, mass functions and densities",
+     "origin": "phase2",
+     "rule": "a",
+     "rule_text": "share 1.00 of its in-topic defining passages (needs 0.34)",
+     "share": 1.0
+    }
+   ]
+  },
+  {
+   "id": "logistic-regression",
+   "label": "logistic regression",
+   "kind": "method",
+   "course_map": {
+    "v1": 4,
+    "v2": 9,
+    "v3": 10,
+    "v3_reason": "a lecture that defines it beats one that only mentions it",
+    "lectures": [
+     {
+      "lecture": 4,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 21,
+      "weight": 21
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 6,
+      "weight": 9
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "logistic-regression",
+     "title": "Logistic regression and cross-entropy",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.88 of its in-topic defining passages (needs 0.34)",
+     "share": 0.875
+    }
+   ]
+  },
+  {
+   "id": "perceptron",
+   "label": "perceptron",
+   "kind": "method",
+   "course_map": {
+    "v1": 1,
+    "v2": 7,
+    "v3": 1,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 2,
+      "mentions": 12,
+      "weight": 18
+     },
+     {
+      "lecture": 2,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 9,
+      "weight": 9
+     },
+     {
+      "lecture": 3,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 14,
+      "weight": 14
+     },
+     {
+      "lecture": 4,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 5,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 16,
+      "weight": 16
+     },
+     {
+      "lecture": 6,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 6,
+      "weight": 6
+     },
+     {
+      "lecture": 7,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 18,
+      "weight": 18
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 10,
+      "weight": 10
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 13,
+      "weight": 13
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 15,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 2,
+      "weight": 5
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "perceptron",
+     "title": "The perceptron and PLA",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.88 of its in-topic defining passages (needs 0.34)",
+     "share": 0.875
+    }
+   ]
+  },
+  {
+   "id": "c_35a7fa760eec",
+   "label": "gradient descent",
+   "kind": "method",
+   "course_map": {
+    "v1": 9,
+    "v2": 10,
+    "v3": 9,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 9,
+      "role": "introduces",
+      "defines": 3,
+      "mentions": 7,
+      "weight": 16
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 11,
+      "weight": 14
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "gradient-descent",
+     "title": "Gradient descent and stochastic gradient descent",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.80 of its in-topic defining passages (needs 0.34)",
+     "share": 0.8
+    }
+   ]
+  },
+  {
+   "id": "overfitting",
+   "label": "overfitting",
+   "kind": "phenomenon",
+   "course_map": {
+    "v1": 1,
+    "v2": 11,
+    "v3": 11,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 3,
+      "mentions": 30,
+      "weight": 39
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 2,
+      "mentions": 11,
+      "weight": 17
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 17,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "overfitting",
+     "title": "Overfitting",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.75 of its in-topic defining passages (needs 0.34)",
+     "share": 0.75
+    }
+   ]
+  },
+  {
+   "id": "c_f7c201efe201",
+   "label": "growth function",
+   "kind": "theory",
+   "course_map": {
+    "v1": 5,
+    "v2": 5,
+    "v3": 6,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 5,
+      "role": "introduces",
+      "defines": 2,
+      "mentions": 16,
+      "weight": 22
+     },
+     {
+      "lecture": 6,
+      "role": "revisits",
+      "defines": 3,
+      "mentions": 14,
+      "weight": 23
+     },
+     {
+      "lecture": 7,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 6,
+      "weight": 6
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 15,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 17,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 0,
+      "weight": 3
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "growth-function",
+     "title": "Dichotomies, growth function and break points",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.67 of its in-topic defining passages (needs 0.34)",
+     "share": 0.667
+    }
+   ]
+  },
+  {
+   "id": "dot-product",
+   "label": "dot product",
+   "kind": "math",
+   "course_map": {
+    "v1": 1,
+    "v2": 15,
+    "v3": 15,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 1,
+      "role": "introduces",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 3,
+      "weight": 3
+     },
+     {
+      "lecture": 15,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 17,
+      "weight": 17
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "inner-product",
+     "title": "Inner products, norms and orthogonality",
+     "origin": "seed",
+     "rule": "c",
+     "rule_text": "alias table",
+     "share": null
+    }
+   ]
+  },
+  {
+   "id": "c_23a47d00385a",
+   "label": "learning curve",
+   "kind": "theory",
+   "course_map": {
+    "v1": 8,
+    "v2": 8,
+    "v3": 8,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 8,
+      "role": "introduces",
+      "defines": 1,
+      "mentions": 8,
+      "weight": 11
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 2,
+      "mentions": 0,
+      "weight": 6
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 1,
+      "weight": 4
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 3,
+      "weight": 6
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "learning-curves",
+     "title": "Learning curves",
+     "origin": "seed",
+     "rule": "b",
+     "rule_text": "name match",
+     "share": null
+    },
+    {
+     "topic": "validation",
+     "title": "Validation, model selection and cross-validation",
+     "origin": "seed",
+     "rule": "a",
+     "rule_text": "share 0.43 of its in-topic defining passages (needs 0.34)",
+     "share": 0.429
+    }
+   ]
+  },
+  {
+   "id": "in-sample-error",
+   "label": "in-sample error",
+   "kind": "theory",
+   "course_map": {
+    "v1": 2,
+    "v2": 3,
+    "v3": 3,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 2,
+      "role": "introduces",
+      "defines": 2,
+      "mentions": 5,
+      "weight": 11
+     },
+     {
+      "lecture": 3,
+      "role": "revisits",
+      "defines": 4,
+      "mentions": 9,
+      "weight": 21
+     },
+     {
+      "lecture": 4,
+      "role": "revisits",
+      "defines": 2,
+      "mentions": 10,
+      "weight": 16
+     },
+     {
+      "lecture": 5,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 7,
+      "weight": 10
+     },
+     {
+      "lecture": 6,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 9,
+      "weight": 9
+     },
+     {
+      "lecture": 7,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 5,
+      "weight": 5
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 9,
+      "weight": 12
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 10,
+      "weight": 10
+     },
+     {
+      "lecture": 10,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 12,
+      "weight": 12
+     },
+     {
+      "lecture": 12,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 13,
+      "weight": 13
+     },
+     {
+      "lecture": 13,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 9,
+      "weight": 9
+     },
+     {
+      "lecture": 14,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     },
+     {
+      "lecture": 15,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 5,
+      "weight": 5
+     },
+     {
+      "lecture": 16,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 8,
+      "weight": 8
+     },
+     {
+      "lecture": 17,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 4,
+      "weight": 4
+     },
+     {
+      "lecture": 18,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 2,
+      "weight": 2
+     }
+    ]
+   },
+   "lesson_owners": [
+    {
+     "topic": "feasibility-hoeffding",
+     "title": "Is learning feasible? Hoeffding's inequality",
+     "origin": "seed",
+     "rule": "override",
+     "rule_text": "explicit override",
+     "share": null
+    }
+   ]
+  },
+  {
+   "id": "c_540251487785",
+   "label": "generalization error",
+   "kind": "theory",
+   "course_map": {
+    "v1": 4,
+    "v2": 8,
+    "v3": 8,
+    "v3_reason": "highest weight",
+    "lectures": [
+     {
+      "lecture": 4,
+      "role": "introduces",
+      "defines": 1,
+      "mentions": 0,
+      "weight": 3
+     },
+     {
+      "lecture": 7,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 1,
+      "weight": 4
+     },
+     {
+      "lecture": 8,
+      "role": "revisits",
+      "defines": 2,
+      "mentions": 4,
+      "weight": 10
+     },
+     {
+      "lecture": 9,
+      "role": "revisits",
+      "defines": 0,
+      "mentions": 1,
+      "weight": 1
+     },
+     {
+      "lecture": 11,
+      "role": "revisits",
+      "defines": 1,
+      "mentions": 0,
+      "weight": 3
+     }
+    ]
+   },
+   "lesson_owners": []
+  }
+ ],
+ "inputs_sha256": {
+  "passages.jsonl": "ffe3f75537a6",
+  "nodes.jsonl": "c22a4d13279f",
+  "structural.jsonl": "d53b9ee1577c",
+  "passage_edges.jsonl": "16a6fb2f20e6",
+  "kg_prereqs.json": "46c26a9cb5d3",
+  "topics.json": "77d2c8b68cea",
+  "closure_course_ext.json": "5bd3f07d399d"
+ }
+}

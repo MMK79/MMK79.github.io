@@ -1,7 +1,7 @@
 /* Explainer pages (metrics.html, algorithms.html, explainers.html). Tokens from site.css. Vertical page only:
    everything wraps, demos and videos are fluid, nothing is wider than the viewport. */
 #top{max-width:1180px;margin:0 auto;padding:18px 28px 6px}
-#top h1{font-size:clamp(26px,3vw,38px);margin:0 0 6px}
+#top h1{font-size:clamp(26px,3vw,36px);margin:0 0 6px}
 #top .lede{color:var(--muted);font-size:15px;max-width:76ch;margin-top:6px}
 .ex-story{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px;margin:14px 0 4px}
 .ex-story div{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:10px 12px;font-size:14px;min-width:0}
@@ -25,13 +25,13 @@ html[lang=fa] .ex-story b{text-transform:none}
 .ex-card>details>summary::-webkit-details-marker{display:none}
 .ex-card>details>summary:focus-visible{outline:2px solid var(--ai);outline-offset:-2px;border-radius:12px}
 .ex-sum-h{display:flex;gap:10px;align-items:baseline;justify-content:space-between}
-.ex-card h3{font-size:19px;margin:0;overflow-wrap:anywhere}
+.ex-card h3{font-size:20px;margin:0;overflow-wrap:anywhere}
 .ex-chev{flex:none;color:var(--muted);font-size:14px;transition:transform .15s}
 .ex-card details[open] .ex-chev{transform:rotate(90deg)}
 html[dir=rtl] .ex-chev{transform:scaleX(-1)} html[dir=rtl] .ex-card details[open] .ex-chev{transform:rotate(90deg)}
 .ex-q{color:var(--muted);font-size:14.5px;margin:0;max-width:none}
 .ex-tags{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
-.ex-tag{display:inline-block;font:500 11.5px/1.6 var(--body);border-radius:4px;padding:0 7px;border:1px solid color-mix(in srgb,var(--c,var(--muted)) 50%,var(--line));color:var(--c,var(--muted));white-space:nowrap}
+.ex-tag{display:inline-block;font:500 11.5px/1.6 var(--body);border-radius:8px;padding:0 7px;border:1px solid color-mix(in srgb,var(--c,var(--muted)) 50%,var(--line));color:var(--c,var(--muted));white-space:nowrap}
 .ex-tag.ev-evidenced{--c:var(--he)} .ex-tag.ev-inferred{--c:var(--warn)} .ex-tag.ev-partly{--c:var(--ai)}
 .ex-tag.real{--c:var(--he)} .ex-tag.partial{--c:var(--ai)} .ex-tag.toy{--c:var(--muted)}
 .ex-tag.d3{--c:var(--both)} .ex-tag.rev{--c:var(--k12)} .ex-tag.sup{--c:var(--warn)}
@@ -43,12 +43,12 @@ html[lang=fa] .ex-body h4{text-transform:none;font-size:13px}
 .ex-blk ul{padding-inline-start:20px}
 .ex-blk li{margin:3px 0}
 .ex-media{display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
-.ex-video video{display:block;width:100%;max-height:62vh;background:#000;border-radius:8px}
+.ex-video video{display:block;width:100%;max-height:62vh;background:var(--bg);border-radius:8px}
 .ex-novid{border:1px dashed var(--line);border-radius:8px;padding:10px 12px;font-size:13.5px;color:var(--muted)}
 .ex-demo{min-width:0;overflow-x:clip}
 .ex-demo .demo{max-width:100%}
 /* some demos put their mode buttons (Real example / Toy example) outside the kit's .demo box: same look as the kit's buttons */
-.ex-demo button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:4px 10px;cursor:pointer;font:inherit;font-size:13.5px;margin:0 4px 6px 0}
+.ex-demo button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:4px 10px;cursor:pointer;font:inherit;font-size:13.5px;margin:0 4px 6px 0}
 .ex-demo button[aria-pressed=true],.ex-demo button.on{border-color:var(--ai);color:var(--ai)}
 .ex-demo .muted{font-size:13.5px}
 .ex-fx{font:15px/1.6 var(--mono);color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;white-space:pre-wrap;overflow-wrap:anywhere;direction:ltr;text-align:left}
@@ -59,10 +59,10 @@ html[lang=fa] .ex-body h4{text-transform:none;font-size:13px}
 .ex-sym dd{margin:0;color:var(--text)}
 .ex-src{font-size:13.5px;color:var(--muted)}
 .ex-src a{color:var(--k12);overflow-wrap:anywhere}
-.ex-sup{border-inline-start:3px solid var(--warn);padding:4px 10px;margin-top:8px;font-size:13.5px}
+.ex-sup{border:1px solid var(--line);border-radius:10px;padding:6px 10px;margin-top:8px;font-size:13.5px}
 .ex-sup s{color:var(--faint)}
 .ex-sup code{font:12px var(--mono);color:var(--faint);white-space:pre-wrap;overflow-wrap:anywhere}
-.ex-caveat{border-inline-start:3px solid var(--warn);padding-inline-start:10px}
+.ex-caveat{border:1px solid var(--line);border-radius:10px;padding:6px 10px}
 .ex-grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
 .ex-none{color:var(--faint);font-size:14px;margin:16px 0}
 .ex-link{font-size:12.5px;color:var(--faint);text-decoration:none}.ex-link:hover{color:var(--ai)}
@@ -93,19 +93,46 @@ a.ex-rel:hover{border-color:var(--ai);color:var(--ai)}
 .ex-origin ul{margin:0;padding-inline-start:18px;font-size:13.5px;color:var(--muted)}
 .ex-origin p a,.ex-origin li a{color:var(--k12)}
 .ex-pv{font-weight:500}
-.ex-pv.pv-evidenced{color:var(--he);border-color:#1E5A52}.ex-pv.pv-textbook-only{color:var(--k12);border-color:#34447F}
-.ex-pv.pv-inferred{color:var(--ai);border-color:#6A4A12}.ex-pv.pv-unverified{color:var(--warn);border-color:#6A3A2C}
+.ex-pv.pv-evidenced{color:var(--he);border-color:var(--he-dim)}.ex-pv.pv-textbook-only{color:var(--k12);border-color:var(--k12-dim)}
+.ex-pv.pv-inferred{color:var(--ai);border-color:var(--ai-dim)}.ex-pv.pv-unverified{color:var(--warn);border-color:var(--warn-dim)}
 
 /* Foundations (Brief M) */
 .fd-flow{list-style:none;margin:18px 0;padding:0;display:grid;gap:12px;counter-reset:fd}
 .fd-fam{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:16px 18px;min-width:0;counter-increment:fd}
-.fd-fam h2{font-size:22px;margin:0 0 6px}.fd-fam h2::before{content:counter(fd) ". ";color:var(--ai)}
+.fd-fam h2{font-size:20px;margin:0 0 6px}.fd-fam h2::before{content:counter(fd) ". ";color:var(--ai)}
 .fd-fam h2 a{color:var(--text);text-decoration:none}.fd-fam h2 a:hover{text-decoration:underline}
 .fd-fam p{color:var(--muted);font-size:14.5px;margin:4px 0}.fd-meta .ex-tag{margin-inline-end:2px}.fd-start a{color:var(--he)}
 .fd-back{margin:0 0 6px;font-size:14px}.fd-back a{color:var(--ai)}
 .fd-kv{display:grid;grid-template-columns:minmax(90px,max-content) minmax(0,1fr);gap:2px 12px;font-size:13.5px;margin:4px 0}
 .fd-kv dt{color:var(--faint);font-family:var(--mono);font-size:12px}.fd-kv dd{margin:0;overflow-wrap:anywhere}.fd-kv dd ul{margin:0;padding-inline-start:18px}
 .fd-pre{margin:4px 0;padding-inline-start:18px}.fd-pre a{color:var(--he)}
-.ex-chips-fd{margin-top:8px;font-size:13px}.ex-chips-fd a{display:inline-block;margin:2px 4px 2px 0;padding:2px 9px;border:1px solid var(--line);border-radius:99px;color:var(--he);text-decoration:none}
+.ex-chips-fd{margin-top:8px;font-size:13px}.ex-chips-fd a{display:inline-block;margin:2px 4px 2px 0;padding:2px 9px;border:1px solid var(--line);border-radius:8px;color:var(--he);text-decoration:none}
 .fd-video{max-width:860px;margin:16px 0}.fd-video video{width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid var(--line)}.fd-video figcaption{font-size:12.5px;color:var(--faint);margin-top:6px}
 .fd-demo{margin:6px 0 14px}
+
+/* Explain hub and section pages (explain-registry.json): 4 sections, one card style. Tokens from site.css, rules in DESIGN.md. */
+.xs-crumb{font-size:13.5px;color:var(--muted);margin-bottom:6px}
+.xs-crumb a{text-decoration:none;color:var(--muted)} .xs-crumb a:hover,.xs-crumb a:focus-visible{color:var(--ai)}
+.xs-order{font-size:13.5px;color:var(--faint);margin-top:10px}
+.xh{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:14px;margin:18px 0}
+.xh-sec{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:18px 20px;min-width:0;display:flex;flex-direction:column}
+.xh-num,.xc-n{font:500 13px var(--mono);color:var(--ai);font-variant-numeric:tabular-nums}
+.xh-sec h2{font-size:26px;margin:4px 0 6px}
+.xh-sec > p{color:var(--muted);font-size:14.5px}
+.xh-list{list-style:none;margin:14px 0 14px;border-top:1px solid var(--line);padding:0}
+.xh-list li a{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:9px 2px;border-bottom:1px solid var(--line);text-decoration:none;font-size:14.5px;min-width:0}
+.xh-list li a:hover,.xh-list li a:focus-visible{color:var(--ai)}
+.xh-list .xc-kind{flex:none}
+.xh-open{margin-top:auto;font:500 13.5px var(--body);color:var(--ai);text-decoration:none;align-self:flex-start}
+.xh-open::after{content:" \2192"} html[lang=fa] .xh-open::after{content:" \2190"}
+.xh-open:hover,.xh-open:focus-visible{text-decoration:underline}
+.xc-kind{font:500 11.5px var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--faint)}
+html[lang=fa] .xc-kind{text-transform:none;letter-spacing:0}
+.ex-idx .xc-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.ex-idx h3{font-size:20px;margin:0 0 6px}
+.xs-also{font-size:20px;margin-top:40px}
+.xs-links{list-style:none;display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:8px 0 0}
+.xs-links a{display:inline-block;border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13.5px;color:var(--muted);text-decoration:none}
+.xs-links a:hover,.xs-links a:focus-visible{color:var(--text);border-color:var(--ai)}
+[hidden]{display:none!important}
+@media (max-width:720px){.xh-sec{padding:16px}.xh-sec h2{font-size:26px}}

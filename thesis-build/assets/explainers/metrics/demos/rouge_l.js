@@ -130,7 +130,7 @@
     const qids = Object.keys(D.ac.per_question.B).filter(answerable);
     const st = { arm: 'B', q: 'q06', n: 0, beta: 1 };
     const shell = K.shell(el, 'Real example: ROUGE-L on real gold vs real system answers',
-      'Scale: n = 12 questions, 9 answerable (the 3 unanswerable ones have a placeholder gold answer and are left out), 3 arms, one run, temperature 0; gold answers written by the study helper, not by human annotators; a demo, not a benchmark. ROUGE-L is computed live in this page from the real strings (lowercase letters and digits as tokens, F with beta = 1 unless you move it). The correctness verdict beside it is the LLM judge A verdict from the answer study (1 / 0.5 / 0), not a human label.');
+      'Scale: n = 12 questions, 9 answerable (the 3 unanswerable ones have a placeholder gold answer and are left out), 3 arms, one run, temperature 0; gold answers written by the study helper; a demo, not a benchmark. ROUGE-L is computed live in this page from the real strings (lowercase letters and digits as tokens, F with beta = 1 unless you move it). The correctness verdict beside it is the LLM judge A verdict from the answer study (1 / 0.5 / 0).');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

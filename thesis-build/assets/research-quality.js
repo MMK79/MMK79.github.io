@@ -18,7 +18,7 @@ if (!R.buckets[st.b]) st.b = Object.keys(R.buckets)[0];
 const save = () => history.replaceState(null, "", "#" + new URLSearchParams(st).toString());
 
 $("bseg").innerHTML = Object.keys(R.buckets).map(k => `<button data-b="${esc(k)}">${tt("rq.b." + k)}</button>`).join("");
-$("cls").innerHTML = CLASSES.map(c => `<label data-c="${esc(c)}"><input type="checkbox" value="${esc(c)}"><i style="background:${COL[c] || "#444"}"></i>${tt("rq.c." + c)}</label>`).join("");
+$("cls").innerHTML = CLASSES.map(c => `<label data-c="${esc(c)}"><input type="checkbox" value="${esc(c)}"><i style="background:${COL[c] || "var(--line-strong)"}"></i>${tt("rq.c." + c)}</label>`).join("");
 
 function draw() {
   save();
@@ -55,7 +55,7 @@ function draw() {
   $("years").innerHTML = `<tr><th>${tt("rq.th_class")}</th>${yrs.map(y => `<th class="n">${y}</th>`).join("")}</tr>` +
     use.map(c => `<tr><td><span class="q" style="background:${COL[c]}">${tt("rq.c." + c)}</span></td>${yrs.map((y, i) => `<td class="n">${N(B.iran[c]?.[i] ?? 0)} <span class="faint">/ ${N(B.world[c]?.[i] ?? 0)}</span></td>`).join("")}</tr>`).join("");
   const top = L => `<tr><th>${tt("rq.th_journal")}</th><th>${tt("rq.th_class")}</th><th class="n">SJR</th><th class="n">${tt("rq.th_works")}</th></tr>` +
-    L.map(j => `<tr><td lang="en" dir="ltr">${esc(j.name)}</td><td><span class="q" style="background:${COL[j.class] || "#444"}">${tt("rq.c." + j.class)}</span></td><td class="n">${j.sjr ?? "—"}</td><td class="n">${N(j.works)}</td></tr>`).join("");
+    L.map(j => `<tr><td lang="en" dir="ltr">${esc(j.name)}</td><td><span class="q" style="background:${COL[j.class] || "var(--line-strong)"}">${tt("rq.c." + j.class)}</span></td><td class="n">${j.sjr ?? "—"}</td><td class="n">${N(j.works)}</td></tr>`).join("");
   $("tir").innerHTML = top(B.top_journals_iran); $("tw").innerHTML = top(B.top_journals_world);
 }
 for (const b of $("bseg").querySelectorAll("button")) b.onclick = () => { st.b = b.dataset.b; draw(); };

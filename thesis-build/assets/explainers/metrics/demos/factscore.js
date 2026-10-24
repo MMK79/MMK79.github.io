@@ -78,7 +78,7 @@
     const qids = Object.keys(D.m.per_question.B);
     const st = { arm: 'A', q: 'q04', judge: 'A' };
     const shell = K.shell(el, 'Real example: atomic facts of real answers against a fixed source',
-      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run, no human labels. Answerer ' + D.m.answer_model + '; judge A ' + D.m.judge_A + ', judge B ' + D.m.judge_B + ' (both LLMs). Here an atomic fact is one claim extracted by an LLM from the answer.');
+      'Scale: n = 12 questions (9 answerable, 3 unanswerable), one run. Answerer ' + D.m.answer_model + '; judge A ' + D.m.judge_A + ', judge B ' + D.m.judge_B + ' (both LLMs). Here an atomic fact is one claim extracted by an LLM from the answer.');
     const caveats = K.el('ul', { class: 'hint', style: 'margin:0 0 12px;padding-left:18px' },
       K.el('li', {}, 'Knowledge source here: the shared evidence pool (the 138-passage Wikipedia corpus sample, as retrieved for arms B and C, plus the gold passages), the same for every arm. Original FActScore (Min et al. 2023) uses the whole of Wikipedia and retrieves passages per fact; this is a small fixed sample, and a fact outside the sample counts as unsupported.'),
       K.el('li', {}, 'Arm A has no retrieval: its "unsupported" means "not in the corpus sample", not "false". Many arm-A facts are true world knowledge.'),

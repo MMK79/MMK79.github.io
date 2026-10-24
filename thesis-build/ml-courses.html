@@ -16,23 +16,23 @@
 .steps .k{font:500 13px var(--mono);color:var(--faint)}
 .steps b{font-weight:600}
 .steps .w{color:var(--muted);font-size:14.5px}
-.steps .bar{height:10px;border-radius:5px;background:var(--he);opacity:.85}
+.steps .bar{height:10px;border-radius:8px;background:var(--he);opacity:.85}
 .steps .c{font:500 20px var(--display);text-align:end}
 .books{margin-top:18px}
 .book{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 70px;gap:14px;align-items:center;padding:9px 0;border-top:1px solid var(--line);cursor:pointer}
 .book:hover .t{color:var(--ai)}
 .book .t{font-size:15px}
 .book .t span{display:block;font-size:12.5px;color:var(--faint)}
-.book .b{height:12px;border-radius:6px;background:linear-gradient(var(--gdeg),var(--ai) var(--req),#6B5530 0)}
+.book .b{height:12px;border-radius:8px;background:linear-gradient(var(--gdeg),var(--ai) var(--req),var(--ai-dim) 0)}
 .book .n{font:500 15px var(--mono);text-align:end}
 .book.open{background:var(--panel)}
 .uses{grid-column:1 / -1;font-size:13.5px;color:var(--muted);padding:6px 0 10px}
 .uses a{color:var(--text)}
 .legend{font-size:13px;color:var(--muted);margin-top:8px;display:flex;gap:18px;flex-wrap:wrap}
-.legend i{display:inline-block;width:14px;height:10px;border-radius:3px;margin-inline-end:6px;vertical-align:-1px}
+.legend i{display:inline-block;width:14px;height:10px;border-radius:8px;margin-inline-end:6px;vertical-align:-1px}
 table{width:100%;border-collapse:collapse;font-size:14px;margin-top:12px}
 th{font-weight:500;color:var(--faint);text-align:start;padding:8px 6px;border-bottom:1px solid var(--line)}
-td{padding:8px 6px;border-bottom:1px solid #1A2030;vertical-align:top}
+td{padding:8px 6px;border-bottom:1px solid var(--panel2);vertical-align:top}
 td.n{font-family:var(--mono);text-align:end;white-space:nowrap}
 th.n{text-align:end}
 .xscroll{overflow-x:auto}
@@ -43,7 +43,7 @@ th.n{text-align:end}
 .scroll{max-height:560px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:12px}
 .scroll table{margin-top:0}
 .scroll th{position:sticky;top:0;background:var(--bg)}
-.tag{font:12px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap}
+.tag{font:12px var(--mono);color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:1px 6px;white-space:nowrap}
 .qual li{margin-block:6px;margin-inline-start:18px;color:var(--muted);max-width:90ch}
 .qual b{color:var(--text);font-weight:600}
 @media (max-width:820px){.steps li{grid-template-columns:28px 1fr 70px}.steps li>div:nth-child(4){display:none}.steps .w,.steps .bar{display:none}.book{grid-template-columns:1fr 60px}.book .b{display:none}}
@@ -69,13 +69,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -84,19 +84,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -107,7 +106,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -115,7 +114,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -129,14 +128,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -145,6 +144,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -155,30 +155,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -197,7 +178,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -224,7 +205,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -328,7 +309,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <section>
     <h2 data-i18n="ml.ranked">The textbooks, ranked</h2>
     <p class="muted" data-i18n="ml.ranked_p">Number of universities whose ML course pages mention each book. Click a book to see the courses.</p>
-    <div class="legend"><span><i style="background:var(--ai)"></i><span data-i18n="ml.leg_req">listed as the required textbook</span></span><span><i style="background:#6B5530"></i><span data-i18n="ml.leg_rec">recommended or mentioned</span></span></div>
+    <div class="legend"><span><i style="background:var(--ai)"></i><span data-i18n="ml.leg_req">listed as the required textbook</span></span><span><i style="background:var(--ai-dim)"></i><span data-i18n="ml.leg_rec">recommended or mentioned</span></span></div>
     <div class="books" id="books"></div>
   </section>
 
@@ -362,7 +343,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   </section>
 </main>
 <footer class="site-foot" id="foot"></footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "placement-simulation"], "figures": ["anatomy-system"]}, "ml_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian text for /ml-courses.html: pipeline stages (by stage id), quality caveats (keyed by the English claim, so a changed claim falls back to English), the quality note, and country names. University, course, book and file names stay in English. Machine-drafted not reviewed.", "stages": {"universities": {"label": "دانشگاه‌های این زیرمجموعه", "what": "فهرستی پیکربندی‌شده از دانشگاه‌ها (دامنه‌ها از فهرست university-domains پروژه Hipo)."}, "pages_fetched": {"label": "صفحه‌های دریافت‌شده", "what": "یک جست‌وجوی وب محدود به سایت هر دانشگاه، صفحه‌های نامزد را پیدا می‌کند؛ هر صفحه با رعایت آداب خزش (robots.txt، محدودیت نرخ درخواست، بدون ورود به حساب کاربری) دریافت می‌شود و برداشت لحظه‌ای آن ذخیره می‌شود."}, "ml_course_pages": {"label": "صفحه‌های یافته‌شده از درس‌های یادگیری ماشین", "what": "صفحه‌ای درس یادگیری ماشین به شمار می‌آید که عنوانش به یادگیری ماشین (یا یادگیری عمیق، یادگیری آماری یا بازشناسی الگو) اشاره کند و دست‌کم سه نشانه درس (سرفصل، درس‌گفتار، آزمون، نمره‌دهی و...) در آن دیده شود."}, "offerings": {"label": "ارائه‌های درس / درس‌های متمایز", "what": "عنوان، کد، نیم‌سال، مقطع و استاد از هر صفحه درس خوانده می‌شود؛ ارائه‌های یک درس در یک درس متمایز ادغام می‌شوند."}, "references": {"label": "منابع استخراج‌شده", "what": "کتاب‌هایی که در صفحه نام برده شده‌اند با فهرستی دست‌چین از کتاب‌های درسی مرجع (عنوان، نویسنده، ISBN، پیوند) تطبیق داده می‌شوند؛ سطرهای شبیه ارجاع که تطبیقی ندارند، به‌عنوان «بی‌تطبیق» نگه داشته می‌شوند."}, "material_links": {"label": "پیوندهای یافته‌شده به مواد درسی", "what": "پیوندهای صفحه‌های درس در دسته‌های اسلاید، جزوه، ویدئو، تمرین، پاسخ تمرین یا آزمون دسته‌بندی می‌شوند."}, "materials_downloaded": {"label": "مواد بارگیری‌شده", "what": "اسلایدها و جزوه‌های عمومی (فقط PDF/PPTX) با رعایت آداب خزش بارگیری می‌شوند: robots.txt، 1 درخواست در ثانیه برای هر میزبان، 50 MB برای هر فایل، بدون ورود به حساب کاربری؛ از میان پیوندهای متمایز واجد شرایط."}}, "note": "موارد با برچسب «اندازه‌گیری‌شده» نتیجه پرس‌وجو (query) از پایگاه داده‌اند. موارد با برچسب «استنباطی» بررسی‌های موردی یک نفر هستند (یک ارزیاب، بدون بررسی دوم) و برآوردهایی تقریبی‌اند.", "caveats": {"Book matches are about 97% precise.": {"claim": "دقت تطبیق کتاب‌ها حدود 97% است.", "detail": "از 40 سطر تطبیق‌یافته که به‌تصادف نمونه‌گیری شدند، 39 سطر درست بود (یک ارزیاب). تنها خطا (عنوان یک درس که کتاب نیلسن پنداشته شده بود) اکنون با علامت‌گذاری آن کتاب به‌عنوان «عمومی» مهار می‌شود."}, "About 6 of 138 offerings are not course pages.": {"claim": "حدود 6 مورد از 138 ارائه، صفحه درس نیستند.", "detail": "صفحه‌های برنامه تحصیلی و راهنمای ماژول‌ها (TU Darmstadt، UiO) و یک مقاله پژوهشی. یک تغییر مسیر به یک دوره آزاد انبوه برخط (MOOC) اکنون رد می‌شود."}, "Term, instructor and level are heuristic and weaker than titles and books.": {"claim": "نیم‌سال، استاد و مقطع با روش‌های ابتکاری استخراج می‌شوند و از عنوان‌ها و کتاب‌ها ضعیف‌ترند.", "detail": "بنگرید به measured.offerings_with_term، offerings_with_instructor و courses_level_unknown. فیلد کد درس گاهی داده نامربوط دارد (شماره اتاق، کد ناوبری)."}, "Counts are cumulative over two decades, not current.": {"claim": "شمارش‌ها انباشته دو دهه‌اند، نه وضعیت کنونی.", "detail": "جست‌وجو ارائه‌های بایگانی‌شده را هم پیدا می‌کند؛ بنگرید به measured.offerings_before_2015 / 2015_2020 / 2021_on / year_unknown. برای دیدن وضعیت کنونی، بر اساس سال پالایش کنید."}, "Coverage is near complete for North America and falls off elsewhere.": {"claim": "پوشش برای آمریکای شمالی تقریباً کامل است و در جاهای دیگر کاهش می‌یابد.", "detail": "بیشتر یک مسئله کشف است: یک نمایه جست‌وجو صفحه‌های درس اندکی برای ایران، چین و ژاپن پیدا می‌کند؛ محتوای Moodle/Canvas/Ed پشت ورود به حساب کاربری است و طبق طراحی به آن دسترسی گرفته نمی‌شود؛ برخی سایت‌ها برنامه‌های JavaScript هستند."}, "Aalto's only 'course' is a false positive.": {"claim": "تنها «درس» Aalto یک مثبت کاذب است.", "detail": "این مورد یک مقاله پژوهشی درباره یک سرفصل است، پس فنلاند در عمل 0 از 2 است."}, "Unmatched citations are catalogue gaps, not errors.": {"claim": "ارجاع‌های بی‌تطبیق کمبودهای فهرست کتاب‌اند، نه خطا.", "detail": "این‌ها سطرهای شبیه ارجاع زیر عنوان کتاب درسی/منابع هستند که در فهرست تطبیقی ندارند (اطمینان 0.30)."}, "Catalogue ISBNs are verified, except one.": {"claim": "ISBN‌های فهرست، به‌جز یکی، راستی‌آزمایی شده‌اند.", "detail": "با Open Library بررسی شد؛ کتاب «Learning Theory from First Principles» نوشته باخ خطای 404 داد و تأیید نشده است."}, "Downloaded materials are only the public PDF/PPTX slides and notes linked from course pages.": {"claim": "مواد بارگیری‌شده فقط اسلایدها و جزوه‌های عمومی PDF/PPTX هستند که صفحه‌های درس به آن‌ها پیوند داده‌اند.", "detail": "ویدئو، تمرین، آزمون، پیوندهای HTML/Google-Drive و هر چیزی که پشت ورود به حساب کاربری باشد بارگیری نمی‌شود. خطاها به تفکیک دلیل در pipeline.json فهرست شده‌اند."}}, "countries": {"United States": "ایالات متحده", "Germany": "آلمان", "Canada": "کانادا", "Iran": "ایران", "Hong Kong": "هنگ‌کنگ", "Netherlands": "هلند", "China": "چین", "Finland": "فنلاند", "Japan": "ژاپن", "Korea, Republic of": "کره جنوبی", "Norway": "نروژ", "United Kingdom": "بریتانیا", "Switzerland": "سوئیس", "France": "فرانسه", "Australia": "استرالیا", "Singapore": "سنگاپور", "India": "هند", "Italy": "ایتالیا", "Spain": "اسپانیا", "Sweden": "سوئد", "Denmark": "دانمارک"}}};</script>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 141, "real_logos": 176, "rows": 201, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 25, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "answer-checkers", "rerankers", "graph-hops", "scoring-sources", "pilot-one", "answer-prompt", "lessons-product", "placement-simulation"], "figures": ["anatomy-system"]}, "ml_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian text for /ml-courses.html: pipeline stages (by stage id), quality caveats (keyed by the English claim, so a changed claim falls back to English), the quality note, and country names. University, course, book and file names stay in English. Machine-drafted not reviewed.", "stages": {"universities": {"label": "دانشگاه‌های این زیرمجموعه", "what": "فهرستی پیکربندی‌شده از دانشگاه‌ها (دامنه‌ها از فهرست university-domains پروژه Hipo)."}, "pages_fetched": {"label": "صفحه‌های دریافت‌شده", "what": "یک جست‌وجوی وب محدود به سایت هر دانشگاه، صفحه‌های نامزد را پیدا می‌کند؛ هر صفحه با رعایت آداب خزش (robots.txt، محدودیت نرخ درخواست، بدون ورود به حساب کاربری) دریافت می‌شود و برداشت لحظه‌ای آن ذخیره می‌شود."}, "ml_course_pages": {"label": "صفحه‌های یافته‌شده از درس‌های یادگیری ماشین", "what": "صفحه‌ای درس یادگیری ماشین به شمار می‌آید که عنوانش به یادگیری ماشین (یا یادگیری عمیق، یادگیری آماری یا بازشناسی الگو) اشاره کند و دست‌کم سه نشانه درس (سرفصل، درس‌گفتار، آزمون، نمره‌دهی و...) در آن دیده شود."}, "offerings": {"label": "ارائه‌های درس / درس‌های متمایز", "what": "عنوان، کد، نیم‌سال، مقطع و استاد از هر صفحه درس خوانده می‌شود؛ ارائه‌های یک درس در یک درس متمایز ادغام می‌شوند."}, "references": {"label": "منابع استخراج‌شده", "what": "کتاب‌هایی که در صفحه نام برده شده‌اند با فهرستی دست‌چین از کتاب‌های درسی مرجع (عنوان، نویسنده، ISBN، پیوند) تطبیق داده می‌شوند؛ سطرهای شبیه ارجاع که تطبیقی ندارند، به‌عنوان «بی‌تطبیق» نگه داشته می‌شوند."}, "material_links": {"label": "پیوندهای یافته‌شده به مواد درسی", "what": "پیوندهای صفحه‌های درس در دسته‌های اسلاید، جزوه، ویدئو، تمرین، پاسخ تمرین یا آزمون دسته‌بندی می‌شوند."}, "materials_downloaded": {"label": "مواد بارگیری‌شده", "what": "اسلایدها و جزوه‌های عمومی (فقط PDF/PPTX) با رعایت آداب خزش بارگیری می‌شوند: robots.txt، 1 درخواست در ثانیه برای هر میزبان، 50 MB برای هر فایل، بدون ورود به حساب کاربری؛ از میان پیوندهای متمایز واجد شرایط."}}, "note": "موارد با برچسب «اندازه‌گیری‌شده» نتیجه پرس‌وجو (query) از پایگاه داده‌اند. موارد با برچسب «استنباطی» بررسی‌های موردی هستند و برآوردهایی تقریبی‌اند.", "caveats": {"Book matches are about 97% precise.": {"claim": "دقت تطبیق کتاب‌ها حدود 97% است.", "detail": "از 40 سطر تطبیق‌یافته که به‌تصادف نمونه‌گیری شدند، 39 سطر درست بود. تنها خطا (عنوان یک درس که کتاب نیلسن پنداشته شده بود) اکنون با علامت‌گذاری آن کتاب به‌عنوان «عمومی» مهار می‌شود."}, "About 6 of 138 offerings are not course pages.": {"claim": "حدود 6 مورد از 138 ارائه، صفحه درس نیستند.", "detail": "صفحه‌های برنامه تحصیلی و راهنمای ماژول‌ها (TU Darmstadt، UiO) و یک مقاله پژوهشی. یک تغییر مسیر به یک دوره آزاد انبوه برخط (MOOC) اکنون رد می‌شود."}, "Term, instructor and level are heuristic and weaker than titles and books.": {"claim": "نیم‌سال، استاد و مقطع با روش‌های ابتکاری استخراج می‌شوند و از عنوان‌ها و کتاب‌ها ضعیف‌ترند.", "detail": "بنگرید به measured.offerings_with_term، offerings_with_instructor و courses_level_unknown. فیلد کد درس گاهی داده نامربوط دارد (شماره اتاق، کد ناوبری)."}, "Counts are cumulative over two decades, not current.": {"claim": "شمارش‌ها انباشته دو دهه‌اند، نه وضعیت کنونی.", "detail": "جست‌وجو ارائه‌های بایگانی‌شده را هم پیدا می‌کند؛ بنگرید به measured.offerings_before_2015 / 2015_2020 / 2021_on / year_unknown. برای دیدن وضعیت کنونی، بر اساس سال پالایش کنید."}, "Coverage is near complete for North America and falls off elsewhere.": {"claim": "پوشش برای آمریکای شمالی تقریباً کامل است و در جاهای دیگر کاهش می‌یابد.", "detail": "بیشتر یک مسئله کشف است: یک نمایه جست‌وجو صفحه‌های درس اندکی برای ایران، چین و ژاپن پیدا می‌کند؛ محتوای Moodle/Canvas/Ed پشت ورود به حساب کاربری است و طبق طراحی به آن دسترسی گرفته نمی‌شود؛ برخی سایت‌ها برنامه‌های JavaScript هستند."}, "Aalto's only 'course' is a false positive.": {"claim": "تنها «درس» Aalto یک مثبت کاذب است.", "detail": "این مورد یک مقاله پژوهشی درباره یک سرفصل است، پس فنلاند در عمل 0 از 2 است."}, "Unmatched citations are catalogue gaps, not errors.": {"claim": "ارجاع‌های بی‌تطبیق کمبودهای فهرست کتاب‌اند، نه خطا.", "detail": "این‌ها سطرهای شبیه ارجاع زیر عنوان کتاب درسی/منابع هستند که در فهرست تطبیقی ندارند (اطمینان 0.30)."}, "Catalogue ISBNs are verified, except one.": {"claim": "ISBN‌های فهرست، به‌جز یکی، راستی‌آزمایی شده‌اند.", "detail": "با Open Library بررسی شد؛ کتاب «Learning Theory from First Principles» نوشته باخ خطای 404 داد و تأیید نشده است."}, "Downloaded materials are only the public PDF/PPTX slides and notes linked from course pages.": {"claim": "مواد بارگیری‌شده فقط اسلایدها و جزوه‌های عمومی PDF/PPTX هستند که صفحه‌های درس به آن‌ها پیوند داده‌اند.", "detail": "ویدئو، تمرین، آزمون، پیوندهای HTML/Google-Drive و هر چیزی که پشت ورود به حساب کاربری باشد بارگیری نمی‌شود. خطاها به تفکیک دلیل در pipeline.json فهرست شده‌اند."}}, "countries": {"United States": "ایالات متحده", "Germany": "آلمان", "Canada": "کانادا", "Iran": "ایران", "Hong Kong": "هنگ‌کنگ", "Netherlands": "هلند", "China": "چین", "Finland": "فنلاند", "Japan": "ژاپن", "Korea, Republic of": "کره جنوبی", "Norway": "نروژ", "United Kingdom": "بریتانیا", "Switzerland": "سوئیس", "France": "فرانسه", "Australia": "استرالیا", "Singapore": "سنگاپور", "India": "هند", "Italy": "ایتالیا", "Spain": "اسپانیا", "Sweden": "سوئد", "Denmark": "دانمارک"}}};</script>
 <script src="/thesis/assets/ml-courses.js"></script>
 </body>
 </html>

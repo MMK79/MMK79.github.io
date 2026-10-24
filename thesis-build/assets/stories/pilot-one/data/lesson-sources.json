@@ -1,0 +1,53 @@
+{
+  "sources": {
+    "pm": {
+      "short": "Post-mortem",
+      "title": "Stage A pilot: post-mortem and fix plan",
+      "venue": "vault _review, the Stage A pilot post-mortem (EXP-035; refuted by Fable and Codex)",
+      "verified": true,
+      "how": "read in full"
+    },
+    "prog": {
+      "short": "Run log",
+      "title": "Stage A progress log",
+      "venue": "vault _review, the Stage A progress log (EXP-034, EXP-035, EXP-037)",
+      "verified": true,
+      "how": "read in full"
+    },
+    "dec": {
+      "short": "Decisions",
+      "title": "Stage A decisions and updates",
+      "venue": "vault _review, the Stage A decisions file and its updates",
+      "verified": true,
+      "how": "read in full"
+    },
+    "prot": {
+      "short": "Protocol",
+      "title": "Claim protocol with Addenda A, B and C",
+      "venue": "vault _review, the final claim protocol",
+      "verified": true,
+      "how": "Addenda A to C read in full"
+    },
+    "addd": {
+      "short": "Addendum D",
+      "title": "Addendum D: hop-balanced graph rank before pilot 2",
+      "venue": "vault _review, protocol Addendum D",
+      "verified": true,
+      "how": "D0 and D1 read in full"
+    },
+    "th3": {
+      "short": "Thesis ch3",
+      "title": "Thesis chapter 3, Method (English text of the Persian chapter)",
+      "venue": "thesis repo, chapters-en/ch3.tex",
+      "verified": true,
+      "how": "arm, ranking and threats sections read"
+    },
+    "th4": {
+      "short": "Thesis ch4",
+      "title": "Thesis chapter 4, Results: chronology and pilots (English text of the Persian chapter)",
+      "venue": "thesis repo, chapters-en/ch4.tex",
+      "verified": true,
+      "how": "chronology, data and pilot sections read"
+    }
+  }
+}

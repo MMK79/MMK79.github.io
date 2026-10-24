@@ -1,0 +1,4330 @@
+{
+ "about": "Touch data of the Answer Checkers lesson. Built by scripts/build_data.py from two pilot folders; every score is a real model output (no human labels).",
+ "answers_meta": {
+  "from": "Presentations/Evaluating RAG/data/eval-example.json",
+  "answer_model": "deepseek/deepseek-v4-flash",
+  "retriever": "BM25Okapi (rank-bm25, k1=1.5, b=0.75 defaults), lowercase word tokens, small stop list",
+  "k": 3,
+  "hhem": "HHEM-2.1-Open, revision de9a5e6",
+  "minicheck": "lytang/MiniCheck-Flan-T5-Large via minicheck @b58b9fa69acbd1015ec970fa65dd752413a053d2",
+  "where": "retrieval and API calls from the Mac; HHEM and MiniCheck on a Kaggle CPU (private kernel, deleted after the run)",
+  "cited_joined_rule": "ALCE citation recall: the sentence (citation markers removed) against its cited passages joined into one premise; 1 = supported at score >= 0.5. A sentence with no citation gets 0."
+ },
+ "answers": [
+  {
+   "id": "Q17",
+   "question": "In the context of neural networks, what is the difference between the learning rate and weight decay?",
+   "source": "Cross Validated question 29130, accepted answer 31334",
+   "licence": "CC BY-SA 4.0 (stats.stackexchange.com; answer text shown with attribution, HTML stripped)",
+   "url": "https://stats.stackexchange.com/questions/29130",
+   "passages": [
+    {
+     "n": 1,
+     "lecture": 12,
+     "ts": "00:40:00",
+     "text": "The choice of lambda will be extremely principled, based on validation. And that will be the saving grace, if our heuristic choice for the regularizer is not that great, as we will see in a moment. If you want to characterize what's happening as you increase lambda, here we started with overfitting. That was the problem we were trying to solve. And we solved it. And we solved it all too well. We are certainly not overfitting here. But the problem is that we went to the other extreme. And now we are underfitting, just as bad. So the proper choice of lambda is important. Now, the regularizer that I described to you is the most famous regularizer in machine learning. And it's called weight decay. And the name is not very strange, because we're trying to get the weights to be small, so decay is not a far term. But I would like to understand why it is actually called, specifically, decay. The reason is the following. Let's say that you are not in a neat, linear case like that. Let's say you are doing this in a neural network. And in neural networks, weight decay-- trying to minimize w transposed w, is a very important regularization method. We know that in neural networks, you don't have a neat closed-form solution, and you use gradient descent. So let's say you use gradient descent on this. And let's say just batch gradient descent, for the simplicity of the derivation. What do you do? Batch gradient descent, you have a step that takes you from w at time t to w time t plus 1. And they happen to be this minus eta, which is the learning rate, times the gradient. So we just need"
+    },
+    {
+     "n": 2,
+     "lecture": 9,
+     "ts": "01:00:00",
+     "text": "try to make eta proportional to the size of the gradient, so it's bigger when the slope is bigger. That's very convenient, because I have here the size of the gradient sitting there. So if I make eta proportional to the size of our gradient, something will nicely cancel out, and then I will get another eta-- purple eta, which is the new constant. And this guy completely canceled out, and I have a very simple formula. Now it's not a fixed step anymore, but a fixed learning rate, eta now being the learning rate. You just compute the gradient, and use that learning rate, and that will take care of the previous observation. So that's what we have. That's all I'm going to say about gradient descent for this case. And then we're going to go to the more complicated issues of it, when we talk about neural networks next time. So this is how to minimize. And now we have the logistic regression algorithm, written in language. You iterate, you start by initializing at w(0). You iterate for every step. What do you do? You compute the gradient. How do I do that? Oh, I have a formula for the in-sample error. All I need to do is to differentiate it. Differentiating it will not be difficult. You're going to get this-- you can verify it. And now, you are going to take the next weight to be the current weight minus your learning rate times the gradient. That's the formula we had. And then, you go to the next iteration, next iteration, until it's time to stop. And then we return the final weight. That is the algorithm. Now let me spend two minutes summarizing all the linear models in one"
+    },
+    {
+     "n": 3,
+     "lecture": 9,
+     "ts": "01:25:00",
+     "text": "then, this becomes part of learning. Now here, we had an explicit nonlinear transformation. When we go to neural networks, we'll find out that they choose features automatically. But that is part of learning, and you are charged for it in terms of VC dimension. So probably, the question will be better answered and understood in the context when I talk about neural networks and hidden layers, and then we'll see what that means. MODERATOR: I think that's it. PROFESSOR: Very good. Then we'll see you on Thursday."
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient [2].",
+     "target": "The learning rate (eta) controls the step size in gradient descent—it determines how much the weights are adjusted at each iteration based on the gradient.",
+     "cites": [
+      2
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.8652,
+       "hh": 0.2558
+      },
+      {
+       "passage": 2,
+       "mc": 0.8774,
+       "hh": 0.7372
+      },
+      {
+       "passage": 3,
+       "mc": 0.0279,
+       "hh": 0.004
+      }
+     ],
+     "cited_joined": {
+      "mc": 1,
+      "hh": 1
+     }
+    },
+    {
+     "text": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting [1].",
+     "target": "Weight decay is a regularizer that penalizes large weights by adding a term like wᵀw to the error, pushing weights toward zero to prevent overfitting.",
+     "cites": [
+      1
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0508,
+       "hh": 0.0664
+      },
+      {
+       "passage": 2,
+       "mc": 0.0166,
+       "hh": 0.0162
+      },
+      {
+       "passage": 3,
+       "mc": 0.0312,
+       "hh": 0.0047
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    },
+    {
+     "text": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\" [1].",
+     "target": "In gradient descent, weight decay effectively shrinks the weights each step, which is why it’s called \"decay\".",
+     "cites": [
+      1
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.9487,
+       "hh": 0.3525
+      },
+      {
+       "passage": 2,
+       "mc": 0.025,
+       "hh": 0.0613
+      },
+      {
+       "passage": 3,
+       "mc": 0.0425,
+       "hh": 0.0179
+      }
+     ],
+     "cited_joined": {
+      "mc": 1,
+      "hh": 0
+     }
+    },
+    {
+     "text": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient [1][2].",
+     "target": "The learning rate scales the gradient update, while weight decay independently reduces weight magnitude regardless of the gradient.",
+     "cites": [
+      1,
+      2
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0441,
+       "hh": 0.0211
+      },
+      {
+       "passage": 2,
+       "mc": 0.0217,
+       "hh": 0.0455
+      },
+      {
+       "passage": 3,
+       "mc": 0.0144,
+       "hh": 0.0101
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    },
+    {
+     "text": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+     "target": "The course material does not explicitly contrast them beyond this, but the key difference is: learning rate controls optimization speed, while weight decay controls model complexity.",
+     "cites": [],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0382,
+       "hh": 0.0198
+      },
+      {
+       "passage": 2,
+       "mc": 0.0308,
+       "hh": 0.028
+      },
+      {
+       "passage": 3,
+       "mc": 0.0203,
+       "hh": 0.0202
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "Q18",
+   "question": "What is the difference between linear regression and logistic regression? When would you use each?",
+   "source": "Cross Validated question 29325, accepted answer 29326",
+   "licence": "CC BY-SA 4.0 (stats.stackexchange.com; answer text shown with attribution, HTML stripped)",
+   "url": "https://stats.stackexchange.com/questions/29325",
+   "passages": [
+    {
+     "n": 1,
+     "lecture": 10,
+     "ts": "00:00:00",
+     "text": "ANNOUNCER: The following program is brought to you by Caltech. YASER ABU-MOSTAFA: Welcome back. Last time, we introduced the third linear model, which is logistic regression. It has the same structure as the linear models, where you have the inputs combined linearly using weights, summed up into a signal, and then the signal passes through something. In this case, it passes through what we refer to as a soft threshold. We labeled it theta. And the model is meant to implement a probability that has a genuine probability interpretation. And because of that, the error measure we derived was based on likelihood measure, which has a probabilistic connotation, in which case we maximized the probability that we would get the data set that we got-- the outputs given the inputs-- based on the hypothesis that is represented by the logistic regression being assumed to be the target function identically. And this makes us able to express the probability in terms of the parameters that define the hypothesis, which are the weights, w. And therefore, we have this quantity that we want to maximize. And then we derived an error measure that very much parallels the error measures that we had before, in terms of the in-example error for logistic regression that we will minimize. So this is a useful model, and it complements the other models. One of them was for classification, one of them for real-valued function regression. And this one is for bounded real-valued function that is interpreted as a probability. One of the key issues about logistic regression is that, because the the error"
+    },
+    {
+     "n": 2,
+     "lecture": 9,
+     "ts": "01:05:00",
+     "text": "We have credit analysis. If you apply each of these to credit analysis, what type of thing do you implement? For the linear classification, the perceptron, you accept or deny. That was our very first example, right? If you use linear regression, you are trying to decide the credit line. We have seen that example as well. If you're applying logistic regression, you are computing the probability of default-- just the reliability, and then let the bank decide what to do with it. So this is from an application domain. Let's look from tools point of view. They had different error measures. The perceptron had the binary classification error, right? Linear regression has squared error. And finally, logistic regression had cross-entropy error. Different errors that had different plausibility motivations to them. And we have tackled all three of them. And then there was the learning algorithm that goes with them, that is very dependent on the error measure you choose. For the case of the classification error, which was a combinatorial quantity, and we went for something like the perceptron learning algorithm, or the pocket version if the thing is non-separable. And there are other, more sophisticated methods to do that. How about squared error? That was the easiest. That was the one-step learning, where we had the pseudo-inverse and you have your solution. And finally with the cross-entropy, we had the gradient descent, which is a very general method. All we needed to do is that it's a twice differentiable surface, and we are ready to go with that. And this was particularly"
+    },
+    {
+     "n": 3,
+     "lecture": 9,
+     "ts": "00:05:00",
+     "text": "This is the big picture of linear models. And they start with linear classification-- perceptrons. We have seen that. And then go on to linear regression. We have also seen that. That was the part that was covered. There is a third one, which is another linear model that is neither linear classification nor linear regression, which will be the bulk of the lecture today. It will be called logistic regression. And then, for all of these linear models, we have this nice trick called nonlinear transforms that allows us to use the learning algorithms of linear models, which are very simple ones, and apply them to nonlinear transformation. And if you remember, that the observation here was that linearity in the parameters was the key issue for deriving the algorithm. So let's see what we finished, and what we didn't finish in these topics. Linear classification is pretty much done. We know the algorithm, perceptron or pocket. There are obviously more sophisticated algorithms. And we did the generalization analysis. We got the VC dimension of perceptrons explicitly. And therefore, we are able to predict the generalization ability of linear classification. So this is a done deal. Linear regression is also a done deal. We have the algorithm, remember, that was the pseudo-inverse, the one-step learning. And last time, we did a very brief analysis of generalization ability. And we found that it parallels that of the perceptron, d plus 1 is the operative point, the operative quantity in this case. And therefore, we have linear regression as a technique, and as a generalization"
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1 [2].",
+     "target": "Linear regression uses squared error and gives a real-valued output, while logistic regression uses cross-entropy error and outputs a probability between 0 and 1.",
+     "cites": [
+      2
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0184,
+       "hh": 0.0382
+      },
+      {
+       "passage": 2,
+       "mc": 0.016,
+       "hh": 0.0496
+      },
+      {
+       "passage": 3,
+       "mc": 0.0159,
+       "hh": 0.0089
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    },
+    {
+     "text": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default) [2].",
+     "target": "Use linear regression for real-valued targets (e.g., deciding a credit line) and logistic regression for probability estimates (e.g., probability of default).",
+     "cites": [
+      2
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0166,
+       "hh": 0.0395
+      },
+      {
+       "passage": 2,
+       "mc": 0.087,
+       "hh": 0.8261
+      },
+      {
+       "passage": 3,
+       "mc": 0.0092,
+       "hh": 0.0131
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 1
+     }
+    },
+    {
+     "text": "The course material does not provide further detail beyond these application examples.",
+     "target": "The course material does not provide further detail beyond these application examples.",
+     "cites": [],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.0373,
+       "hh": 0.1353
+      },
+      {
+       "passage": 2,
+       "mc": 0.0788,
+       "hh": 0.1264
+      },
+      {
+       "passage": 3,
+       "mc": 0.0751,
+       "hh": 0.3509
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "Q20",
+   "question": "You are training a linear regression model for a simple estimation task, and notice that the model is overfitting to the data. You decide to add in ℓ2 regularization to penalize the weights. As you increase the ℓ2 regularization coefficient, what will happen to the bias and variance of the model?",
+   "source": "MMLU machine_learning, test item 102",
+   "licence": "MIT (cais/mmlu)",
+   "url": "https://huggingface.co/datasets/cais/mmlu",
+   "passages": [
+    {
+     "n": 1,
+     "lecture": 12,
+     "ts": "00:10:00",
+     "text": "the out-of-sample error will be terrible. Let's look at the situation with regularization. As expected, the gray region has diminished, because the lines weren't as crazy. If you look at the red line, the red line is a little bit different, because we couldn't fit the points, we couldn't fit the points, so there's a little bit of an added bias, because the fit is not perfect. And we get this. Now regularization, in general, reduces the variance at the expense, possibly, of increasing the bias just a little bit. So think of it that I am handicapping the fit. Well, you are handicapping the fit on both the noise and the signal. You cannot distinguish one from another. But the handicapping of the noise is significant. That's what reduced the variance. The handicapping of the fit results in a certain loss of the quality of the fit. That is reflected by that. Let's look at the numbers and see that, actually, this stands to the reality. The bias here was 0.21. We have seen these numbers before. And the variance was a horrific 1.69. And when we added them up, the linear model lost to the simplistic constant model. So let's look at with regularization. Now we are using still the linear model, but we are regularizing it. And you get a bias of 0.23. Well, that's not too bad. We lost a little bit. Think of it as a side effect of the treatment. You're attacking the disease, which is overfitting. And you will get some funny side effects. So instead of getting the 0.21, you are getting 0.23. OK, fine. How about the variance? Totally dramatic, 0.33. And when you add them up, not only do"
+    },
+    {
+     "n": 2,
+     "lecture": 11,
+     "ts": "01:10:00",
+     "text": "PROFESSOR: OK. This is a very specific question about logistic regression. If the thing is completely clean, then you obviously can get closer and closer to having the probability being perfect, by having bigger and bigger weights. So there is a minimum. And again, it's a unique minimum. Except that the minimum is at infinity, in terms of the size of the weight. But this doesn't bother you, because you are really going to stop at some point when the gradient is small, according to your specification. And you can specify this any way you want. So the goal is not necessarily to arrive at the minimum. Which hardly ever happens, even if the thing is not at infinity. But get close enough, in the sense that the value is close to the minimum, and therefore you achieve the small error that you want. MODERATOR: Can you resolve again the contradiction of when you increase the complexity of the model, you should be reducing your bias, and hence your deterministic noise? So here we had an example when we had H-- well, H_10 had more error than H_2. PROFESSOR: H_10 had total error more than H_2. If we were doing the approximation game, H_10 would be better. We had three terms in the bias-variance. If we were only going by these two, then there is no question that the bigger model, H_10, will win. Because this is for all, and this one will be better for H_10 than H_2, because H_10 is closer to the target we want, and therefore we will be making smaller error. This is not the source of the problem of overfitting. This is just identifying terms in the bias-variance decomposition,"
+    },
+    {
+     "n": 3,
+     "lecture": 12,
+     "ts": "00:05:00",
+     "text": "find, is purely heuristic. And in this case, you are just handicapping the minimization of the in-sample error, which is putting the brakes, as we described it last time. And indeed, this is what we are going to do. We are going to borrow enough from the math, to make this not a completely random activity, but rather pointed at something that is likely to help our cause of fighting overfitting. I am going to start by an example of regularization, and how it affects overfitting. And the example will be quite familiar. You have seen it before. You probably recognize this picture. This is a sinusoid. And we had the funny problem, where we had only two points in the training set, so N equals 2. And we were fitting our model, which was a general line in this case. So we pass the line through the two points. And we get a variety of lines, depending on the data set you have. And we noticed, after doing a careful analysis of this using the bias-variance analysis, that this is really bad. And the main reason it's bad is because it's all over the place. And being all over the place results in a high variance term. That was the key. In that case, a simplistic constant model, where you approximate the sine by just a constant, which ends up being a zero on average, is actually better in performance out-of-sample than fitting with a line. That was the lesson that we got there. So let's see if we can improve the situation here by regularizing it, by controlling the lines. Instead of having wild lines, we are going to have mild lines, if you will. What we're going to do, we are going to"
+    }
+   ],
+   "sentences": [
+    {
+     "text": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect [1].",
+     "target": "(B)\n\nIncreasing the ℓ2 regularization coefficient handicaps the fit, which increases bias slightly as a side effect.",
+     "cites": [
+      1
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.1106,
+       "hh": 0.6984
+      },
+      {
+       "passage": 2,
+       "mc": 0.0104,
+       "hh": 0.0336
+      },
+      {
+       "passage": 3,
+       "mc": 0.0186,
+       "hh": 0.1176
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 1
+     }
+    },
+    {
+     "text": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting [1][3].",
+     "target": "At the same time, it significantly reduces variance by controlling wild lines and fighting overfitting.",
+     "cites": [
+      1,
+      3
+     ],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.1428,
+       "hh": 0.9269
+      },
+      {
+       "passage": 2,
+       "mc": 0.0067,
+       "hh": 0.0782
+      },
+      {
+       "passage": 3,
+       "mc": 0.0389,
+       "hh": 0.9287
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 1
+     }
+    },
+    {
+     "text": "Therefore, bias increases while variance decreases.",
+     "target": "Therefore, bias increases while variance decreases.",
+     "cites": [],
+     "per_passage": [
+      {
+       "passage": 1,
+       "mc": 0.1014,
+       "hh": 0.8908
+      },
+      {
+       "passage": 2,
+       "mc": 0.0372,
+       "hh": 0.1426
+      },
+      {
+       "passage": 3,
+       "mc": 0.0237,
+       "hh": 0.075
+      }
+     ],
+     "cited_joined": {
+      "mc": 0,
+      "hh": 0
+     }
+    }
+   ]
+  }
+ ],
+ "kg_meta": {
+  "from": "Presentations/Building the Knowledge Graph/data/page.json",
+  "label": "pilot slice (CS 156 Lectures 14-15), not the thesis graph",
+  "nli": [
+   "vectara/hallucination_evaluation_model (HHEM-2.1-open)",
+   "lytang/MiniCheck-Flan-T5-Large"
+  ],
+  "premise": "the whole passage (chunk); the quote is a display excerpt chosen by the extractor",
+  "hypothesis": "a templated claim sentence",
+  "templates": {
+   "IS_A": "{s} is a kind of {t}.",
+   "USES": "{s} uses {t}.",
+   "PREREQUISITE_OF": "Understanding {s} is needed before learning {t}."
+  },
+  "n": 390,
+  "hhem_supported_at_0.5": 326,
+  "minicheck_supported_at_0.5": 175,
+  "disagree_at_0.5": 155,
+  "gated_n": 319,
+  "gated_disagree_at_0.5": 104,
+  "gate_note": "The KG gate scores USES and IS_A claims; PREREQUISITE_OF claims are not gated (sent to review)."
+ },
+ "kg_records": [
+  {
+   "id": "e-024c92db99",
+   "p": "L14-c32",
+   "r": "USES",
+   "h": "Quadratic programming uses linear term.",
+   "q": "A very simple quadratic function, with a linear term. You're minimizing it, subject to linear equality constraint, plus a bunch of range constraints.",
+   "hh": 0.9843,
+   "mc": 0.9831,
+   "g": "supported"
+  },
+  {
+   "id": "e-024eca066a",
+   "p": "L14-c18",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding norm is needed before learning quadratic.",
+   "q": "Instead of maximizing 1 over the norm, I'm going to minimize this friendly quantity, quadratic one.",
+   "hh": 0.3446,
+   "mc": 0.05,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-025b8ced23",
+   "p": "L14-c46",
+   "r": "USES",
+   "h": "Support vector uses parameters.",
+   "q": "So I have only four parameters, really, expressing w in the Z space.",
+   "hh": 0.9843,
+   "mc": 0.8039,
+   "g": "supported"
+  },
+  {
+   "id": "e-0326d422d0",
+   "p": "L15-c45",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of Lagrangian.",
+   "q": "xi is greater than or equal to 0. So if I wanted to put it in the 0 form, then I put xi-- that has to be greater than or equal to 0, pretty much like this fellow had to be greater than or equal to 0. I need to multiply it by a Lagrange multiplier, a new guy.",
+   "hh": 0.8774,
+   "mc": 0.0394,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-03279404d7",
+   "p": "L15-c52",
+   "r": "USES",
+   "h": "Dual problem uses quadratic programming.",
+   "q": "You pass on to quadratic programming. Quadratic program passes alphas back to you.",
+   "hh": 0.9882,
+   "mc": 0.9595,
+   "g": "supported"
+  },
+  {
+   "id": "e-037cdd6a37",
+   "p": "L14-c13",
+   "r": "IS_A",
+   "h": "W transposed x_n plus b is a kind of distance.",
+   "q": "And now if you can look at this-- this will be w transposed x_n plus b. Absolute value equals 1. And the plane will be w transposed x plus b equals 0.",
+   "hh": 0.9659,
+   "mc": 0.5737,
+   "g": "supported"
+  },
+  {
+   "id": "e-04eac5d7b1",
+   "p": "L15-c11",
+   "r": "USES",
+   "h": "Kernel trick uses dot product.",
+   "q": "It's not a straight inner product, but an inner product after a transformation.",
+   "hh": 0.0603,
+   "mc": 0.02,
+   "g": "rejected"
+  },
+  {
+   "id": "e-05c64b6f13",
+   "p": "L14-c21",
+   "r": "USES",
+   "h": "Slack variable uses equality constraints.",
+   "q": "If I call the slack s squared, I can make this equality.",
+   "hh": 0.9222,
+   "mc": 0.1009,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-061cbfa410",
+   "p": "L14-c45",
+   "r": "USES",
+   "h": "Surface uses margin.",
+   "q": "This surface is simply what the line in the Z space with the best margin got.",
+   "hh": 0.9734,
+   "mc": 0.9592,
+   "g": "supported"
+  },
+  {
+   "id": "e-07295ae19e",
+   "p": "L15-c47",
+   "r": "USES",
+   "h": "Beta uses Lagrangian.",
+   "q": "Here, I have a C. Here, I have a minus alpha. Here, I have a minus beta. These are multiplied by xi. That combination happens to be 0.",
+   "hh": 0.9629,
+   "mc": 0.7679,
+   "g": "supported"
+  },
+  {
+   "id": "e-07612381b5",
+   "p": "L15-c60",
+   "r": "USES",
+   "h": "Support vector machine uses quadratic programming.",
+   "q": "So they don't specifically pass on the thing to quadratic programming directly, but try to break it into pieces",
+   "hh": 0.6606,
+   "mc": 0.8477,
+   "g": "supported"
+  },
+  {
+   "id": "e-08672bbd94",
+   "p": "L14-c12",
+   "r": "IS_A",
+   "h": "Bias is a kind of vector.",
+   "q": "And then we added this artificial coordinate x_0 in order to take care of w_0 that was the threshold, if you think of it as comparing with a number, or a bias if you think of it as adding a number.",
+   "hh": 0.9109,
+   "mc": 0.6188,
+   "g": "supported"
+  },
+  {
+   "id": "e-08d9f88420",
+   "p": "L14-c48",
+   "r": "USES",
+   "h": "Quadratic programming uses Z space.",
+   "q": "pretty much like quadratic programming didn't worry about the nature of the Z space.",
+   "hh": 0.9714,
+   "mc": 0.9405,
+   "g": "supported"
+  },
+  {
+   "id": "e-09b9157d01",
+   "p": "L15-c38",
+   "r": "USES",
+   "h": "Soft-margin SVM uses in-sample error.",
+   "q": "I would just make errors on those, accept an E_in which is non-zero.",
+   "hh": 0.4739,
+   "mc": 0.0299,
+   "g": "rejected"
+  },
+  {
+   "id": "e-0cbc9f0c12",
+   "p": "L14-c26",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding partial derivative is needed before learning Lagrangian.",
+   "q": "So I'm getting partial by partial for every weight that appears.",
+   "hh": 0.115,
+   "mc": 0.0443,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-0ccd6b56e0",
+   "p": "L14-c32",
+   "r": "USES",
+   "h": "Quadratic programming uses convex function.",
+   "q": "It happens to be convex function in this case, so that the quadratic programming will be very successful.",
+   "hh": 0.975,
+   "mc": 0.9806,
+   "g": "supported"
+  },
+  {
+   "id": "e-0dba944acb",
+   "p": "L15-c33",
+   "r": "USES",
+   "h": "Support vector machine uses kernel function.",
+   "q": "in support vector machines, you will come up with your own kernels.",
+   "hh": 0.6815,
+   "mc": 0.8536,
+   "g": "supported"
+  },
+  {
+   "id": "e-0e18171f24",
+   "p": "L14-c39",
+   "r": "IS_A",
+   "h": "Support vector is a kind of parameter.",
+   "q": "Think of alphas now as the parameters of your model. When they're 0s, they don't count. Just expect almost all of them to be 0. What counts is the actual values of the parameters that will be some number bigger than 0.",
+   "hh": 0.9392,
+   "mc": 0.9455,
+   "g": "supported"
+  },
+  {
+   "id": "e-0f732d9f7f",
+   "p": "L15-c12",
+   "r": "IS_A",
+   "h": "2nd-order polynomial is a kind of nonlinear transform.",
+   "q": "using a nonlinear transformation, which happens to be 2nd-order polynomial",
+   "hh": 0.979,
+   "mc": 0.9785,
+   "g": "supported"
+  },
+  {
+   "id": "e-0fb2017cc4",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Support vector machine uses kernel function.",
+   "q": "And by computing it just in the X space, using this formula, I'm doing all I need to do in order to carry out the SV machinery.",
+   "hh": 0.6804,
+   "mc": 0.8979,
+   "g": "supported"
+  },
+  {
+   "id": "e-11b0b48d2a",
+   "p": "L15-c05",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of kernel methods.",
+   "q": "Today, we're going to continue this by extending the support vector machines in the basic case, and we're going to cover the main method, which is the kernel methods",
+   "hh": 0.9434,
+   "mc": 0.9187,
+   "g": "supported"
+  },
+  {
+   "id": "e-129f21fb58",
+   "p": "L14-c17",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding norm is needed before learning square root.",
+   "q": "And I don't particularly like dividing 1 over the norm, which has a square root in it.",
+   "hh": 0.2283,
+   "mc": 0.0427,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-132666aafb",
+   "p": "L15-c41",
+   "r": "USES",
+   "h": "Error measure uses violation.",
+   "q": "And then, when I plug this error",
+   "hh": 0.9678,
+   "mc": 0.9637,
+   "g": "supported"
+  },
+  {
+   "id": "e-13a80065a2",
+   "p": "L14-c10",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding plane is needed before learning scale invariance.",
+   "q": "any formula that takes w and produces the margin will have to have, built in it, scale invariance.",
+   "hh": 0.456,
+   "mc": 0.0572,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-1410136ab5",
+   "p": "L15-c15",
+   "r": "IS_A",
+   "h": "Dot product is a kind of kernel function.",
+   "q": "the inner product, what do I get? I get my kernel.",
+   "hh": 0.8697,
+   "mc": 0.0352,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-1425242fd9",
+   "p": "L14-c37",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "because it's a maximum margin, it touched on some of the +1 and some of the -1 points. Those points support the plane, so to speak. And they're called support vectors.",
+   "hh": 0.9802,
+   "mc": 0.0715,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-142ef2ff8e",
+   "p": "L14-c54",
+   "r": "USES",
+   "h": "Boosting uses margin.",
+   "q": "some of the aggregation methods, like boosting, has a margin of its own",
+   "hh": 0.9532,
+   "mc": 0.9712,
+   "g": "supported"
+  },
+  {
+   "id": "e-164a93b273",
+   "p": "L15-c27",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "if I give you a kernel, and it's a valid kernel that corresponds to an inner product in some Z space",
+   "hh": 0.0254,
+   "mc": 0.0238,
+   "g": "rejected"
+  },
+  {
+   "id": "e-16939cfd71",
+   "p": "L14-c28",
+   "r": "USES",
+   "h": "Lagrangian uses quadratic form.",
+   "q": "Because you look at the form for w, when you have w transposed w, you are going to get a quadratic version of this.",
+   "hh": 0.9673,
+   "mc": 0.9583,
+   "g": "supported"
+  },
+  {
+   "id": "e-17de849389",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "Z space uses perceptron.",
+   "q": "Instead of working in the X space, we went to the Z space.",
+   "hh": 0.963,
+   "mc": 0.0585,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-188eca6abf",
+   "p": "L14-c51",
+   "r": "IS_A",
+   "h": "Hard-margin SVM is a kind of support vector machine.",
+   "q": "And then there is a slightly not linearly separable, as we've seen before. And in that case, you will see that the method I described today is called hard-margin SVM.",
+   "hh": 0.0284,
+   "mc": 0.1168,
+   "g": "rejected"
+  },
+  {
+   "id": "e-193b166d12",
+   "p": "L14-c07",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning dichotomies.",
+   "q": "So now we are taking dichotomies, not only the line, but also requiring that the dichotomies have a fat margin.",
+   "hh": 0.6413,
+   "mc": 0.0416,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-19f1d4947c",
+   "p": "L15-c01",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Lagrangian is needed before learning quadratic programming.",
+   "q": "And after a chain of mathematics, we ended up with a Lagrangian that we're going to maximize. And the Lagrangian has very interesting properties. It's quadratic, so it's a simple function. And the constraints are inequality constraints, very simple inequality constraints in this case, and one equality constraint. And we're not going to actually do the solving ourselves. We're going to pass the problem on to a package of quadratic programming.",
+   "hh": 0.6419,
+   "mc": 0.1227,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-1b1039ee59",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Support vector uses support vector machine.",
+   "q": "And when you get the result back, you count the number of support vectors",
+   "hh": 0.9904,
+   "mc": 0.1875,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-1beda491c5",
+   "p": "L15-c31",
+   "r": "USES",
+   "h": "Hidden layer uses nonlinear transform.",
+   "q": "Remember the hidden layer in neural networks? It got a nonlinear transform based on the data set.",
+   "hh": 0.9887,
+   "mc": 0.9772,
+   "g": "supported"
+  },
+  {
+   "id": "e-1c433e8e65",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "Nonlinear transform uses support vector machine.",
+   "q": "So let's look at it. So we're going to work with z instead of x. And we're going to work in the Z space instead of the X space. So let's first put what we are doing. Analytically, after doing all of the stuff, and I even forgot what the details are, all I care about is that: would you please maximize this with respect to alpha, subject to a couple of sets of constraints. So you",
+   "hh": 0.9849,
+   "mc": 0.8644,
+   "g": "supported"
+  },
+  {
+   "id": "e-1c84c656c9",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Quadratic programming uses dot product.",
+   "q": "I do the inner product in order to get these numbers. These numbers I'm going to pass on to quadratic programming.",
+   "hh": 0.0265,
+   "mc": 0.0311,
+   "g": "rejected"
+  },
+  {
+   "id": "e-1d579b38ca",
+   "p": "L15-c05",
+   "r": "USES",
+   "h": "Z space uses hypothesis set.",
+   "q": "And we managed to use a high-dimensional Z space, so it's a complex H, complex hypothesis set.",
+   "hh": 0.9817,
+   "mc": 0.8278,
+   "g": "supported"
+  },
+  {
+   "id": "e-1dbd004419",
+   "p": "L15-c01",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning support vector machine.",
+   "q": "And the key to the performance was the idea of the margin-- is that if the data is linearly separable, there is more than one line that can separate the data. And if you take the line that has the biggest margin, furthest away from the closest point, then you have an advantage.",
+   "hh": 0.735,
+   "mc": 0.1528,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-1e4ce8dc22",
+   "p": "L14-c52",
+   "r": "USES",
+   "h": "Soft-margin SVM uses nonlinear transform.",
+   "q": "But in general, you actually use a nonlinear transformation together with the soft version, because you don't want the snake to go out of its way just to take care of an outlier.",
+   "hh": 0.9622,
+   "mc": 0.4728,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-1e6e893201",
+   "p": "L14-c35",
+   "r": "USES",
+   "h": "Lagrangian multiplier uses constraint.",
+   "q": "So the condition that is guaranteed to be satisfied, for the point you're going to get, is that either the slack is 0, or the Lagrange multiplier is 0.",
+   "hh": 0.9046,
+   "mc": 0.8586,
+   "g": "supported"
+  },
+  {
+   "id": "e-2217f52b08",
+   "p": "L15-c07",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "But getting an inner product in the Z space is less demand than getting the actual vector in the Z space.",
+   "hh": 0.8744,
+   "mc": 0.0594,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-2292f7cd18",
+   "p": "L15-c57",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding nonlinear transform is needed before learning linear separability.",
+   "q": "if you do the transformation to an infinite-dimensional space, the data will be linearly separable there?",
+   "hh": 0.1653,
+   "mc": 0.0404,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-2297638136",
+   "p": "L15-c07",
+   "r": "USES",
+   "h": "Lagrangian uses dot product.",
+   "q": "in order to be able to carry out the Lagrangian, I need to get the inner product in the Z space.",
+   "hh": 0.0495,
+   "mc": 0.0466,
+   "g": "rejected"
+  },
+  {
+   "id": "e-247241bfdd",
+   "p": "L14-c31",
+   "r": "USES",
+   "h": "Linear term uses quadratic programming.",
+   "q": "And I end up with a matrix. That matrix gets passed to quadratic programming. And quadratic programming asks you for the quadratic term, and asks you for the linear term.",
+   "hh": 0.9834,
+   "mc": 0.8728,
+   "g": "supported"
+  },
+  {
+   "id": "e-2558c6863f",
+   "p": "L15-c09",
+   "r": "USES",
+   "h": "Quadratic programming uses constraints.",
+   "q": "We have to pass the constraints to quadratic programming.",
+   "hh": 0.991,
+   "mc": 0.7872,
+   "g": "supported"
+  },
+  {
+   "id": "e-26b59c7a93",
+   "p": "L15-c23",
+   "r": "USES",
+   "h": "Kernel function uses quadratic programming.",
+   "q": "You get the kernel. You pass it on to quadratic programming.",
+   "hh": 0.8561,
+   "mc": 0.7624,
+   "g": "supported"
+  },
+  {
+   "id": "e-26d6813382",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Support vector machine uses nonlinear transform.",
+   "q": "And instead of getting just a generic separator, you're getting the best separator, according to SVM, and then mapping it back, hoping that it will have dividends in terms of the generalization.",
+   "hh": 0.9082,
+   "mc": 0.031,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-273ace3918",
+   "p": "L14-c22",
+   "r": "IS_A",
+   "h": "Lagrangian is a kind of KKT conditions.",
+   "q": "And the Lagrangian under the inequality constraint is referred to as KKT.",
+   "hh": 0.9856,
+   "mc": 0.0644,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-274aaaa90f",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "You do an inner product in the Z space",
+   "hh": 0.8842,
+   "mc": 0.0853,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-277905b886",
+   "p": "L15-c14",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "I happen to formalize it in terms of an inner product, just because it's simple.",
+   "hh": 0.0536,
+   "mc": 0.0219,
+   "g": "rejected"
+  },
+  {
+   "id": "e-2837bd6051",
+   "p": "L15-c39",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding pocket is needed before learning margin violation.",
+   "q": "And we discussed that when we talked about perceptron and pocket. And we said that the problem of optimizing-- getting the absolute optimum-- in this case, is generally NP-hard.",
+   "hh": 0.6204,
+   "mc": 0.0378,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-28a12e33e2",
+   "p": "L15-c34",
+   "r": "IS_A",
+   "h": "Kernel symmetry is a kind of symmetric.",
+   "q": "symmetric being K of x and x dash being equal to K of x dash and x.",
+   "hh": 0.8881,
+   "mc": 0.7449,
+   "g": "supported"
+  },
+  {
+   "id": "e-2ab26c80f1",
+   "p": "L15-c50",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of xi.",
+   "q": "The slack xi starts becoming positive.",
+   "hh": 0.9328,
+   "mc": 0.9401,
+   "g": "supported"
+  },
+  {
+   "id": "e-2ba4d72b7b",
+   "p": "L15-c27",
+   "r": "USES",
+   "h": "Quadratic programming uses dot product.",
+   "q": "And in quadratic programming, we have this huge matrix. This is the big Q matrix that you pass on to the algorithm. And you compute it in terms of inner products.",
+   "hh": 0.0177,
+   "mc": 0.0313,
+   "g": "rejected"
+  },
+  {
+   "id": "e-2c5370c632",
+   "p": "L15-c34",
+   "r": "USES",
+   "h": "Quadratic programming uses support vector.",
+   "q": "Quadratic programming, and you get support vectors",
+   "hh": 0.9677,
+   "mc": 0.941,
+   "g": "supported"
+  },
+  {
+   "id": "e-2cf2c6ae9f",
+   "p": "L15-c32",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "namely an inner product in some space",
+   "hh": 0.0556,
+   "mc": 0.0267,
+   "g": "rejected"
+  },
+  {
+   "id": "e-2cfaa48e02",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Nonlinear transform uses Z space.",
+   "q": "Because we went to a fairly high-dimensional Z space.",
+   "hh": 0.6744,
+   "mc": 0.9455,
+   "g": "supported"
+  },
+  {
+   "id": "e-2e3f235496",
+   "p": "L14-c04",
+   "r": "IS_A",
+   "h": "Margin is a kind of support vector machine.",
+   "q": "We are going to introduce the notion of the margin, which is the main notion in support vector machines.",
+   "hh": 0.981,
+   "mc": 0.9724,
+   "g": "supported"
+  },
+  {
+   "id": "e-2e766bb72b",
+   "p": "L14-c13",
+   "r": "IS_A",
+   "h": "W transposed x plus b equals 0 is a kind of plane.",
+   "q": "And the plane will be w transposed x plus b equals 0.",
+   "hh": 0.9549,
+   "mc": 0.8772,
+   "g": "supported"
+  },
+  {
+   "id": "e-2ead29061f",
+   "p": "L15-c06",
+   "r": "IS_A",
+   "h": "Soft-margin SVM is a kind of support vector machine.",
+   "q": "extend support vector machines from the linearly separable case to the non-linearly-separable case, allowing yourself to make errors. So this is pretty much that, if you were using perceptrons and went to pocket, this would be if you went from the support vector machines that we introduced-- that we're going to label now hard-margin, because they strictly obey the margin-- to a soft margin that allows some errors.",
+   "hh": 0.839,
+   "mc": 0.4377,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-2f9e5472b1",
+   "p": "L15-c13",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "formally the inner product between the transformation of x and x dash",
+   "hh": 0.2089,
+   "mc": 0.0378,
+   "g": "rejected"
+  },
+  {
+   "id": "e-31360f6814",
+   "p": "L15-c20",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector is needed before learning generalization.",
+   "q": "the generalization issues become completely ridiculous. But here, we don't worry. We'll carry the machinery. And then, we will count the number of support vectors.",
+   "hh": 0.5059,
+   "mc": 0.0448,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-325516cca4",
+   "p": "L14-c30",
+   "r": "USES",
+   "h": "Quadratic programming uses constrained optimization.",
+   "q": "The solution goes with quadratic programming. So the purpose of the slide here is to translate the objective and the constraints we had into the coefficients that you're going to pass on to a package called quadratic programming.",
+   "hh": 0.9939,
+   "mc": 0.9724,
+   "g": "supported"
+  },
+  {
+   "id": "e-328e253d3d",
+   "p": "L14-c48",
+   "r": "USES",
+   "h": "Support vector uses generalization.",
+   "q": "the generalization question now becomes useless.",
+   "hh": 0.9725,
+   "mc": 0.4447,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-32be3b882c",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Quadratic programming uses support vector.",
+   "q": "pretty much like quadratic programming didn't",
+   "hh": 0.8203,
+   "mc": 0.0453,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-35f746991c",
+   "p": "L14-c20",
+   "r": "USES",
+   "h": "Slack variable uses constraints.",
+   "q": "You have a slack, right? So I can just pull all of them, just slightly, until one of them touches 1.",
+   "hh": 0.9382,
+   "mc": 0.7179,
+   "g": "supported"
+  },
+  {
+   "id": "e-360edc81d0",
+   "p": "L15-c56",
+   "r": "USES",
+   "h": "RBF kernel uses kernel function.",
+   "q": "So you changed the negative sign in the RBF kernel into positive signs? Then, it won't be a valid kernel.",
+   "hh": 0.7993,
+   "mc": 0.496,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-364131b539",
+   "p": "L15-c08",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "Because now, we can completely focus on inner products in the Z space and see if that can lead to a simplification.",
+   "hh": 0.6149,
+   "mc": 0.0954,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-3647ba4527",
+   "p": "L14-c52",
+   "r": "USES",
+   "h": "Soft-margin SVM uses outlier.",
+   "q": "because you don't want the snake to go out of its way just to take care of an outlier. So we are better off just making an error on the outlier",
+   "hh": 0.8785,
+   "mc": 0.101,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-36861d59e4",
+   "p": "L14-c03",
+   "r": "USES",
+   "h": "Validation uses cross-validation.",
+   "q": "And validation is the method of choice in that case, in order to make that. OK. So we move on to today's lecture, which is Support Vector Machines.",
+   "hh": 0.9883,
+   "mc": 0.9442,
+   "g": "supported"
+  },
+  {
+   "id": "e-36e5d2936c",
+   "p": "L15-c26",
+   "r": "USES",
+   "h": "Margin uses support vector.",
+   "q": "And the evidence for the respectable margin is that I do get the small number of support vectors, which are here.",
+   "hh": 0.9735,
+   "mc": 0.837,
+   "g": "supported"
+  },
+  {
+   "id": "e-37581756a6",
+   "p": "L14-c01",
+   "r": "USES",
+   "h": "Validation uses out-of-sample performance.",
+   "q": "validation, which is a very important technique in machine learning for estimating the out-of-sample performance.",
+   "hh": 0.9823,
+   "mc": 0.9647,
+   "g": "supported"
+  },
+  {
+   "id": "e-37c58b3f62",
+   "p": "L15-c10",
+   "r": "USES",
+   "h": "Support vector machinery uses support vector.",
+   "q": "And then, I will do all the support vector machinery in your space that I never visited, and come up with the support vectors which live in your space",
+   "hh": 0.9436,
+   "mc": 0.9701,
+   "g": "supported"
+  },
+  {
+   "id": "e-380006b71c",
+   "p": "L15-c29",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "There's a Z space. I know I am linear there. And this is the form that I've already been solving in. Now, I just want to translate it in terms of the kernel. I know that I can, because we've spent a lot of time realizing that we don't need anything from the Z space other than the inner product",
+   "hh": 0.875,
+   "mc": 0.0534,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-38a4f78f86",
+   "p": "L15-c11",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "A kernel will correspond to some Z space.",
+   "hh": 0.9692,
+   "mc": 0.9638,
+   "g": "supported"
+  },
+  {
+   "id": "e-3a65327e8d",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Nonlinear transform uses infinite-dimensional space.",
+   "q": "And you don't worry about the ramifications of going to an infinite dimensional space.",
+   "hh": 0.9616,
+   "mc": 0.923,
+   "g": "supported"
+  },
+  {
+   "id": "e-3a671155a9",
+   "p": "L15-c11",
+   "r": "USES",
+   "h": "Generalized inner product uses dot product.",
+   "q": "We're going to treat it as if it was a generalized inner product in the X space.",
+   "hh": 0.0195,
+   "mc": 0.0221,
+   "g": "rejected"
+  },
+  {
+   "id": "e-3ae4fab313",
+   "p": "L15-c22",
+   "r": "USES",
+   "h": "Dot product uses infinite-dimensional space.",
+   "q": "And it happens to be in infinite-dimensional space, because you're summing for 0 until infinity.",
+   "hh": 0.9726,
+   "mc": 0.1169,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-3c4caa2a91",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Dot product uses kernel function.",
+   "q": "a kernel of this form does correspond to an inner product in a higher space.",
+   "hh": 0.8568,
+   "mc": 0.0603,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-3c6208d9ed",
+   "p": "L15-c05",
+   "r": "IS_A",
+   "h": "Linear model is a kind of linear separability.",
+   "q": "Which would be completely unheard of if you're using plain vanilla linear models.",
+   "hh": 0.8391,
+   "mc": 0.2187,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-3cc5195811",
+   "p": "L15-c45",
+   "r": "USES",
+   "h": "Lagrangian uses slack variable.",
+   "q": "xi is greater than or equal to 0. So if I wanted to put it in the 0 form, then I put xi-- that has to be greater than or equal to 0, pretty much like this fellow had to be greater than or equal to 0. I need to multiply it by a Lagrange multiplier, a new guy.",
+   "hh": 0.1033,
+   "mc": 0.0377,
+   "g": "rejected"
+  },
+  {
+   "id": "e-3cf22a908c",
+   "p": "L15-c49",
+   "r": "USES",
+   "h": "Soft-margin SVM uses slack variable.",
+   "q": "And in this case, the margin support vectors that used to be just alpha greater than 0, they also happen to be strictly less than C.",
+   "hh": 0.6505,
+   "mc": 0.83,
+   "g": "supported"
+  },
+  {
+   "id": "e-3d07b413ad",
+   "p": "L15-c33",
+   "r": "USES",
+   "h": "Polynomial kernel uses nonlinear transform.",
+   "q": "We looked at it, and we realized that there is a polynomial thing. And although I didn't do it for the case of Q equals 100, I realize that there will be corresponding terms, and I will be able to separate them. So in my mind, that is the Z space.",
+   "hh": 0.0764,
+   "mc": 0.0408,
+   "g": "rejected"
+  },
+  {
+   "id": "e-3e2509d3ce",
+   "p": "L15-c34",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "all of that depends on the Z space being there",
+   "hh": 0.8788,
+   "mc": 0.9669,
+   "g": "supported"
+  },
+  {
+   "id": "e-3ecbac3cce",
+   "p": "L15-c33",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "I realize that the kernel that I wrote will correspond to an inner product in that space.",
+   "hh": 0.0358,
+   "mc": 0.0249,
+   "g": "rejected"
+  },
+  {
+   "id": "e-4005bdabb7",
+   "p": "L15-c27",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "if I give you a kernel, and it's a valid kernel that corresponds to an inner product in some Z space",
+   "hh": 0.8761,
+   "mc": 0.9565,
+   "g": "supported"
+  },
+  {
+   "id": "e-40d64c181d",
+   "p": "L15-c50",
+   "r": "IS_A",
+   "h": "Support vector is a kind of non-margin support vector.",
+   "q": "As long as you're violating, you are a support vector. Not a clean support vector, but a support vector nonetheless.",
+   "hh": 0.9745,
+   "mc": 0.7706,
+   "g": "supported"
+  },
+  {
+   "id": "e-4154ff8f81",
+   "p": "L14-c35",
+   "r": "USES",
+   "h": "Slack variable uses constraint.",
+   "q": "This is the constraint in the 0 form. So this is greater than or equal to 1. So minus 1 would be greater than or equal to 0. This is what we called the slack.",
+   "hh": 0.9291,
+   "mc": 0.9287,
+   "g": "supported"
+  },
+  {
+   "id": "e-42a679d6ef",
+   "p": "L15-c55",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding infinite-dimensional space is needed before learning linear.",
+   "q": "And obviously if it was completely linear, and I transform it to the infinite-dimensional space, I obviously would be in trouble.",
+   "hh": 0.5808,
+   "mc": 0.0302,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-434064daa9",
+   "p": "L14-c02",
+   "r": "IS_A",
+   "h": "10-fold cross-validation is a kind of cross-validation.",
+   "q": "So in this case, we-- illustrating a case where we have 10-fold cross-validation.",
+   "hh": 0.877,
+   "mc": 0.9722,
+   "g": "supported"
+  },
+  {
+   "id": "e-45dcabe041",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "this to be an inner product in some space, Z.",
+   "hh": 0.9354,
+   "mc": 0.0869,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-46fb2c34db",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "So the idea of the kernels is that I want to go to the Z space without paying the price for it.",
+   "hh": 0.9787,
+   "mc": 0.969,
+   "g": "supported"
+  },
+  {
+   "id": "e-477965cb41",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Out-of-sample error uses in-sample quantity.",
+   "q": "So we are able to check on the out-of-sample error, using an in-sample quantity.",
+   "hh": 0.9786,
+   "mc": 0.9701,
+   "g": "supported"
+  },
+  {
+   "id": "e-48b98a06e9",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Regularization uses in-sample error.",
+   "q": "What we are minimizing is the in-sample error. So we are optimizing E_in",
+   "hh": 0.9771,
+   "mc": 0.9749,
+   "g": "supported"
+  },
+  {
+   "id": "e-495b2cc67c",
+   "p": "L15-c28",
+   "r": "USES",
+   "h": "Transformation uses quadratic programming.",
+   "q": "instead of passing this to the quadratic programming, you're going to pass this instead.",
+   "hh": 0.9481,
+   "mc": 0.4909,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-49b1b6cacb",
+   "p": "L14-c12",
+   "r": "USES",
+   "h": "Support vector machine uses margin.",
+   "q": "So for the analysis of support vector machines, we're going to pull w_0 out.",
+   "hh": 0.9792,
+   "mc": 0.1602,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-49e501be01",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Support vector machine uses support vector.",
+   "q": "and we'll get the support vectors",
+   "hh": 0.854,
+   "mc": 0.7795,
+   "g": "supported"
+  },
+  {
+   "id": "e-4a5507b62a",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Parameter uses out-of-sample error.",
+   "q": "number of parameters, degrees of freedom, VC dimension, dot dot dot, divided by the number of examples.",
+   "hh": 0.9386,
+   "mc": 0.0622,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-4afb73e496",
+   "p": "L15-c41",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding slack is needed before learning violation.",
+   "q": "And I'm going to say that the quantity that used to be greater than or equal to 1, is actually greater than or equal to 1 minus a slack.",
+   "hh": 0.6149,
+   "mc": 0.0592,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-4b76f0d3e9",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Support vector machine uses generalization.",
+   "q": "and we'll get generalization bound",
+   "hh": 0.7472,
+   "mc": 0.3472,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-4b7a05dc0e",
+   "p": "L15-c43",
+   "r": "USES",
+   "h": "Lagrangian uses soft-margin SVM.",
+   "q": "Now what we're going to do, we're actually going to go through the Lagrangian again, because the Lagrangian is not that much different",
+   "hh": 0.5514,
+   "mc": 0.0217,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-4c7c4ec8d2",
+   "p": "L15-c42",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of augmented error.",
+   "q": "But this is a standard formulation in SVM for a good reason.",
+   "hh": 0.444,
+   "mc": 0.0439,
+   "g": "rejected"
+  },
+  {
+   "id": "e-4cba0afd5d",
+   "p": "L15-c03",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector is needed before learning linear separability.",
+   "q": "Now, we applied support vectors only to linearly separable data, at least in the previous lecture.",
+   "hh": 0.3703,
+   "mc": 0.0441,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-4d7a1a1d6c",
+   "p": "L15-c49",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of margin.",
+   "q": "And now, I have a slack. The slack xi starts becoming positive. And therefore, the margin is violated. I'm less than 1.",
+   "hh": 0.9004,
+   "mc": 0.2993,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-4fda5fd646",
+   "p": "L15-c35",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding positive semi-definite is needed before learning Mercer's condition.",
+   "q": "So the condition here on that matrix, without visiting the z, is that when you put these numbers, to your pleasant surprise, this needs to be positive semi-definite. That is, in matrix lingo, this matrix should be greater than or equal to 0. That's what positive semi-definite really means conceptually. This should be true for any choice of the points. And that is Mercer's condition.",
+   "hh": 0.754,
+   "mc": 0.2633,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-50654ff8a4",
+   "p": "L15-c28",
+   "r": "USES",
+   "h": "Quadratic programming uses quadratic-programming matrix.",
+   "q": "other than this quadratic-programming matrix.",
+   "hh": 0.9414,
+   "mc": 0.9185,
+   "g": "supported"
+  },
+  {
+   "id": "e-508ef02da3",
+   "p": "L14-c21",
+   "r": "USES",
+   "h": "Lagrangian uses inequality constraints.",
+   "q": "Because what people did is simply look at these and realize that there is a slack here. If I call the slack s squared, I can make this equality. And then I can solve the old Lagrangian, with equality.",
+   "hh": 0.9655,
+   "mc": 0.9679,
+   "g": "supported"
+  },
+  {
+   "id": "e-50ad8d7afb",
+   "p": "L15-c31",
+   "r": "IS_A",
+   "h": "RBF kernel is a kind of kernel function.",
+   "q": "if I put the RBF kernel here, the one with e to the minus x squared with the norm",
+   "hh": 0.9117,
+   "mc": 0.9601,
+   "g": "supported"
+  },
+  {
+   "id": "e-51b81fd255",
+   "p": "L15-c46",
+   "r": "USES",
+   "h": "Lagrangian uses slack variable.",
+   "q": "Minimize, and then we're going to maximize with respect to the Lagrange multipliers, the alphas which we used to have, and the betas are the new guys in town.",
+   "hh": 0.0823,
+   "mc": 0.0291,
+   "g": "rejected"
+  },
+  {
+   "id": "e-51c48ee1da",
+   "p": "L15-c45",
+   "r": "USES",
+   "h": "Lagrangian uses quadratic programming.",
+   "q": "And we ended up with the quadratic programming problem we had.",
+   "hh": 0.9504,
+   "mc": 0.721,
+   "g": "supported"
+  },
+  {
+   "id": "e-5217e7b4b1",
+   "p": "L15-c59",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "as long as the combination is legitimate, that it maintains that there is a Z space in which this is an inner product",
+   "hh": 0.8347,
+   "mc": 0.0988,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-531c9e2ab9",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Support vector machine uses margin maximization.",
+   "q": "SVM is what we're doing here, maximizing the margin",
+   "hh": 0.9052,
+   "mc": 0.4374,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-537b090cb1",
+   "p": "L14-c38",
+   "r": "IS_A",
+   "h": "Support vector is a kind of margin.",
+   "q": "And the support vectors achieve the margin exactly. They are the critical points.",
+   "hh": 0.9236,
+   "mc": 0.3711,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-53fdb377a1",
+   "p": "L15-c25",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding generalization is needed before learning out-of-sample error.",
+   "q": "Completely suicidal in terms of generalization, but hey, I get 9 support vectors. I can claim victory.",
+   "hh": 0.5199,
+   "mc": 0.0487,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-54e536ee55",
+   "p": "L15-c43",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding hard-margin SVM is needed before learning soft-margin SVM.",
+   "q": "If you look at this slide, take out the red, and you have the problem you already solved, the hard-margin SVM in the linearly separable case. So this is the added guy.",
+   "hh": 0.2472,
+   "mc": 0.0292,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-54ffc43600",
+   "p": "L15-c56",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding VC dimension is needed before learning support vector machine.",
+   "q": "Again pretty much like when I did the VC analysis, it's more technical.",
+   "hh": 0.1872,
+   "mc": 0.0248,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-5626f40f6f",
+   "p": "L15-c01",
+   "r": "USES",
+   "h": "Quadratic programming uses Lagrangian.",
+   "q": "We're going to pass the problem on to a package of quadratic programming. And then, we will wait for quadratic programming to give us back the values of alphas.",
+   "hh": 0.9568,
+   "mc": 0.3697,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-575652d2b6",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Soft-margin SVM uses outliers.",
+   "q": "in order not to make outliers dictate an unduly complex nonlinear transformation.",
+   "hh": 0.8655,
+   "mc": 0.0503,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-5787b86ea9",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Nonlinear transform uses X space.",
+   "q": "And in order to deal with cases where the data is not linearly separable in the X space, what we did is we used nonlinear transform",
+   "hh": 0.8742,
+   "mc": 0.0971,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-582d354529",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "a kernel of this form does correspond to an inner product in a higher space.",
+   "hh": 0.9569,
+   "mc": 0.3695,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-58bc7e7c68",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "X space uses perceptron.",
+   "q": "Instead of working in the X space, we went to the Z space.",
+   "hh": 0.8974,
+   "mc": 0.0789,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-59198a8905",
+   "p": "L14-c08",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning VC dimension.",
+   "q": "Fat margins imply fewer dichotomies possible. And therefore, if we manage to separate the points with a fat dichotomy, we can say that fat dichotomies have a smaller VC dimension",
+   "hh": 0.3585,
+   "mc": 0.05,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-592f369f87",
+   "p": "L14-c16",
+   "r": "USES",
+   "h": "Optimization problem uses margin.",
+   "q": "Here is the optimization problem that resulted. We are maximizing the margin.",
+   "hh": 0.9769,
+   "mc": 0.9775,
+   "g": "supported"
+  },
+  {
+   "id": "e-599ec115ee",
+   "p": "L14-c54",
+   "r": "USES",
+   "h": "Support vector uses Lagrangian.",
+   "q": "support vectors are the ones that correspond to the non-zero Lagrange multipliers",
+   "hh": 0.9208,
+   "mc": 0.963,
+   "g": "supported"
+  },
+  {
+   "id": "e-59c0fbf04b",
+   "p": "L15-c31",
+   "r": "USES",
+   "h": "Neural network uses hidden layer.",
+   "q": "Remember the hidden layer in neural networks?",
+   "hh": 0.9652,
+   "mc": 0.9045,
+   "g": "supported"
+  },
+  {
+   "id": "e-59d98ff3b7",
+   "p": "L15-c42",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning error measure.",
+   "q": "This does seem like measuring the violation of the margin. So in the absence of further evidence one way or the other, this is a good error measure to have.",
+   "hh": 0.6272,
+   "mc": 0.0439,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-5a0519f4a6",
+   "p": "L15-c29",
+   "r": "USES",
+   "h": "Support vector machine uses kernel function.",
+   "q": "You choose a kernel, and it'll give you a different model.",
+   "hh": 0.9693,
+   "mc": 0.9692,
+   "g": "supported"
+  },
+  {
+   "id": "e-5a20ae2824",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "And my question is, does this actually correspond to some Z space, an inner product in Z space.",
+   "hh": 0.9621,
+   "mc": 0.9454,
+   "g": "supported"
+  },
+  {
+   "id": "e-5b134775ca",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Nonlinear transform uses X space.",
+   "q": "So this is your X space. And in X space, I give you this data. Well, this data is not separable, not linearly separable, and definitely not nearly linearly separable. This is the case where you need a nonlinear transformation.",
+   "hh": 0.9891,
+   "mc": 0.954,
+   "g": "supported"
+  },
+  {
+   "id": "e-5be859a4df",
+   "p": "L14-c56",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of soft-margin SVM.",
+   "q": "But in those cases, and in almost all of the cases, you use the soft version of this, which is remarkably similar.",
+   "hh": 0.5377,
+   "mc": 0.039,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-5cb0893cbe",
+   "p": "L14-c48",
+   "r": "USES",
+   "h": "Nonlinear transform uses generalization.",
+   "q": "And you don't get to pay for the generalization that goes with that.",
+   "hh": 0.9703,
+   "mc": 0.1796,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-5e6b9365f3",
+   "p": "L15-c01",
+   "r": "IS_A",
+   "h": "Linear model is a kind of support vector machine.",
+   "q": "if you think of linear models as economy cars, which is what we said when we introduced them, you can think of support vector machines as the luxury line of those cars.",
+   "hh": 0.9794,
+   "mc": 0.8228,
+   "g": "supported"
+  },
+  {
+   "id": "e-5e800e4493",
+   "p": "L15-c56",
+   "r": "USES",
+   "h": "RBF kernel uses dot product.",
+   "q": "But the inner product now is not well defined, right?",
+   "hh": 0.0382,
+   "mc": 0.0224,
+   "g": "rejected"
+  },
+  {
+   "id": "e-5f39ecd4aa",
+   "p": "L15-c32",
+   "r": "IS_A",
+   "h": "Valid kernel is a kind of dot product.",
+   "q": "namely an inner product in some space",
+   "hh": 0.0065,
+   "mc": 0.0353,
+   "g": "rejected"
+  },
+  {
+   "id": "e-5f89a09143",
+   "p": "L15-c31",
+   "r": "USES",
+   "h": "Neural network uses kernel function.",
+   "q": "You can also do that for a neural network and other kernels that you have.",
+   "hh": 0.9295,
+   "mc": 0.7312,
+   "g": "supported"
+  },
+  {
+   "id": "e-602f2cdc61",
+   "p": "L14-c05",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear model is needed before learning nonlinear model.",
+   "q": "And finally, we are going to expand from the linear case to the nonlinear case in the usual way",
+   "hh": 0.5059,
+   "mc": 0.048,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-6097246c9b",
+   "p": "L14-c15",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding dot product is needed before learning distance.",
+   "q": "So now the w hat is a shorter w, if the norm of w happens to be bigger than 1. And what you get-- you get the distance being simply the inner product.",
+   "hh": 0.8565,
+   "mc": 0.0631,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-60c7fa01a9",
+   "p": "L15-c05",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector machine is needed before learning non-linear separability.",
+   "q": "So this is pretty much that, if you were",
+   "hh": 0.6007,
+   "mc": 0.0346,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-6277e66c64",
+   "p": "L14-c46",
+   "r": "USES",
+   "h": "Generalization behavior uses parameters.",
+   "q": "And the generalization behavior will go with the four parameters.",
+   "hh": 0.9915,
+   "mc": 0.9709,
+   "g": "supported"
+  },
+  {
+   "id": "e-64f11bedee",
+   "p": "L14-c54",
+   "r": "IS_A",
+   "h": "Support vector is a kind of VC dimension.",
+   "q": "the number of the support vectors by definition",
+   "hh": 0.9446,
+   "mc": 0.958,
+   "g": "supported"
+  },
+  {
+   "id": "e-6563cc9a66",
+   "p": "L15-c39",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding perceptron is needed before learning margin violation.",
+   "q": "And we discussed that when we talked about perceptron and pocket. And we said that the problem of optimizing-- getting the absolute optimum-- in this case, is generally NP-hard.",
+   "hh": 0.6191,
+   "mc": 0.0372,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-66fb40eddb",
+   "p": "L14-c45",
+   "r": "USES",
+   "h": "Surface uses Z space.",
+   "q": "This surface is simply what the line in the Z space with the best margin got.",
+   "hh": 0.9742,
+   "mc": 0.9731,
+   "g": "supported"
+  },
+  {
+   "id": "e-6753e69182",
+   "p": "L14-c01",
+   "r": "USES",
+   "h": "Validation error uses g minus.",
+   "q": "And it is on this g minus, that we are going to get an estimate of the out-of-sample performance by the validation error.",
+   "hh": 0.984,
+   "mc": 0.9737,
+   "g": "supported"
+  },
+  {
+   "id": "e-68466f55cf",
+   "p": "L14-c36",
+   "r": "USES",
+   "h": "Regularization uses Lagrangian.",
+   "q": "And the lambda for regularization in that case was 0. That is the case, where you have an interior point, and the multiplier is 0.",
+   "hh": 0.8842,
+   "mc": 0.0678,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-685e448691",
+   "p": "L14-c22",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding constrained optimization is needed before learning regularization.",
+   "q": "we actually saw this before in the constrained optimization we solved before under inequality constraints, which was regularization.",
+   "hh": 0.95,
+   "mc": 0.0788,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-68e91d6703",
+   "p": "L14-c46",
+   "r": "USES",
+   "h": "Sophisticated surface uses generalization.",
+   "q": "there are lots of snakes that can go around and mess up the generalization.",
+   "hh": 0.9696,
+   "mc": 0.9476,
+   "g": "supported"
+  },
+  {
+   "id": "e-696d8361b4",
+   "p": "L14-c22",
+   "r": "IS_A",
+   "h": "Regularization is a kind of inequality constraint.",
+   "q": "And the constraint is an inequality constraint that resulted in weight decay, if you remember.",
+   "hh": 0.9671,
+   "mc": 0.6029,
+   "g": "supported"
+  },
+  {
+   "id": "e-69e448b5cb",
+   "p": "L14-c35",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of Lagrangian multiplier.",
+   "q": "This is what we called the slack. So the condition that is guaranteed to be satisfied, for the point you're going to get, is that either the slack is 0, or the Lagrange multiplier is 0.",
+   "hh": 0.7184,
+   "mc": 0.7751,
+   "g": "supported"
+  },
+  {
+   "id": "e-6a9267883a",
+   "p": "L14-c17",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding absolute value is needed before learning minimum.",
+   "q": "So the first thing I notice that-- not to mention the absolute value. So the absolute value of this happens to be equal to this fellow.",
+   "hh": 0.7898,
+   "mc": 0.0824,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-6afdbbf9bb",
+   "p": "L15-c38",
+   "r": "IS_A",
+   "h": "In-sample error is a kind of out-of-sample error.",
+   "q": "Rather than insist on E_in being 0, and then go for the generalization error being huge, because I used something inordinately complex.",
+   "hh": 0.1758,
+   "mc": 0.134,
+   "g": "rejected"
+  },
+  {
+   "id": "e-6ba48c8a6c",
+   "p": "L15-c47",
+   "r": "USES",
+   "h": "Xi uses Lagrangian.",
+   "q": "Here, I have a C. Here, I have a minus alpha. Here, I have a minus beta. These are multiplied by xi. That combination happens to be 0.",
+   "hh": 0.9574,
+   "mc": 0.0855,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-6becc76be5",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Separating hyperplane uses Z space.",
+   "q": "And when I get the solution back, I have the separating plane or line in the Z space.",
+   "hh": 0.6369,
+   "mc": 0.9465,
+   "g": "supported"
+  },
+  {
+   "id": "e-6d297dcfd5",
+   "p": "L15-c25",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "But I can do it because the kernel is easy to compute. If I went into the Z space, you would have never heard from me again!",
+   "hh": 0.9126,
+   "mc": 0.2063,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-6de3f395f9",
+   "p": "L14-c44",
+   "r": "USES",
+   "h": "Support vector machine uses nonlinear transform.",
+   "q": "And you solved the support vector machine.",
+   "hh": 0.976,
+   "mc": 0.7911,
+   "g": "supported"
+  },
+  {
+   "id": "e-6e65058211",
+   "p": "L14-c15",
+   "r": "USES",
+   "h": "Dot product uses projection.",
+   "q": "And you get a unit vector under which the projection would be simply a dot product.",
+   "hh": 0.9838,
+   "mc": 0.9653,
+   "g": "supported"
+  },
+  {
+   "id": "e-6ebc269df7",
+   "p": "L15-c49",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of Lagrangian.",
+   "q": "We know when the Lagrange multiplier hits 0, the corresponding slack has to become positive.",
+   "hh": 0.4242,
+   "mc": 0.2247,
+   "g": "rejected"
+  },
+  {
+   "id": "e-6ece2c18b7",
+   "p": "L15-c59",
+   "r": "USES",
+   "h": "Support vector machine uses generalization.",
+   "q": "And as long as what you're doing is legitimate, so that you have the generalization guarantees of SVM, it can be done.",
+   "hh": 0.7736,
+   "mc": 0.8635,
+   "g": "supported"
+  },
+  {
+   "id": "e-6fa35a9bef",
+   "p": "L14-c45",
+   "r": "USES",
+   "h": "Support vector uses Z space.",
+   "q": "So if I look at what the support vectors are in the Z space, they happen to correspond to points here.",
+   "hh": 0.9434,
+   "mc": 0.8903,
+   "g": "supported"
+  },
+  {
+   "id": "e-705cb1c71b",
+   "p": "L14-c07",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning VC analysis.",
+   "q": "And now we're going to argue that the bigger margin is better for a reason that relates to our VC analysis before.",
+   "hh": 0.9195,
+   "mc": 0.0418,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-725c8700a7",
+   "p": "L15-c42",
+   "r": "IS_A",
+   "h": "Weight decay is a kind of regularization.",
+   "q": "This looks pretty much like a regularization term, like weight decay.",
+   "hh": 0.9356,
+   "mc": 0.9611,
+   "g": "supported"
+  },
+  {
+   "id": "e-72795a970f",
+   "p": "L14-c21",
+   "r": "IS_A",
+   "h": "KKT conditions is a kind of Lagrangian.",
+   "q": "And the Lagrangian under the inequality constraint is referred to as KKT.",
+   "hh": 0.9621,
+   "mc": 0.9487,
+   "g": "supported"
+  },
+  {
+   "id": "e-7380aacfeb",
+   "p": "L14-c10",
+   "r": "USES",
+   "h": "W x_n uses signal.",
+   "q": "Now the quantity w x_n which is the signal, as we talked about it, is a pretty interesting thing.",
+   "hh": 0.947,
+   "mc": 0.8738,
+   "g": "supported"
+  },
+  {
+   "id": "e-73db05e269",
+   "p": "L15-c54",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector is needed before learning separating hyperplane.",
+   "q": "you need N-vectors to define an N-minus-1 dimensional hyperplane",
+   "hh": 0.5348,
+   "mc": 0.0378,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-73fe3c2483",
+   "p": "L14-c55",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "But because really, they are the ones that dictate the margin, so their existence really tells you that the margin is valid.",
+   "hh": 0.9672,
+   "mc": 0.3007,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-756fe09207",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "What makes them support vectors or not is that they achieve the margin in the Z space.",
+   "hh": 0.9085,
+   "mc": 0.9518,
+   "g": "supported"
+  },
+  {
+   "id": "e-76af0b0dd7",
+   "p": "L14-c02",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding validation set is needed before learning cross-validation.",
+   "q": "Then, because the number of examples turned out to be an issue, we introduced the cross-validation",
+   "hh": 0.2133,
+   "mc": 0.1945,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-76d77592ec",
+   "p": "L14-c01",
+   "r": "USES",
+   "h": "G minus uses training.",
+   "q": "Because we are training with a subset, we end up with a hypothesis that we are going to label g minus",
+   "hh": 0.9758,
+   "mc": 0.7082,
+   "g": "supported"
+  },
+  {
+   "id": "e-76f11b8233",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Parameter uses out-of-sample error.",
+   "q": "You have the number of support vectors, which happens to be the number of effective parameters-- the alphas that survived. This is your guy. You divide it by N, well, N minus 1 in this case. And that will give you an upper bound on E_out.",
+   "hh": 0.9386,
+   "mc": 0.0622,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-78785d2063",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "Perceptron uses non-separable case.",
+   "q": "But a non-separable case could be handled here in the same way we handled non-separable case with the perceptrons.",
+   "hh": 0.9531,
+   "mc": 0.3509,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-79988ab37e",
+   "p": "L15-c41",
+   "r": "IS_A",
+   "h": "Slack is a kind of margin.",
+   "q": "Hopefully, most of them will satisfy the margin, only a few of them will violate it. And I'm going to say that the quantity that used to be greater than or equal to 1, is actually greater than or equal to 1 minus a slack.",
+   "hh": 0.9078,
+   "mc": 0.9203,
+   "g": "supported"
+  },
+  {
+   "id": "e-79f01ded94",
+   "p": "L14-c38",
+   "r": "IS_A",
+   "h": "Support vector is a kind of separating hyperplane.",
+   "q": "They are the closest ones to the plane, where the margin region touched.",
+   "hh": 0.2458,
+   "mc": 0.0349,
+   "g": "rejected"
+  },
+  {
+   "id": "e-79f0a0097b",
+   "p": "L14-c02",
+   "r": "IS_A",
+   "h": "Validation error is a kind of optimistic bias.",
+   "q": "you end up with a little bit of an optimistic bias, because you chose a model that performs well on that validation error. Therefore, the validation error is not going to necessarily be an unbiased estimate of the out-of-sample error. It will have a slight positive, or optimistic, bias.",
+   "hh": 0.9188,
+   "mc": 0.9793,
+   "g": "supported"
+  },
+  {
+   "id": "e-7a22bc2946",
+   "p": "L14-c04",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding maximizing the margin is needed before learning constrained optimization problem.",
+   "q": "And after formulating the problem, we are going to go and get the solution. And we're going to do that analytically. It will be a constrained optimization problem.",
+   "hh": 0.8427,
+   "mc": 0.1372,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-7b985f46f2",
+   "p": "L14-c44",
+   "r": "USES",
+   "h": "Nonlinear transform uses Z space.",
+   "q": "if I do the nonlinear transformation, do I have support vectors? Yes, you have support vectors for sure in the Z space.",
+   "hh": 0.9774,
+   "mc": 0.9779,
+   "g": "supported"
+  },
+  {
+   "id": "e-7bc5096e8a",
+   "p": "L15-c26",
+   "r": "USES",
+   "h": "Margin uses Z space.",
+   "q": "And the distance that was solved for happened in the Z space.",
+   "hh": 0.9494,
+   "mc": 0.3488,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-7be145bde9",
+   "p": "L15-c04",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Z space is needed before learning complex hypothesis.",
+   "q": "Because we went to a fairly high-dimensional Z space. And we got a surface that is wiggly, and so on, which in our mind raises alarm bells as far as generalization is concerned.",
+   "hh": 0.3098,
+   "mc": 0.0313,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-7c6e8486e7",
+   "p": "L15-c43",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of soft-margin SVM.",
+   "q": "and now the condition adds xi to it. So I'm now requiring this to be the case. And I said that xi's are non-negative. I'm only penalizing the violating of the margin.",
+   "hh": 0.601,
+   "mc": 0.019,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-7dc4bb14ae",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Lagrangian uses support vector machine.",
+   "q": "But again, because both of them will blend in the Lagrangian, and you will end up doing something that is a compromise",
+   "hh": 0.1653,
+   "mc": 0.6786,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-7f1bbd692d",
+   "p": "L15-c57",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of classification.",
+   "q": "the major success of support vector machines is really in classification",
+   "hh": 0.9541,
+   "mc": 0.9501,
+   "g": "supported"
+  },
+  {
+   "id": "e-7f5c673db5",
+   "p": "L15-c04",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding complex hypothesis is needed before learning generalization.",
+   "q": "which in our mind raises alarm bells as far as generalization is concerned.",
+   "hh": 0.349,
+   "mc": 0.0353,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-80ed619e8f",
+   "p": "L15-c35",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "Well, this is supposed to be the dot product in the Z space, right? So we're going to transform x and x dash into z and z dash.",
+   "hh": 0.9719,
+   "mc": 0.9629,
+   "g": "supported"
+  },
+  {
+   "id": "e-8109b919d5",
+   "p": "L14-c46",
+   "r": "USES",
+   "h": "Margin uses linear space.",
+   "q": "The margins are in the linear space, et cetera.",
+   "hh": 0.9528,
+   "mc": 0.9705,
+   "g": "supported"
+  },
+  {
+   "id": "e-822e361c42",
+   "p": "L14-c30",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding unconstrained optimization is needed before learning constrained optimization.",
+   "q": "Now if I didn't have those annoying constraints, I would be basically done. Because I look at this, that's pretty easy. I can express one of the alphas in terms of the rest of the alphas. Right? Factor it out. Substitute for that alpha here. And all of a sudden, I have a purely unconstrained optimization for a quadratic one.",
+   "hh": 0.7152,
+   "mc": 0.1196,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-830521ff1c",
+   "p": "L14-c35",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of interior point.",
+   "q": "Then there are interior points, where the slack is bigger than 1.",
+   "hh": 0.9073,
+   "mc": 0.0838,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-84c0fe49bb",
+   "p": "L15-c36",
+   "r": "USES",
+   "h": "Nonlinear transform uses outer product.",
+   "q": "If I want to satisfy that this is true for any points I choose, obviously I have to have some math helping me to corner that this has to be positive semi-definite for some reason. But this is indeed the condition. And if you look at the case where you know the transformation into the z and you put this as an outer product between a bunch of z's and a bunch of z's",
+   "hh": 0.8459,
+   "mc": 0.0563,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-856e1c8ae2",
+   "p": "L14-c52",
+   "r": "USES",
+   "h": "Nonlinear transform uses linear separability.",
+   "q": "But if it's terribly not linearly separable, then you go to a nonlinear transformation.",
+   "hh": 0.9664,
+   "mc": 0.1701,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-8585451e74",
+   "p": "L15-c38",
+   "r": "USES",
+   "h": "Kernel function uses nonlinear transform.",
+   "q": "The surface is this, and you have to go to a nonlinear transformation. Kernels deal with this.",
+   "hh": 0.9898,
+   "mc": 0.9803,
+   "g": "supported"
+  },
+  {
+   "id": "e-86783de799",
+   "p": "L14-c09",
+   "r": "IS_A",
+   "h": "Distance is a kind of margin.",
+   "q": "Now I would like to relate w to the margin, or to the distance.",
+   "hh": 0.9608,
+   "mc": 0.9698,
+   "g": "supported"
+  },
+  {
+   "id": "e-86aeafbcdb",
+   "p": "L15-c05",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding VC analysis is needed before learning hypothesis set.",
+   "q": "Remember, the complexity of the hypothesis set is what we pay the price for in terms of the VC analysis, right?",
+   "hh": 0.7808,
+   "mc": 0.072,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-875c677d5b",
+   "p": "L14-c56",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding hard margin is needed before learning nonlinear transform.",
+   "q": "And therefore, you're using the other methods. And if you're using strictly nonlinear transformation, but with hard margin, then I can see the point of ruining.",
+   "hh": 0.7639,
+   "mc": 0.0235,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-8850db8380",
+   "p": "L15-c56",
+   "r": "USES",
+   "h": "Dot product uses decaying term.",
+   "q": "In general, when you have an infinite-dimensional space, the only way to really define an inner product is to have a decaying term so that the thing converges.",
+   "hh": 0.935,
+   "mc": 0.1621,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-885f99f6ca",
+   "p": "L14-c31",
+   "r": "USES",
+   "h": "Constraints uses quadratic programming.",
+   "q": "And then the constraints-- you put the constraints again in the same way, subject to. So there's a part which asks you for constraints.",
+   "hh": 0.9513,
+   "mc": 0.8967,
+   "g": "supported"
+  },
+  {
+   "id": "e-8894c6a22f",
+   "p": "L15-c57",
+   "r": "USES",
+   "h": "RBF kernel uses nonlinear transform.",
+   "q": "let's say that I took my data and applied RBF",
+   "hh": 0.0403,
+   "mc": 0.109,
+   "g": "rejected"
+  },
+  {
+   "id": "e-89c1a504f2",
+   "p": "L15-c41",
+   "r": "IS_A",
+   "h": "Slack is a kind of violation.",
+   "q": "I'm going to introduce a slack for every point, potentially every point. Hopefully, most of them will satisfy the margin, only a few of them will violate it.",
+   "hh": 0.9518,
+   "mc": 0.9566,
+   "g": "supported"
+  },
+  {
+   "id": "e-8a2cb9fd3d",
+   "p": "L14-c54",
+   "r": "IS_A",
+   "h": "VC dimension is a kind of parameters.",
+   "q": "the number of non-zero parameters, which corresponds to the VC dimension",
+   "hh": 0.952,
+   "mc": 0.9584,
+   "g": "supported"
+  },
+  {
+   "id": "e-8b2a449f13",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Support vector uses nonlinear transform.",
+   "q": "What makes them support vectors or not is that they achieve the margin in the Z space.",
+   "hh": 0.0534,
+   "mc": 0.02,
+   "g": "rejected"
+  },
+  {
+   "id": "e-8c574f7352",
+   "p": "L14-c12",
+   "r": "USES",
+   "h": "Vector uses matrix representation.",
+   "q": "And that was convenient just to have the nice vector and matrix representation and so on.",
+   "hh": 0.9719,
+   "mc": 0.402,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-8d988fd727",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Kernel function uses nonlinear transform.",
+   "q": "improvised a kernel that does not correspond to a Z space",
+   "hh": 0.0884,
+   "mc": 0.0475,
+   "g": "rejected"
+  },
+  {
+   "id": "e-8dc0989301",
+   "p": "L15-c59",
+   "r": "USES",
+   "h": "Support vector machine uses dot product.",
+   "q": "in which this is an inner product. That's really the requirement.",
+   "hh": 0.0413,
+   "mc": 0.0194,
+   "g": "rejected"
+  },
+  {
+   "id": "e-8e9cab604c",
+   "p": "L15-c29",
+   "r": "IS_A",
+   "h": "Kernel function is a kind of dot product.",
+   "q": "the inner product, and the inner product is the kernel.",
+   "hh": 0.0231,
+   "mc": 0.0419,
+   "g": "rejected"
+  },
+  {
+   "id": "e-8fb13ff2fe",
+   "p": "L15-c36",
+   "r": "IS_A",
+   "h": "Outer product is a kind of positive semi-definite.",
+   "q": "what you're going to get is patently positive semi-definite. Because what is positive semi-definite? You put a sleeping vector here and the same vector standing here.",
+   "hh": 0.944,
+   "mc": 0.9328,
+   "g": "supported"
+  },
+  {
+   "id": "e-91657a3cd3",
+   "p": "L15-c01",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding growth function is needed before learning margin.",
+   "q": "And after we determined that it's a good idea to maximize the margin, we set out to do that. And after a chain of mathematics, we ended up with a Lagrangian that we're going to maximize.",
+   "hh": 0.8079,
+   "mc": 0.1161,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-922337ebe5",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Dot product uses kernel function.",
+   "q": "And here's an example of a kernel. This will be a useful kernel.",
+   "hh": 0.9697,
+   "mc": 0.0852,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-922a0e4802",
+   "p": "L15-c57",
+   "r": "USES",
+   "h": "RBF kernel uses linear separability.",
+   "q": "I needn't know whether they would be linearly separable in that space or not.",
+   "hh": 0.6693,
+   "mc": 0.0361,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-9443f2fb04",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Hard margin uses dual problem.",
+   "q": "With the hard margin, I apply this machinery. I get the dual",
+   "hh": 0.9826,
+   "mc": 0.9682,
+   "g": "supported"
+  },
+  {
+   "id": "e-9587710314",
+   "p": "L14-c08",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning growth function.",
+   "q": "Fat margins imply fewer dichotomies possible. And therefore, if we manage to separate the points with a fat dichotomy, we can say that fat dichotomies have a smaller VC dimension, smaller growth function",
+   "hh": 0.5543,
+   "mc": 0.0435,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-96e9e5c120",
+   "p": "L15-c56",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector machine is needed before learning regression.",
+   "q": "How can you generalize SVM's to a regression case?",
+   "hh": 0.2731,
+   "mc": 0.0336,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-9808579190",
+   "p": "L15-c46",
+   "r": "USES",
+   "h": "Lagrangian uses bias.",
+   "q": "Minimize, and then we're going to maximize with respect to the Lagrange multipliers, the alphas which we used to have, and the betas are the new guys in town.",
+   "hh": 0.448,
+   "mc": 0.0205,
+   "g": "rejected"
+  },
+  {
+   "id": "e-98152c4064",
+   "p": "L15-c38",
+   "r": "USES",
+   "h": "Soft-margin SVM uses support vector.",
+   "q": "And even with counting support vectors, by the time I do this and come back, I would have touched on so many points that the chances are the number of support vectors would be huge.",
+   "hh": 0.9244,
+   "mc": 0.9708,
+   "g": "supported"
+  },
+  {
+   "id": "e-98301b280e",
+   "p": "L15-c25",
+   "r": "IS_A",
+   "h": "Separating hyperplane is a kind of Z space.",
+   "q": "It's a hyperplane of degree infinity minus 1.",
+   "hh": 0.9131,
+   "mc": 0.0818,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-98590075aa",
+   "p": "L14-c13",
+   "r": "IS_A",
+   "h": "Vector w perpendicular to plane is a kind of plane.",
+   "q": "The vector w is perpendicular to the plane.",
+   "hh": 0.9356,
+   "mc": 0.3195,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-992968dd03",
+   "p": "L15-c29",
+   "r": "USES",
+   "h": "Support vector machine uses model.",
+   "q": "So you took this, substituted there, you took the inner products. The inner product is what the kernel is. You put the kernel in place of it, and you get that. Now, this is very interesting because this is your model, so to speak.",
+   "hh": 0.958,
+   "mc": 0.7059,
+   "g": "supported"
+  },
+  {
+   "id": "e-9a17dafaa1",
+   "p": "L14-c37",
+   "r": "IS_A",
+   "h": "Positive alpha is a kind of positive lambda.",
+   "q": "And the mathematics of it tells us that we can identify those, because we can go for lambdas that happen to be positive, the alphas in this case. And the alpha greater than 0 will identify a support vector.",
+   "hh": 0.9564,
+   "mc": 0.9698,
+   "g": "supported"
+  },
+  {
+   "id": "e-9a92059dbc",
+   "p": "L14-c49",
+   "r": "USES",
+   "h": "Nonlinear transform uses higher dimension.",
+   "q": "You don't pay for the computation of going to the higher dimension.",
+   "hh": 0.958,
+   "mc": 0.4599,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-9c1133f00d",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Out-of-sample error uses support vector.",
+   "q": "a bound on the out-of-sample error, based on the number of support vectors that you get.",
+   "hh": 0.9617,
+   "mc": 0.9605,
+   "g": "supported"
+  },
+  {
+   "id": "e-9c49521d3d",
+   "p": "L15-c52",
+   "r": "USES",
+   "h": "Lagrangian uses quadratic programming.",
+   "q": "if you go to the Lagrangian, the quadratic programming will try to converge to something in infinity.",
+   "hh": 0.9797,
+   "mc": 0.5932,
+   "g": "supported"
+  },
+  {
+   "id": "e-9c89d00944",
+   "p": "L15-c01",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separability is needed before learning margin.",
+   "q": "is that if the data is linearly separable, there is more than one line that can separate the data.",
+   "hh": 0.6884,
+   "mc": 0.0707,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-9cb5bd0271",
+   "p": "L15-c55",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector is needed before learning separating hyperplane.",
+   "q": "And the orientation is decided by the two points that are around me. So in spite of the fact that in a general case, I will do that, I could construct cases where it's not linear in the dimension.",
+   "hh": 0.5914,
+   "mc": 0.0541,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-9d1b0704ed",
+   "p": "L15-c39",
+   "r": "USES",
+   "h": "Margin violation uses margin.",
+   "q": "I'm going to define my error measure based on violating the margin.",
+   "hh": 0.9724,
+   "mc": 0.9545,
+   "g": "supported"
+  },
+  {
+   "id": "e-9d867eef37",
+   "p": "L15-c14",
+   "r": "USES",
+   "h": "Kernel function uses nonlinear transform.",
+   "q": "Nonlinear transform, so I can put anything, right? This is my transformation.",
+   "hh": 0.8322,
+   "mc": 0.7538,
+   "g": "supported"
+  },
+  {
+   "id": "e-9dfd4c4cc4",
+   "p": "L14-c38",
+   "r": "USES",
+   "h": "W calculation uses support vector.",
+   "q": "Now that I notice that many of the alphas are 0, and alpha is only positive for support vectors, then I can say that I can sum this up over only the support vectors.",
+   "hh": 0.9775,
+   "mc": 0.9695,
+   "g": "supported"
+  },
+  {
+   "id": "e-9e2e96c430",
+   "p": "L14-c05",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separation is needed before learning linearly separable dataset.",
+   "q": "So now let's talk about linear separation. Let's say I have a linearly separable data set.",
+   "hh": 0.8365,
+   "mc": 0.0595,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-9e8b9daf47",
+   "p": "L14-c53",
+   "r": "IS_A",
+   "h": "VC dimension is a kind of parameter.",
+   "q": "the number of parameters, independent parameters or effective parameters, is the VC dimension in many cases.",
+   "hh": 0.9312,
+   "mc": 0.9103,
+   "g": "supported"
+  },
+  {
+   "id": "e-9fdd8508e9",
+   "p": "L14-c52",
+   "r": "IS_A",
+   "h": "Support vector is a kind of parameter.",
+   "q": "the number of parameters, independent parameters or effective parameters, is the VC dimension in many cases.",
+   "hh": 0.8917,
+   "mc": 0.9362,
+   "g": "supported"
+  },
+  {
+   "id": "e-a0d95c0ae8",
+   "p": "L15-c40",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin violation is needed before learning margin.",
+   "q": "I'm going to define my error measure based on violating the margin. So let's see what I mean. This point that used to be here has violated the margin.",
+   "hh": 0.3125,
+   "mc": 0.049,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-a17b0f8fb0",
+   "p": "L15-c38",
+   "r": "USES",
+   "h": "Soft-margin SVM uses out-of-sample error.",
+   "q": "But since the generalization is good, E_out would be OK.",
+   "hh": 0.2643,
+   "mc": 0.0213,
+   "g": "rejected"
+  },
+  {
+   "id": "e-a1db0c7ec7",
+   "p": "L15-c50",
+   "r": "IS_A",
+   "h": "Xi is a kind of margin.",
+   "q": "And therefore, the margin is violated. I'm less than 1. So that's 1 minus xi, and xi is positive.",
+   "hh": 0.9677,
+   "mc": 0.17,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-a1f52ce5b5",
+   "p": "L14-c03",
+   "r": "USES",
+   "h": "Support vector machine uses optimization package.",
+   "q": "There is a very nice optimization package that you can use in order to get the solution.",
+   "hh": 0.9455,
+   "mc": 0.9713,
+   "g": "supported"
+  },
+  {
+   "id": "e-a30426df8f",
+   "p": "L15-c35",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "Well, this is supposed to be the dot product in the Z space, right? So we're going to transform x and x dash into z and z dash. While in the Z space, certainly z dot z dash is the same as z dash dot z. Inner product is commutative.",
+   "hh": 0.9475,
+   "mc": 0.9199,
+   "g": "supported"
+  },
+  {
+   "id": "e-a43fc3c596",
+   "p": "L14-c02",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding validation error is needed before learning model selection.",
+   "q": "once you use the validation error for model selection",
+   "hh": 0.6057,
+   "mc": 0.0432,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-a546091e0a",
+   "p": "L14-c08",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin is needed before learning out-of-sample error.",
+   "q": "we will come at the end of the lecture to a result that estimates the out-of- sample error based on the margin. And we will find out that indeed, when you have a bigger margin, you will be able to achieve better out-of-sample performance.",
+   "hh": 0.5948,
+   "mc": 0.0699,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-a58f3fc166",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Generalization uses Z space.",
+   "q": "Because we went to a fairly high-dimensional Z space. And we got a surface that is wiggly, and so on, which in our mind raises alarm bells as far as generalization is",
+   "hh": 0.6693,
+   "mc": 0.9322,
+   "g": "supported"
+  },
+  {
+   "id": "e-a5c8fc5b7b",
+   "p": "L15-c17",
+   "r": "USES",
+   "h": "Dot product uses kernel trick.",
+   "q": "the same trick we did here, except more elaborately. But if you actually go at it explicitly",
+   "hh": 0.0467,
+   "mc": 0.0189,
+   "g": "rejected"
+  },
+  {
+   "id": "e-a5cb447483",
+   "p": "L15-c35",
+   "r": "USES",
+   "h": "Quadratic programming uses kernel function.",
+   "q": "Similar to the one you're passing to the quadratic programming, but without the y's. What you do, you just list the value of your kernels on all the pairs coming from your data set.",
+   "hh": 0.9134,
+   "mc": 0.0993,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-a6924d571b",
+   "p": "L14-c26",
+   "r": "USES",
+   "h": "Quadratic programming uses Lagrangian.",
+   "q": "But if I tell you to stop here, the function could be going this way. And this is the point you're going to pick. And the gradient here is definitely not 0. So the question of maximizing versus minimizing, you need to pay attention here. We are not going to pay too much attention to it, because we'll just tell the quadratic programming guy, please maximize. And it will give us the solution.",
+   "hh": 0.8834,
+   "mc": 0.0636,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-a6cd30b3f2",
+   "p": "L15-c43",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separability is needed before learning hard-margin SVM.",
+   "q": "the hard-margin SVM in the linearly separable case.",
+   "hh": 0.7508,
+   "mc": 0.0684,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-a731725402",
+   "p": "L14-c15",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding vector is needed before learning projection.",
+   "q": "So here's the vector. And here is the other vector, which we know that is orthogonal to the plane. Now if you project this fellow on this direction, that length will give you the distance.",
+   "hh": 0.8945,
+   "mc": 0.0667,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-a970bb3e7b",
+   "p": "L15-c29",
+   "r": "USES",
+   "h": "Model uses kernel function.",
+   "q": "The kernel you choose appears here.",
+   "hh": 0.9742,
+   "mc": 0.9749,
+   "g": "supported"
+  },
+  {
+   "id": "e-a998cdd6c9",
+   "p": "L15-c09",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "if you have an inner product in the Z space, you are ready with the problem that you're going to pass on to the quadratic programming.",
+   "hh": 0.8816,
+   "mc": 0.062,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-a99fea2027",
+   "p": "L15-c15",
+   "r": "IS_A",
+   "h": "Kernel function is a kind of dot product.",
+   "q": "A valid kernel is an inner product in some space.",
+   "hh": 0.0754,
+   "mc": 0.0347,
+   "g": "rejected"
+  },
+  {
+   "id": "e-aa444e085d",
+   "p": "L14-c54",
+   "r": "IS_A",
+   "h": "Lagrangian is a kind of parameters.",
+   "q": "support vectors are the ones that correspond to the non-zero Lagrange multipliers",
+   "hh": 0.8471,
+   "mc": 0.8693,
+   "g": "supported"
+  },
+  {
+   "id": "e-ab1e8ea645",
+   "p": "L15-c55",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding dimension is needed before learning linear.",
+   "q": "It's likely to increase with the increasing dimension.",
+   "hh": 0.7209,
+   "mc": 0.0642,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ab57d34595",
+   "p": "L14-c07",
+   "r": "IS_A",
+   "h": "Dichotomies is a kind of growth function.",
+   "q": "So we take the dichotomies of the line on points in the plane.",
+   "hh": 0.9111,
+   "mc": 0.4319,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-abc46eefb2",
+   "p": "L14-c01",
+   "r": "USES",
+   "h": "Validation error uses out-of-sample performance.",
+   "q": "And it is on this g minus, that we are going to get an estimate of the out-of-sample performance by the validation error.",
+   "hh": 0.9837,
+   "mc": 0.9386,
+   "g": "supported"
+  },
+  {
+   "id": "e-ac17980cae",
+   "p": "L14-c56",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding soft-margin SVM is needed before learning linear separability.",
+   "q": "Except obviously when you have noise, the chances of getting a cleanly linearly separable data is not there. And therefore, you're using the other methods.",
+   "hh": 0.5713,
+   "mc": 0.042,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ac91051ba1",
+   "p": "L14-c19",
+   "r": "USES",
+   "h": "Quadratic programming uses constraints.",
+   "q": "There's our quadratic formula. The only thing I need to do is just have the constraints being friendly constraints, not a minimum and absolute value.",
+   "hh": 0.9705,
+   "mc": 0.3147,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-acd6b6def4",
+   "p": "L15-c05",
+   "r": "USES",
+   "h": "Margin uses support vector machine.",
+   "q": "because it maximizes the margin. So we get the benefit of a fairly low out-of-sample error, in spite of the fact that we captured the fitting very well by getting the 0 in-sample error.",
+   "hh": 0.9709,
+   "mc": 0.9121,
+   "g": "supported"
+  },
+  {
+   "id": "e-acf3242120",
+   "p": "L15-c22",
+   "r": "IS_A",
+   "h": "RBF kernel is a kind of kernel function.",
+   "q": "So now, this is a very interesting kernel. It's called the radial-basis-function kernel, if that rings a bell.",
+   "hh": 0.7209,
+   "mc": 0.9619,
+   "g": "supported"
+  },
+  {
+   "id": "e-ad32bb8d68",
+   "p": "L15-c52",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding perceptron is needed before learning linear separability.",
+   "q": "Should I run the perceptron first to see if it converges before?",
+   "hh": 0.8381,
+   "mc": 0.0306,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ad4cb744ee",
+   "p": "L14-c43",
+   "r": "USES",
+   "h": "Dot product uses quadratic programming.",
+   "q": "Now I have a million-dimensional vector, inner product with a million dimensional vector. That doesn't faze me at all. Just an inner product. I get a number. But when I'm done, how many alphas do I have? This is the dimensionality of the problem that I'm passing to quadratic programming.",
+   "hh": 0.961,
+   "mc": 0.0497,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ae8f8047cf",
+   "p": "L14-c50",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding support vector is needed before learning generalization.",
+   "q": "getting not only the computation being the same, but also the generalization being dependent on something that we can measure, which is the number of support vectors.",
+   "hh": 0.8174,
+   "mc": 0.0861,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-aee763e8d7",
+   "p": "L15-c09",
+   "r": "USES",
+   "h": "Lagrangian uses dot product.",
+   "q": "So in forming the Lagrangian, we need the inner product.",
+   "hh": 0.0358,
+   "mc": 0.0163,
+   "g": "rejected"
+  },
+  {
+   "id": "e-af25b38d7b",
+   "p": "L15-c06",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of hard-margin SVM.",
+   "q": "if you went from the support vector machines that we introduced-- that we're going to label now hard-margin",
+   "hh": 0.3661,
+   "mc": 0.9058,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b00086e417",
+   "p": "L14-c44",
+   "r": "IS_A",
+   "h": "Boundary is a kind of separating hyperplane.",
+   "q": "And then you are putting the boundary here that corresponds to this guy.",
+   "hh": 0.7978,
+   "mc": 0.071,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b0c2be71f6",
+   "p": "L14-c24",
+   "r": "USES",
+   "h": "Lagrangian uses slack variable.",
+   "q": "So think of this, since this should be greater than 0, this is the slack. So the Lagrange multipliers get multiplied by the slack.",
+   "hh": 0.9026,
+   "mc": 0.9659,
+   "g": "supported"
+  },
+  {
+   "id": "e-b18d20724d",
+   "p": "L15-c19",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear model is needed before learning infinite-dimensional space.",
+   "q": "In the third lecture, when I introduced linear models, if I told you go to an infinite-dimensional space, you would probably be screaming at me",
+   "hh": 0.7172,
+   "mc": 0.0365,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-b221f58ee8",
+   "p": "L15-c40",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding margin violation is needed before learning in-sample error.",
+   "q": "If I'm working with in-sample error, nothing has changed. But now, I am not achieving the margin that I want for this point.",
+   "hh": 0.466,
+   "mc": 0.0506,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-b2a797e651",
+   "p": "L14-c19",
+   "r": "USES",
+   "h": "Optimization uses constraints.",
+   "q": "I do this optimization, and I end up with a quantity for which all of these guys happen to be strictly greater than 1. That is a feasible point, according to the constraints.",
+   "hh": 0.9785,
+   "mc": 0.9622,
+   "g": "supported"
+  },
+  {
+   "id": "e-b2d89f2a9e",
+   "p": "L14-c36",
+   "r": "USES",
+   "h": "Support vector uses separating hyperplane.",
+   "q": "The most important points in the game are the points that actually define the plane and the margin.",
+   "hh": 0.095,
+   "mc": 0.0197,
+   "g": "rejected"
+  },
+  {
+   "id": "e-b34b7ace54",
+   "p": "L15-c24",
+   "r": "USES",
+   "h": "Quadratic programming uses support vector.",
+   "q": "And quadratic programming gives you back the support vectors.",
+   "hh": 0.9887,
+   "mc": 0.8791,
+   "g": "supported"
+  },
+  {
+   "id": "e-b3b21aebcc",
+   "p": "L14-c15",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding plane is needed before learning projection.",
+   "q": "The distance between x_n and the plane, and we put them here, is what? Can be computed as follows. Pick any point, one point, on the plane.",
+   "hh": 0.8557,
+   "mc": 0.0509,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-b3e501aa84",
+   "p": "L15-c30",
+   "r": "IS_A",
+   "h": "Support vector is a kind of support vector machine.",
+   "q": "The nonlinear transformation that started support vector machines is this guy.",
+   "hh": 0.9578,
+   "mc": 0.1385,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b4a2f6a3f2",
+   "p": "L15-c30",
+   "r": "USES",
+   "h": "Nonlinear transform uses Z space.",
+   "q": "I did a nonlinear transformation into the Z space.",
+   "hh": 0.942,
+   "mc": 0.6943,
+   "g": "supported"
+  },
+  {
+   "id": "e-b4c5d39c81",
+   "p": "L14-c54",
+   "r": "IS_A",
+   "h": "Margin is a kind of error measure.",
+   "q": "then we go back to the idea of a principled error measure, in this case margin measure",
+   "hh": 0.9129,
+   "mc": 0.9762,
+   "g": "supported"
+  },
+  {
+   "id": "e-b56e7366ce",
+   "p": "L15-c02",
+   "r": "USES",
+   "h": "Support vector uses out-of-sample error.",
+   "q": "you can predict a bound on the out-of-sample error, based on the number of support vectors that you get.",
+   "hh": 0.9208,
+   "mc": 0.1285,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b58c7afea4",
+   "p": "L15-c27",
+   "r": "USES",
+   "h": "Dot product uses linear separability.",
+   "q": "And these were genuine inner products, when you were working with linearly separable data in the X space.",
+   "hh": 0.7601,
+   "mc": 0.1027,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b6481c2cf9",
+   "p": "L14-c22",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding inequality constraint is needed before learning Lagrangian.",
+   "q": "And the Lagrangian under the inequality constraint is referred to as KKT.",
+   "hh": 0.8492,
+   "mc": 0.1413,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-b67fd1375d",
+   "p": "L14-c37",
+   "r": "IS_A",
+   "h": "Support vector is a kind of interior point.",
+   "q": "And they're called support vectors. And the other guys are interior points.",
+   "hh": 0.9435,
+   "mc": 0.0331,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b7192b43ab",
+   "p": "L15-c56",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "Yeah, because a valid kernel, I have to be able to evaluate the inner product.",
+   "hh": 0.0715,
+   "mc": 0.019,
+   "g": "rejected"
+  },
+  {
+   "id": "e-b7aec664bd",
+   "p": "L15-c49",
+   "r": "USES",
+   "h": "Soft-margin SVM uses Lagrangian.",
+   "q": "They will get Lagrange multipliers that are greater than 1.",
+   "hh": 0.5621,
+   "mc": 0.0848,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b837cf865a",
+   "p": "L15-c27",
+   "r": "USES",
+   "h": "Dot product uses X space.",
+   "q": "And these were genuine inner products, when you were working with linearly separable data in the X space.",
+   "hh": 0.6918,
+   "mc": 0.1377,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-b846c18ef0",
+   "p": "L15-c38",
+   "r": "USES",
+   "h": "Soft-margin SVM uses kernel function.",
+   "q": "And therefore, you will be combining the kernel with the soft-margin support vector machines in almost all the problems that you encounter.",
+   "hh": 0.9376,
+   "mc": 0.9669,
+   "g": "supported"
+  },
+  {
+   "id": "e-b927105621",
+   "p": "L15-c24",
+   "r": "USES",
+   "h": "Kernel function uses quadratic programming.",
+   "q": "You get the kernel. You pass it on to quadratic programming.",
+   "hh": 0.99,
+   "mc": 0.923,
+   "g": "supported"
+  },
+  {
+   "id": "e-bb497abe42",
+   "p": "L14-c25",
+   "r": "USES",
+   "h": "Lagrangian multiplier uses non-negative constraint.",
+   "q": "But the alphas have to be non-negative.",
+   "hh": 0.9712,
+   "mc": 0.9598,
+   "g": "supported"
+  },
+  {
+   "id": "e-bcb7e8dbc6",
+   "p": "L15-c34",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding kernel function is needed before learning valid kernel.",
+   "q": "The kernel that you wrote down is a valid kernel",
+   "hh": 0.1386,
+   "mc": 0.0437,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-be8094664c",
+   "p": "L14-c52",
+   "r": "IS_A",
+   "h": "Hard-margin SVM is a kind of margin.",
+   "q": "Hard-margin because the margin is satisfied strictly.",
+   "hh": 0.9677,
+   "mc": 0.912,
+   "g": "supported"
+  },
+  {
+   "id": "e-bf62dfa173",
+   "p": "L15-c59",
+   "r": "USES",
+   "h": "Dot product uses Euclidean norm.",
+   "q": "The way I derived it is based on Euclidean norm and straightforward inner product.",
+   "hh": 0.9128,
+   "mc": 0.0662,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-bfb6ca1c6e",
+   "p": "L14-c27",
+   "r": "IS_A",
+   "h": "Lagrangian is a kind of dual problem.",
+   "q": "And that formulation is referred to as the dual formulation of the problem.",
+   "hh": 0.9383,
+   "mc": 0.9652,
+   "g": "supported"
+  },
+  {
+   "id": "e-bfe40dd46b",
+   "p": "L14-c35",
+   "r": "IS_A",
+   "h": "Lagrangian multiplier is a kind of regularization.",
+   "q": "I claim that we saw this before, again in the regularization case.",
+   "hh": 0.5896,
+   "mc": 0.0552,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-c01627948e",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Kernel function uses nonlinear transform.",
+   "q": "And you will get the full benefit of a horrific nonlinear transformation.",
+   "hh": 0.9561,
+   "mc": 0.9518,
+   "g": "supported"
+  },
+  {
+   "id": "e-c0ce2faa5a",
+   "p": "L14-c05",
+   "r": "USES",
+   "h": "Margin uses error.",
+   "q": "So I'm going to think of a margin, that is, if this line moves a little bit, when is it going to cross over? When is it going to start making an error?",
+   "hh": 0.8943,
+   "mc": 0.9076,
+   "g": "supported"
+  },
+  {
+   "id": "e-c1cca0ea0b",
+   "p": "L14-c43",
+   "r": "USES",
+   "h": "Dot product uses margin.",
+   "q": "It doesn't care whether it was inner product of 2 by 2, or inner product of a million by million. it will just hand you the alphas. And then you interpret the",
+   "hh": 0.975,
+   "mc": 0.1245,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-c32341dd40",
+   "p": "L15-c22",
+   "r": "USES",
+   "h": "RBF kernel uses exponential.",
+   "q": "Nonetheless, we can carry it out by computing a fairly simple exponential between the x points.",
+   "hh": 0.5657,
+   "mc": 0.9623,
+   "g": "supported"
+  },
+  {
+   "id": "e-c3387400a0",
+   "p": "L14-c31",
+   "r": "USES",
+   "h": "Quadratic term uses quadratic programming.",
+   "q": "And I end up with a matrix. That matrix gets passed to quadratic programming. And quadratic programming asks you for the quadratic term, and asks you for the linear term.",
+   "hh": 0.9858,
+   "mc": 0.8744,
+   "g": "supported"
+  },
+  {
+   "id": "e-c38ab487e9",
+   "p": "L14-c19",
+   "r": "IS_A",
+   "h": "Inequality constraints is a kind of constraints.",
+   "q": "not a minimum and absolute value. Just inequality constraints that are linear in nature.",
+   "hh": 0.9613,
+   "mc": 0.9753,
+   "g": "supported"
+  },
+  {
+   "id": "e-c3cf68a3f4",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Quadratic programming uses dot product.",
+   "q": "And from then on, it's a regular quadratic programming problem. And the dimensionality of the problem depends on the number of examples, not on the dimensionality of the Z space, once you get the inner product.",
+   "hh": 0.0201,
+   "mc": 0.0449,
+   "g": "rejected"
+  },
+  {
+   "id": "e-c4075900bd",
+   "p": "L14-c52",
+   "r": "USES",
+   "h": "VC dimension uses parameter.",
+   "q": "the number of parameters, independent parameters or effective parameters, is the VC dimension in many cases.",
+   "hh": 0.9037,
+   "mc": 0.9189,
+   "g": "supported"
+  },
+  {
+   "id": "e-c418a82a40",
+   "p": "L15-c37",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "And if you manage to establish this for any kernel, then you establish that the Z space exists even if you don't know what the Z space is.",
+   "hh": 0.9489,
+   "mc": 0.6853,
+   "g": "supported"
+  },
+  {
+   "id": "e-c4508c736d",
+   "p": "L15-c30",
+   "r": "USES",
+   "h": "Kernel function uses nonlinear transform.",
+   "q": "I just avoided the labor by using the kernel.",
+   "hh": 0.9336,
+   "mc": 0.0656,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-c5109ae8ad",
+   "p": "L14-c20",
+   "r": "USES",
+   "h": "Constrained optimization uses constraints.",
+   "q": "The constrained optimization here-- you minimize this objective function subject to these constraints.",
+   "hh": 0.9422,
+   "mc": 0.9749,
+   "g": "supported"
+  },
+  {
+   "id": "e-c535ec70a7",
+   "p": "L15-c17",
+   "r": "USES",
+   "h": "Polynomial transformation uses Z space.",
+   "q": "vector in the Z space that results from a 100th-order polynomial transformation",
+   "hh": 0.8692,
+   "mc": 0.5494,
+   "g": "supported"
+  },
+  {
+   "id": "e-c5af15edc0",
+   "p": "L14-c32",
+   "r": "USES",
+   "h": "Quadratic programming uses quadratic function.",
+   "q": "A very simple quadratic function, with a linear term. You're minimizing it, subject to linear equality constraint, plus a bunch of range constraints.",
+   "hh": 0.9743,
+   "mc": 0.9758,
+   "g": "supported"
+  },
+  {
+   "id": "e-c6d038c36d",
+   "p": "L15-c18",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "a kernel of this form does correspond to an inner product in a higher space.",
+   "hh": 0.1525,
+   "mc": 0.0341,
+   "g": "rejected"
+  },
+  {
+   "id": "e-c7f7c8a749",
+   "p": "L14-c55",
+   "r": "USES",
+   "h": "Support vector uses separating hyperplane.",
+   "q": "But basically, the support vectors are there to support the separating plane.",
+   "hh": 0.5201,
+   "mc": 0.842,
+   "g": "supported"
+  },
+  {
+   "id": "e-c882a3339c",
+   "p": "L15-c32",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "The whole idea of the kernel is that you don't visit the Z space.",
+   "hh": 0.876,
+   "mc": 0.09,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-c8870be6b7",
+   "p": "L14-c44",
+   "r": "IS_A",
+   "h": "Support vector is a kind of margin.",
+   "q": "The margin will touch some points. These are your support vectors by definition.",
+   "hh": 0.9711,
+   "mc": 0.9161,
+   "g": "supported"
+  },
+  {
+   "id": "e-c9bd02c52b",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "VC dimension uses out-of-sample error.",
+   "q": "number of parameters, degrees of freedom, VC dimension, dot dot dot, divided by the number of examples.",
+   "hh": 0.8545,
+   "mc": 0.0747,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ca5bd0ff87",
+   "p": "L15-c55",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding dimension is needed before learning linear.",
+   "q": "So in spite of the fact that in a general case, I will do that, I could construct cases where it's not linear in the dimension.",
+   "hh": 0.7209,
+   "mc": 0.0642,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ca9e5f1d95",
+   "p": "L15-c36",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Mercer's condition is needed before learning positive semi-definite.",
+   "q": "And that is Mercer's condition. Now, we can see the difficulty. If I want to satisfy that this is true for any points I choose, obviously I have to have some math helping me to corner that this has to be positive semi-definite for some reason.",
+   "hh": 0.8307,
+   "mc": 0.1925,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-caa840021f",
+   "p": "L14-c47",
+   "r": "USES",
+   "h": "Support vector uses out-of-sample error.",
+   "q": "You have the number of support vectors, which happens to be the number of effective parameters-- the alphas that survived. This is your guy. You divide it by N, well, N minus 1 in this case. And that will give you an upper bound on E_out.",
+   "hh": 0.9665,
+   "mc": 0.0547,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-cb7a3fa591",
+   "p": "L14-c24",
+   "r": "USES",
+   "h": "Lagrangian uses quadratic programming.",
+   "q": "and then passing it on to a package of quadratic programming to give us a solution.",
+   "hh": 0.8617,
+   "mc": 0.3621,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ccb091e951",
+   "p": "L14-c16",
+   "r": "USES",
+   "h": "Margin uses norm.",
+   "q": "then your margin will simply be 1 over the norm of w you used.",
+   "hh": 0.9406,
+   "mc": 0.8997,
+   "g": "supported"
+  },
+  {
+   "id": "e-ce0908f51a",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Support vector machine uses Z space.",
+   "q": "So all you're doing now is working in the Z space. And instead of getting just a generic separator, you're getting the best separator, according to SVM, and then mapping it back",
+   "hh": 0.8544,
+   "mc": 0.0532,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-cf53b5379f",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Kernel function uses infinite-dimensional space.",
+   "q": "So by doing this operation, which is not very difficult to compute, you have done an inner product in an infinite-dimensional space.",
+   "hh": 0.9794,
+   "mc": 0.9615,
+   "g": "supported"
+  },
+  {
+   "id": "e-cff4f4a24e",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "Maximize with respect to alpha uses support vector machine.",
+   "q": "all I care about is that: would you please maximize this with respect to alpha, subject to a couple of sets of constraints. So you",
+   "hh": 0.9457,
+   "mc": 0.8456,
+   "g": "supported"
+  },
+  {
+   "id": "e-d006fab9d8",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "And now, it doesn't even have an inner product term clearly, either in X space or Z space.",
+   "hh": 0.1205,
+   "mc": 0.0334,
+   "g": "rejected"
+  },
+  {
+   "id": "e-d03726580a",
+   "p": "L15-c44",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Lagrangian is needed before learning support vector machine.",
+   "q": "Now what we're going to do, we're actually going to go through the Lagrangian again, because the Lagrangian is not that much different from before.",
+   "hh": 0.2397,
+   "mc": 0.0332,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-d03910172d",
+   "p": "L15-c20",
+   "r": "USES",
+   "h": "Kernel function uses support vector.",
+   "q": "Let's take the kernel, but apply it in this case to 1-dimensional space.",
+   "hh": 0.9069,
+   "mc": 0.35,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d073e3e260",
+   "p": "L14-c06",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding in-sample error is needed before learning generalization.",
+   "q": "As far as the in-sample error is concerned, all of them give in-sample error 0. As far as generalization questions are concerned, as far as our previous analysis has done, all of them are dealing with linear model with four points. So generalization, as an estimate, will be the same.",
+   "hh": 0.5083,
+   "mc": 0.0254,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-d239052741",
+   "p": "L15-c33",
+   "r": "USES",
+   "h": "Mercer's condition uses kernel function.",
+   "q": "using math properties of the kernel, something called Mercer's condition.",
+   "hh": 0.5379,
+   "mc": 0.6747,
+   "g": "supported"
+  },
+  {
+   "id": "e-d23ad1dc9c",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Dual form uses Lagrangian.",
+   "q": "The translation from the primary form, minimizing w transposed w, to the dual form, maximizing with respect to alpha-- the Lagrangian",
+   "hh": 0.9078,
+   "mc": 0.9804,
+   "g": "supported"
+  },
+  {
+   "id": "e-d2bffdf8f4",
+   "p": "L15-c60",
+   "r": "USES",
+   "h": "Support vector machine uses dot product.",
+   "q": "you just need to make sure that the quadratic programming problem you're solving corresponds to the version of the norm that you used and the version of the inner product that you used.",
+   "hh": 0.0136,
+   "mc": 0.0195,
+   "g": "rejected"
+  },
+  {
+   "id": "e-d3571f80ba",
+   "p": "L15-c49",
+   "r": "IS_A",
+   "h": "Support vector is a kind of Lagrangian.",
+   "q": "They will get Lagrange multipliers that are greater than 1. And in this case, the margin support vectors that used to be just alpha greater than 0, they also happen to be strictly less than C.",
+   "hh": 0.5317,
+   "mc": 0.1744,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d3603053d1",
+   "p": "L15-c13",
+   "r": "USES",
+   "h": "Kernel trick uses kernel function.",
+   "q": "Can we compute this kernel without transforming x and x dash?",
+   "hh": 0.9909,
+   "mc": 0.8296,
+   "g": "supported"
+  },
+  {
+   "id": "e-d3e227675d",
+   "p": "L15-c60",
+   "r": "USES",
+   "h": "Support vector machine uses quadratic programming.",
+   "q": "The scale of problems that can be solved by quadratic programming is a more pointed question, because that's the bottleneck.",
+   "hh": 0.6606,
+   "mc": 0.8477,
+   "g": "supported"
+  },
+  {
+   "id": "e-d40fcdfb56",
+   "p": "L15-c37",
+   "r": "USES",
+   "h": "Outer product uses positive semi-definite.",
+   "q": "If you put that and the matrix happens to be the outer product of these guys, then the guy sleeping here gets multiplied by z, and the other guy is a transpose of that. So you get a number squared, and a number squared is always greater than or equal to 0.",
+   "hh": 0.9919,
+   "mc": 0.2112,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d460f126e7",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Support vector machine uses weight decay.",
+   "q": "what we are actually optimizing is w transposed w.",
+   "hh": 0.8531,
+   "mc": 0.3734,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d53fa8fb50",
+   "p": "L15-c60",
+   "r": "USES",
+   "h": "Support vector machine uses support vector.",
+   "q": "get support vectors for each case, and then get the union and so on, the hierarchical methods and other methods.",
+   "hh": 0.7679,
+   "mc": 0.8363,
+   "g": "supported"
+  },
+  {
+   "id": "e-d57e80f72c",
+   "p": "L14-c39",
+   "r": "USES",
+   "h": "Support vector uses bias.",
+   "q": "Because all you need to do is take any support vector, any one of them, and for any of them you know that this equation holds.",
+   "hh": 0.8893,
+   "mc": 0.4597,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d5928d95b3",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Support vector machine uses in-sample error.",
+   "q": "So your constraint is that E_in is 0.",
+   "hh": 0.763,
+   "mc": 0.1119,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-d5dd22e6ef",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Lagrangian uses regularization.",
+   "q": "But again, because both of them will blend in the Lagrangian, and you will end up doing something that is a compromise",
+   "hh": 0.9732,
+   "mc": 0.9343,
+   "g": "supported"
+  },
+  {
+   "id": "e-d72a97c662",
+   "p": "L15-c34",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Z space is needed before learning valid kernel.",
+   "q": "this is, the Z space that you're talking about actually exists, if and only if two conditions in conjunction are satisfied.",
+   "hh": 0.6191,
+   "mc": 0.325,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-d8bade254e",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Primary form uses Lagrangian.",
+   "q": "The translation from the primary form, minimizing w transposed w, to the dual form, maximizing with respect to alpha-- the Lagrangian",
+   "hh": 0.8672,
+   "mc": 0.2483,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-da4eb7e469",
+   "p": "L15-c22",
+   "r": "USES",
+   "h": "RBF kernel uses infinite-dimensional space.",
+   "q": "It corresponds to an infinite-dimensional space.",
+   "hh": 0.7572,
+   "mc": 0.9599,
+   "g": "supported"
+  },
+  {
+   "id": "e-da5fd6bef1",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Dual problem uses quadratic programming.",
+   "q": "I get the dual, pass it to quadratic programming",
+   "hh": 0.9788,
+   "mc": 0.9155,
+   "g": "supported"
+  },
+  {
+   "id": "e-db84beb8dd",
+   "p": "L14-c17",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding minimum is needed before learning absolute value.",
+   "q": "I still haven't gotten rid of the minimum. And I don't particularly like dividing 1 over the norm, which has a square root in it.",
+   "hh": 0.7455,
+   "mc": 0.0439,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-dc0a3a8b3d",
+   "p": "L15-c42",
+   "r": "USES",
+   "h": "Augmented error uses in-sample error.",
+   "q": "In augmented error, we used to have the in-sample performance, which I guess would be the violation of the margin here.",
+   "hh": 0.9536,
+   "mc": 0.9664,
+   "g": "supported"
+  },
+  {
+   "id": "e-dc1ea4f415",
+   "p": "L14-c52",
+   "r": "IS_A",
+   "h": "Perceptron is a kind of linear separability.",
+   "q": "Perceptron means linearly separable.",
+   "hh": 0.9822,
+   "mc": 0.9599,
+   "g": "supported"
+  },
+  {
+   "id": "e-dc5c28c48e",
+   "p": "L15-c14",
+   "r": "USES",
+   "h": "Nonlinear transform uses dot product.",
+   "q": "And when I take the inner product, what do I get? I get my kernel.",
+   "hh": 0.0603,
+   "mc": 0.0248,
+   "g": "rejected"
+  },
+  {
+   "id": "e-dd33ffb449",
+   "p": "L15-c23",
+   "r": "USES",
+   "h": "Nonlinear transform uses linear separability.",
+   "q": "I'd better have something which is not linearly separable in order to show you the goods.",
+   "hh": 0.8785,
+   "mc": 0.0464,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-de95e347dd",
+   "p": "L14-c09",
+   "r": "IS_A",
+   "h": "Margin is a kind of distance from the plane to a point.",
+   "q": "Well the margin is just the distance from the plane to a point.",
+   "hh": 0.9701,
+   "mc": 0.9637,
+   "g": "supported"
+  },
+  {
+   "id": "e-e01a615fe5",
+   "p": "L14-c12",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding Euclidean distance is needed before learning plane.",
+   "q": "And the yardstick I'm going to use is the Euclidean distance. So I'm going to take this as a constraint. And when I solve for it, I will find out that the problem I'm now solving for is much easier to solve. And then I can get the plane.",
+   "hh": 0.8458,
+   "mc": 0.5882,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-e09f127593",
+   "p": "L15-c57",
+   "r": "USES",
+   "h": "Quadratic programming uses support vector machine.",
+   "q": "So a technical question on the quadratic programming. Usually, if the matrix you give is not positive definite, there will be complaints by the--",
+   "hh": 0.9511,
+   "mc": 0.186,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-e0e401bd2e",
+   "p": "L15-c35",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding kernel symmetry is needed before learning Mercer's condition.",
+   "q": "One is the fact that the kernel is symmetric. That should be abundantly obvious, symmetric being K of x and x dash being equal to K of x dash and x. Well, this is supposed to be the dot product in the Z space, right?",
+   "hh": 0.7185,
+   "mc": 0.128,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-e12f4a51f5",
+   "p": "L14-c52",
+   "r": "IS_A",
+   "h": "Soft-margin SVM is a kind of margin.",
+   "q": "soft margin, that allows for few errors and penalizes for them.",
+   "hh": 0.9322,
+   "mc": 0.0729,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-e12ffde35b",
+   "p": "L14-c03",
+   "r": "IS_A",
+   "h": "Support vector machine is a kind of classification method.",
+   "q": "Support vector machines are arguably the most successful classification method in machine learning.",
+   "hh": 0.9817,
+   "mc": 0.9818,
+   "g": "supported"
+  },
+  {
+   "id": "e-e286d4455d",
+   "p": "L15-c10",
+   "r": "USES",
+   "h": "Dot product uses support vector machinery.",
+   "q": "If I am able to compute the inner product in the Z space, without visiting the Z space, I still can carry this machinery.",
+   "hh": 0.9568,
+   "mc": 0.0391,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-e2c8901fb3",
+   "p": "L14-c31",
+   "r": "IS_A",
+   "h": "Linear equality constraint is a kind of constraints.",
+   "q": "So this is a linear equality constraint.",
+   "hh": 0.989,
+   "mc": 0.9609,
+   "g": "supported"
+  },
+  {
+   "id": "e-e360733825",
+   "p": "L15-c03",
+   "r": "USES",
+   "h": "Nonlinear transform uses linear model.",
+   "q": "we did is we used nonlinear transform, as we did before with linear models.",
+   "hh": 0.9082,
+   "mc": 0.8205,
+   "g": "supported"
+  },
+  {
+   "id": "e-e38dc0521c",
+   "p": "L14-c49",
+   "r": "USES",
+   "h": "Nonlinear transform uses support vector.",
+   "q": "support vectors with the nonlinear transformation.",
+   "hh": 0.9956,
+   "mc": 0.9176,
+   "g": "supported"
+  },
+  {
+   "id": "e-e3c03b38c5",
+   "p": "L14-c20",
+   "r": "IS_A",
+   "h": "Separating hyperplane is a kind of margin.",
+   "q": "And therefore, this problem is equivalent to this problem. This is really very nice. So we started from a concept, and geometry, and simplification, and now we end up with this very friendly statement that we are going to solve. And when you solve it, you're going to get the separating plane with the best possible margin.",
+   "hh": 0.5674,
+   "mc": 0.7999,
+   "g": "supported"
+  },
+  {
+   "id": "e-e4372562a8",
+   "p": "L14-c12",
+   "r": "IS_A",
+   "h": "Bias is a kind of support vector machine.",
+   "q": "And in order not to confuse it and call it w, because it has a different role, we are going to call it here b, for bias. OK? So now the equation for the plane is w, our new w, times x plus b equals 0.",
+   "hh": 0.9413,
+   "mc": 0.1802,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-e4f5a2c519",
+   "p": "L14-c48",
+   "r": "USES",
+   "h": "Support vector uses nonlinear transform.",
+   "q": "support vectors with the nonlinear transformation.",
+   "hh": 0.9885,
+   "mc": 0.9618,
+   "g": "supported"
+  },
+  {
+   "id": "e-e5011d38f6",
+   "p": "L15-c34",
+   "r": "USES",
+   "h": "Kernel function uses generalization.",
+   "q": "the generalization, all of that depends on the Z space being there",
+   "hh": 0.8849,
+   "mc": 0.9474,
+   "g": "supported"
+  },
+  {
+   "id": "e-e5bcf09423",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Soft-margin SVM uses errors.",
+   "q": "to a soft margin that allows some errors.",
+   "hh": 0.9766,
+   "mc": 0.9333,
+   "g": "supported"
+  },
+  {
+   "id": "e-e67dcef119",
+   "p": "L14-c23",
+   "r": "USES",
+   "h": "Regularization uses weight decay.",
+   "q": "That was weight decay.",
+   "hh": 0.9674,
+   "mc": 0.9755,
+   "g": "supported"
+  },
+  {
+   "id": "e-e69c9f1a03",
+   "p": "L15-c51",
+   "r": "USES",
+   "h": "Dual form uses KKT conditions.",
+   "q": "The KKT conditions are necessary.",
+   "hh": 0.9149,
+   "mc": 0.9749,
+   "g": "supported"
+  },
+  {
+   "id": "e-ea2b7d31aa",
+   "p": "L15-c06",
+   "r": "USES",
+   "h": "Soft-margin SVM uses nonlinear transform.",
+   "q": "in order not to make outliers dictate an unduly complex nonlinear transformation.",
+   "hh": 0.9248,
+   "mc": 0.0782,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ea5d1948c5",
+   "p": "L15-c55",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear is needed before learning separating hyperplane.",
+   "q": "So in spite of the fact that in a general case, I will do that, I could construct cases where it's not linear in the dimension.",
+   "hh": 0.6664,
+   "mc": 0.0305,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ea64f8cfca",
+   "p": "L15-c14",
+   "r": "USES",
+   "h": "Dot product uses X space.",
+   "q": "is not an inner product in the X space, in spite of the fact that it involves one computationally.",
+   "hh": 0.8764,
+   "mc": 0.0483,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ea8166ef77",
+   "p": "L15-c02",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "the support vectors are the ones that achieve the margin.",
+   "hh": 0.9646,
+   "mc": 0.9688,
+   "g": "supported"
+  },
+  {
+   "id": "e-eb57bcd19a",
+   "p": "L15-c52",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding quadratic programming is needed before learning linear separability.",
+   "q": "If it's linearly separable, things are valid. There is a feasible solution. The dual solution is valid and quadratic programming works.",
+   "hh": 0.6688,
+   "mc": 0.0567,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-eb5f4494bb",
+   "p": "L15-c06",
+   "r": "IS_A",
+   "h": "Hard-margin SVM is a kind of soft-margin SVM.",
+   "q": "from the support vector machines that we introduced-- that we're going to label now hard-margin, because they strictly obey the margin-- to a soft margin that allows some errors.",
+   "hh": 0.6056,
+   "mc": 0.5261,
+   "g": "supported"
+  },
+  {
+   "id": "e-ec9affe679",
+   "p": "L15-c11",
+   "r": "USES",
+   "h": "Kernel function uses generalized inner product.",
+   "q": "And as I mentioned, this will be labeled as an inner product-- I put it between quotations because it's general-- between x and x dash.",
+   "hh": 0.9705,
+   "mc": 0.9618,
+   "g": "supported"
+  },
+  {
+   "id": "e-ed931f4eb2",
+   "p": "L14-c10",
+   "r": "USES",
+   "h": "Plane uses linear separability.",
+   "q": "I have the plane. So the plane has the signal equals 0. And it doesn't touch any points. The points are linearly separable.",
+   "hh": 0.9678,
+   "mc": 0.8767,
+   "g": "supported"
+  },
+  {
+   "id": "e-ed959ff186",
+   "p": "L15-c15",
+   "r": "USES",
+   "h": "Dot product uses kernel function.",
+   "q": "I get 1 plus x-- that to the Q. First, establishing what does it take to compute this?",
+   "hh": 0.887,
+   "mc": 0.0376,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-edb42f3b5e",
+   "p": "L14-c54",
+   "r": "IS_A",
+   "h": "Support vector is a kind of parameters.",
+   "q": "the number of the support vectors by definition",
+   "hh": 0.9403,
+   "mc": 0.972,
+   "g": "supported"
+  },
+  {
+   "id": "e-edd5b724ff",
+   "p": "L14-c09",
+   "r": "IS_A",
+   "h": "Label is a kind of linear separability.",
+   "q": "And indeed, it will agree with the label y_n, because the points are linearly separable.",
+   "hh": 0.9176,
+   "mc": 0.7718,
+   "g": "supported"
+  },
+  {
+   "id": "e-ee6c8798a3",
+   "p": "L14-c51",
+   "r": "USES",
+   "h": "Hard-margin SVM uses margin.",
+   "q": "Hard-margin because the margin is satisfied strictly.",
+   "hh": 0.8621,
+   "mc": 0.9736,
+   "g": "supported"
+  },
+  {
+   "id": "e-eeb04890fe",
+   "p": "L15-c02",
+   "r": "USES",
+   "h": "Z space uses support vector.",
+   "q": "whether you're working in the X space, or took the X space and moved to a Z space and moved back here, the support vectors are the ones that achieve the margin.",
+   "hh": 0.8113,
+   "mc": 0.9328,
+   "g": "supported"
+  },
+  {
+   "id": "e-eef4d27b8d",
+   "p": "L14-c42",
+   "r": "USES",
+   "h": "Generalization uses support vector machine.",
+   "q": "and then mapping it back, hoping that it will have dividends in terms of the generalization.",
+   "hh": 0.5051,
+   "mc": 0.0415,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-ef54fbd0af",
+   "p": "L15-c23",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "All I'm doing in my mind, I am effectively doing that by just computing the kernel instead of just the simple inner product in the X space.",
+   "hh": 0.0288,
+   "mc": 0.0255,
+   "g": "rejected"
+  },
+  {
+   "id": "e-f213cc9979",
+   "p": "L14-c52",
+   "r": "USES",
+   "h": "Pocket algorithm uses perceptron.",
+   "q": "If there are few, then you apply something. Let's say like the pocket in that case.",
+   "hh": 0.9488,
+   "mc": 0.8436,
+   "g": "supported"
+  },
+  {
+   "id": "e-f4265d2b96",
+   "p": "L14-c03",
+   "r": "USES",
+   "h": "Cross-validation uses out-of-sample error.",
+   "q": "And then by the time you average all of these estimates, that will give you a general estimate of what the out-of-sample error would be",
+   "hh": 0.9017,
+   "mc": 0.9785,
+   "g": "supported"
+  },
+  {
+   "id": "e-f47e2ddb33",
+   "p": "L15-c42",
+   "r": "USES",
+   "h": "Augmented error uses regularization.",
+   "q": "Plus lambda times a regularization term.",
+   "hh": 0.8032,
+   "mc": 0.9753,
+   "g": "supported"
+  },
+  {
+   "id": "e-f562101f60",
+   "p": "L14-c15",
+   "r": "USES",
+   "h": "Absolute value uses distance.",
+   "q": "This could be positive or negative depending on whether w is facing x or facing the other direction so in order to get the distance proper, you need the absolute value.",
+   "hh": 0.9784,
+   "mc": 0.1055,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-f603c6c512",
+   "p": "L14-c52",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separability is needed before learning hard-margin SVM.",
+   "q": "linearly separable, as we've seen before. And in that case, you will see that the method I described today is called hard-margin SVM.",
+   "hh": 0.7183,
+   "mc": 0.1555,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-f649fca75e",
+   "p": "L15-c25",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separability is needed before learning separating hyperplane.",
+   "q": "this is linearly separable in that space. Had better be. We've got the infinite-dimensional space.",
+   "hh": 0.4846,
+   "mc": 0.0425,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-f6645dcd4a",
+   "p": "L15-c43",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding non-negative constraint is needed before learning slack variable.",
+   "q": "And I said that xi's are non-negative.",
+   "hh": 0.6371,
+   "mc": 0.0343,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-f8056d0f9f",
+   "p": "L15-c45",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of Lagrangian.",
+   "q": "I need to put the new constant, and when you put, it's minus minus, you get the plus. So that's the complete term.",
+   "hh": 0.8774,
+   "mc": 0.0394,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-f808ad77e1",
+   "p": "L15-c02",
+   "r": "USES",
+   "h": "X space uses support vector.",
+   "q": "whether you're working in the X space, or took the X space and moved to a Z space and moved back here, the support vectors are the ones that achieve the margin.",
+   "hh": 0.9396,
+   "mc": 0.975,
+   "g": "supported"
+  },
+  {
+   "id": "e-f88e346127",
+   "p": "L14-c19",
+   "r": "IS_A",
+   "h": "Linear is a kind of inequality constraints.",
+   "q": "Just inequality constraints that are linear in nature.",
+   "hh": 0.956,
+   "mc": 0.9772,
+   "g": "supported"
+  },
+  {
+   "id": "e-f89f5c36d1",
+   "p": "L14-c46",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "What makes them support vectors or not is that they achieve the margin in the Z space.",
+   "hh": 0.9116,
+   "mc": 0.8138,
+   "g": "supported"
+  },
+  {
+   "id": "e-f8c2f40a17",
+   "p": "L15-c10",
+   "r": "USES",
+   "h": "Dot product uses Z space.",
+   "q": "We only deal with z as far as the inner product is concerned.",
+   "hh": 0.9067,
+   "mc": 0.071,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-f93964e952",
+   "p": "L15-c31",
+   "r": "USES",
+   "h": "Support vector machine uses support vector.",
+   "q": "And it's very interesting to go through this exercise, and to compare the result of doing it this way versus doing it the SVM route.",
+   "hh": 0.907,
+   "mc": 0.0878,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-faabae2138",
+   "p": "L14-c14",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding equation of the plane is needed before learning w orthogonal to x dash minus x double dash.",
+   "q": "So they are lying there. What do I know about these two points? Well, they are on the plane, so they had better satisfy the equation of the plane.",
+   "hh": 0.8757,
+   "mc": 0.1135,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-fb103ec00e",
+   "p": "L14-c40",
+   "r": "USES",
+   "h": "Z space uses support vector machine.",
+   "q": "So let's look at it. So we're going to work with z instead of x. And we're going to work in the Z space instead of the X space.",
+   "hh": 0.9787,
+   "mc": 0.3338,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-fb4268ab72",
+   "p": "L15-c35",
+   "r": "USES",
+   "h": "Kernel function uses Z space.",
+   "q": "So we're going to transform x and x dash into z and z dash. While in the Z space, certainly z dot z dash is the same as z dash dot z.",
+   "hh": 0.9165,
+   "mc": 0.934,
+   "g": "supported"
+  },
+  {
+   "id": "e-fbd2b289b3",
+   "p": "L14-c33",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding quadratic programming is needed before learning machine learning problem.",
+   "q": "if you're working with problems-- the typical machine learning problem, where you have, let's say not more than 10,000, then it's not formidable.",
+   "hh": 0.7068,
+   "mc": 0.0334,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-fc4a18775d",
+   "p": "L14-c49",
+   "r": "USES",
+   "h": "Kernel methods uses dot product.",
+   "q": "you're not even going to pay for the simple computational price of getting the inner product.",
+   "hh": 0.0253,
+   "mc": 0.0226,
+   "g": "rejected"
+  },
+  {
+   "id": "e-fccca43de6",
+   "p": "L14-c36",
+   "r": "USES",
+   "h": "Support vector uses margin.",
+   "q": "The most important points in the game are the points that actually define the plane and the margin.",
+   "hh": 0.9434,
+   "mc": 0.9378,
+   "g": "supported"
+  },
+  {
+   "id": "e-fd063c336d",
+   "p": "L14-c44",
+   "r": "USES",
+   "h": "Support vector machine uses separating hyperplane.",
+   "q": "You got the line, or the hyperplane in that space.",
+   "hh": 0.7851,
+   "mc": 0.0589,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-fd41ce3541",
+   "p": "L14-c30",
+   "r": "USES",
+   "h": "Quadratic programming package uses minimization.",
+   "q": "Quadratic programming packages come usually with minimization. So we need to translate this into minimization.",
+   "hh": 0.9927,
+   "mc": 0.9776,
+   "g": "supported"
+  },
+  {
+   "id": "e-fdc52becdb",
+   "p": "L15-c49",
+   "r": "IS_A",
+   "h": "Slack variable is a kind of margin.",
+   "q": "And therefore, because here the slack is 0, you actually don't have xi. xi is 0. You have to be clear of C. That is the reason for it.",
+   "hh": 0.9004,
+   "mc": 0.2993,
+   "g": "checkers disagree"
+  },
+  {
+   "id": "e-feb38d8ce6",
+   "p": "L15-c46",
+   "r": "USES",
+   "h": "Slack variable uses bias.",
+   "q": "Minimize this with respect to w and b, which we used to do, and with respect to xi, which is our new guys.",
+   "hh": 0.3086,
+   "mc": 0.0171,
+   "g": "rejected"
+  },
+  {
+   "id": "e-ff24c3aa5e",
+   "p": "L15-c34",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding kernel function is needed before learning valid kernel.",
+   "q": "The kernel that you wrote down is a valid kernel",
+   "hh": 0.1386,
+   "mc": 0.0437,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ff5dc50c03",
+   "p": "L15-c19",
+   "r": "USES",
+   "h": "Kernel function uses dot product.",
+   "q": "So is this equivalent to taking each of them by itself, transforming it into z in that space, and taking a straight inner product between z and z dash?",
+   "hh": 0.1205,
+   "mc": 0.0334,
+   "g": "rejected"
+  },
+  {
+   "id": "e-ff940957eb",
+   "p": "L15-c26",
+   "r": "PREREQUISITE_OF",
+   "h": "Understanding linear separability is needed before learning margin.",
+   "q": "And when I get the linear separability there, I get a margin.",
+   "hh": 0.6916,
+   "mc": 0.2059,
+   "g": "review (pedagogical: not gated)"
+  },
+  {
+   "id": "e-ffb1cd69bd",
+   "p": "L15-c13",
+   "r": "USES",
+   "h": "Nonlinear transform uses dot product.",
+   "q": "if you want to get the kernel, which is formally the inner product between the transformation of x and x dash",
+   "hh": 0.2547,
+   "mc": 0.0289,
+   "g": "rejected"
+  }
+ ]
+}

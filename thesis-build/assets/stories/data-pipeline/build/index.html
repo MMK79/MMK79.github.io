@@ -24,12 +24,12 @@ p{margin:0 0 14px;overflow-wrap:anywhere}
 a{color:var(--blue)}
 .muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
 .kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
-.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px}
 #bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;flex-wrap:wrap;gap:5px}
-#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
 section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
 .hero{padding:52px 0 30px}
 .hero p.lead{font-size:18px;color:var(--muted)}
@@ -42,14 +42,14 @@ button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
 .take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
 .ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
 .ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
-.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h,.ours b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
 .ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
 .pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
 .pin b{display:block;font-size:13px;color:var(--amber)}
 .pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
 /* badges */
-.b{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap}
+.b{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:1px 7px;border:1px solid;white-space:nowrap}
 .b.done,.b.measured{color:var(--teal);border-color:var(--teal)}
 .b.pilot{color:var(--amber);border-color:var(--amber)}
 .b.planned{color:var(--purple);border-color:var(--purple);border-style:dashed}
@@ -64,7 +64,7 @@ button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
 .mrow{display:flex;justify-content:center}
 .mcols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
 .mcol{display:flex;flex-direction:column;align-items:stretch}
-.lane-h{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:center;margin:2px 0 4px}
+.lane-h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);text-align:center;margin:2px 0 4px}
 .st{width:100%;text-align:left;display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-height:44px;transition:opacity .2s,border-color .2s}
 .st .nm{font-size:14px}.st .no{font:12px var(--mono);color:var(--faint);margin-right:6px}
 .st.planned{border-style:dashed}
@@ -74,7 +74,7 @@ button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible{
 .qt{display:block;text-align:center;border:1px dashed var(--blue);border-radius:10px;padding:10px;color:var(--blue);text-decoration:none;font-size:14px}
 #panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;position:sticky;top:110px;max-height:calc(100vh - 130px);overflow:auto}
 #panel h3{margin-top:0}
-#panel dl{margin:0}#panel dt{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:12px}
+#panel dl{margin:0}#panel dt{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:12px}
 #panel dd{margin:4px 0 0;font-size:14.5px}
 .nums{width:100%;table-layout:fixed;border-collapse:collapse;font-size:13.5px;margin-top:4px}
 .nums td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top;overflow-wrap:anywhere}
@@ -101,8 +101,15 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .q button{text-align:left}.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
 .vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
 @media (max-width:960px){#mapsec{grid-template-columns:minmax(0,1fr)}#panel{position:static;max-height:none}}
-@media (max-width:640px){.pin{grid-template-columns:1fr}.rec{grid-template-columns:1fr}.mcols{gap:6px}.st{padding:7px 8px;flex-wrap:wrap;gap:4px}.st .nm{font-size:13px}.st .b{font-size:9.5px}}
+@media (max-width:640px){.pin{grid-template-columns:1fr}.rec{grid-template-columns:1fr}.mcols{gap:6px}.st{padding:7px 8px;flex-wrap:wrap;gap:4px}.st .nm{font-size:13px}.st .b{font-size:12px}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.st{transition:none}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+sub{font-size:max(12px,.75em)}
 </style>
 <style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
    The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
@@ -110,23 +117,23 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
 .back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
 .sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
 .sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
 #so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
 #so button:hover,#so button:focus-visible{border-color:#F2A93B}
 #so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
              outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
 #so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
-#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
 #so.open ol{display:block}
 #so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
 #so.rail button{display:none}
@@ -139,6 +146,11 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
 #story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -162,13 +174,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -177,19 +189,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -200,7 +211,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -208,7 +219,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -222,14 +233,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -238,6 +249,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -248,30 +260,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -290,7 +283,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -317,7 +310,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -407,7 +400,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </script>
 
 <div id="story-root" lang="en" dir="ltr">
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 
 <div id="bar"><div class="wrap">
   <p id="caveat"><b>Done vs planned:</b> every stage carries a status. <span class="b done">done</span> ran on the real corpus · <span class="b app">app</span> built in the tutor app, untuned · <span class="b pilot">pilot</span> small slice only · <span class="b planned">planned</span> decided, not built · <span class="b running">running</span> in progress. Each number has its own evidence label.</p>
@@ -419,15 +412,15 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <header class="hero">
   <div class="kicker">A layered lesson on our own pipeline</div>
   <h1>Our data pipeline</h1>
-  <p class="lead">How a course (scanned book, slides, homework, lecture videos), eight textbooks and two libraries become passages a retriever can search and a knowledge graph a tutor can walk. Eighteen stages. Click any stage for what it does, why we chose it, what we rejected, the real numbers and what is lost.</p>
+  <p class="lead">How a course (scanned book, slides, homework, lecture videos), eight textbooks and two libraries become passages a retriever can search and a knowledge graph a tutor can walk. Twenty stages. Click any stage for what it does, why we chose it, what we rejected, the real numbers and what is lost.</p>
 </header>
 
 <section class="step" id="tldr"><div class="kicker">TL;DR</div><h2>Two branches from one passage store</h2>
 <ol>
   <li><b>Text first.</b> Scans and maths-heavy pages go through OCR (MinerU2.5-Pro on free remote GPUs); clean text layers are read directly; lectures use their caption tracks. <span class="b done">done</span>: 1,075 course pages and 5,694 textbook pages, with 0 failed units.</li>
   <li><b>Structure next.</b> Every book has a table-of-contents tree (chapter, section, printed pages). Rules clean the text and cut one unit per section, children above 1,024 tokens. <span class="b done">done</span>: 8,515 searchable units over nine sources, exercises and solutions kept apart.</li>
-  <li><b>Search branch.</b> Each unit has a bge-m3 dense and sparse vector. <span class="b done">done</span>. The tutor app searches them with pgvector, BM25 and RRF <span class="b app">app</span>; the thesis run will read a pinned snapshot.</li>
-  <li><b>Graph branch.</b> Claude Opus 5.5 extracted 10,246 typed edges from 8,069 units, entity resolution merged the names, two checkers scored 7,661 evidence pairs on the university GPU. <span class="b done">done</span>. The last merges and the snapshot hash S<sub>G</sub> are <span class="b running">running</span>; then the graph is frozen and loaded into Neo4j.</li>
+  <li><b>Search branch.</b> Each unit has a bge-m3 dense and sparse vector. <span class="b done">done</span>. The tutor app searches them with pgvector, BM25 and RRF <span class="b app">app</span>. The thesis arms read a hashed snapshot; the text arm R was tuned on the development split (30 passages from each list, the top 10 reordered by a cross-encoder), and every cross-encoder score comes from <a href="/thesis/assets/stories/scoring-sources/build/index.html">one scorer, set before tuning</a> (197,073 scores). <span class="b done">done</span></li>
+  <li><b>Graph branch.</b> Claude Opus 5.5 extracted 10,246 typed edges from 8,069 prose units (the graph's own unit set; the search store holds 8,515 units), entity resolution merged the names, two checkers scored 7,661 evidence pairs on the university GPU, and an Opus prerequisite judge, then two blind re-judges, settled the 1,992 prerequisite edges (331 dropped, 66 restored). <span class="b done">done</span>. The graph is frozen under one snapshot hash S<sub>G</sub> <code>7f28a3a3</code> with 5,866 eligible edges. Neo4j serves the tutor app (its reloaded export matches the hash); the thesis arms read the snapshot files.</li>
   <li><b>Two libraries, same steps.</b> The Zotero library (5,186 + 121 papers, 585,574 vectors) and 37 learning books went through the same OCR, units and vectors. <span class="b done">done</span></li>
   <li><b>Where it runs.</b> The Mac only orchestrates. OCR, embedding and the checkers run on Kaggle, Colab and the university's A100 slice; a ledger makes every unit run once. What happens at question time is the companion page, <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks</a>, with <a href="/thesis/assets/stories/query-flow/build/index.html#app">one turn as built in the app</a> and <a href="/thesis/assets/stories/query-flow/build/index.html#abstain">saying "I don't know"</a>.</li>
 </ol>
@@ -475,14 +468,14 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </section>
 
 <section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>The full record and the evidence behind it</h2>
-<p>Each stage below gives the tool, the reason, what we rejected and the evidence label. Labels: <b>count</b> = counted from a named file; <b>measured</b> = a timing or score from our own run; <b>model assessment</b> = an LLM's verdict, no human check; <b>inferred</b> = our arithmetic; <b>external</b> = reported by others, not reproduced.</p>
+<p>Each stage below gives the tool, the reason, what we rejected and the evidence label. Labels: <b>count</b> = counted from a named file; <b>measured</b> = a timing or score from our own run; <b>model assessment</b> = an LLM's verdict; <b>inferred</b> = our arithmetic; <b>external</b> = reported by others, not reproduced.</p>
 <h3>What the outside evidence says, and how far it carries</h3>
 <div class="ev"><b class="h">External</b>On the OmniDocBench leaderboard, MinerU2.5-Pro scores 95.75 overall; its own paper reports 95.69 and a formula score (CDM) of 97.29 (Table 2). The gap between the two is not explained. Several other models score higher (PaddleOCR-VL-1.6: 96.34). Benchmarks decided the shortlist; <b>our own 14-page pilot decided the model</b>. <span class="small">[MinerU2.5-Pro paper; OmniDocBench README]</span></div>
 <div class="ev"><b class="h">External, unverified</b>On the arXiv subset of the READoc converter benchmark, markitdown scored 35.2 against 73.1 for the MinerU pipeline (Table 3; we saw the numbers, not the full paper). An external subset result on other documents: it motivates our choice and a test, not a measured gain on our corpus. <span class="small">[READoc]</span></div>
 <div class="ev"><b class="h">External, provisional</b>Structure-aware chunking helped in small or single-domain studies, not on text without real hierarchy (papers not read in full). No rule wins everywhere. Our own six-rule pilot was inconclusive. So "section first" is a <b>testable default</b>, and four tests on the development split come before it is fixed.</div>
 <div class="ev"><b class="h">Documentation</b>PostgreSQL's <code>ts_rank</code> does not use corpus-wide term statistics, so it is not BM25; pgvector supports half-precision vectors and an exact scan or HNSW. Reciprocal Rank Fusion scores a passage by the sum of 1/(k + rank) over the lists; its original paper used k = 60, which is not shown to be best for our corpus. <span class="small">[PostgreSQL docs; pgvector README; Cormack et al.]</span></div>
 <div class="ev"><b class="h">Ours, measured</b>bge-m3: macro recall@10 0.474 against Qwen3-Embedding-0.6B 0.444 and EmbeddingGemma 2 (768-d) 0.353, on the 32 of 40 homework queries with a top-grade passage in the judged pool, over transcript chunks, one LLM judge, paired bootstrap; bge-m3 vs Qwen3 is not resolved. EmbeddingGemma 2 is 12.0 points lower (95% interval −24.9 to −0.3). This is a pilot: no book prose, no formulas, no Persian.</div>
-<div class="ev"><b class="h">Ours, measured</b>Entailment checkers on long premises (76 pairs of 925-1,318 tokens, partly constructed): MiniCheck reached balanced accuracy 0.732 on the whole premise and 0.454 and 0.501 under two ways of truncating it at 512 tokens. Labels are by an LLM, not human gold. Provisional rule: score the whole premise within MiniCheck's 2,048-token cap, never truncate at 512, calibrate on human labels.</div>
+<div class="ev"><b class="h">Ours, measured</b>Entailment checkers on long premises (76 pairs of 925-1,318 tokens, partly constructed): MiniCheck reached balanced accuracy 0.732 on the whole premise and 0.454 and 0.501 under two ways of truncating it at 512 tokens. Labels are by an LLM. Provisional rule: score the whole premise within MiniCheck's 2,048-token cap, never truncate at 512. The 0.5 threshold is the checkers' own; no labelled set of our pairs exists to calibrate it, so in the thesis the checkers stay secondary and descriptive.</div>
 <h3>Stage by stage</h3>
 <div id="records"></div>
 </section>
@@ -497,21 +490,25 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <tr><td>Book and paper units</td><td>section first, token-aware packing; verified by a test on the development split</td><td>accepted</td></tr>
 <tr><td>Transcript unit</td><td>sentence-aligned 5-minute windows; topic segments as metadata</td><td>accepted</td></tr>
 <tr><td>BM25</td><td>one fully specified BM25 (settings in the run file), not <code>ts_rank</code></td><td>accepted</td></tr>
-<tr><td>Textbooks</td><td>OCR, table-of-contents structure, units and vectors for all eight books; question bank gets golden passages and golden triplets</td><td>done (gold not frozen)</td></tr>
+<tr><td>Textbooks</td><td>OCR, table-of-contents structure, units and vectors for all eight books; pilot gold locked (60 candidates, 48 answerable, 192 supporting passages); main-bank gold after the main lock</td><td>done (pilot gold locked)</td></tr>
+<tr><td>Question bank</td><td>581 items: CS 156 (413) and Bishop's PRML with official solutions (168); reference answers from the official keys or verified by two model families; primary stratum = items both blind taggers put in PREREQ or CROSS</td><td>done (main bank not locked)</td></tr>
 <tr><td>Where the text runs</td><td>remote machines only, private datasets deleted after download: textbook OCR and papers on Kaggle, thesis embeddings on Colab, the graph gate on the university GPU; the Mac only orchestrates</td><td>decided by you</td></tr>
 <tr><td>Graph extractor</td><td>Claude Opus 5.5 with one fixed prompt; a distilled 4B student was tested and rejected</td><td>done (measured)</td></tr>
-<tr><td>Graph freeze</td><td>one snapshot hash S<sub>G</sub> before any gold triple or test question; all merges before it</td><td>running</td></tr>
+<tr><td>Prerequisite edges</td><td>Opus judge, then two blind re-judges with rubric v2 (teaching order counts); an edge is restored only when both keep it; load policy 3</td><td>done</td></tr>
+<tr><td>Thesis text retrieval R</td><td>dense 30 + BM25 30, RRF k 60, cross-encoder on the top 10; chosen on the development split</td><td>done (tuned)</td></tr>
+<tr><td>Cross-encoder scores</td><td>one scorer source (S1, int8 ONNX on CPU), set before tuning; 25 of 25 kernels bit-equal on the overlap check</td><td>done</td></tr>
+<tr><td>Snapshot and freeze</td><td>one snapshot hash S<sub>G</sub> before any gold triple or test question; all merges before it</td><td>done</td></tr>
 <tr><td>Video timestamps</td><td>every video unit, chunk, gold passage and citation keeps the video id and start and end times</td><td>decided by you</td></tr>
 <tr><td>Library vector store</td><td>Parquet files per set (body, references, figures) now; a database store only after measurements</td><td>accepted (measure first)</td></tr>
 </tbody></table>
-<div class="ours"><b class="h">Our reading</b>The ingest half is done for all nine sources and both libraries, with every number counted from the run files. The graph is extracted, resolved and gated at full size; what remains is the freeze. The order now: the last merges → S<sub>G</sub> and the freeze manifest → Neo4j load checked against the hash → golden triplets and the question bank written after the freeze → the pinned thesis store and the main run.</div>
+<div class="ours"><b class="h">Our reading</b>The ingest half is done for all nine sources and both libraries, with every number counted from the run files. The graph is extracted, resolved, gated, its prerequisite edges judged, and frozen under one snapshot hash S<sub>G</sub> (<code>7f28a3a3</code>); the Neo4j load matches that hash. The experiment harness is built and tested, pilot 1 ran with the arms L, R, H and Hc, and its fixes are frozen in the I4 configuration (<code>7cae3a31</code>). Next: arm G, the LightRAG baseline, is pending (a clean staged rebuild); pilot 2 runs once G's index exists, then the main-bank lock and the main run.</div>
 </section>
 
 <section class="step" id="quiz"><div class="kicker">Check yourself</div><h2>Three questions</h2><div id="qz"></div></section>
 
 <section class="step" id="src"><div class="kicker">Sources</div><h2>Where every number comes from</h2>
 <table class="tbl"><thead><tr><th>source</th><th>used for</th><th>read?</th></tr></thead><tbody id="srcrows"></tbody></table>
-<p class="small faint" style="margin-top:12px">Vault notes: Thesis - Next Pipeline Steps Proposal (the first stage table), Thesis - Corpus and Question Bank Process, Thesis - Book Corpus OCR Run, Thesis - Corpus Cleaning and Units, Paper Ingestion - MinerU + GROBID, Learning Books - Ingest, Thesis - Full KG Build, Thesis - SLM Distillation Experiment, OCR and Document Parsing Models - Research Note, Building the Knowledge Graph - Pilot Slice, the experiment registry. Book text, homework text and solutions are never shown.</p>
+<p class="small faint" style="margin-top:12px">Vault notes: Thesis - Next Pipeline Steps Proposal (the first stage table), Thesis - Corpus and Question Bank Process, Thesis - Book Corpus OCR Run, Thesis - Corpus Cleaning and Units, Paper Ingestion - MinerU + GROBID, Learning Books - Ingest, Thesis - Full KG Build, Thesis - SLM Distillation Experiment, the Stage A progress log and decisions, the claim protocol and its Addenda B-D, Vector and Graph Stores, OCR and Document Parsing Models - Research Note, Building the Knowledge Graph - Pilot Slice, the experiment registry. Book text, homework text and solutions are never shown.</p>
 </section>
 </div>
 </main>
@@ -529,15 +526,17 @@ const STORY=[
  ["toc","A page is where the printer cut, not where the topic ends.","A unit that starts mid-section mixes two topics and gives a vague citation.","Build each book's tree from its outline and the OCR headings: chapter, section, printed pages."],
  ["chunks","A section can be many pages long, and OCR leaves headers and broken hyphens.","Our encoder reads at most 1,024 tokens, and noise would end up in the vectors.","Clean by rules, cut one unit per section, split long ones into children."],
  ["embed","A keyword search misses a paraphrase (\"wide gap\" vs \"large margin\").","Students do not use the book's words.","bge-m3 turns each unit into a vector, so similar meaning lands close together."],
- ["index","Vectors miss exact rare words (\"KKT\"); keywords miss paraphrases.","Each method fails where the other works.","Store both: pgvector for meaning, BM25 for words, fused with RRF and reranked."],
+ ["index","Vectors miss exact rare words (\"KKT\"); keywords miss paraphrases.","Each method fails where the other works.","Store both: pgvector for meaning, BM25 for words, fused with RRF and reranked; the thesis settings were chosen on the development split."],
+ ["ce","The reranker's int8 scores differ from one processor type to another.","If two machines scored different pairs, a result could depend on the machine, not on the arm.","Score every pair once, before tuning, from one scorer source that passed a bit-equality check on every kernel."],
  ["extract","Similar passages do not say what to learn first, and a small model could not learn to extract it.","A prerequisite question needs relations between concepts, not similar text.","A large LLM writes typed edges, each with a verbatim quote."],
  ["er","The LLM calls one idea by thousands of names.","One concept split into three nodes breaks every walk.","Entity resolution merges names; a judge reads the passages, another model family audits."],
  ["nli","An LLM can write an edge that its quote does not support.","A wrong edge sends the tutor to the wrong passage.","Two checkers score each edge against the whole passage."],
+ ["prejudge","The checkers do not decide prerequisite edges, and a blind audit found 11 of 50 of them wrong.","A wrong prerequisite sends a student back to the wrong topic.","An LLM judge drops the bad ones; two blind re-judges restore the teaching-order prerequisites that the first rubric dropped."],
  ["git","A graph changes as it is fixed.","An experiment must name the exact graph it used, and test questions must not see a moving graph.","Plain files with one snapshot hash, frozen before any test question is written."],
- ["neo4j","The tutor must walk the graph while a student waits.","Plain files are slow to query by relation type.","Load the frozen snapshot into Neo4j for bounded typed walks."],
+ ["neo4j","The tutor must walk the graph while a student waits.","Plain files are slow to query by relation type.","Load the frozen snapshot into Neo4j for bounded typed walks in the app; the thesis arms read the snapshot files."],
  ["papers","Our notes cite thousands of papers that only exist as PDFs.","A claim should point at a page, not at a title.","Run the papers through the same steps: GROBID or MinerU, chunks, vectors, one command for new papers."]
 ];
-const ROWS=[["sources"],["compute"],["route"],{cols:[["ocr","markdown","toc"],["transcripts","qbank"]],h:["pages","lectures and questions"]},["chunks"],["embed"],{cols:[["index"],["extract","er","nli","git","neo4j"]],h:["search branch","graph branch"]},{cols:[["papers"],["lbooks"]],h:["library: papers","library: books"]}];
+const ROWS=[["sources"],["compute"],["route"],{cols:[["ocr","markdown","toc"],["transcripts","qbank"]],h:["pages","lectures and questions"]},["chunks"],["embed"],{cols:[["index","ce"],["extract","er","nli","prejudge","git","neo4j"]],h:["search branch","graph branch"]},{cols:[["papers"],["lbooks"]],h:["library: papers","library: books"]}];
 let D=null, sel=null, lit=null;
 fetch(base+"/pipeline.json").then(r=>r.json()).then(d=>{D=d;init()}).catch(e=>{document.querySelector("main").insertAdjacentHTML("afterbegin",'<p class="wrap" style="color:var(--warn)">Could not load the data ('+esc(e)+'). Serve the folder over http.</p>')});
 const S=id=>D.stages.find(s=>s.id===id);
@@ -598,11 +597,13 @@ const SRC=[
  ["Thesis - Book Corpus OCR Run; Thesis - Corpus Cleaning and Units","textbook OCR, structure, units, embeddings",true],
  ["Paper Ingestion - MinerU + GROBID; Learning Books - Ingest","the two libraries",true],
  ["Thesis - Full KG Build; Thesis - SLM Distillation Experiment","the full graph build and the rejected student",true],
- ["Intelligent Educator SPEC","what the tutor app runs",true]];
+ ["Intelligent Educator SPEC","what the tutor app runs",true],
+ ["Stage A progress log; claim protocol Addenda B-D; Stage A decisions","question bank, R tuning, cross-encoder scores, models, arm G status",true],
+ ["Vector and Graph Stores note","Neo4j serves the app; the thesis reads the snapshot",true]];
 function sources(){ $("#srcrows").innerHTML=SRC.map(s=>'<tr><td>'+esc(s[0])+'</td><td>'+esc(s[1])+'</td><td class="'+(s[2]?"vtrue":"vfalse")+'">'+(s[2]?"read":"not read by us")+'</td></tr>').join("") }
 })();
 </script>
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 </div>
 <script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
 // Two modes, decided from the page's real content edge (never from a fixed width):

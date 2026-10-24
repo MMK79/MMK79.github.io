@@ -79,7 +79,7 @@
     const K = root.DemoKit;
     const st = { arm: 'B', how: 'judge' };
     const shell = K.shell(el, 'Real example: 5 questions that need two passages',
-      'Scale: n = 5 questions (3 bridge + 2 comparison, each with two gold passages) out of the 12 in the answer study, one run, temperature 0, answerer qwen3.7-plus, correctness judged by deepseek-v4.1-flash against the gold answer (no human labels). One question moves a rate by 0.20: a demo, not a benchmark. Gold labels cover only the passages judged necessary. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: n = 5 questions (3 bridge + 2 comparison, each with two gold passages) out of the 12 in the answer study, one run, temperature 0, answerer qwen3.7-plus, correctness judged by deepseek-v4.1-flash against the gold answer. One question moves a rate by 0.20: a demo, not a benchmark. Gold labels cover only the passages judged necessary. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const hSel = K.el('select', { 'aria-label': 'how correctness is decided', style: 'max-width:100%;width:100%' },

@@ -122,7 +122,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit, st = { cmp: 'C-B|faithfulness', B: 10000, unpaired: false };
     const shell = K.shell(el, 'Real example: paired bootstrap on real per-question scores',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (not humans), helper-written questions. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so B vs C does NOT isolate the graph. Intervals are wide on purpose.');
+      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges, helper-written questions. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so B vs C does NOT isolate the graph. Intervals are wide on purpose.');
     const sel = K.el('select', { 'aria-label': 'comparison', style: 'max-width:62vw' }, Object.keys(CMP).map(k => K.el('option', { value: k }, `${CMP[k][0]} minus ${CMP[k][1]}, ${CMP[k][4]}`)));
     sel.addEventListener('change', () => { st.cmp = sel.value; render(); });
     const bS = K.slider('B (resamples)', 100, 10000, 100, st.B, v => { st.B = v; render(); });

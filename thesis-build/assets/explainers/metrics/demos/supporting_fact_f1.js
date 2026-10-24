@@ -96,7 +96,7 @@
     const qids = Object.keys(D.qs).filter(id => D.qs[id].type === 'bridge' || D.qs[id].type === 'comparison');
     const st = { src: 'run', method: 'rrf_bm25_dense', arm: 'B', k: 5, q: qids[0], run: null };
     const shell = K.shell(el, 'Real example: supporting-fact F1 on real questions',
-      'Scale: demo corpus of 138 Wikipedia passages, 12 bridge and comparison questions written by Claude, one run, no human labels. Not a benchmark. The unit here is the PASSAGE (id pNNN), not the sentence as in HotpotQA, so a hit means the right passage, not the right sentence. Gold labels list only the passages needed for the answer, so precision is a lower bound (a useful extra passage counts as a miss).');
+      'Scale: demo corpus of 138 Wikipedia passages, 12 bridge and comparison questions written by Claude, one run. Not a benchmark. The unit here is the PASSAGE (id pNNN), not the sentence as in HotpotQA, so a hit means the right passage, not the right sentence. Gold labels list only the passages needed for the answer, so precision is a lower bound (a useful extra passage counts as a miss).');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const sSel = K.el('select', { 'aria-label': 'predicted set source', style: 'max-width:100%' }, [opt('run', 'Predicted set = top-k retrieved by a method'), opt('cited', 'Predicted set = passages the answer cites')]);
     const mSel = K.el('select', { 'aria-label': 'retrieval method', style: 'max-width:100%' }, METHODS.map(m => opt(m, m)));

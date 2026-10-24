@@ -1,4 +1,4 @@
-/* Hake normalised gain. TOY ONLY: real example pending, no pre/post data exists (the classroom study does not exist yet). All classes below are invented. */
+/* Hake normalised gain. TOY ONLY: real example pending, no pre/post data exists. All classes below are invented. */
 (function (root) {
   const defaults = { pre: 40, post: 70, max: 100 };
 
@@ -23,7 +23,7 @@
 
   function mount(el) {
     const K = root.DemoKit;
-    const banner = K.el('p', { class: 'hint bad' }, 'Real example pending: no pre/post data exists in the pack, because the classroom study does not exist yet. Everything below is an invented class, to show how the formula behaves.');
+    const banner = K.el('p', { class: 'hint bad' }, 'Real example pending: no pre/post data exists in the pack. Everything below is an invented class, to show how the formula behaves.');
     const shell = K.shell(el, 'Toy example (break it): three invented arms',
       'Hake gain is the share of the possible improvement that the class achieved: (post - pre) / (max - pre). Drag the pre-test and post-test means of each invented arm.');
     el.insertBefore(banner, shell);

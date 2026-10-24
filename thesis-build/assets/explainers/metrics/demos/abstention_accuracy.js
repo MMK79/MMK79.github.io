@@ -64,7 +64,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit, st = { arm: 'B', always: false };
     const shell = K.shell(el, 'Real example: abstain or answer, 12 questions',
-      'Scale: n = 12 questions (3 unanswerable, 9 answerable), one run, temperature 0, answerer ' + D.ref.answer_model + ', no human labels, so intervals are very wide: one question moves AbsAcc by 0.083. "Unanswerable" means not answerable from a 138-passage corpus sample (labels by the question author). Refusal is detected by code: the reply contains the fixed phrase. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (3 unanswerable, 9 answerable), one run, temperature 0, answerer ' + D.ref.answer_model + ', so intervals are very wide: one question moves AbsAcc by 0.083. "Unanswerable" means not answerable from a 138-passage corpus sample (labels by the question author). Refusal is detected by code: the reply contains the fixed phrase. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     aSel.value = st.arm; aSel.addEventListener('change', () => { st.arm = aSel.value; render(); });

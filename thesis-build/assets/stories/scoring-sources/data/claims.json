@@ -1,0 +1,33 @@
+{
+ "about": "Claims of the Scoring Sources lesson. status: verified = the source read it at a file or document ([V] in Addendum D); ours = our own protocol rule, count or run outcome ([C] in Addendum D, run results in the Stage A log, registry EXP-037); inferred = an inference the source marks [I]. Every claim is cited on the page.",
+ "claims": [
+  {"id": "c01", "key": "addd", "loc": "D3 score policy", "status": "ours", "text": "One score source per key, never mixed by arm."},
+  {"id": "c02", "key": "addd", "loc": "D3 option S1", "status": "ours", "text": "S1 is the same int8 ONNX job on Kaggle CPU, sharded. It keeps continuity with the earlier tuning only if reproducibility is shown."},
+  {"id": "c03", "key": "addd", "loc": "D3 pinned settings", "status": "verified", "text": "S1 pins the settings of the job that made the inherited scores: the same int8 model file and tokenizer, onnxruntime 1.31.0, the CPU execution provider only, 4 threads, memory arena off, one pair at a time with no padding, truncation at 512 tokens, score = sigmoid of the single logit."},
+  {"id": "c04", "key": "onnxq", "loc": "quantization page, via D3", "status": "verified", "text": "ONNX Runtime states that int8 quantized results can depend on the CPU instruction set."},
+  {"id": "c05", "key": "addd", "loc": "D3, kernel_meta", "status": "verified", "text": "The inherited kernels did not record their CPU instruction-set flags (AVX2, AVX-512, VNNI); the new kernels record them."},
+  {"id": "c06", "key": "addd", "loc": "D3 stop condition", "status": "ours", "text": "Each new kernel first re-scores a fixed seeded sample of 200 inherited keys. Any score that is not bit-equal stops that kernel before it scores new pairs."},
+  {"id": "c07", "key": "addd", "loc": "D3 switch rule", "status": "ours", "text": "S1 stays if and only if every S1 kernel's 200-key check is bit-equal on all 200 keys. Any single mismatch on any kernel selects S2. There is no retry on another kernel."},
+  {"id": "c08", "key": "addd", "loc": "D3 (X3:30, X4:20)", "status": "verified", "text": "Exact equality is a defensible stop rule, not a shown feasibility. 200 equal keys support reproducibility; they do not prove equality on unseen keys."},
+  {"id": "c09", "key": "addd", "loc": "D3 option S2", "status": "ours", "text": "S2 is one GPU job on Kaggle with the bge-reranker-v2-m3 checkpoint at a pinned revision, fp32. All keys are re-scored, including the inherited 15,443 and R's pairs."},
+  {"id": "c10", "key": "addd", "loc": "D3 not criteria", "status": "ours", "text": "Throughput, cost and wall-clock time are not criteria. If S1 is too slow, the job waits; it does not switch."},
+  {"id": "c11", "key": "addd", "loc": "D3 timing", "status": "ours", "text": "The switch is decided and recorded before any new score is merged and before any tuning. On a switch, S1 scores from earlier passing kernels are discarded, not merged."},
+  {"id": "c12", "key": "addd", "loc": "D3 existing scores [C]", "status": "ours", "text": "The three inherited score files overlap with 15,443 union keys and 0 conflicting duplicates."},
+  {"id": "c13", "key": "addd", "loc": "D3 [C]", "status": "ours", "text": "181.6k new pairs at 0.5 pairs/s is about 100 kernel-hours. This is an extrapolation, not a demonstration."},
+  {"id": "c14", "key": "prog", "loc": "Pairs (D3)", "status": "ours", "text": "The collector wrote 195,471 unique keys: 13,841 inherited and 181,630 new. Dev 18 items: 81,954 widest-walk pairs; pilot 30: 118,691."},
+  {"id": "c15", "key": "prog", "loc": "S1 overlap sample", "status": "ours", "text": "The overlap sample is 200 keys drawn with a fixed seed from the frame of 10,622 inherited keys with known pair text, bound in stage 1."},
+  {"id": "c16", "key": "prog", "loc": "Probe d-probe", "status": "ours", "text": "The probe kernel (Intel Xeon 2.20 GHz) matched 200/200 bit-equal and scored 1,000/1,000 pairs at 0.632 pairs/s."},
+  {"id": "c17", "key": "prog", "loc": "S1 complete", "status": "ours", "text": "All 24 shards and the probe were verified: every kernel was bit-equal on the 200-key overlap. CPUs: Intel Xeon 2.20 GHz and AMD EPYC 7B12. Measured 0.52-0.66 pairs/s. 25/25 kernels verified with an overlap result."},
+  {"id": "c18", "key": "prog", "loc": "Switch (D3)", "status": "ours", "text": "Switch: S1. The switch record was committed before the merge."},
+  {"id": "c19", "key": "prog", "loc": "Merge", "status": "ours", "text": "The merged file holds 197,073 keys (15,443 inherited + 181,630 new); coverage of the collected list 195,471/195,471; 0 conflicting duplicates."},
+  {"id": "c20", "key": "addd", "loc": "D4b stage 2", "status": "ours", "text": "Stage 2 hashes the collected pair list and the merged score file and stores a 100 % coverage report. It is committed before dev_tune runs, and dev_tune refuses a score file whose hash differs from stage 2."},
+  {"id": "c21", "key": "prog", "loc": "CE format diagnostic", "status": "ours", "text": "A Mac (ARM) re-score of 50 pairs of the overlap sample gave Spearman 0.987 with the inherited scores but bit-equal 0/50, max |Δ| 0.104. It is a diagnostic of the int8 instruction-set dependence only and does not enter the switch rule."},
+  {"id": "c22", "key": "prog", "loc": "Threats line", "status": "ours", "text": "44/50 sampled pairs reach the 512-token cap. The cap is the same for every arm and frozen in both specifications; its effect on ranking is not measured."},
+  {"id": "c23", "key": "addd", "loc": "D3 option S2", "status": "ours", "text": "A frozen shared-baseline comparison stays valid under either option."},
+  {"id": "c24", "key": "prog", "loc": "D4c, I4", "status": "ours", "text": "Dev re-tuning (H only) read the stage-2 score file; the tie rule picked s7-b/2 with k_graph 30. I4 (config 7cae3a31) binds stage 2 and the winner."},
+  {"id": "c25", "key": "addd", "loc": "D3 cost [I]", "status": "inferred", "text": "Kaggle CPU sessions and concurrency limit the wall-clock time."},
+  {"id": "c26", "key": "addd", "loc": "D4c sealing", "status": "ours", "text": "Per-item rows and retrieval traces go to a sealed directory; the visible output holds aggregates and the winner only."},
+  {"id": "c27", "key": "addd", "loc": "D3 scope", "status": "ours", "text": "The balanced rank rule needs a CE score for every permitted passage at hops 0-2, with no pre-cap; the pair set is the widest walk."},
+  {"id": "c28", "key": "addd", "loc": "D1.3 (consequence)", "status": "inferred", "text": "The rank rule takes each hop's best passages by CE score, so a changed score can change which passages fill the slots."}
+ ]
+}

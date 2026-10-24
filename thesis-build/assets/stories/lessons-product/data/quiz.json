@@ -1,0 +1,16 @@
+{
+ "questions": [
+  {"q": "Under the course-map rule now in use, why is PCA on no lecture's column?",
+   "o": ["Its best lecture has weight 2: two mentions and no definition, below the minimum of 3.", "The knowledge graph has no PCA concept.", "Lecture 1 introduced it first, so lecture 1 owns it.", "PCA is only in the books, never in a lecture."],
+   "a": 0, "f": "PCA has 2 mentions in lecture 4 and 1 in lecture 18. A mention weighs 1, so no lecture reaches 3."},
+  {"q": "Noise is mentioned 21 times in lecture 11 but defined once in lecture 4. Where does it sit?",
+   "o": ["Lecture 11: the most passages win.", "Lecture 4: a lecture that defines a concept beats one that only mentions it.", "Both lectures.", "Nowhere: the counts disagree."],
+   "a": 1, "f": "Lecture 11 has the higher weight, 21, but only mentions noise. Lecture 4 defines it (weight 7), so lecture 4 wins."},
+  {"q": "Why did the first lesson rule never suggest the VC-dimension lesson?",
+   "o": ["The lesson did not exist yet.", "VC dimension has no defining passage.", "The share was taken over all 19 defining passages, and 11 of them sat in no topic, so no topic reached 34 %.", "The alias table was missing."],
+   "a": 2, "f": "Passages outside every topic diluted the share. Now the share is taken over passages that lie in some topic, and lecture-video passages count toward their topic."},
+  {"q": "What is true of the book companions today?",
+   "o": ["They are wired into the tutor app.", "They run in the local product; the link to the tutor (shared unit ids, concept nodes, check items) is planned.", "They copy the book's figures.", "They are lessons written for one student's gap by an agent."],
+   "a": 1, "f": "The companions exist as local pages built on a shared kit. Sharing ids and blocks with the tutor is the planned next step."}
+ ]
+}

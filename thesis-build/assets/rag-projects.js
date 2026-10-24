@@ -5,7 +5,7 @@
 const {T, esc, N, num, day, logo, en, ext, list, wire, opts} = window.GX, $ = id => document.getElementById(id), main = $("rp-main");
 let DATA;
 try { DATA = await fetch("/thesis/data/rag-projects.json").then(r => { if (!r.ok) throw 0; return r.json(); }); } catch (e) { main.innerHTML = `<p class="ex-none">${esc(T("ex.nodata"))}</p>`; return; }
-const FAM = ["graphrag", "retriever", "framework", "app", "education", "eval"], VER = ["baseline", "copy ideas", "ignore"];
+const FAM = ["graphrag", "retriever", "framework", "app", "education", "eval"], VER = ["arm", "baseline", "copy ideas", "ignore"];
 const rows = DATA.projects, vk = v => v.replace(" ideas", "");
 const lic = g => !g ? "—" : g.license && g.license !== "NOASSERTION" ? g.license : T(g.license ? "rp.lic_file" : "rp.lic_none");
 const paper = (p, extra) => !p ? "" : `<p class="gx-paper"${extra ? ' data-extra="1"' : ""}>${extra ? esc(T("rp.also_paper")) + " " : ""}<a href="${esc(p.url)}" target="_blank" rel="noopener" lang="en" dir="ltr">${esc(p.title)}</a>

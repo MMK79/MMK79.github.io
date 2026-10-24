@@ -1,0 +1,15 @@
+{
+ "sources": {
+  "car": {"short": "CAR", "title": "Concept Assignment Rules - Course Map and Lessons (vault research note)", "venue": "Notes/Concept Assignment Rules - Course Map and Lessons.md", "verified": true, "how": "read in full"},
+  "lsv1": {"short": "Lessons v1", "title": "Lessons Site - v1 Build (vault note, with its log)", "venue": "Notes/Lessons Site - v1 Build.md", "verified": true, "how": "read in full"},
+  "lsread": {"short": "lessons-site README", "title": "Lessons site (v1, local only): README", "venue": "lessons-site repository, README.md", "verified": true, "how": "read in full"},
+  "kgp": {"short": "kg_prereqs", "title": "Topic ownership and learn-first links from the frozen KG (kg-prereqs/1)", "venue": "lessons-site repository, lessons/kg_prereqs.json (method field and topic lists)", "verified": true, "how": "read; counted by scripts/extract.py"},
+  "bc": {"short": "Companions", "title": "Interactive Book Companions - Design (vault note)", "venue": "Notes/Interactive Book Companions - Design.md", "verified": true, "how": "read in full"},
+  "bcdisk": {"short": "Companions folder", "title": "The companion pages in the vault and their commit messages", "venue": "Presentations/Book Companions/ (chapter folders, git log)", "verified": true, "how": "counted; commit messages read"},
+  "spec": {"short": "IE SPEC", "title": "SPEC: Intelligent Educator, the tutor (sections 9d, 9e, 19, 20, 20a)", "venue": "Intelligent-Educator-backend repository, docs/SPEC.md", "verified": true, "how": "the named sections read in full"},
+  "svc": {"short": "IE code", "title": "course_map() in the tutor service, and the backend README", "venue": "Intelligent-Educator-backend repository, app/tutor/service.py; README.md", "verified": true, "how": "read"},
+  "ext": {"short": "Our re-run", "title": "The course-map rule re-run on the frozen KG files (this folder)", "venue": "scripts/extract.py -> data/concepts.json; inputs pinned by sha256 in that file", "verified": true, "how": "our computation"},
+  "ahd": {"short": "Agent harness study", "title": "Intelligent Educator - In-App Agent Harness - Design (vault note: a feasibility study)", "venue": "Notes/Intelligent Educator - In-App Agent Harness - Design.md", "verified": true, "how": "read in full"},
+  "th5": {"short": "Thesis ch5", "title": "Thesis, chapter 5: suggestions for future research (English text of the Persian chapter)", "venue": "thesis repository, chapters-en/ch5.tex", "verified": true, "how": "the paragraph read"}
+ }
+}

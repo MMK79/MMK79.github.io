@@ -103,7 +103,7 @@
     const qids = Object.keys(D.m.per_question.B);
     const st = { arm: 'B', q: 'q09' };
     const shell = K.shell(el, 'Real example: Citation precision on real answers',
-      'Scale: n = 12 questions, one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Citations are the [pNNN] ids the answerer wrote. Caveat: this pack uses a simpler rule than ALCE leave-one-out. A cited passage counts as relevant if it is a gold passage or the judge says it supports a supported claim; gold labels cover only the necessary passages, so this is a lower bound. Arm A has no sources, so no citations.');
+      'Scale: n = 12 questions, one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '); wide intervals. A demo, not a benchmark. Citations are the [pNNN] ids the answerer wrote. Caveat: this pack uses a simpler rule than ALCE leave-one-out. A cited passage counts as relevant if it is a gold passage or the judge says it supports a supported claim; gold labels cover only the necessary passages, so this is a lower bound. Arm A has no sources, so no citations.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

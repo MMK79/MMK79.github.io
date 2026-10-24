@@ -1,0 +1,17 @@
+{
+ "about": "Quiz of the Scoring Sources lesson. a = index of the right option (0-based). Answer key: A B B A (as letters).",
+ "questions": [
+  {"q": "What does the 200-key overlap check compare?",
+   "o": ["A new kernel's scores for 200 already-scored pairs with the stored scores, bit for bit.", "The average S1 score with the average S2 score.", "The speed of Intel and AMD machines.", "Two runs of the same kernel on new pairs."],
+   "a": 0, "f": "Each new kernel re-scores 200 inherited keys before it scores anything new. Every one must be bit-equal to the stored score."},
+  {"q": "One kernel finds 1 of its 200 keys with a different score. What happens?",
+   "o": ["The kernel is retried on another machine.", "The whole job switches to S2, and the S1 scores from passing kernels are discarded.", "Only that key is dropped.", "Nothing: the other keys matched."],
+   "a": 1, "f": "Any single mismatch on any kernel selects S2. There is no retry, and S1 and S2 scores are never mixed."},
+  {"q": "S1 needs about 100 kernel-hours. May the team switch to S2 because S1 is slow?",
+   "o": ["Yes, if S2 is cheaper.", "No. Only equality decides; if S1 is slow, the job waits.", "Yes, after a vote.", "Only for the pilot items."],
+   "a": 1, "f": "Throughput, cost and wall-clock time are not criteria. A choice made for speed could still change the ranking, and nobody would have planned it."},
+  {"q": "Why are the merged scores hashed (stage 2) before dev tuning runs?",
+   "o": ["So that tuning, and every later result, uses one fixed score file that was set before any result was seen.", "So that the file is smaller.", "So that the GPU job can run later.", "So that tuning may pick the best score source."],
+   "a": 0, "f": "dev_tune refuses a score file whose hash differs from stage 2. The scores cannot be swapped after a result is known."}
+ ]
+}

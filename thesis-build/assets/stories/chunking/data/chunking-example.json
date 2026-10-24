@@ -2083,7 +2083,7 @@
   {
    "id": "section",
    "name": "Section-bound (ours)",
-   "rule": "Our pipeline rule: at most 1,600 characters, 200 overlap inside a section, never across a 5-minute window of the video.",
+   "rule": "Our pilot batch rule: at most 1,600 characters, 200 overlap inside a section, never across a 5-minute window of the video (the thesis units are table-of-contents sections of at most 1,024 bge-m3 tokens).",
    "kind": "rule (ours)",
    "params": {
     "max_chars": 1600,

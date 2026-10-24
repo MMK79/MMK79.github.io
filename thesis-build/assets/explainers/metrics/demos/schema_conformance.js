@@ -118,7 +118,7 @@
       byRel.textContent = 'Violators per relation: ' + (Object.keys(cnt).length ? Object.entries(cnt).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${v}`).join(', ') : 'none');
       list.replaceChildren(...viol.slice(0, 40).map(v => K.el('div', { style: 'margin:2px 0;padding:1px 6px;border-left:4px solid var(--warn)' },
         K.el('span', { class: 'hint' }, `${v.head.name} (${v.head.type}) -${v.e.relation}-> ${v.tail.name} (${v.tail.type})  [${v.e.passages.join(', ')}]  because: ${v.why.join('; ')}`))));
-      note.textContent = 'Reading it: tightening lowers the rate by construction, so a low number is not "bad extraction" until a human checks the violators. Look at introduced_by: Person -> concept edges are real direction errors by the extractor, the kind of mistake this check exists to catch. The rate says nothing about whether conforming edges are true.';
+      note.textContent = 'Reading it: tightening lowers the rate by construction, so a low number is not "bad extraction" until the violators are checked. Look at introduced_by: Person -> concept edges are real direction errors by the extractor, the kind of mistake this check exists to catch. The rate says nothing about whether conforming edges are true.';
     }
     render();
   }

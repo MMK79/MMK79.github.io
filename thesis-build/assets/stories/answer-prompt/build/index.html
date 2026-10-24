@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Choosing the answer prompt</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--line2:#3A4352;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.wide{max-width:1080px}
+code,.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:max(12px,.88em);overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,7.5vw,56px);letter-spacing:-.01em}
+h2{font-size:clamp(26px,5.5vw,36px);margin:6px 0 16px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px;max-width:68ch;overflow-wrap:anywhere}
+ul,ol{padding-left:20px;max-width:68ch}li{margin:0 0 8px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13.5px}
+.lvl{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lvl b{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px;font-weight:600}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;max-width:none}
+#nav{display:flex;flex-wrap:wrap;gap:6px;row-gap:8px}
+#nav a{position:relative;text-decoration:none;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 11px;white-space:nowrap}
+#nav a::after{content:"";position:absolute;inset:-6px -3px}
+#nav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 34px}
+.hero h1{margin:10px 0 16px}
+.hero p.lead{font-size:18.5px;color:var(--muted);max-width:60ch}
+.who{color:var(--faint);font-size:13.5px}
+/* hero: the change in one sentence, struck and inserted (not a metric row) */
+.swap{margin:22px 0 14px;max-width:680px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;font-size:15.5px;line-height:1.55}
+.swap .lab{display:block;font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:4px}
+.swap del,.swap ins{display:block}
+.swap del{color:var(--muted);margin-bottom:8px;text-decoration-color:var(--warn)}
+.swap ins{text-decoration:none;color:var(--text);background:rgba(242,169,59,.12);border-radius:8px;padding:8px 10px}
+.tldr{list-style:none;padding:0;margin:0;max-width:none;counter-reset:t}
+.tldr li{padding:11px 0 11px 28px;border-bottom:1px solid var(--line);position:relative;margin:0}
+.tldr li::before{content:counter(t);counter-increment:t;position:absolute;left:0;top:11px;font:500 13px var(--mono);color:var(--amber)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.card p:last-child{margin-bottom:0}
+.card .h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.card.ours .h{color:var(--purple)}
+.card.warn{border-color:rgba(255,138,101,.45)}.card.warn .h{color:var(--warn)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12.5px}
+.tbl td.m{font-family:var(--mono);font-size:13px}
+.hscroll{overflow-x:auto;max-width:100%}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.mk{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:0 6px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.mk.verified{color:var(--teal);border-color:var(--teal)}
+.mk.unverified{color:var(--warn);border-color:var(--warn)}
+.mk.inferred{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.mk.ours{color:var(--amber);border-color:var(--amber)}
+button{font:inherit;font-size:14px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:9px 14px;min-height:44px;max-width:100%;cursor:pointer;
+  transition:transform 160ms var(--ease),border-color 180ms var(--ease),background-color 180ms var(--ease),color 180ms var(--ease)}
+button:active{transform:scale(.97)}
+button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){button:hover{border-color:var(--amber)}}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:12px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel2)}
+.flow span.box.hl{border-color:var(--amber);color:var(--amber)}
+.flow span.box.wait{border-style:dashed;background:transparent;color:var(--muted)}
+.flow span.ar{color:var(--faint)}
+/* Touch: three prompts side by side */
+#mdesc{min-height:3.2em;font-size:14.5px;color:var(--muted)}
+#mdesc b{color:var(--text);font-weight:500}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:14px 0}
+.col{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.col.win{border-color:var(--amber)}
+.col .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.col .pid{font:500 22px var(--mono);color:var(--text)}
+.col.win .pid{color:var(--amber)}
+.col .sha{font:12px var(--mono);color:var(--faint)}
+.col .nm{font-size:14px;font-weight:500;line-height:1.35}
+.col .role{font-size:13.5px;color:var(--muted);line-height:1.45;margin:0}
+.badge{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--bg);background:var(--amber);border-radius:8px;padding:1px 8px;white-space:nowrap}
+.meter{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0}
+.meter .v{display:flex;align-items:baseline;gap:10px}
+.meter .fr{font:500 26px var(--mono);color:var(--text);line-height:1.2}
+.meter .dec{font:13px var(--mono);color:var(--muted)}
+.track{position:relative;height:10px;border-radius:8px;background:var(--panel2);border:1px solid var(--line);margin:10px 0 18px}
+.fill{position:absolute;top:0;bottom:0;left:0;border-radius:8px;background:var(--blue);transition:width 260ms var(--ease),left 260ms var(--ease)}
+.col.win .fill{background:var(--amber)}
+.thr{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--text)}
+.thr span{position:absolute;top:16px;left:50%;transform:translateX(-50%);font:12px var(--mono);color:var(--muted);white-space:nowrap}
+.zero{position:absolute;top:-3px;bottom:-3px;left:50%;width:1px;background:var(--line2)}
+.ptext{font-size:13.5px;line-height:1.55;margin:0;color:var(--muted)}
+.ptext span{color:var(--muted)}
+.ptext mark{color:var(--text);background:rgba(124,156,255,.16);border-radius:8px;padding:0 2px}
+.ptext mark.new{background:rgba(242,169,59,.18)}
+.ptext code{font-size:12px;color:inherit}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin:4px 0 0}
+.legend i{display:inline-block;width:14px;height:12px;border-radius:8px;vertical-align:-1px;margin-right:6px}
+.legend i.chg{background:rgba(124,156,255,.35)}.legend i.new{background:rgba(242,169,59,.4)}
+/* selector walk-through */
+#rule{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+#rule ol{list-style:none;padding:0;margin:8px 0 12px;max-width:none}
+#rule li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:4px 10px;padding:10px 0;border-top:1px solid var(--line);margin:0;transition:opacity 220ms var(--ease)}
+#rule li .n{font:500 13px var(--mono);color:var(--faint);padding-top:2px}
+#rule li .q{font-size:14.5px}
+#rule li .a{grid-column:2;font:13px var(--mono);color:var(--muted)}
+#rule li.cur .n{color:var(--amber)}
+#rule li.cur .a{color:var(--amber)}
+#rule li.later{opacity:.35}
+#rule li.later .a{visibility:hidden}
+#rule .ctl{display:flex;flex-wrap:wrap;gap:8px}
+details{margin:12px 0}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
+.qz .q{border-top:1px solid var(--line);padding:16px 0}
+.qz .opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.qz button{text-align:left;color:var(--text)}
+.qz button.right{border-color:var(--teal);color:var(--teal)}.qz button.wrong{border-color:var(--warn);color:var(--warn)}
+#err{display:none;color:var(--warn);border:1px solid var(--warn);border-radius:10px;padding:10px;margin:10px 0}
+@media (max-width:900px){.cols{grid-template-columns:minmax(0,1fr)}.col .ptext{font-size:14px}}
+@media (max-width:640px){#caveat .more{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-property:color,border-color,background-color,opacity!important;transform:none!important}.fill{transition:none!important}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real aggregates</b> from the prompt selection record. Raw dev replies are not shown: they stay sealed until the pilot closes.<span class="more"> Marks: <span class="mk verified">verified</span> <span class="mk ours">ours</span> <span class="mk inferred">inferred</span> <span class="mk unverified">unverified</span>.</span></p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="lvl">A layered lesson on the tutor's instructions</div>
+  <h1>Choosing the answer prompt</h1>
+  <p class="lead">Every retrieval arm answers under the same instruction, the answer prompt. Pilot 1 showed that one sentence of it was unclear for exercises. This page shows the three candidate prompts, how one rule chose between them on practice items only, and why the choice had to be fixed before the main run.</p>
+  <div class="swap" aria-label="The sentence that changed">
+    <span class="lab">The abstain rule, before and after</span>
+    <del>If the passages do not contain the answer, reply with exactly NOT_IN_MATERIAL and nothing else.</del>
+    <ins>Do not reply NOT_IN_MATERIAL only because the final result is not written in a passage; an exercise asks you to derive it. If a fact that the answer needs is not in the passages, reply with exactly NOT_IN_MATERIAL and nothing else.</ins>
+  </div>
+  <p class="who">Builds on <a href="/thesis/assets/stories/query-flow/build/index.html">Query flow</a> (what each arm sends to the model) and <a href="/thesis/assets/stories/scoring-sources/build/index.html">One scorer, set before tuning</a> (the same "set it before tuning" logic, for scores). The pilot results are on the page.</p>
+  <div id="err"></div>
+</header>
+
+<section class="step" id="tldr"><div class="lvl"><b>TL;DR</b>the short version</div>
+<h2>In five lines</h2>
+<ol class="tldr">
+  <li>In pilot 1 the retrieval arms abstained on 135 of 270 generations. No cause was split out between the prompt and retrieval. <a class="cite" data-c="th|§ Shared conditions" data-k="c04"></a></li>
+  <li>The registered prompt, P0, said to abstain when "the answer" is not in the passages. For a derivation exercise the final result is never in a passage, so the rule is unclear. <a class="cite" data-c="pm|§2.1" data-k="c05"></a></li>
+  <li>Two new candidates, P1 and P2, and a selection rule were hashed before any of them ran. They ran on 18 practice (dev) items only, with no judge. <a class="cite" data-c="prot|C, Pre-commit" data-k="c07"></a></li>
+  <li>P2 won: it abstained on 1/12 of cells with gold evidence, against 5/12 for P0, with valid citations on 32/33 answers. <a class="cite" data-c="prog|C3 selection" data-k="c13"></a></li>
+  <li>P2 is now the one prompt of the retrieval arms R, H, H-collapsed and G. It cannot change after pilot 2. <a class="cite" data-c="prot|C3 Candidates" data-k="c18"></a> <a class="cite" data-c="prot|C10" data-k="c27"></a></li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="lvl"><b>Level 0</b>like I am five</div>
+<h2>"Only use the book"</h2>
+<p>A teacher tells a student: "Answer only from the book. If the book does not have the answer, say <i>not in the book</i>."</p>
+<p>Then the homework says: "Prove this formula." The book has every fact the proof needs. But the finished proof is not printed in the book. So the student often says "not in the book", even with all the facts in front of them.</p>
+<p>A better instruction: "Take the facts from the book. You may do the maths yourself. Say <i>not in the book</i> only when a fact you need is missing."</p>
+<p>The teacher writes three versions of the instruction and tries them on practice homework, not on the real exam. A rule, written before the try, picks the winner. Then the instruction is locked for the exam.</p>
+<div class="flow" aria-label="The idea in five steps"><span class="box">unclear instruction</span><span class="ar">→</span><span class="box">three versions</span><span class="ar">→</span><span class="box hl">practice items, fixed rule</span><span class="ar">→</span><span class="box">winner</span><span class="ar">→</span><span class="box">lock it</span></div>
+</section>
+
+<section class="step" id="l1"><div class="lvl"><b>Level 1</b>student</div>
+<h2>What the prompt controls, and how we measured it</h2>
+<p>The <b>answer prompt</b> is the fixed system instruction that the answer model reads before the question and the passages. All retrieval arms share it. <a class="cite" data-c="prot|C3 Candidates" data-k="c18"></a></p>
+<p>To <b>abstain</b> is to reply with the fixed word <code>NOT_IN_MATERIAL</code> instead of an answer. On an answerable item, an abstention scores 0. So the abstain rule moves the result directly. <a class="cite" data-c="prot|C3" data-k="c17"></a></p>
+<p><b>Gold evidence</b> is the set of passages that our gold annotation accepts as the support for an item. A <b>cell</b> is one (item, arm) pair. A cell is <b>gold-present</b> when at least one accepted gold passage is in its packed context. <a class="cite" data-c="prot|C3 Selector" data-k="c10"></a></p>
+<h3>One real example, worked</h3>
+<div class="card"><span class="h">Pilot 1, item prml:ex2.51, prompt P0</span>
+<p><b>The item.</b> Prove trigonometric identities from exp(iA). The answer is a derivation: it is not written in any passage.</p>
+<p><b>What H sent.</b> Both required gold passages were in H's context.</p>
+<p><b>What happened.</b> H abstained. Under P0 the model asked "is the answer in the passages?" and the true answer to that is no. <a class="cite" data-c="pm|§2.1" data-k="c06"></a></p>
+<p><b>Under P1 and P2</b> the question becomes "is a needed fact missing?" Here no fact is missing, so the prompt tells the model to derive the result. 25 of the 30 pilot items are proof, derivation or numeric exercises, so this case is common. <a class="cite" data-c="pm|§2.1" data-k="c05"></a></p>
+</div>
+<h3>The worked selection, step by step</h3>
+<p>The rule reads four numbers per prompt. <b>A_present</b>: abstention rate on gold-present cells. <b>A_absent</b>: abstention rate on the other cells. <b>CV</b>: share of answers whose citation markers all name a packed passage. <b>D</b> = A_absent − A_present. <a class="cite" data-c="prot|C3 Selector" data-k="c10"></a></p>
+<ol>
+  <li>Eligibility: CV must be at least 0.90. P1 has 9/10 and P2 has 32/33, so both are eligible.</li>
+  <li>Two eligible: the lower A_present wins if the gap is at least 0.05. P1 5/24, P2 1/12 = 2/24: the gap is 3/24 = 1/8, so P2.</li>
+  <li>Margin over P0: P2 must have A_present at most P0's minus 0.10. 5/12 − 1/12 = 1/3, so P2 replaces P0. <a class="cite" data-c="prog|C3 selection" data-k="c14"></a></li>
+</ol>
+</section>
+</div>
+
+<section class="step" id="touch"><div class="wrap wide"><div class="lvl"><b>Touch</b>compare the prompts</div>
+<h2>Three prompts, one rule</h2>
+<p>Each column is one candidate, word for word. Highlights show what changed from the prompt before it. Pick a measure to see each prompt's real value and the line the rule draws.</p>
+<div class="seg" role="group" aria-label="Measure" id="mseg"></div>
+<p id="mdesc" aria-live="polite"></p>
+<div class="cols" id="cols"></div>
+<div class="legend"><span><i class="chg"></i>changed sentence</span><span><i class="new"></i>new sentence</span></div>
+<p class="small">Texts: <a class="cite" data-c="code|CANDIDATES['P0']" data-k="c01"></a> <a class="cite" data-c="code|CANDIDATES['P1']" data-k="c02"></a> <a class="cite" data-c="code|CANDIDATES['P2']" data-k="c03"></a>. Each text hashes to the sha256 in the selection record.</p>
+<div id="rule"><span class="lvl">Run the rule on the recorded numbers</span>
+  <ol id="steps"></ol>
+  <div class="ctl"><button type="button" id="next">Next step</button><button type="button" id="all">Show all</button><button type="button" id="reset">Start again</button></div>
+</div>
+<p class="small faint">Values are the aggregates in the selection record: 18 dev items × arms R and H × 1 generation = 36 cells per prompt, 24 gold-present and 12 not. The page applies the frozen rule to them in exact fractions; decimals are rounded for display only.</p>
+</div></section>
+
+<div class="wrap">
+<section class="step" id="l2"><div class="lvl"><b>Level 2</b>academic</div>
+<h2>Tuning on an outcome proxy, in the open</h2>
+<p>Abstention is endpoint-related: an abstention scores 0 on these answerable items. So choosing a prompt by abstention is tuning on an outcome proxy. The protocol says so, and allows it on dev only. <a class="cite" data-c="prot|C3" data-k="c17"></a></p>
+<h3>What was fixed first</h3>
+<p>Before any dev generation under P1 or P2, the candidates, the executable selector, the dev item file and the protocol were hashed in a pre-commit manifest. <a class="cite" data-c="prot|C, Pre-commit" data-k="c07"></a> The runs were fixed too: the 18 gold dev items, arms R and H, one generation, the same retrieval cache and order for all three prompts, no judge, no other candidate, no second round. <a class="cite" data-c="prot|C3 Runs" data-k="c08"></a> H-collapsed was not run: with the placeholder router it equalled H, so it would count the same cells twice. <a class="cite" data-c="prot|C3 Runs" data-k="c09"></a></p>
+<p>The dev runs were sealed: generation only, no judging, no trace. The selector stored aggregates only, and no raw dev reply was opened before the selection record was committed. <a class="cite" data-c="prot|C3 Sealing" data-k="c12"></a></p>
+<h3>The rule and its limits</h3>
+<p>Eligible iff CV ≥ 0.90; between two eligible prompts, the lower A_present; under a 0.05 gap, the larger D; and the winner replaces P0 only with a margin of 0.10. The thresholds are operational choices, not uncertainty guarantees: 18 clustered items are few. <a class="cite" data-c="prot|C3 Selector" data-k="c11"></a> Gold presence does not show that the context is sufficient, and CV checks that markers point at packed passages, not that the passage supports the sentence. <a class="cite" data-c="prot|C3 Selector" data-k="c16"></a></p>
+<p>P2's D is 0: it abstains as often with gold evidence as without. On dev, its abstention no longer follows the evidence, so the risk moves from "refuses too often" to "answers without support", which the judge and the citation proxy must catch. <a class="cite" data-c="prog|C3 selection, note [I]" data-k="c15"></a></p>
+<div class="hscroll"><table class="tbl">
+<tr><th>Prompt</th><th>A_present</th><th>A_absent</th><th>CV</th><th>D</th></tr>
+<tr><td>P0</td><td class="m">5/12</td><td class="m">3/4</td><td class="m">1</td><td class="m">1/3</td></tr>
+<tr><td>P1</td><td class="m">5/24</td><td class="m">1/12</td><td class="m">9/10</td><td class="m">−1/8</td></tr>
+<tr><td>P2 (chosen)</td><td class="m">1/12</td><td class="m">1/12</td><td class="m">32/33</td><td class="m">0</td></tr>
+</table></div>
+<p class="small">Source: <a class="cite" data-c="prog|C3 selection" data-k="c13"></a>. D values are in the selection record.</p>
+<h3>An amendment, named as one</h3>
+<p>The change was made after pilot 1 had been seen, so it amends the registration; it does not preserve it. What it keeps: no main-set outcome informs any choice, and every choice is hashed before the data it governs. <a class="cite" data-c="prot|C, Status and timing" data-k="c26"></a> The thesis lists this under threats to internal validity: the prompt was chosen on an outcome-related quantity, but no main item had been answered and no choice used the H − H-collapsed difference. <a class="cite" data-c="th|§ Threats, data-informed amendments" data-k="c31"></a></p>
+<p>Pilot 1 under P0 stays as a historical comparator beside pilot 2 and the main run. It is not a clean prompt sensitivity, because the prompt, router, sample and code all changed together. <a class="cite" data-c="prot|C3 Comparator" data-k="c25"></a></p>
+</section>
+
+<section class="step" id="l3"><div class="lvl"><b>Level 3</b>our thesis choice</div>
+<h2>Why one prompt is fixed before the main run</h2>
+<p>The thesis compares arms under one prompt and one cap. If the prompt could still change, a later choice could respond to a result and favour one arm. So the prompt was chosen first, on dev, and then hashed into the configuration. Only after it were R's settings and H's router tuned. <a class="cite" data-c="prot|C3 Order" data-k="c22"></a> It is the same logic as the scoring page: the input is set before tuning, so no result depends on a choice made after it.</p>
+<div class="flow" aria-label="Order of the fixed choices"><span class="box">pilot 1</span><span class="ar">→</span><span class="box">post-mortem</span><span class="ar">→</span><span class="box hl">hash P0, P1, P2 + rule</span><span class="ar">→</span><span class="box hl">sealed dev runs</span><span class="ar">→</span><span class="box hl">record: P2</span><span class="ar">→</span><span class="box">tune R, then H</span><span class="ar">→</span><span class="box">I3</span><span class="ar">→</span><span class="box">Addendum D</span><span class="ar">→</span><span class="box">I4</span><span class="ar">→</span><span class="box wait">pilot 2 (waits for G)</span><span class="ar">→</span><span class="box wait">main run</span></div>
+<h3>Who uses which prompt</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th>Arm</th><th>Prompt</th><th>Generations</th></tr>
+<tr><td>R, H, H-collapsed</td><td>P2, the shared retrieval prompt</td><td class="m">3, majority label</td></tr>
+<tr><td>G (LightRAG)</td><td>P2, same prompt and cap</td><td class="m">1</td></tr>
+<tr><td>L (no retrieval)</td><td>its own prompt: answer from own knowledge, abstention allowed</td><td class="m">3, majority label</td></tr>
+</table></div>
+<p class="small">Sources: <a class="cite" data-c="prot|C3 Candidates" data-k="c18"></a> <a class="cite" data-c="th|§ Replication" data-k="c21"></a> <a class="cite" data-c="th|§ Arm L" data-k="c19"></a> <a class="cite" data-c="th|§ Arm G" data-k="c32"></a></p>
+<p>The answer interface has no temperature control, so identical requests can return different text. That is why each confirmatory answer is generated three times and the item takes the majority label. <a class="cite" data-c="dec|D1, note 1" data-k="c20"></a> A fixed prompt makes the instruction the same for every arm; it does not make the model deterministic.</p>
+<p>The claim carries a scope line for this reason: arms answer under a passage-restricted prompt, and the model answers most items without retrieval (pilot p_L 0.93). <a class="cite" data-c="prot|C1" data-k="c34"></a></p>
+<h3>What stays fixed, and what is still open</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th>Item</th><th>Value now</th><th>Source</th></tr>
+<tr><td>Answer prompt</td><td class="m">P2 (7dd91e92…)</td><td><a class="cite" data-c="code|CANDIDATES['P2']" data-k="c03"></a></td></tr>
+<tr><td>R, tuned after the prompt</td><td class="m">depth 30, rerank_top 10</td><td><a class="cite" data-c="th|§ Arm R" data-k="c23"></a></td></tr>
+<tr><td>Configuration I4</td><td class="m">s7-b/2, k_graph 30, hop-balanced/1</td><td><a class="cite" data-c="prog|I4 (D11 step 5)" data-k="c24"></a></td></tr>
+<tr><td>Pilot 2</td><td>same 30 items, all five arms; waits for arm G's staged rebuild</td><td><a class="cite" data-c="th|§ Pilot 2" data-k="c33"></a></td></tr>
+</table></div>
+<div class="card ours"><span class="h">What we gain</span><p>Every retrieval arm reads the same instruction, chosen by a rule that was written down before it ran and that never looked at accuracy or at H − H-collapsed. After pilot 2, nothing about the prompt may change in response to its outputs. <a class="cite" data-c="prot|C10" data-k="c27"></a></p></div>
+<div class="card warn"><span class="h">Threats that stay</span>
+<p>An equal cap is not equal exposure: used tokens and list lengths differ between arms and are reported per item and arm. <a class="cite" data-c="th|§ Comparison arms" data-k="c28"></a></p>
+<p>44 of 50 sampled (question, passage) pairs reach the cross-encoder's 512-token cap and are cut; the effect on ranks is not measured. <a class="cite" data-c="th|§ Threats, reranker and fusion" data-k="c29"></a> Fusion merges two lists, and R's list can take over the context; that dominance is reported per item. <a class="cite" data-c="th|§ Threats, reranker and fusion" data-k="c30"></a></p>
+<p>The hop-balanced rank includes a backfill pass and a hop-first output order, so fusion and packing can still erase deeper-hop differences. <a class="cite" data-c="addd|D1.5, D1.7" data-k="c35"></a></p></div>
+<p class="small muted">Pilot-2 outputs and raw dev replies are sealed until the pilot closes. How each arm builds its context is on <a href="/thesis/assets/stories/query-flow/build/index.html">Query flow</a>; where the ranking scores come from is on <a href="/thesis/assets/stories/scoring-sources/build/index.html">One scorer, set before tuning</a>.</p>
+</section>
+
+<section class="step" id="quiz"><div class="lvl"><b>Quiz</b>check yourself</div>
+<h2>Four questions</h2>
+<div id="qz" class="qz"></div>
+</section>
+
+<section class="step" id="src"><div class="lvl"><b>Sources</b>where every number comes from</div>
+<h2>Sources</h2>
+<p class="small muted">Only the protocol, the Stage A log and decisions, the pilot-1 post-mortem, the selection record, the selector code and the thesis method chapter.</p>
+<div class="hscroll"><table class="tbl" id="srctbl"></table></div>
+<details><summary>All claims with their marks</summary><div class="hscroll"><table class="tbl" id="cltbl"></table></div></details>
+</section>
+</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var P, SRC, CL = {}, QZ, st = { m: 'A_present', step: 1 };
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }); }
+  var base = '../data';
+  Promise.all([get(base + '/prompts.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json'), get(base + '/quiz.json')]).then(function (a) {
+    P = a[0]; SRC = a[1].sources; a[2].claims.forEach(function (c) { CL[c.id] = c; }); QZ = a[3].questions;
+    cites(document); touch(); quiz(); sources();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load the data (' + e.message + '). Open the page through a web server, not as a file.'; });
+
+  function cites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]'), function (a) {
+      var p = a.getAttribute('data-c').split('|'), s = SRC[p[0]], c = CL[a.getAttribute('data-k')];
+      a.href = '#src-' + p[0];
+      a.textContent = '[' + (s ? s.short : p[0]) + (p[1] ? ', ' + p[1] : '') + ']';
+      if (s) a.title = s.title;
+      if (c) { var m = document.createElement('span'); m.className = 'mk ' + c.status; m.textContent = c.status; m.title = c.id + ': ' + c.text; a.after(m); }
+    });
+  }
+
+  // exact fractions: [numerator, denominator], denominator > 0
+  function F(s) { var t = String(s).split('/'); return [+t[0], t.length > 1 ? +t[1] : 1]; }
+  function sub(a, b) { return [a[0] * b[1] - b[0] * a[1], a[1] * b[1]]; }
+  function cmp(a, b) { return a[0] * b[1] - b[0] * a[1]; }      // sign of a - b
+  function absF(a) { return [Math.abs(a[0]), a[1]]; }
+  function val(a) { return a[0] / a[1]; }
+  function show(a) { var g = gcd(Math.abs(a[0]), a[1]); var n = a[0] / g, d = a[1] / g; return d === 1 ? String(n) : (n < 0 ? '−' + (-n) : n) + '/' + d; }
+  function gcd(x, y) { return y ? gcd(y, x % y) : (x || 1); }
+  function dec(a) { var v = val(a); return (v < 0 ? '−' : '') + Math.abs(v).toFixed(2); }
+
+  // the frozen C3 rule (Addendum C), applied to the recorded aggregates; returns the steps it takes
+  function runRule() {
+    var S = P.scores, R = P.rule, cvMin = F(R.CV_MIN), tie = F(R.TIE), margin = F(R.MARGIN), out = [];
+    var elig = ['P1', 'P2'].filter(function (k) { return cmp(F(S[k].CV), cvMin) >= 0; });
+    out.push({ q: 'Is CV at least ' + dec(cvMin) + '? (eligibility)', a: ['P1', 'P2'].map(function (k) { return k + ' ' + show(F(S[k].CV)) + (elig.indexOf(k) >= 0 ? ' yes' : ' no'); }).join(' · ') + ' → eligible: ' + (elig.join(', ') || 'none') });
+    var w;
+    if (!elig.length) { out.push({ q: 'No eligible candidate', a: 'P0 stays' }); return { steps: out, winner: 'P0' }; }
+    if (elig.length === 1) { w = elig[0]; out.push({ q: 'Only one eligible candidate', a: w }); }
+    else {
+      var a1 = F(S.P1.A_present), a2 = F(S.P2.A_present), gap = absF(sub(a1, a2));
+      if (cmp(gap, tie) >= 0) { w = cmp(a1, a2) < 0 ? 'P1' : 'P2'; out.push({ q: 'Is the A_present gap at least ' + dec(tie) + '?', a: show(a1) + ' vs ' + show(a2) + ': gap ' + show(gap) + ' = ' + dec(gap) + ' → lower A_present: ' + w }); }
+      else {
+        var d1 = F(S.P1.D), d2 = F(S.P2.D);
+        w = cmp(d1, d2) === 0 ? 'P1' : (cmp(d1, d2) > 0 ? 'P1' : 'P2');
+        out.push({ q: 'A_present tie: which has the larger D?', a: show(d1) + ' vs ' + show(d2) + ' → ' + w });
+      }
+    }
+    var p0 = F(S.P0.A_present), aw = F(S[w].A_present), bound = sub(p0, margin), ok = cmp(aw, bound) <= 0;
+    out.push({ q: 'Does ' + w + ' beat P0 by at least ' + dec(margin) + '?', a: w + ' ' + show(aw) + ' ≤ P0 ' + show(p0) + ' − ' + dec(margin) + ' = ' + dec(bound) + ' → ' + (ok ? 'yes' : 'no') });
+    var win = ok ? w : 'P0';
+    out.push({ q: 'Winner', a: win + (win === P.decision.winner ? ' (matches the selection record)' : ' (DIFFERS from the record)') });
+    return { steps: out, winner: win };
+  }
+
+  var RES;
+  function touch() {
+    RES = runRule();
+    $('mseg').innerHTML = P.measures.map(function (m) { return '<button type="button" data-m="' + m.id + '">' + esc(m.label) + '</button>'; }).join('');
+    Array.prototype.forEach.call($('mseg').querySelectorAll('button'), function (b) { b.addEventListener('click', function () { st.m = b.dataset.m; paint(); }); });
+    $('cols').innerHTML = P.prompts.map(function (p) {
+      var txt = p.sentences.map(function (s) {
+        var t = esc(s.t).replace('NOT_IN_MATERIAL', '<code>NOT_IN_MATERIAL</code>');
+        return s.c === 'same' ? '<span>' + t + '</span>' : '<mark class="' + (s.c === 'new' ? 'new' : 'chg') + '" title="' + s.c + ' sentence">' + t + '</mark>';
+      }).join(' ');
+      return '<article class="col' + (p.id === RES.winner ? ' win' : '') + '" data-p="' + p.id + '"><div class="top"><span class="pid">' + p.id + '</span>' +
+        (p.id === RES.winner ? '<span class="badge">chosen</span>' : '<span class="sha">' + p.sha8 + '…</span>') + '</div>' +
+        '<div class="nm">' + esc(p.name) + '</div><p class="role">' + esc(p.role) + '</p>' +
+        '<div class="meter"><div class="v"><span class="fr"></span><span class="dec"></span></div><div class="track"><div class="zero" hidden></div><div class="fill"></div><div class="thr" hidden><span></span></div></div></div>' +
+        '<p class="ptext">' + txt + '</p></article>';
+    }).join('');
+    $('next').addEventListener('click', function () { st.step = Math.min(st.step + 1, RES.steps.length); steps(); });
+    $('all').addEventListener('click', function () { st.step = RES.steps.length; steps(); });
+    $('reset').addEventListener('click', function () { st.step = 1; steps(); });
+    paint(); steps();
+  }
+
+  function paint() {
+    var m = P.measures.filter(function (x) { return x.id === st.m; })[0];
+    Array.prototype.forEach.call($('mseg').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.m === st.m)); });
+    $('mdesc').innerHTML = '<b>' + esc(m.label) + '.</b> ' + esc(m.what) + ' <b>In the rule:</b> ' + esc(m.rule);
+    var thr = null, lab = '';
+    if (st.m === 'CV') { thr = F(P.rule.CV_MIN); lab = 'min ' + dec(thr); }
+    if (st.m === 'A_present') { thr = sub(F(P.scores.P0.A_present), F(P.rule.MARGIN)); lab = 'P0 − ' + dec(F(P.rule.MARGIN)); }
+    Array.prototype.forEach.call(document.querySelectorAll('#cols .col'), function (c) {
+      var v = F(P.scores[c.dataset.p][st.m]), fill = c.querySelector('.fill'), z = c.querySelector('.zero'), t = c.querySelector('.thr');
+      c.querySelector('.fr').textContent = show(v);
+      c.querySelector('.dec').textContent = '= ' + dec(v);
+      if (st.m === 'D') {           // diverging bar around zero, range -1..1
+        var x = val(v); z.hidden = false;
+        fill.style.left = (x >= 0 ? 50 : 50 + x * 50) + '%'; fill.style.width = Math.max(Math.abs(x) * 50, x === 0 ? 0.6 : 0) + '%';
+      } else { z.hidden = true; fill.style.left = '0'; fill.style.width = Math.max(val(v) * 100, 0.6) + '%'; }
+      if (thr) { t.hidden = false; t.style.left = 'calc(' + (val(thr) * 100) + '% - 1px)'; t.querySelector('span').textContent = lab; } else t.hidden = true;
+      c.setAttribute('aria-label', c.dataset.p + ', ' + m.label + ': ' + show(v));
+    });
+  }
+
+  function steps() {
+    $('steps').innerHTML = RES.steps.map(function (s, i) {
+      var cls = i + 1 === st.step ? 'cur' : i + 1 > st.step ? 'later' : '';
+      return '<li class="' + cls + '"><span class="n">' + (i + 1) + '</span><span class="q">' + esc(s.q) + '</span><span class="a">' + esc(s.a) + '</span></li>';
+    }).join('');
+    $('next').disabled = st.step >= RES.steps.length;
+  }
+
+  function quiz() {
+    $('qz').innerHTML = QZ.map(function (x, i) {
+      return '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(x.q) + '</b><div class="opts">' + x.o.map(function (o, j) { return '<button type="button" data-j="' + j + '">' + String.fromCharCode(65 + j) + '. ' + esc(o) + '</button>'; }).join('') + '</div><p class="small muted fb" hidden></p></div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qz .q'), function (box) {
+      var x = QZ[+box.dataset.i];
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (b) {
+        b.addEventListener('click', function () {
+          var j = +b.dataset.j; b.classList.add(j === x.a ? 'right' : 'wrong');
+          box.querySelectorAll('button')[x.a].classList.add('right');
+          var fb = box.querySelector('.fb'); fb.hidden = false; fb.textContent = (j === x.a ? 'Right. ' : 'Not quite. ') + x.f;
+        });
+      });
+    });
+  }
+
+  function sources() {
+    $('srctbl').innerHTML = '<tr><th>source</th><th>where</th><th>read?</th></tr>' + Object.keys(SRC).map(function (k) {
+      var s = SRC[k], t = s.url ? '<a href="' + esc(s.url) + '">' + esc(s.title) + '</a>' : esc(s.title);
+      return '<tr id="src-' + k + '"><td><b>' + esc(s.short) + '</b><br>' + t + '</td><td>' + esc(s.venue) + '</td><td class="small">' + (s.verified ? '<span class="mk verified">read</span> ' : '<span class="mk unverified">not read</span> ') + esc(s.how) + '</td></tr>';
+    }).join('');
+    $('cltbl').innerHTML = '<tr><th>id</th><th>claim</th><th>source, locator</th><th>mark</th></tr>' + Object.keys(CL).map(function (id) {
+      var c = CL[id]; return '<tr><td class="m">' + id + '</td><td>' + esc(c.text) + '</td><td class="small">' + esc((SRC[c.key] || {}).short || c.key) + ', ' + esc(c.loc) + '</td><td><span class="mk ' + c.status + '">' + c.status + '</span></td></tr>';
+    }).join('');
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

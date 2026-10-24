@@ -96,7 +96,7 @@
     const qids = D.m.pairs[pairs[0]].n_questions ? Object.keys(D.m.pairs[pairs[0]].per_question_score_x) : [];
     const st = { pair: pairs[0], q: qids[0] };
     const shell = K.shell(el, 'Real example: pairwise win rate on real answers and a real judge',
-      'Scale: n = 12 questions, one run, temperature 0, LLM judge (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Verdicts are the real judge output, not editable. Arm C gets about 40% more context than B and starts from a different first-stage list, so B vs C does not isolate the graph. "First-named arm" means the arm listed first in the pair name, not a better arm.');
+      'Scale: n = 12 questions, one run, temperature 0, LLM judge (judge A ' + D.m.judge_A + '); wide intervals. A demo, not a benchmark. Verdicts are the real judge output, not editable. Arm C gets about 40% more context than B and starts from a different first-stage list, so B vs C does not isolate the graph. "First-named arm" means the arm listed first in the pair name, not a better arm.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const pSel = K.el('select', { 'aria-label': 'pair of arms', style: 'max-width:100%' }, pairs.map(p => opt(p, p.replace('-vs-', ' vs ') + ' (first-named: ' + p[0] + ')')));
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

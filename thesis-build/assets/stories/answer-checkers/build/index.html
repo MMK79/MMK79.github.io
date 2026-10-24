@@ -1,0 +1,842 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Answer checkers</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;--red:#FF5D5D;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:150px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px}
+code,.num,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(34px,8vw,56px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:22px 0 8px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+ul,ol{padding-left:22px}li{margin:0 0 6px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;font:600 12px var(--mono);letter-spacing:.06em;border:1px solid var(--amber);color:var(--amber);border-radius:8px;padding:1px 8px;margin-right:6px;vertical-align:middle}
+.who{font-size:13px;color:var(--faint);margin:-6px 0 14px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-align:center;text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
+#nav a.on{border-color:var(--amber);color:var(--amber)}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.tldr{background:var(--panel);border:1px solid var(--amber);border-radius:12px;padding:14px 16px;margin:18px 0}
+.tldr h3{margin:0 0 8px;font-size:18px;color:var(--amber);font-family:var(--body);font-weight:600;letter-spacing:.04em}
+.tldr ul{margin:0;padding-left:20px}
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:18px 0;min-width:0}
+.fig .cap{font-size:13px;color:var(--muted);margin:10px 0 0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button,select,input{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:40px;max-width:100%}
+button{cursor:pointer}
+button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,input:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+input[type=range]{padding:0;min-height:0;accent-color:var(--amber);width:min(280px,100%)}
+label.sl{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+label.sl b{font:600 14px var(--mono);color:var(--text);min-width:3em}
+.tag{display:inline-block;white-space:nowrap;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 2px 2px 0;color:var(--muted)}
+.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}.tag.gold{border-color:var(--amber);color:var(--amber)}
+.card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:14px;overflow-wrap:anywhere}
+.card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
+.card p{margin:6px 0 0}
+.take{background:var(--panel);border:1px solid var(--amber);border-radius:10px;padding:12px 14px;margin:16px 0;font-size:16px}
+.ev,.ours,.contra{padding:8px 12px;border-radius:10px;margin:12px 0;font-size:15px}
+.ev{border:1px solid var(--teal)}.ours{border:1px solid var(--purple)}.contra{border:1px solid var(--warn)}
+.ev b.h,.ours b.h,.contra b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}.contra b.h{color:var(--warn)}
+.contra ul{margin:4px 0 0}
+.tbl{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px 5px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px;white-space:nowrap}
+.tbl td.n{font-family:var(--mono);font-size:12px;text-align:right;white-space:nowrap}
+.tbl tr.sel td{background:rgba(242,169,59,.08)}
+.hscroll{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+#err{display:none;background:#3a1d17;color:var(--warn);border-radius:8px;padding:10px 12px;margin:16px 0}
+details{margin:6px 0}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:32px}
+footer{padding:40px 0 80px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.cite:hover{text-decoration:underline}
+.mk{display:inline-block;font:600 12px var(--mono);letter-spacing:.04em;border-radius:8px;padding:0 4px;margin-left:3px;vertical-align:1px;border:1px solid var(--line)}
+.mk.verified{color:var(--teal);border-color:rgba(60,199,180,.5)}.mk.unverified{color:var(--warn);border-color:rgba(255,138,101,.6)}
+.mk.inferred{color:var(--amber);border-color:rgba(242,169,59,.5)}.mk.ours{color:var(--purple);border-color:rgba(194,139,255,.5)}
+.vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
+/* level 0 */
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.three>div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px;min-width:0}
+.three h3{font-size:16px;margin:2px 0 6px;font-family:var(--body);font-weight:600}
+.three p{font-size:14px;color:var(--muted);margin:0 0 6px}
+.three .pr{color:var(--text)}
+.l0-ok h3{color:var(--teal)}.l0-mid h3{color:var(--amber)}.l0-bad h3{color:var(--warn)}
+/* steps list */
+ol.steps{counter-reset:t;list-style:none;padding:0}
+ol.steps>li{counter-increment:t;position:relative;padding:2px 0 8px 40px}
+ol.steps>li::before{content:counter(t);position:absolute;left:0;top:2px;width:26px;height:26px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);font:600 13px var(--mono);display:flex;align-items:center;justify-content:center}
+/* touch */
+.qbtns{display:flex;flex-direction:column;gap:6px}
+.qbtns button{text-align:left;white-space:normal;line-height:1.4;font-size:14px}
+.sents{display:flex;flex-direction:column;gap:6px;margin:10px 0}
+.sents button{text-align:left;white-space:normal;line-height:1.45;font-size:14px;padding:8px 10px}
+.sents button .chips{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.prem{display:flex;flex-wrap:wrap;gap:6px}
+.prem button{font-size:13px;padding:6px 10px}
+.meter{margin:10px 0}
+.meter .lab{display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.meter .lab b{font-family:var(--mono);color:var(--text)}
+.track{position:relative;height:14px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:4px}
+.track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:8px 0 0 8px}
+.track .fill.mc{background:var(--blue)}.track .fill.hh{background:var(--purple)}
+.track .cut{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--amber)}
+.verdict{font:600 13px var(--mono)}
+.verdict.yes{color:var(--teal)}.verdict.no{color:var(--warn)}
+.ptext{font-size:14px;line-height:1.65;color:var(--muted);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;max-height:320px;overflow:auto}
+.grid2{display:grid;grid-template-columns:auto 1fr 1fr;gap:6px;align-items:stretch;font-size:13px}
+.grid2 .h{color:var(--muted);font-size:12px;align-self:end}
+.grid2 button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;white-space:normal;font-size:13px;line-height:1.3}
+.grid2 button b{font:600 18px var(--mono)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:12px;color:var(--muted);margin:8px 0 0}
+.legend i{display:inline-block;width:16px;height:10px;border-radius:8px;vertical-align:middle;margin-right:4px}
+.quiz .q{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
+.quiz .q p{margin:0 0 6px}
+.quiz .opts{display:flex;flex-direction:column;gap:6px}
+.quiz .opts button{text-align:left;white-space:normal;line-height:1.4;padding:8px 10px}
+.quiz .opts button.right{border-color:var(--teal);color:var(--teal)}.quiz .opts button.wrong{border-color:var(--warn);color:var(--warn)}
+.quiz .fb{font-size:14px;color:var(--muted);margin-top:6px;display:none}
+.see{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.see a{display:block;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;text-decoration:none;font-size:14px}
+.see a span{display:block;color:var(--muted);font-size:12px}
+@media(max-width:640px){.three,.see{grid-template-columns:1fr}.tbl{font-size:12px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>What is real here:</b> Touch shows real pilot answers and checker scores (CS 156 captions). Every claim carries a mark: <span class="mk verified">verified</span> <span class="mk unverified">unverified</span> <span class="mk inferred">inferred</span> <span class="mk ours">ours</span>.</p>
+  <nav id="nav" aria-label="Sections"></nav>
+</div></div>
+
+<main class="wrap">
+<div id="err"></div>
+<header class="hero" id="top">
+  <div class="kicker">Evaluation &middot; a layered lesson</div>
+  <h1>Answer checkers</h1>
+  <p class="lead">Our tutor answers from course passages. Before the student sees an answer, a small model reads each sentence and asks: do the cited passages really say this? This page explains how such a checker works, how good the known checkers are, and what that means for answers from a knowledge graph.</p>
+  <div class="tldr" id="tldr">
+    <h3>TL;DR</h3>
+    <ul>
+      <li><b>NLI</b> (natural language inference) asks whether a <b>premise</b> text supports a <b>hypothesis</b> sentence. An answer checker does the same with two labels: supported or not.</li>
+      <li><b>MiniCheck</b> and <b>HHEM</b> are small checkers of this kind. Our tutor uses MiniCheck to decide and logs HHEM beside it.</li>
+      <li>The tutor checks each answer sentence against the passages that the sentence cites, joined into one input of at most 2,048 tokens.</li>
+      <li>On the LLM-AggreFact leaderboard our MiniCheck scores 75.0 balanced accuracy, HHEM 71.8, the best open checker 77.4. On hard, recent cases every checker falls to about 50 (chance).</li>
+      <li>A <b>baseline</b> is the reference you compare against. For the graph arm of the thesis, the text arm is the strong baseline.</li>
+      <li>Checkers work on GraphRAG answers because the graph arm also returns passages. They miss facts that exist only as graph edges, so a flag means "needs review", not "wrong".</li>
+    </ul>
+  </div>
+</header>
+
+<!-- ===================== Level 0 ===================== -->
+<section class="step" id="l0" data-nav="L0"><div class="kicker"><span class="lv">Level 0</span>in one minute</div>
+  <h2>A friend checks your quote</h2>
+  <p class="who">For anyone. No technical words.</p>
+  <p>You write a school report. Next to each sentence you put the page you took it from. A friend opens the page and reads it. For each sentence, your friend says one of three things.</p>
+  <div class="three">
+    <div class="l0-ok"><h3>"Yes, it says that."</h3><p class="pr">Page: "I visited Iowa."</p><p>You wrote: "I visited the United States."</p><p>Iowa is in the United States, so the page supports you.</p></div>
+    <div class="l0-mid"><h3>"It does not say that."</h3><p class="pr">Page: "I visited the United States."</p><p>You wrote: "I visited Iowa."</p><p>Maybe true, but the page does not say which state.</p></div>
+    <div class="l0-bad"><h3>"It says the opposite."</h3><p class="pr">Page: "The capital of France is Berlin."</p><p>You wrote: "The capital of France is Paris."</p><p>You are right about the world, but not about the page. Your friend checks the page, not the world.</p></div>
+  </div>
+  <p class="small muted">The three examples come from the HHEM model card <a class="cite" data-c="hhem-card|model card" data-k="c27"></a> <a class="cite" data-c="hhem-card|model card" data-k="c26"></a>.</p>
+  <div class="take">An answer checker is that friend, made into a small computer program. It is fast and cheap, but it can be wrong. It also cannot tell you why.</div>
+</section>
+
+<!-- ===================== Level 1 ===================== -->
+<section class="step" id="l1" data-nav="L1"><div class="kicker"><span class="lv">Level 1</span>for a student</div>
+  <h2>Premise, hypothesis, score</h2>
+  <p class="who">For a student who knows what a language model is. One real example, worked.</p>
+  <h3>The words</h3>
+  <ul>
+    <li><b>Premise:</b> the text that we trust, here the course passages that the tutor retrieved.</li>
+    <li><b>Hypothesis:</b> the sentence to check, here one sentence of the tutor's answer.</li>
+    <li><b>NLI labels:</b> <i>entailment</i> (the premise supports it), <i>neutral</i> (the premise does not say), <i>contradiction</i> (the premise says the opposite).</li>
+    <li><b>Checker:</b> a model that joins neutral and contradiction into one label, <i>unsupported</i>. It gives a <b>score</b> from 0 to 1. A <b>cut-off</b> (default 0.5) turns the score into a label <a class="cite" data-c="tang2024|Sec. 2, 3.3" data-k="c01"></a>.</li>
+  </ul>
+  <h3>How our tutor checks an answer</h3>
+  <ol class="steps">
+    <li>Split the answer into sentences.</li>
+    <li>For each sentence, find the passages it cites with markers such as [2]. A sentence without a marker gets all cited passages.</li>
+    <li>Join those passages into one premise. If the premise has more than 2,048 tokens, mark the sentence "unchecked".</li>
+    <li>Turn formulas into words. A sentence that is only a formula is "not checkable".</li>
+    <li>Give MiniCheck the pair (premise, sentence). Read the score against the cut-off <a class="cite" data-c="backend|app/tutor/support.py" data-k="c46"></a>.</li>
+  </ol>
+  <h3>One real example</h3>
+  <p>A student asked: <i>"<span data-q="Q17"></span>"</i> The answer had <span data-n="Q17"></span> sentences. Take the first one:</p>
+  <div class="card"><div class="hd"><span class="tag">answer sentence 1</span></div><p data-s="Q17|0"></p></div>
+  <p>It cites passage 2. MiniCheck gives it <b data-v="Q17|0|2|mc"></b> against passage 2, and HHEM <b data-v="Q17|0|2|hh"></b>. Both are above 0.5: <span class="verdict yes">supported</span>. Against passage 3, which this sentence does not cite, the scores are <b data-v="Q17|0|3|mc"></b> and <b data-v="Q17|0|3|hh"></b>: <span class="verdict no">not supported</span>. So the score depends on the premise, not only on the sentence.</p>
+  <p>Now sentence 3:</p>
+  <div class="card"><div class="hd"><span class="tag">answer sentence 3</span></div><p data-s="Q17|2"></p></div>
+  <p>Against its cited passage 1, MiniCheck gives <b data-v="Q17|2|1|mc"></b> (supported) and HHEM <b data-v="Q17|2|1|hh"></b> (not supported). The two checkers disagree, and the data do not say which one is right. This is why one checker decides in our tutor and the other is only logged.</p>
+  <h3>What a baseline is</h3>
+  <p>A <b>baseline</b> is the thing you compare against. It tells the reader what "good" means. "Our checker is 75% accurate" says little. "Random guessing gives 50%, the old method 70%, ours 75%" says a lot (an illustrative example from the research note).</p>
+  <ul>
+    <li><b>Trivial baseline:</b> guess at random, or always say "supported". Balanced accuracy gives 50 for both.</li>
+    <li><b>Standard baseline:</b> the method most people use today, for example AlignScore, or GPT-4 as a judge.</li>
+    <li><b>Strong baseline:</b> the best known method, so that a win means something.</li>
+    <li><b>Ablation baseline:</b> your own system with one part removed, to show what that part adds.</li>
+  </ul>
+  <p>A fair baseline gets the same data, the same budget and the same tuning <a class="cite" data-c="tang2024|App. B.1" data-k="c58"></a>.</p>
+</section>
+
+<!-- ===================== Touch ===================== -->
+<section class="step" id="lt" data-nav="Touch"><div class="kicker"><span class="lv">Touch</span>check sentences yourself</div>
+  <h2>Pick a sentence, pick a premise</h2>
+  <p class="who">Real answers and real scores from our pilot runs. No model runs in your browser: you look up the scores that the checkers gave.</p>
+  <div class="fig">
+    <label class="sl" for="cut">Cut-off <b id="cut-v">0.50</b><input type="range" id="cut" min="0.05" max="0.95" step="0.05" value="0.5" aria-describedby="cut-h"></label>
+    <p class="small muted" id="cut-h">A score at or above the cut-off counts as supported. Both parts below use it.</p>
+  </div>
+
+  <h3>Part 1. Check an answer, sentence by sentence</h3>
+  <div class="fig">
+    <p class="small muted">1. Choose a question.</p>
+    <div class="qbtns" id="qbtns"></div>
+    <p class="small muted" style="margin-top:12px">2. Choose a sentence of the answer. The chips show MiniCheck's label against each passage at the current cut-off.</p>
+    <div class="sents" id="sents"></div>
+    <p class="small muted">3. Choose the premise.</p>
+    <div class="prem" id="prem"></div>
+    <div id="detail" role="status" aria-live="polite"></div>
+    <div class="legend"><span><i style="background:var(--blue)"></i>MiniCheck-Flan-T5-L (decides)</span><span><i style="background:var(--purple)"></i>HHEM-2.1-Open (logged)</span><span><i style="background:var(--amber);width:3px"></i>cut-off</span></div>
+    <p class="cap" id="p1cap"></p>
+  </div>
+
+  <h3>Part 2. Two checkers, one cut-off</h3>
+  <p>When our knowledge graph is built, a language model writes claim sentences such as "Validation uses out-of-sample performance." Both checkers score each claim against its whole passage. Move the cut-off and see how often they agree.</p>
+  <div class="fig">
+    <div class="row" id="kgset"></div>
+    <div class="grid2" id="kggrid"></div>
+    <p class="small muted" id="kgsum" role="status"></p>
+    <div id="kgex"></div>
+    <p class="cap" id="p2cap"></p>
+  </div>
+</section>
+
+<!-- ===================== Level 2 ===================== -->
+<section class="step" id="l2" data-nav="L2"><div class="kicker"><span class="lv">Level 2</span>professional and academic</div>
+  <h2>What the research says</h2>
+  <p class="who">For a practitioner or a researcher. Every claim links to its source and carries its mark.</p>
+  <div id="l2-body"></div>
+</section>
+
+<!-- ===================== Level 3 ===================== -->
+<section class="step" id="l3" data-nav="L3"><div class="kicker"><span class="lv">Level 3</span>in detail, for the thesis</div>
+  <h2>Our choice, and why</h2>
+  <div id="l3-body"></div>
+  <h3>Related lessons</h3>
+  <div class="see">
+    <a href="/thesis/assets/stories/evaluating-rag/build/index.html">Evaluating RAG and GraphRAG<span>the harness that uses these checkers as metrics</span></a>
+    <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks<span>the answer path, step by step</span></a>
+    <a href="/thesis/assets/stories/kg-build/build/index.html">How a knowledge graph is built<span>where the checkers gate graph claims</span></a>
+    <a href="/thesis/assets/stories/indexing/build/index.html#l2">Indexing for RAG<span>how the passages are found</span></a>
+  </div>
+</section>
+
+<!-- ===================== Quiz ===================== -->
+<section class="step" id="lq" data-nav="Quiz"><div class="kicker"><span class="lv">Check</span>yourself</div>
+  <h2>Five questions</h2>
+  <div class="quiz" id="lq-box"></div>
+  <p class="small muted" id="lq-score" role="status"></p>
+</section>
+
+<!-- ===================== Sources ===================== -->
+<section class="step" id="ls" data-nav="Src"><div class="kicker">Sources of the lesson</div>
+  <h2>Where each claim comes from</h2>
+  <p class="small muted"><span class="vtrue">Read</span> = the primary text (paper, model card, page or code) was read, as far as the "how" line says. <span class="vfalse">Not read in full</span> = abstract or snippet only; treat it as weaker. Each claim keeps its own mark.</p>
+  <div id="ls-list"></div>
+  <details><summary>All claims on this page, with their marks</summary><div id="ls-claims"></div></details>
+</section>
+</main>
+<footer><div class="wrap">
+  <p>Passages: captions of Caltech CS 156 (Yaser Abu-Mostafa), which YouTube lists under Creative Commons Attribution. Questions Q17 and Q18: Cross Validated (CC BY-SA 4.0); Q20: MMLU (MIT). Answers: one language model. Checkers: MiniCheck-Flan-T5-Large and HHEM-2.1-Open.</p>
+</div></footer>
+
+<script id="lesson-text">
+// Lesson prose with citations: <a class="cite" data-c="sourceKey|locator" data-k="claimId"></a>.
+// Generated by build_page.py from lesson/*.html and lesson/quiz.js: edit those, not this block.
+window.L2_HTML = "<h3>1. From three-way NLI to a two-way checker<\/h3>\n<p>Classic NLI models read a premise and a hypothesis and choose entailment, neutral or contradiction. An answer checker asks a narrower question: is this claim supported by this text? MiniCheck frames it as document-level textual entailment with a binary label, so contradiction and neutral both become <i>unsupported<\/i> <a class=\"cite\" data-c=\"tang2024|Sec. 2\" data-k=\"c02\"><\/a>. The checker returns a score in [0,1], and a threshold (default 0.5) gives the label <a class=\"cite\" data-c=\"tang2024|Sec. 2, 3.3\" data-k=\"c01\"><\/a>. Plain NLI training does not transfer well: models trained only on NLI data score 61.0 (T5-NLI-Mixed, 11B) and 61.4 (FT5-ANLI-L) on LLM-AggreFact, against 74.7 for MiniCheck-FT5 <a class=\"cite\" data-c=\"tang2024|Table 2\" data-k=\"c05\"><\/a>. So MiniCheck does the NLI task, but it is not trained on NLI data only.<\/p>\n\n<h3>2. MiniCheck<\/h3>\n<p>MiniCheck is a family of small checkers. The RoBERTa-large model (355M parameters) starts from the AlignScore checkpoint and uses the 14K synthetic examples only; the DeBERTa-v3-large (355M) and Flan-T5-large (770M, \"MiniCheck-FT5\") models use 35K examples <a class=\"cite\" data-c=\"tang2024|Sec. 3\" data-k=\"c03\"><\/a>. The 35K are 21K ANLI examples plus 14K synthetic examples made with GPT-4 and GPT-3.5. The synthetic data teaches two skills: check every atomic fact, and combine facts from several sentences <a class=\"cite\" data-c=\"tang2024|Table 1, Sec. 3\" data-k=\"c04\"><\/a>.<\/p>\n<p>On LLM-AggreFact the paper reports these balanced-accuracy averages <a class=\"cite\" data-c=\"tang2024|Table 2\" data-k=\"c06\"><\/a>:<\/p>\n<table class=\"tbl\"><tr><th>checker<\/th><th>BAcc<\/th><\/tr>\n<tr><td>GPT-4 (prompted)<\/td><td class=\"n\">75.3<\/td><\/tr>\n<tr><td>MiniCheck-FT5<\/td><td class=\"n\">74.7<\/td><\/tr>\n<tr><td>Claude-3 Opus (prompted)<\/td><td class=\"n\">74.1<\/td><\/tr>\n<tr><td>MiniCheck-RBTA<\/td><td class=\"n\">72.7<\/td><\/tr>\n<tr><td>MiniCheck-DBTA<\/td><td class=\"n\">72.6<\/td><\/tr>\n<tr><td>AlignScore<\/td><td class=\"n\">70.4<\/td><\/tr>\n<tr><td>SummaC-ZS<\/td><td class=\"n\">67.9<\/td><\/tr>\n<tr><td>SummaC-CV<\/td><td class=\"n\">62.1<\/td><\/tr><\/table>\n<p>Inference on the 13K test items cost $0.24 with MiniCheck-FT5 and $107 with GPT-4 <a class=\"cite\" data-c=\"tang2024\" data-k=\"c07\"><\/a>. Splitting claims into atomic facts first gave no consistent gain and cost 2-4 times more. The model gives no explanation and does not point to a span <a class=\"cite\" data-c=\"tang2024|Limitations\" data-k=\"c09\"><\/a>. Its scores cluster at the extremes of the range <a class=\"cite\" data-c=\"tang2024\" data-k=\"c66\"><\/a>. The released code cuts the input at 2,048 tokens for FT5 and splits longer documents into chunks of 500 tokens <a class=\"cite\" data-c=\"minicheck-code|minicheck/minicheck.py\" data-k=\"c10\"><\/a>.<\/p>\n\n<h3>3. HHEM-2.1-Open<\/h3>\n<p>HHEM-2.1-Open is Vectara's open hallucination detector. It reads (premise, hypothesis) and returns a score from 0 to 1. Its base model is flan-t5-base and its licence is Apache-2.0 <a class=\"cite\" data-c=\"hhem-card|model card\" data-k=\"c11\"><\/a>. There is no HHEM paper, only a model card with a <code>@misc<\/code> citation <a class=\"cite\" data-c=\"hhem-card|citation\" data-k=\"c15\"><\/a>. The training data is confidential; FaithJudge states only that it includes \"the RAGTruth summary training set among other datasets\" <a class=\"cite\" data-c=\"tamber2025\" data-k=\"c14\"><\/a>. FaithJudge lists it at 110M parameters <a class=\"cite\" data-c=\"tamber2025|Table 1\" data-k=\"c13\"><\/a>. Speed and memory figures come from the vendor <a class=\"cite\" data-c=\"hhem-card|model card\" data-k=\"c12\"><\/a>.<\/p>\n<p>The card compares HHEM with GPT-4: RAGTruth-Summ 64.42 vs 62.62, RAGTruth-QA 74.28 vs 74.11, AggreFact-SOTA 76.55 vs 73.78 <a class=\"cite\" data-c=\"hhem-card|benchmark table\" data-k=\"c16\"><\/a>. Treat these as vendor numbers. HHEM was trained on RAGTruth data, so the RAGTruth rows may not be a clean held-out test <span class=\"mk\" data-k=\"c17\"><\/span>. Do not compare our HHEM rates with the Vectara Hallucination Leaderboard: it uses HHEM-2.3, the commercial model <a class=\"cite\" data-c=\"vectara-lb|README\" data-k=\"c18\"><\/a>.<\/p>\n\n<h3>4. The predecessors<\/h3>\n<p><b>SummaC<\/b> splits document and summary into sentences, scores the pairs with an NLI model and aggregates. It reaches 74.4 BAcc on its own six-dataset benchmark, but 67.9 (ZS) and 62.1 (CV) on LLM-AggreFact <a class=\"cite\" data-c=\"laban2022|abstract\" data-k=\"c29\"><\/a>. <b>TRUE<\/b> collects 11 datasets and finds NLI and question-generation metrics \"strong and complementary\" <a class=\"cite\" data-c=\"honovich2022|abstract\" data-k=\"c30\"><\/a>. <b>AlignScore<\/b> trains one alignment function on 4.7M examples from 7 tasks <a class=\"cite\" data-c=\"zha2023|abstract\" data-k=\"c31\"><\/a>. <b>RAGTruth<\/b> is not a checker: it is a corpus of about 18,000 RAG responses with word-level labels <a class=\"cite\" data-c=\"niu2024|abstract\" data-k=\"c32\"><\/a>.<\/p>\n\n<h3>5. The leaderboard: is there a better checker?<\/h3>\n<p>LLM-AggreFact is a shared test for checkers. Each item has a document, one claim and a human label. The score is <b>balanced accuracy (BAcc)<\/b>: the mean of the accuracy on supported claims and the accuracy on unsupported claims, so a checker that guesses scores 50. The board lists 42 models and shows 14 by default <a class=\"cite\" data-c=\"llmaggrefact|page data, all 42 rows\" data-k=\"c33\"><\/a>. For the rows not shown by default, the average below was computed from the 11 dataset scores with the page's own rule <span class=\"mk\" data-k=\"c34\"><\/span>.<\/p>\n<div class=\"hscroll\"><table class=\"tbl\"><tr><th>#<\/th><th>model<\/th><th>size<\/th><th>BAcc<\/th><th>licence<\/th><\/tr>\n<tr><td class=\"n\">1<\/td><td>nimble-v4-max (API)<\/td><td class=\"n\">27B<\/td><td class=\"n\">79.5<\/td><td>API only<\/td><\/tr>\n<tr><td class=\"n\">4<\/td><td>Bespoke-MiniCheck-7B<\/td><td class=\"n\">7B<\/td><td class=\"n\">77.4<\/td><td>CC BY-NC 4.0<\/td><\/tr>\n<tr><td class=\"n\">5<\/td><td>Claude-3.5 Sonnet (judge)<\/td><td class=\"n\">-<\/td><td class=\"n\">77.2<\/td><td>API<\/td><\/tr>\n<tr><td class=\"n\">7<\/td><td>Granite Guardian 3.3-8B<\/td><td class=\"n\">8B<\/td><td class=\"n\">76.5<\/td><td>Apache-2.0<\/td><\/tr>\n<tr><td class=\"n\">9<\/td><td>gpt-4o (judge)<\/td><td class=\"n\">-<\/td><td class=\"n\">75.9<\/td><td>API<\/td><\/tr>\n<tr><td class=\"n\">11<\/td><td>FactCG-DeBERTa-L<\/td><td class=\"n\">0.4B<\/td><td class=\"n\">75.6<\/td><td>MIT<\/td><\/tr>\n<tr class=\"sel\"><td class=\"n\">13<\/td><td>MiniCheck-Flan-T5-L (ours, decides)<\/td><td class=\"n\">0.8B<\/td><td class=\"n\">75.0<\/td><td>MIT<\/td><\/tr>\n<tr><td class=\"n\">24<\/td><td>HHEM-2.1-Open (ours, logged)<\/td><td class=\"n\">0.1B<\/td><td class=\"n\">71.8<\/td><td>Apache-2.0<\/td><\/tr>\n<tr><td class=\"n\">27<\/td><td>AlignScore<\/td><td class=\"n\">0.4B<\/td><td class=\"n\">70.5<\/td><td>-<\/td><\/tr>\n<tr><td class=\"n\">30<\/td><td>SummaC-ZS<\/td><td class=\"n\">0.1B<\/td><td class=\"n\">67.7<\/td><td>-<\/td><\/tr>\n<tr><td class=\"n\">39<\/td><td>T5-NLI-Mixed<\/td><td class=\"n\">11B<\/td><td class=\"n\">61.1<\/td><td>-<\/td><\/tr><\/table><\/div>\n<p class=\"small muted\">Licences: Bespoke <a class=\"cite\" data-c=\"bespoke-card|model card\" data-k=\"c35\"><\/a>, Granite <a class=\"cite\" data-c=\"padhi2024|model card\" data-k=\"c36\"><\/a>, FactCG <a class=\"cite\" data-c=\"factcg2025|abstract, Sec. 5\" data-k=\"c42\"><\/a>, MiniCheck-FT5 <a class=\"cite\" data-c=\"minicheck-card|licence field\" data-k=\"c43\"><\/a>, HHEM <a class=\"cite\" data-c=\"hhem-card|model card\" data-k=\"c11\"><\/a>. The note marks the licences of AlignScore, SummaC and T5-NLI-Mixed as unverified, so they are left blank.<\/p>\n<p>Three readings. First, the spread at the top is small: the best open-weight model is about 2.4 points above ours <span class=\"mk\" data-k=\"c63\"><\/span>, and the board gives no confidence intervals, so a 1-point gap is not a proven difference <span class=\"mk\" data-k=\"c41\"><\/span>. Second, mid-size LLM judges do not beat a 0.8B checker: Llama-3.1-8B scores 70.3 and Qwen2.5-7B 72.8 <a class=\"cite\" data-c=\"llmaggrefact|page data\" data-k=\"c40\"><\/a>. Third, the better models are NLI-style checkers trained on grounding data, not bigger NLI models (T5-NLI-Mixed, 11B, scores 61.1).<\/p>\n<p><b>FactCG<\/b> keeps the MiniCheck recipe and adds multi-hop claims built from a document graph; its 0.4B DeBERTa scores 75.6 <a class=\"cite\" data-c=\"factcg2025|abstract, Sec. 5\" data-k=\"c42\"><\/a>. <b>Bespoke-MiniCheck-7B<\/b> uses the same recipe with synthetic data from Llama-3.1-405B and reads up to 32K tokens without chunking <a class=\"cite\" data-c=\"bespoke-card|model card\" data-k=\"c35\"><\/a>. <b>Granite Guardian 3.3-8B<\/b> is a guardrail model with a <code>groundedness<\/code> criterion for RAG <a class=\"cite\" data-c=\"padhi2024|model card\" data-k=\"c36\"><\/a>. <b>Lynx<\/b> is not on the board; on its own HaluBench, Lynx 70B scores 87.4% and GPT-4o 86.5% <a class=\"cite\" data-c=\"ravi2024|paper and card\" data-k=\"c37\"><\/a>, but HaluBench comes from the same sources as Lynx's training data <span class=\"mk\" data-k=\"c38\"><\/span>. RAGAS faithfulness, an LLM judge, scores 66.9% there <a class=\"cite\" data-c=\"ravi2024|card\" data-k=\"c39\"><\/a>.<\/p>\n\n<h3>6. Other benchmarks<\/h3>\n<table class=\"tbl\"><tr><th>benchmark<\/th><th>what is in it<\/th><th>metric<\/th><\/tr>\n<tr><td>LLM-AggreFact<\/td><td>11 human-labelled grounding datasets <a class=\"cite\" data-c=\"tang2024|App. B.1\" data-k=\"c08\"><\/a><\/td><td>BAcc<\/td><\/tr>\n<tr><td>RAGTruth<\/td><td>about 18,000 RAG responses, word-level labels <a class=\"cite\" data-c=\"niu2024|abstract\" data-k=\"c32\"><\/a><\/td><td>span and response F1<\/td><\/tr>\n<tr><td>FaithBench<\/td><td>summaries by modern LLMs where detectors disagreed; expert labels <a class=\"cite\" data-c=\"bao2024|Table 2\" data-k=\"c19\"><\/a><\/td><td>BAcc, F1<\/td><\/tr>\n<tr><td>HaluBench<\/td><td>15K (question, context, answer) samples from six sources <a class=\"cite\" data-c=\"ravi2024|paper\" data-k=\"c44\"><\/a><\/td><td>accuracy<\/td><\/tr>\n<tr><td>TRUE<\/td><td>11 datasets: summaries, dialogue, fact verification, paraphrase <a class=\"cite\" data-c=\"honovich2022|abstract\" data-k=\"c30\"><\/a><\/td><td>ROC AUC<\/td><\/tr>\n<tr><td>SummaC<\/td><td>6 summary-consistency datasets <a class=\"cite\" data-c=\"laban2022|abstract\" data-k=\"c29\"><\/a><\/td><td>BAcc<\/td><\/tr><\/table>\n<p>None of them contains lecture slides, equations or tutoring answers <span class=\"mk\" data-k=\"c45\"><\/span>.<\/p>\n\n<h3>7. Hard cases and known limits<\/h3>\n<p>FaithBench keeps only the summaries on which detectors disagreed. There, every checker falls near chance <a class=\"cite\" data-c=\"bao2024|Table 2\" data-k=\"c19\"><\/a>:<\/p>\n<table class=\"tbl\"><tr><th>checker<\/th><th>BAcc<\/th><th>F1-macro<\/th><\/tr>\n<tr><td>GPT-4o zero-shot<\/td><td class=\"n\">56.29<\/td><td class=\"n\">40.75<\/td><\/tr>\n<tr><td>HHEM-2.1 (commercial)<\/td><td class=\"n\">55.68<\/td><td class=\"n\">40.86<\/td><\/tr>\n<tr><td>MiniCheck-RoBERTa-L<\/td><td class=\"n\">55.03<\/td><td class=\"n\">53.35<\/td><\/tr>\n<tr><td>MiniCheck-DeBERTa-L<\/td><td class=\"n\">54.95<\/td><td class=\"n\">54.90<\/td><\/tr>\n<tr><td>HHEM-2.1-Open<\/td><td class=\"n\">51.37<\/td><td class=\"n\">32.40<\/td><\/tr>\n<tr><td>MiniCheck-Flan-T5-L<\/td><td class=\"n\">50.50<\/td><td class=\"n\">49.52<\/td><\/tr><\/table>\n<p>The selection is biased against HHEM, because the items were chosen where HHEM and others disagreed <a class=\"cite\" data-c=\"tamber2025|Table 1 note\" data-k=\"c20\"><\/a>.<\/p>\n<ul>\n<li><b>Multi-hop claims.<\/b> In RAGTruth, claims that need 2-3 hops are common, while 71.0% of MiniCheck's D2C training claims are one-hop and 0.0% need five hops or more <a class=\"cite\" data-c=\"factcg2025|Sec. 4, Table 1\" data-k=\"c21\"><\/a>. That this limits detection is the FactCG authors' hypothesis, not a test of MiniCheck <span class=\"mk\" data-k=\"c22\"><\/span>.<\/li>\n<li><b>Long documents.<\/b> Six metrics under seven meaning-preserving rewordings gave inconsistent scores <a class=\"cite\" data-c=\"mujahid2026|abstract\" data-k=\"c23\"><\/a>; MiniCheck was among the least stable <a class=\"cite\" data-c=\"mujahid2026|search snippet\" data-k=\"c24\"><\/a>. Continuous scores compare evaluators more reliably than binary labels <a class=\"cite\" data-c=\"zhong2025|abstract\" data-k=\"c25\"><\/a>.<\/li>\n<li><b>Text, not the world.<\/b> HHEM flags \"Paris is the capital of France\" when the premise says Berlin, on purpose <a class=\"cite\" data-c=\"hhem-card|model card\" data-k=\"c26\"><\/a>.<\/li>\n<li><b>Direction matters.<\/b> \"I visited Iowa\" is not supported by \"I visited the United States\", but the reverse holds <a class=\"cite\" data-c=\"hhem-card|model card\" data-k=\"c27\"><\/a>.<\/li>\n<\/ul>\n\n<h3>8. Three ways papers use a checker<\/h3>\n<table class=\"tbl\"><tr><th>use<\/th><th>what it means<\/th><th>examples<\/th><\/tr>\n<tr><td>A. metric<\/td><td>score each answer sentence against the retrieved context; report the share supported<\/td><td>RAGAS faithfulness <a class=\"cite\" data-c=\"es2023|abstract\" data-k=\"c55\"><\/a>; ARES <a class=\"cite\" data-c=\"saadfalcon2024|abstract\" data-k=\"c56\"><\/a>; our evaluation harness<\/td><\/tr>\n<tr><td>B. baseline<\/td><td>run a known checker on a new benchmark as the reference point<\/td><td>LLM-AggreFact, FaithBench, FaithJudge <a class=\"cite\" data-c=\"tang2024|Table 2\" data-k=\"c57\"><\/a><\/td><\/tr>\n<tr><td>C. pre-check<\/td><td>a filter or gate inside another system<\/td><td>GraphEval checks each KG triple <a class=\"cite\" data-c=\"sansford2024\" data-k=\"c28\"><\/a>; TRUE names filtering <a class=\"cite\" data-c=\"honovich2022|abstract\" data-k=\"c30\"><\/a>; our KG build <a class=\"cite\" data-c=\"backend|tools/load_kg.py\" data-k=\"c49\"><\/a><\/td><\/tr><\/table>\n<p>The evaluation harness that uses checkers as metrics (use A) has its own lesson: <a href=\"/thesis/assets/stories/evaluating-rag/build/index.html\">Evaluating RAG and GraphRAG<\/a>.<\/p>\n\n<h3>9. Do they work on GraphRAG answers?<\/h3>\n<div class=\"ev\"><b class=\"h\">Shown (code read)<\/b>The premise is passage text from either arm. In hybrid mode the graph arm returns the passages attached to the concepts it reaches, so the checker never sees a bare graph edge <a class=\"cite\" data-c=\"backend|app/tutor/service.py, educator_core/pipeline.py\" data-k=\"c47\"><\/a>. This is the standard \"faithful to the retrieved context\" set-up.<\/div>\n<div class=\"contra\"><b class=\"h\">Expected to break (inferred, not measured)<\/b>\n<ul>\n<li>A sentence whose only support is a graph edge is flagged, correctly, but the graph's role is hidden. Fix: add the edge's evidence quote or a verbalised triple to the premise, as GraphEval does <span class=\"mk\" data-k=\"c50\"><\/span>.<\/li>\n<li>Sentences that join two passages draw more false \"unsupported\" flags, because the training claims are mostly one-hop <span class=\"mk\" data-k=\"c22\"><\/span>.<\/li>\n<li>Derived steps (our prompt asks the model to derive) are in no passage, so they are flagged <span class=\"mk\" data-k=\"c51\"><\/span>.<\/li>\n<li>Five or more cited passages can pass the 2,048-token cap and leave the sentence unchecked <span class=\"mk\" data-k=\"c52\"><\/span>.<\/li>\n<\/ul><\/div>\n<div class=\"ours\"><b class=\"h\">Open (not tested yet)<\/b>Whether FactCG beats MiniCheck on labelled pairs from our own domain, especially on H sentences that cite two or more passages; whether adding the graph-evidence quote changes the support rate of H answers; whether either checker handles equations and slide fragments.<\/div>\n";
+window.L3_HTML = "<h3>Where the checkers sit in our system<\/h3>\n<ol>\n<li><b>In the tutor (a gate, use C).<\/b> MiniCheck-Flan-T5-L checks each answer sentence against the passages it cites, joined into one premise of at most 2,048 tokens <a class=\"cite\" data-c=\"backend|app/tutor/support.py\" data-k=\"c46\"><\/a>. HHEM-2.1-Open scores the same pairs but is logged only. In <code>sync<\/code> mode an answer with no supported sentence becomes \"no answer\" <a class=\"cite\" data-c=\"backend|app/runtime_settings.py, support.py\" data-k=\"c48\"><\/a>. The full answer path is on the <a href=\"/thesis/assets/stories/query-flow/build/index.html#app\">query flow<\/a> page.<\/li>\n<li><b>In the knowledge-graph build (a pre-check, use C).<\/b> Each claim that the extractor writes is scored by both checkers against its passage <a class=\"cite\" data-c=\"backend|tools/load_kg.py\" data-k=\"c49\"><\/a>. See <a href=\"/thesis/assets/stories/kg-build/build/index.html\">how a knowledge graph is built<\/a>.<\/li>\n<li><b>In the thesis evaluation (a metric, use A).<\/b> The support rate per arm is a secondary, descriptive number: MiniCheck scores the whole premise in one input, up to 2,048 tokens, never cut at 512; HHEM is a robustness score only; neither checker ever touches the primary endpoint (the fully-correct rate and its McNemar tests) <a class=\"cite\" data-c=\"protocol|Evaluation settings adopted\" data-k=\"c67\"><\/a>. The harness is on the <a href=\"/thesis/assets/stories/evaluating-rag/build/index.html\">evaluating RAG<\/a> page.<\/li>\n<\/ol>\n\n<h3>What the pilot already shows: the two checkers disagree<\/h3>\n<p>On 390 KG evidence claims, HHEM supported <span data-kg=\"hh\"><\/span> and MiniCheck <span data-kg=\"mc\"><\/span>. They disagree on <span data-kg=\"dis\"><\/span> of all 390, or on 104 of the <span data-kg=\"gn\"><\/span> gated claims (USES and IS_A) <a class=\"cite\" data-c=\"kgpilot\" data-k=\"c53\"><\/a>. Our check script recounts all of this from the pilot data file <a class=\"cite\" data-c=\"kgpilot|data/page.json, scripts/check.py\" data-k=\"c53b\"><\/a>. The data do not say which checker is right. This spread is the calibration problem in practice; the Touch section lets you move the cut-off.<\/p>\n<p>Our own smoke test found the domain problem early: 3 of 4 correct answers were flagged before formulas were turned into words <a class=\"cite\" data-c=\"backend|support.py docstring\" data-k=\"c54\"><\/a>.<\/p>\n\n<h3>Our decision<\/h3>\n<div class=\"ours\"><b class=\"h\">Product (ours)<\/b>Keep MiniCheck-Flan-T5-L as the deciding checker: it is MIT-licensed, it runs on a laptop, and it is about 2.4 points from the best open checker. Run FactCG-DeBERTa-L beside it, logged only, and switch only if it wins on labelled dev pairs from our own domain. Use Granite Guardian 3.3-8B as an offline second opinion when a GPU is available. Do not ship Bespoke-MiniCheck-7B or Lynx: both are CC BY-NC 4.0. Add the graph evidence quote to the premise. Show a flag as \"needs review\", never as \"wrong\" <span class=\"mk\" data-k=\"c60\"><\/span>.<\/div>\n<div class=\"ours\"><b class=\"h\">Thesis (ours)<\/b>Report the MiniCheck support rate per arm (R, H, Hc) as a descriptive secondary measure. Report HHEM beside it and say where they disagree. Never use a checker score as the primary outcome. The cut-off on our lecture text is an open calibration question: 0.5 is a placeholder until it is settled, and the primary endpoint never uses a checker score <span class=\"mk\" data-k=\"c61\"><\/span>.<\/div>\n<div class=\"contra\"><b class=\"h\">Threat to validity (inferred)<\/b>H answers join more passages than R answers, and MiniCheck is weaker on multi-hop claims. So the checker may under-rate H compared with R. Flagged H sentences are read again against their passages <span class=\"mk\" data-k=\"c62\"><\/span>.<\/div>\n\n<h3>Our baselines<\/h3>\n<p>A baseline must get the same data, budget and tuning as the method it is compared with <a class=\"cite\" data-c=\"tang2024|App. B.1\" data-k=\"c58\"><\/a>. In the thesis, the text arm R (BM25 + dense + reranker) is the strong baseline for the graph arm H; closed-book L is the trivial baseline; Hc, the graph arm with its relation types removed, is the ablation baseline. In the product, HHEM is a logged comparison checker for MiniCheck <a class=\"cite\" data-c=\"protocol|claim protocol\" data-k=\"c59\"><\/a>.<\/p>\n";
+window.QUIZ = [
+  { q: 'Premise: "I visited the United States." Hypothesis: "I visited Iowa." What should a checker say?',
+    o: ['Supported: Iowa is in the United States.',
+        'Not supported: the premise does not say which state.',
+        'Contradiction: the two sentences disagree.',
+        'The checker cannot read place names.'],
+    a: 1, f: 'The premise is wider than the hypothesis, so it does not entail it (neutral, which a two-way checker counts as unsupported). The reverse direction holds: "I visited Iowa" entails "I visited the United States".' },
+  { q: 'Our tutor checks the sentence "Weight decay shrinks the weights [1]." What is the premise?',
+    o: ['The whole course.',
+        'The question the student asked.',
+        'Passage 1, the passage the sentence cites (all cited passages joined into one input).',
+        'The other sentences of the same answer.'],
+    a: 2, f: 'Each answer sentence is a claim; the premise is the passages it cites, joined into one input of at most 2,048 tokens. A sentence with no citation marker is checked against all cited passages.' },
+  { q: 'A checker scores 50 balanced accuracy on a benchmark. What does that mean?',
+    o: ['It is right half of the time on supported claims and half of the time on unsupported claims, on average: no better than guessing.',
+        'It is better than most LLM judges.',
+        'It found 50 hallucinations.',
+        'It is half as fast as GPT-4.'],
+    a: 0, f: 'Balanced accuracy averages the accuracy on both classes, so random guessing and "always supported" both give 50. That is the trivial baseline. On FaithBench, the hard cases, the checkers score between 50.50 and 56.29.' },
+  { q: 'An answer from the graph arm says "A is a prerequisite of B" only because of a graph edge. No passage says it. What will MiniCheck do?',
+    o: ['Read the graph edge and mark it supported.',
+        'Flag it as unsupported, because the premise is passage text and the edge is not in the text.',
+        'Skip the sentence.',
+        'Ask the LLM judge.'],
+    a: 1, f: 'The checker sees only text. The flag is correct but hides the graph\'s role; the fix is to add the edge\'s evidence quote, or the edge written as a sentence, to the premise (the GraphEval pattern).' },
+  { q: 'In our thesis, which arm is the strong baseline for the graph arm H?',
+    o: ['L, the closed-book arm.',
+        'Hc, the collapsed graph arm.',
+        'R, the text arm (BM25 + dense + reranker).',
+        'HHEM.'],
+    a: 2, f: 'A strong baseline is the best known method, so that a win means something. L is the trivial baseline and Hc the ablation baseline. HHEM is a comparison checker, a baseline for MiniCheck, not for H.' }
+];
+</script>
+<script>
+(function () {
+  'use strict';
+  var base = (new URLSearchParams(location.search).get('data') || '../data').replace(/\/$/, '');
+  var D, SRC = { sources: {} }, CL = {}, state = { cut: 0.5, q: 'Q17', s: 0, prem: 'cited', kgset: 'all', cell: 'hm' , kgi: 0 };
+  function $(id) { return document.getElementById(id); }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function f2(x) { return (+x).toFixed(2); }
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }); }
+
+  Promise.all([get(base + '/answer-checkers.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json')]).then(function (a) {
+    D = a[0]; SRC = a[1]; a[2].claims.forEach(function (c) { CL[c.id] = c; });
+    $('l2-body').innerHTML = window.L2_HTML || ''; $('l3-body').innerHTML = window.L3_HTML || '';
+    fills(); renderCites(document); touch(); quiz(); sources(); nav();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load or draw the data (' + e.message + '). If you opened the file directly, open it through a local web server instead.'; if (window.console) console.error(e); });
+
+  function ans(id) { return D.answers.filter(function (x) { return x.id === id; })[0]; }
+  function pscore(q, s, p) { return ans(q).sentences[s].per_passage.filter(function (x) { return x.passage === p; })[0]; }
+
+  // ---------------------------------------------------------------- values in the prose, from the data
+  function fills() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-v]'), function (el) {
+      var p = el.getAttribute('data-v').split('|'); el.textContent = f2(pscore(p[0], +p[1], +p[2])[p[3]]);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-s]'), function (el) {
+      var p = el.getAttribute('data-s').split('|'); el.textContent = ans(p[0]).sentences[+p[1]].text;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-q]'), function (el) { el.textContent = ans(el.getAttribute('data-q')).question; });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-n]'), function (el) { el.textContent = ans(el.getAttribute('data-n')).sentences.length; });
+    var k = D.kg_meta, map = { hh: 'HHEM ' + k['hhem_supported_at_0.5'], mc: 'MiniCheck ' + k['minicheck_supported_at_0.5'], gn: k.gated_n, dis: k['disagree_at_0.5'] };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-kg]'), function (el) { el.textContent = map[el.getAttribute('data-kg')]; });
+  }
+
+  // ---------------------------------------------------------------- citations and marks
+  var LABEL = { verified: 'verified', unverified: 'unverified', inferred: 'inferred', ours: 'ours' };
+  function mark(k) { var c = CL[k]; return c ? '<span class="mk ' + c.status + '" title="' + esc(c.text) + '">' + LABEL[c.status] + '</span>' : ''; }
+  function renderCites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]:not([data-done])'), function (a) {
+      var parts = a.getAttribute('data-c').split('|'), src = SRC.sources[parts[0]], k = a.getAttribute('data-k');
+      a.setAttribute('data-done', '1'); a.href = '#src-' + parts[0];
+      a.textContent = '[' + (src ? src.short : parts[0]) + (parts[1] ? ', ' + parts[1] : '') + ']';
+      if (src) a.title = src.title;
+      if (k) a.insertAdjacentHTML('afterend', mark(k));
+    });
+    Array.prototype.forEach.call(root.querySelectorAll('span.mk[data-k]:not([data-done])'), function (s) {
+      var c = CL[s.getAttribute('data-k')]; s.setAttribute('data-done', '1');
+      if (c) { s.className = 'mk ' + c.status; s.textContent = LABEL[c.status]; s.title = c.text; }
+    });
+  }
+
+  // ---------------------------------------------------------------- touch
+  function yes(x) { return x >= state.cut; }
+  function touch() {
+    $('cut').addEventListener('input', function () { state.cut = +this.value; $('cut-v').textContent = f2(state.cut); drawSents(); drawDetail(); drawKG(); });
+    $('qbtns').innerHTML = D.answers.map(function (a) { return '<button type="button" data-q="' + a.id + '"><span class="tag">' + a.id + '</span> ' + esc(a.question) + '</button>'; }).join('');
+    Array.prototype.forEach.call($('qbtns').children, function (b) { b.addEventListener('click', function () { state.q = b.dataset.q; state.s = 0; state.prem = 'cited'; drawAll1(); }); });
+    $('kgset').innerHTML = '<button type="button" data-k="all">all ' + D.kg_meta.n + ' claims</button><button type="button" data-k="gated">gated: USES and IS_A (' + D.kg_meta.gated_n + ')</button>';
+    Array.prototype.forEach.call($('kgset').children, function (b) { b.addEventListener('click', function () { state.kgset = b.dataset.k; state.kgi = 0; drawKG(); }); });
+    $('p1cap').innerHTML = 'Data: three pilot answers by ' + esc(D.answers_meta.answer_model) + ' from ' + D.answers_meta.k + ' BM25 passages each; both checkers ran on a CPU. "Cited passages joined" is the ALCE citation-recall verdict stored by that run, fixed at a cut-off of 0.5, so the slider does not move it. Model outputs. Source: the <a href="/thesis/assets/stories/evaluating-rag/build/index.html">evaluating RAG</a> lesson ' + mark('c64') + '.';
+    $('p2cap').innerHTML = 'Data: the knowledge-graph pilot slice (CS 156 Lectures 14-15). Premise = the whole passage; the quote shown is the extractor\'s display excerpt. The gate in that pilot scores USES and IS_A claims; PREREQUISITE_OF claims go to review. Source: the <a href="/thesis/assets/stories/kg-build/build/index.html">knowledge-graph</a> lesson ' + mark('c65') + '.';
+    drawAll1(); drawKG();
+  }
+  function drawAll1() {
+    Array.prototype.forEach.call($('qbtns').children, function (b) { b.setAttribute('aria-pressed', b.dataset.q === state.q); });
+    drawSents(); drawPrem(); drawDetail();
+  }
+  function drawSents() {
+    var a = ans(state.q);
+    $('sents').innerHTML = a.sentences.map(function (s, i) {
+      var chips = s.per_passage.map(function (pp) { var ok = yes(pp.mc); return '<span class="tag ' + (ok ? 'ok' : 'bad') + '">P' + pp.passage + ' ' + (ok ? 'yes' : 'no') + '</span>'; }).join('');
+      var cites = s.cites.length ? 'cites ' + s.cites.map(function (c) { return '[' + c + ']'; }).join('') : 'no citation';
+      return '<button type="button" data-i="' + i + '" aria-pressed="' + (i === state.s) + '"><span class="tag gold">S' + (i + 1) + '</span> ' + esc(s.target) + '<span class="chips"><span class="tag">' + cites + '</span>' + chips + '</span></button>';
+    }).join('');
+    Array.prototype.forEach.call($('sents').children, function (b) { b.addEventListener('click', function () { state.s = +b.dataset.i; drawSents(); drawDetail(); }); });
+  }
+  function drawPrem() {
+    var a = ans(state.q);
+    var opts = a.passages.map(function (p) { return ['p' + p.n, 'Passage ' + p.n]; }).concat([['cited', 'Cited passages joined']]);
+    $('prem').innerHTML = opts.map(function (o) { return '<button type="button" data-p="' + o[0] + '">' + o[1] + '</button>'; }).join('');
+    Array.prototype.forEach.call($('prem').children, function (b) { b.addEventListener('click', function () { state.prem = b.dataset.p; drawDetail(); }); });
+  }
+  function meter(name, cls, x) {
+    var ok = yes(x);
+    return '<div class="meter"><div class="lab"><span>' + name + '</span><span><b>' + f2(x) + '</b> <span class="verdict ' + (ok ? 'yes' : 'no') + '">' + (ok ? 'supported' : 'not supported') + '</span></span></div>' +
+      '<div class="track"><div class="fill ' + cls + '" style="width:' + (x * 100).toFixed(1) + '%"></div><div class="cut" style="left:calc(' + (state.cut * 100) + '% - 1px)"></div></div></div>';
+  }
+  function drawDetail() {
+    var a = ans(state.q), s = a.sentences[state.s], h = '';
+    Array.prototype.forEach.call($('prem').children, function (b) { b.setAttribute('aria-pressed', b.dataset.p === state.prem); });
+    if (state.prem === 'cited') {
+      if (!s.cites.length) h = '<div class="card"><p>This sentence cites no passage. The evaluation run gives it 0 (no support). Our tutor would check it against all cited passages of the answer.</p></div>';
+      else {
+        var v = function (x) { return '<span class="verdict ' + (x ? 'yes' : 'no') + '">' + (x ? 'supported' : 'not supported') + '</span>'; };
+        h = '<div class="card"><div class="hd">premise = passage' + (s.cites.length > 1 ? 's ' : ' ') + s.cites.join(' + ') + ', joined into one input · verdict at 0.5</div>' +
+          '<p>MiniCheck: ' + v(s.cited_joined.mc) + ' &nbsp; HHEM: ' + v(s.cited_joined.hh) + '</p>' +
+          (s.cites.length > 1 ? '<p class="small muted">Compare the single passages: a sentence can need two passages together, or none of them may support it.</p>' : '') + '</div>';
+        h += s.cites.map(function (c) { return ptext(a, c); }).join('');
+      }
+    } else {
+      var n = +state.prem.slice(1), pp = pscore(state.q, state.s, n);
+      h = '<div class="card"><div class="hd">premise = passage ' + n + (s.cites.indexOf(n) >= 0 ? ' (cited by this sentence)' : ' (not cited by this sentence)') + '</div>' + meter('MiniCheck', 'mc', pp.mc) + meter('HHEM', 'hh', pp.hh) +
+        (yes(pp.mc) !== yes(pp.hh) ? '<p class="small" style="color:var(--amber)">The checkers disagree at this cut-off.</p>' : '') + '</div>' + ptext(a, n);
+    }
+    $('detail').innerHTML = h;
+  }
+  function ptext(a, n) {
+    var p = a.passages.filter(function (x) { return x.n === n; })[0];
+    return '<details' + (n ? '' : '') + '><summary>Read passage ' + n + ' (Lecture ' + p.lecture + ', from ' + esc(p.ts) + ')</summary><div class="ptext">' + esc(p.text) + '</div></details>';
+  }
+
+  var CELLS = [['hm', 'both say supported'], ['h_', 'only HHEM says supported'], ['_m', 'only MiniCheck says supported'], ['__', 'both say not supported']];
+  function cellOf(r) { return (yes(r.hh) ? 'h' : '_') + (yes(r.mc) ? 'm' : '_'); }
+  function drawKG() {
+    Array.prototype.forEach.call($('kgset').children, function (b) { b.setAttribute('aria-pressed', b.dataset.k === state.kgset); });
+    var R = D.kg_records.filter(function (r) { return state.kgset === 'all' || r.r !== 'PREREQUISITE_OF'; });
+    var cnt = { hm: 0, h_: 0, _m: 0, __: 0 }; R.forEach(function (r) { cnt[cellOf(r)]++; });
+    var btn = function (c, lab) { return '<button type="button" data-c="' + c + '" aria-pressed="' + (state.cell === c) + '"><b>' + cnt[c] + '</b>' + lab + '</button>'; };
+    $('kggrid').innerHTML = '<span></span><span class="h">MiniCheck: supported</span><span class="h">MiniCheck: not</span>' +
+      '<span class="h">HHEM: supported</span>' + btn('hm', 'agree') + btn('h_', 'disagree') +
+      '<span class="h">HHEM: not</span>' + btn('_m', 'disagree') + btn('__', 'agree');
+    Array.prototype.forEach.call($('kggrid').querySelectorAll('button'), function (b) { b.addEventListener('click', function () { state.cell = b.dataset.c; state.kgi = 0; drawKG(); }); });
+    var hh = cnt.hm + cnt.h_, mc = cnt.hm + cnt._m;
+    $('kgsum').textContent = 'At cut-off ' + f2(state.cut) + ': HHEM supports ' + hh + ' of ' + R.length + ', MiniCheck ' + mc + '; they disagree on ' + (cnt.h_ + cnt._m) + '.';
+    var L = R.filter(function (r) { return cellOf(r) === state.cell; });
+    var lab = CELLS.filter(function (c) { return c[0] === state.cell; })[0][1];
+    if (!L.length) { $('kgex').innerHTML = '<div class="card"><p>No claim in this cell at this cut-off.</p></div>'; return; }
+    if (state.kgi >= L.length) state.kgi = 0;
+    var r = L[state.kgi];
+    $('kgex').innerHTML = '<div class="card"><div class="hd"><span class="tag gold">' + esc(lab) + '</span><span>example ' + (state.kgi + 1) + ' of ' + L.length + '</span><span class="tag">' + esc(r.r) + '</span><span class="tag">passage ' + esc(r.p) + '</span></div>' +
+      '<p><b>Claim:</b> ' + esc(r.h) + '</p><p class="small muted"><b>Quote (display excerpt):</b> "' + esc(r.q) + '"</p>' + meter('MiniCheck', 'mc', r.mc) + meter('HHEM', 'hh', r.hh) +
+      '<div class="row"><button type="button" id="kgprev">Previous</button><button type="button" id="kgnext">Next</button></div></div>';
+    $('kgprev').addEventListener('click', function () { state.kgi = (state.kgi - 1 + L.length) % L.length; drawKG(); });
+    $('kgnext').addEventListener('click', function () { state.kgi = (state.kgi + 1) % L.length; drawKG(); });
+  }
+
+  // ---------------------------------------------------------------- quiz
+  function quiz() {
+    var Q = window.QUIZ || [], done = {};
+    $('lq-box').innerHTML = Q.map(function (q, i) { return '<div class="q"><p><b>' + (i + 1) + '.</b> ' + esc(q.q) + '</p><div class="opts">' + q.o.map(function (o, j) { return '<button type="button" data-q="' + i + '" data-o="' + j + '">' + esc(o) + '</button>'; }).join('') + '</div><p class="fb" id="lq-fb' + i + '"></p></div>'; }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#lq-box button'), function (b) {
+      b.addEventListener('click', function () {
+        var i = +b.dataset.q, j = +b.dataset.o, q = Q[i], fb = $('lq-fb' + i);
+        if (done[i] == null) done[i] = j === q.a;
+        Array.prototype.forEach.call(b.parentNode.children, function (x, k) { x.classList.toggle('right', k === q.a); x.classList.toggle('wrong', k === j && j !== q.a); });
+        fb.style.display = 'block'; fb.textContent = (j === q.a ? 'Right. ' : 'Not quite. ') + q.f;
+        var n = Object.keys(done).length, ok = Object.keys(done).filter(function (k) { return done[k]; }).length;
+        $('lq-score').textContent = n + ' of ' + Q.length + ' answered, ' + ok + ' right at the first try.';
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------- sources
+  function sources() {
+    var used = {}; Array.prototype.forEach.call(document.querySelectorAll('a.cite[data-c]'), function (a) { used[a.getAttribute('data-c').split('|')[0]] = 1; });
+    Object.keys(CL).forEach(function (k) { if (CL[k].source) used[CL[k].source] = 1; });
+    var keys = Object.keys(SRC.sources).filter(function (k) { return used[k]; }).sort(function (a, b) { return SRC.sources[a].short.localeCompare(SRC.sources[b].short); });
+    $('ls-list').innerHTML = keys.map(function (k) {
+      var s = SRC.sources[k], cl = Object.keys(CL).filter(function (c) { return CL[c].source === k; });
+      var link = s.url ? '<a href="' + esc(s.url) + '" rel="noopener">' + esc(s.title) + '</a>' : esc(s.title);
+      return '<div class="card" id="src-' + esc(k) + '"><div class="hd"><b style="color:var(--text)">' + esc(s.short) + '</b><span class="tag">' + esc(s.kind) + '</span><span class="' + (s.verified ? 'vtrue' : 'vfalse') + '">' + (s.verified ? 'read' : 'not read in full') + '</span></div>' +
+        '<p>' + esc(s.authors) + '. ' + link + '. ' + esc(s.venue) + (s.doi ? ', doi ' + esc(s.doi) : '') + '.</p><p class="small faint">' + esc(s.how) + (cl.length ? ' · claims ' + cl.join(', ') : '') + '</p></div>';
+    }).join('');
+    $('ls-claims').innerHTML = '<table class="tbl"><tr><th>id</th><th>claim</th><th>mark</th></tr>' + Object.keys(CL).map(function (k) {
+      var c = CL[k]; return '<tr><td class="n">' + k + '</td><td>' + esc(c.text) + (c.source ? ' <span class="faint">(' + esc((SRC.sources[c.source] || {}).short || c.source) + (c.locator ? ', ' + esc(c.locator) : '') + ')</span>' : '') + '</td><td>' + mark(k) + '</td></tr>';
+    }).join('') + '</table>';
+  }
+
+  function nav() {
+    var secs = document.querySelectorAll('section.step[data-nav]');
+    $('nav').innerHTML = Array.prototype.map.call(secs, function (s) { return '<a href="#' + s.id + '">' + esc(s.dataset.nav) + '</a>'; }).join('');
+    var links = document.querySelectorAll('#nav a');
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) Array.prototype.forEach.call(links, function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id); }); }); }, { rootMargin: '-40% 0px -55% 0px' });
+      Array.prototype.forEach.call(secs, function (s) { io.observe(s); });
+    }
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

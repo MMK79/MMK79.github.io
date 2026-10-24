@@ -101,7 +101,7 @@
     const mat = CLS.map(a => CLS.map(b => M.confusion_judgeA_rows_judgeB_cols[a][b]));
     const st = { cell: null, pos: 'contradicted' };
     const shell = K.shell(el, 'Real example: two LLM judges on the same 140 claims',
-      'This is LLM vs LLM agreement, not human agreement: the pack has no human labels. Judge A (' + M.judge_A + ') and judge B (' + M.judge_B + ') labelled the same claims from 12 answers (n = 12 questions, 3 arms, one run, temperature 0). Kappa here says the two judges are consistent with each other; it does not say either is right. A demo, not a benchmark.');
+      'This is LLM vs LLM agreement. Judge A (' + M.judge_A + ') and judge B (' + M.judge_B + ') labelled the same claims from 12 answers (n = 12 questions, 3 arms, one run, temperature 0). Kappa here says the two judges are consistent with each other; it does not say either is right. A demo, not a benchmark.');
     const tbl = K.el('div', { style: 'overflow-x:auto' });
     const res = K.resultBox();
     const formula = K.el('div', { class: 'formula', style: 'white-space:pre-wrap', 'aria-live': 'polite' });
@@ -147,7 +147,7 @@
         items.slice(0, 12).forEach(x => list.append(K.el('div', { style: 'margin:2px 0;padding:2px 6px;border-left:4px solid ' + (i === j ? 'var(--he)' : 'var(--warn)') },
           K.el('b', {}, x.qid + '/' + x.arm + '#' + x.claim_index + ' '), K.el('span', { class: 'hint' }, (D.claims[x.qid + '_' + x.arm] || [])[x.claim_index] || ''))));
       }
-      note.textContent = 'Agreement ' + K.fmt(g.po, 2) + ' looks strong; kappa ' + K.fmt(g.kappa, 2) + ' discounts chance (most claims are "supported", so chance alone already gives p_e ' + K.fmt(g.pe, 2) + '). Of the ' + (g.n - diag.reduce((x, y) => x + y, 0)) + ' disagreements, most are supported vs unsupported or judge B calling a claim contradicted that judge A called supported. Not human labels.';
+      note.textContent = 'Agreement ' + K.fmt(g.po, 2) + ' looks strong; kappa ' + K.fmt(g.kappa, 2) + ' discounts chance (most claims are "supported", so chance alone already gives p_e ' + K.fmt(g.pe, 2) + '). Of the ' + (g.n - diag.reduce((x, y) => x + y, 0)) + ' disagreements, most are supported vs unsupported or judge B calling a claim contradicted that judge A called supported.';
     }
     render();
   }

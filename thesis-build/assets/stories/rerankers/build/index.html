@@ -1,0 +1,737 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rerankers</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(32px,7.5vw,52px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:18px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+ul{padding-left:20px}li{margin:0 0 8px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
+section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
+.hero{padding:52px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+.who{color:var(--faint);font-size:13px}
+button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:34px;max-width:100%}
+button{cursor:pointer}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.lbl{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
+.take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
+.ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:10px 0;font-size:14.5px}
+.ours b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;color:var(--purple)}
+.contra{border:1px solid var(--warn);border-radius:10px;padding:10px 12px;margin:12px 0;font-size:14.5px}
+.contra b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block;color:var(--warn)}
+.tldr{list-style:none;padding:0;margin:0}.tldr li{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0 0 8px;font-size:15px}
+.hscroll{overflow-x:auto;max-width:100%}
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl td.m{font-family:var(--mono);font-size:12.5px}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.mk{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:0 6px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.mk.verified{color:var(--teal);border-color:var(--teal)}
+.mk.unverified{color:var(--warn);border-color:var(--warn)}
+.mk.inferred{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.mk.ours{color:var(--amber);border-color:var(--amber)}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:12px var(--body)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:10px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:5px 9px;background:var(--panel2)}
+.flow span.box.hl{border-color:var(--amber);color:var(--amber)}
+.flow span.ar{color:var(--faint)}
+.place{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0}
+.place .n{font:600 12px var(--mono);color:var(--amber)}
+.place h3{margin:2px 0 6px}
+.place p{font-size:14.5px;margin:0 0 6px}
+/* Touch */
+#cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;margin:10px 0}
+.col h3{font-size:16px;margin:0 0 2px}
+.col .sub{font-size:12px;color:var(--faint);margin:0 0 6px;min-height:34px}
+.col ol{list-style:none;margin:0;padding:0}
+.it{display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:4px;align-items:center;width:100%;text-align:left;padding:4px 6px;min-height:40px;margin:0 0 4px;font-size:13px;border-radius:8px}
+.it .rk{font:12px var(--mono);color:var(--faint)}
+.it .lab{font:12px var(--mono);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.it .sc{font:12px var(--mono);color:var(--muted)}
+.it .mv{display:block;font:12px var(--mono);color:var(--faint)}
+.it .mv.up{color:var(--teal)}.it .mv.dn{color:var(--warn)}
+.it.gold{border-color:var(--teal);background:rgba(60,199,180,.08)}
+.it.gold .lab{color:var(--teal)}
+.it.sel{outline:2px solid var(--amber);outline-offset:-2px}
+#detail{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:10px 0;font-size:14px;min-height:80px}
+#detail .ex{color:var(--muted);font-size:13.5px;margin:6px 0 0}
+#tread{font-size:14.5px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin:6px 0}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:8px;border:1px solid var(--teal);background:rgba(60,199,180,.15);vertical-align:-2px;margin-right:4px}
+details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
+.q .opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q button{text-align:left}.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+#err{display:none;color:var(--warn);border:1px solid var(--warn);border-radius:10px;padding:10px;margin:10px 0}
+@media (max-width:640px){#caveat .more{display:none}#cols{gap:6px}.it{grid-template-columns:20px minmax(0,1fr);padding:4px}.it .sc{grid-column:2}.col .sub{min-height:52px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real scores, small demo:</b> the bge-m3 and bge-reranker-v2-m3 scores of three questions over our 1,076 CS 156 caption chunks come from one Kaggle run (EXP-019). Three questions with our answer marks are a demo, not a test.<span class="more"> Each claim carries its mark: <span class="mk verified">verified</span> <span class="mk unverified">unverified</span> <span class="mk inferred">inferred</span> <span class="mk ours">ours</span>.</span></p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">A layered lesson on the second stage of search</div>
+  <h1>Rerankers</h1>
+  <p class="lead">A fast search finds candidates. A slower, careful model puts them in a better order. Why two models, which one we run, where it runs, and what the benchmarks do and do not say.</p>
+  <p class="who">Builds on <a href="/thesis/assets/stories/indexing/build/index.html">Indexing for RAG</a> (how the fast search works) and links to <a href="/thesis/assets/stories/query-flow/build/index.html">What happens when a student asks</a> (the whole question path).</p>
+  <div id="err"></div>
+</header>
+
+<section class="step" id="tldr"><div class="kicker"><span class="lv">TL;DR</span>the short version</div>
+<h2>In five lines</h2>
+<ul class="tldr">
+  <li>A <b>reranker</b> is a second-stage model. It takes a short list from a fast search and puts it in a better order. It reads the question and one passage together and gives one score: that design is a <b>cross-encoder</b>.</li>
+  <li>The fast search uses a <b>bi-encoder</b> (bge-m3): one vector per text, made before the texts meet. Fast over all chunks, but it sees topic, not "does this answer the question".</li>
+  <li>We run <b>bge-reranker-v2-m3</b> (568M parameters, Apache-2.0, multilingual) as int8 ONNX on CPU, in three places: the text list R (top 10), the graph list (order inside each hop group) and the "should I abstain?" gate.</li>
+  <li>Its benchmark numbers are the vendor's own (model card). Another vendor's run shows a case where it made the order worse. Our own test on the course questions is still to run.</li>
+  <li>The recorded reasons for the choice are practical (inherited code, own compute, cost), not a benchmark. <span id="tldr-ex"></span></li>
+</ul>
+</section>
+
+<section class="step" id="l0"><div class="kicker"><span class="lv">Level 0</span>like I am five</div>
+<h2>A fast finder and a careful reader</h2>
+<p>Imagine a library with 10,000 pages. You ask a question.</p>
+<p>First, a fast finder looks at every page in a blink. It gives you the 50 pages that look related.</p>
+<p>Then a careful reader reads your question next to each of those 50 pages, one at a time. For each page it asks: "Does this page answer this question?" It sorts the 50 pages by the answer.</p>
+<p>The careful reader is the <b>reranker</b>. It is too slow to read 10,000 pages, but 50 is fine. Its job is order, not search. It can only move up a page that the fast finder already found. <a class="cite" data-c="note|§1" data-k="c48"></a></p>
+<div class="flow" aria-label="Two stages"><span class="box" id="l0-n">all pages</span><span class="ar">→</span><span class="box">fast finder</span><span class="ar">→</span><span class="box">short list</span><span class="ar">→</span><span class="box hl">careful reader</span><span class="ar">→</span><span class="box">better order</span></div>
+</section>
+
+<section class="step" id="l1"><div class="kicker"><span class="lv">Level 1</span>student</div>
+<h2>Two ways to compare a question and a passage</h2>
+<svg viewBox="0 0 760 210" role="img" aria-label="Bi-encoder: question and passage are encoded apart and compared by cosine. Cross-encoder: question and passage go in together and one score comes out.">
+  <rect x="4" y="4" width="370" height="200" rx="10" fill="none" stroke="var(--line)"/>
+  <text x="18" y="26" style="fill:var(--blue);font-weight:600">Bi-encoder (bge-m3)</text>
+  <rect x="18" y="44" width="110" height="32" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text x="30" y="65">question</text>
+  <rect x="18" y="120" width="110" height="32" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text x="30" y="141">passage</text>
+  <rect x="150" y="44" width="80" height="32" rx="6" fill="none" stroke="var(--blue)"/><text x="160" y="65">encoder</text>
+  <rect x="150" y="120" width="80" height="32" rx="6" fill="none" stroke="var(--blue)"/><text x="160" y="141">encoder</text>
+  <path d="M128 60H150M128 136H150M230 60H262M230 136H262" stroke="var(--faint)"/>
+  <text x="264" y="65">vector</text><text x="264" y="141">vector</text>
+  <path d="M290 70L300 98M290 126L300 102" stroke="var(--faint)"/><text x="306" y="104" style="fill:var(--amber)">cosine</text>
+  <text x="18" y="186" style="fill:var(--muted)">passage vector made once, offline</text>
+  <rect x="386" y="4" width="370" height="200" rx="10" fill="none" stroke="var(--line)"/>
+  <text x="400" y="26" style="fill:var(--amber);font-weight:600">Cross-encoder (bge-reranker-v2-m3)</text>
+  <rect x="400" y="70" width="150" height="56" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text x="412" y="93">question</text><text x="412" y="114">+ passage</text>
+  <rect x="572" y="80" width="80" height="36" rx="6" fill="none" stroke="var(--amber)"/><text x="582" y="103">encoder</text>
+  <path d="M550 98H572M652 98H676" stroke="var(--faint)"/><text x="680" y="103" style="fill:var(--amber)">score</text>
+  <text x="400" y="186" style="fill:var(--muted)">one full pass per pair, at question time</text>
+</svg>
+<p>A <b>bi-encoder</b> turns the question into one vector and each passage into one vector. A vector is a list of numbers that stands for the meaning of a text. Relevance is the cosine of the two vectors. The passage vectors are made once, when we build the index. So the search is fast. <a class="cite" data-c="backend|app/domain/rerank.py" data-k="c01"></a></p>
+<p>A <b>cross-encoder</b> joins the question and one passage into one input. The model reads both and gives one number: the relevance of this pair. It must run again for every question and every passage. So it is slow. It is more accurate because every word of the question can look at every word of the passage. In a bi-encoder the two texts never meet before the comparison. <a class="cite" data-c="note|§2" data-k="c02"></a></p>
+<p>The raw output is a logit (any real number). The model card and our backend change it to a value from 0 to 1 with a sigmoid. This page shows that 0-1 value. <a class="cite" data-c="baai2024r|model card" data-k="c03"></a></p>
+<div class="hscroll"><table class="tbl">
+<tr><th></th><th>Bi-encoder (the embedding model)</th><th>Cross-encoder (the reranker)</th></tr>
+<tr><td>Input</td><td>the question alone; each passage alone</td><td>the question and one passage, joined</td></tr>
+<tr><td>Output</td><td>one vector per text; relevance = cosine</td><td>one number for the pair</td></tr>
+<tr><td>Passage work</td><td>once, offline</td><td>again for every question</td></tr>
+<tr><td>Speed</td><td>fast over all chunks</td><td>one full model pass per pair</td></tr>
+<tr><td>Sees</td><td>topic similarity</td><td>whether this passage answers this question</td></tr>
+<tr><td>Stage</td><td>first (find candidates)</td><td>second (order them)</td></tr>
+</table></div>
+<h3>One real example, worked</h3>
+<div id="l1-ex" class="take"></div>
+<p class="small">The Indexing lesson found the same with BM25 and the other first-stage lists: all of them missed this chunk, and only the reranker placed it near the top <a class="cite" data-c="idx|EXP-019, Numbers" data-k="c07"></a> (<a href="/thesis/assets/stories/indexing/build/index.html#lnum">its Numbers section</a>).</p>
+<p class="small muted">Chunk = a caption piece from one CS 156 lecture (<span id="crule"></span>; the earlier pilot batch rule: the thesis units are table-of-contents sections of at most 1,024 bge-m3 tokens). "Answer chunk" = a chunk that contains an answer quote we marked. <a class="cite" data-c="idx|EXP-019" data-k="c47"></a></p>
+</section>
+
+<section class="step" id="touch"><div class="kicker"><span class="lv">Touch</span>reorder a real list</div>
+<h2>Bi-encoder list vs cross-encoder order</h2>
+<p>Pick a question and how many chunks the reranker reads. The left column is the bge-m3 list, best first. The right column is the same chunks in the reranker's order. Tap a row to see the chunk in both columns.</p>
+<div class="row"><span class="lbl">Question</span><div id="qbtn" class="row" style="margin:0"></div></div>
+<div class="row"><span class="lbl">Reranker reads</span><div id="dbtn" class="row" style="margin:0"></div></div>
+<p id="qtext" class="muted small"></p>
+<div class="legend"><span><i></i>answer chunk (ours)</span><span><b style="color:var(--teal)">↑</b>/<b style="color:var(--warn)">↓</b> places moved by the reranker</span></div>
+<p id="tread"></p>
+<div id="detail" aria-live="polite"></div>
+<div id="cols">
+  <div class="col"><h3 style="color:var(--blue)">bge-m3 (bi-encoder)</h3><p class="sub">cosine of two vectors</p><ol id="left"></ol></div>
+  <div class="col"><h3 style="color:var(--amber)">bge-reranker-v2-m3</h3><p class="sub">sigmoid of the pair score, 0-1 (4 decimals)</p><ol id="right"></ol></div>
+</div>
+<p class="small muted" id="tcost"></p>
+<p class="small faint">The left list here is bge-m3 dense search alone, not the R arm's fused BM25 + dense list. All scores were read from the run, not recomputed; the page only sorts them. Excerpts: CS 156 captions (CC BY). More lists (BM25, sparse, ColBERT) for the same three questions: <a href="/thesis/assets/stories/indexing/build/index.html#lnum">Indexing for RAG, Numbers</a>.</p>
+</section>
+
+<section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic</div>
+<h2>Evidence, benchmarks and cost</h2>
+<p>The longer treatment of first-stage indexes, BM25, hybrid fusion and the cross-encoder's place among them is <a href="/thesis/assets/stories/indexing/build/index.html#l2">Indexing for RAG, Level 2</a>. This section adds what that page does not cover.</p>
+<h3>Why rerank after dense retrieval</h3>
+<p>Nogueira and Cho reranked BM25 results with BERT on MS MARCO and reached the top of the leaderboard, 27% (relative) above the previous state of the art in MRR@10 <a class="cite" data-c="nogueira2019|Abstract" data-k="c04"></a>. MRR@10 went from 16.7 to 36.5 <a class="cite" data-c="nogueira2019|Sec. 2, Table 1" data-k="c05"></a>; the research note did not re-read this table, the Indexing lesson did. Across the 18 zero-shot datasets of BEIR, "re-ranking and late-interaction-based models on average achieve the best zero-shot performances, however, at high computational costs" <a class="cite" data-c="thakur2021|Abstract" data-k="c06"></a>.</p>
+<h3>When it does not help</h3>
+<p>A reranker is only as good as its training data. In the Qwen3-Reranker card every reranker reorders the top 100 from Qwen3-Embedding-0.6B. On English MTEB-R the first stage alone scores 61.82 and bge-reranker-v2-m3 after it 57.03: the order got worse. On Chinese CMTEB-R it helped slightly, 71.02 to 72.16 <a class="cite" data-c="qwen2025card|evaluation table" data-k="c08"></a>. "Always add a reranker" is therefore not a law; it must be measured on our questions <a class="cite" data-c="qwen2025card|note §3" data-k="c09"></a>. The thesis does this: <code>rerank_top</code> was tuned on the dev split (C4) <a class="cite" data-c="backend|pipeline.py" data-k="c18"></a>.</p>
+<h3>What the benchmarks measure</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th>Benchmark</th><th>What it is</th><th>Metric</th><th>Why it matters to us</th></tr>
+<tr><td>BEIR</td><td>18 English retrieval datasets in different domains, zero-shot <a class="cite" data-c="thakur2021|Abstract" data-k="c25"></a></td><td>nDCG@10</td><td>general English robustness; no lecture data</td></tr>
+<tr><td>MTEB</td><td>v1: 8 embedding tasks, 58 datasets, 112 languages; reranking is one task type <a class="cite" data-c="muennighoff2022|Abstract" data-k="c26"></a></td><td>MAP / nDCG@10</td><td>reranker cards report its retrieval subsets (MTEB-R) after a first stage</td></tr>
+<tr><td>MIRACL</td><td>retrieval in 18 languages over Wikipedia, 77K queries, 700K+ native-speaker judgements; includes Persian <a class="cite" data-c="zhang2022|Abstract" data-k="c27"></a></td><td>nDCG@10</td><td>the best public test of Persian retrieval</td></tr>
+<tr><td>MKQA, MLDR</td><td>cross-lingual QA; long documents</td><td>nDCG@10, recall@10</td><td>used in the jina card</td></tr>
+</table></div>
+<p>A reranker's score depends on the first stage it reorders and on the truncation length. Two cards with different first stages cannot be compared row by row <a class="cite" data-c="baai2024r|note §5" data-k="c32"></a>.</p>
+<h3>bge-reranker-v2-m3: reported numbers</h3>
+<p>The card cites two papers, BGE M3 <a class="cite" data-c="chen2024|arXiv 2402.03216"></a> and Llama2Vec <a class="cite" data-c="li2024|arXiv 2312.15503"></a>. The BGE M3 paper describes the embedding model, not this reranker; its Table 1 has no reranker row. So the reranker's numbers come only from the model card, not from a peer-reviewed paper <a class="cite" data-c="chen2024|Table 1" data-k="c30"></a>.</p>
+<div class="hscroll"><table class="tbl">
+<tr><th>Benchmark (first stage, top 100)</th><th>First stage alone</th><th>bge-reranker-v2-m3</th><th>bge-reranker-v2-gemma (2.5B)</th></tr>
+<tr><td>BEIR average, 15 datasets (bge-large-en-v1.5)</td><td class="m">54.31</td><td class="m">55.36</td><td class="m">60.71</td></tr>
+<tr><td>MIRACL average, 18 languages (bge-m3)</td><td class="m">67.91</td><td class="m">72.84</td><td class="m">73.39</td></tr>
+<tr><td>MIRACL Persian (bge-m3)</td><td class="m">57.7</td><td class="m">62.49</td><td class="m">62.03</td></tr>
+<tr><td>MIRACL English</td><td class="m">59.6</td><td class="m">63.45</td><td class="m">66.62</td></tr>
+</table></div>
+<p class="small">Source: model card images <a class="cite" data-c="baai2024r|evaluation images" data-k="c28"></a>. The metric is not printed on the images; nDCG@10 is likely <a class="cite" data-c="baai2024r|evaluation images" data-k="c29"></a>. For scale, the BGE M3 paper gives BM25 28.7 and M3-Dense 60.9 on MIRACL Persian (dev, nDCG@10) <a class="cite" data-c="chen2024|Table 1" data-k="c31"></a>; the card's bge-m3 baseline uses a different set-up.</p>
+<div class="contra"><b class="h">Other vendors' runs</b>Each row is another vendor's own run, with its own first stage.
+<div class="hscroll"><table class="tbl">
+<tr><th>Source and set-up</th><th>bge-reranker-v2-m3</th><th>Competitor</th></tr>
+<tr><td>Qwen3-Reranker card; MTEB-R / CMTEB-R / MMTEB-R / MLDR</td><td class="m">57.03 / 72.16 / 58.36 / 59.51</td><td>Qwen3-Reranker-0.6B: <span class="mono">65.80 / 71.31 / 66.36 / 67.28</span> <a class="cite" data-c="qwen2025card|evaluation table" data-k="c33"></a></td></tr>
+<tr><td>jina-reranker-v2 card; MKQA / BEIR / MLDR</td><td class="m">54.17 / 53.65 / 59.73</td><td>jina-reranker-v2 (278M): <span class="mono">54.83 / 53.17 / 68.95</span> <a class="cite" data-c="jina2024card|evaluation table" data-k="c34"></a></td></tr>
+</table></div></div>
+<h3>Alternatives</h3>
+<div class="hscroll"><table class="tbl">
+<tr><th>Model</th><th>Size</th><th>Licence</th><th>Reported</th><th>Fit for us</th></tr>
+<tr><td>bge-reranker-v2-m3 (ours) <a class="cite" data-c="baai2024r|card" data-k="c16"></a></td><td>568M</td><td>Apache-2.0</td><td>above</td><td>runs today on CPU int8</td></tr>
+<tr><td>jina-reranker-v2-base-multilingual <a class="cite" data-c="jina2024card|card" data-k="c35"></a></td><td>278M</td><td>CC BY-NC 4.0</td><td>MKQA 54.83, BEIR 53.17</td><td>half the size, but non-commercial</td></tr>
+<tr><td>mxbai-rerank-base-v2 / large-v2 <a class="cite" data-c="mxbai2025card|card" data-k="c36"></a> <a class="cite" data-c="li2025|arXiv 2506.03487"></a></td><td>0.5B / 1.5B</td><td>Apache-2.0</td><td>BEIR 55.57 / 57.49</td><td>heavier on CPU <span class="mk inferred">inferred</span></td></tr>
+<tr><td>Qwen3-Reranker 0.6B / 4B / 8B <a class="cite" data-c="zhang2025|card, abstract" data-k="c37"></a></td><td>0.6B / 4B / 8B</td><td>Apache-2.0</td><td>MMTEB-R 66.36 / 72.74 / 72.94</td><td>strongest open candidate at our size; an LLM reranker, CPU cost must be measured <span class="mk inferred">inferred</span></td></tr>
+<tr><td>bge-reranker-v2-gemma <a class="cite" data-c="baai2024r|card" data-k="c38"></a></td><td>2.5B</td><td>Apache-2.0</td><td>BEIR 60.71, MIRACL 73.39</td><td>too large for the 8 GB Mac with the rest <span class="mk inferred">inferred</span></td></tr>
+<tr><td>Cohere Rerank <a class="cite" data-c="cohere|docs" data-k="c39"></a></td><td>-</td><td>commercial API</td><td>no public BEIR row read</td><td>breaks the own-compute rule; per-search fee</td></tr>
+</table></div>
+<h3>What it costs</h3>
+<ul>
+<li>Compute grows with the list: cost = number of candidates × one full model pass. A list of 10 is cheap; a list of 600 is not.</li>
+<li>Measured: about 0.5 pairs/s on a Kaggle 4-CPU kernel, int8 ONNX, one pair at a time; run rerank-0 scored 1,477 pairs in 2,841 s <a class="cite" data-c="addd|run rerank-0" data-k="c10"></a>. In the product the graph arm scored 627 passages in 7-8 min before the cap <a class="cite" data-c="backend|app/config.py" data-k="c11"></a>. Memory about 0.9 GB <a class="cite" data-c="backend|README" data-k="c12"></a>.</li>
+<li>Truncation: our code cuts each pair to 512 tokens; the vendor evaluation used 1,024 <a class="cite" data-c="backend|models.py" data-k="c13"></a>. Long passages lose their tail <a class="cite" data-c="note|§3" data-k="c14"></a>.</li>
+<li>int8 results can depend on the CPU instruction set, so the thesis pins the scoring job <a class="cite" data-c="addd|ONNX Runtime docs" data-k="c15"></a>.</li>
+</ul>
+</section>
+
+<section class="step" id="l3"><div class="kicker"><span class="lv">Level 3</span>our thesis choice</div>
+<h2>Where it runs and why this model</h2>
+<p class="who">The tutor answers questions about one course (CS 156 lectures) and must cite its sources. The thesis compares a text arm R with graph arms such as H; the same reranker serves both.</p>
+<p>We run <code>BAAI/bge-reranker-v2-m3</code> as <code>onnx/model_int8.onnx</code> from an automatic ONNX conversion, one pair at a time, loaded on first use <a class="cite" data-c="onnx2024|card; models.py" data-k="c17"></a>. The thesis arm R is "BM25 + pgvector BGE-M3, RRF k = 60, cross-encoder rerank, tuned on dev" <a class="cite" data-c="protocol|arm R" data-k="c23"></a>. The plan was the same int8 file on Kaggle CPU (S1), with an fp32 GPU re-score as the fallback (S2) <a class="cite" data-c="stagea|S1 / S2" data-k="c24"></a>. S1 was kept: every Kaggle kernel (25/25, on Intel and AMD CPUs) gave bit-equal scores on the 200-key overlap check, so S2 did not run; the merged file holds 197,073 scores <a class="cite" data-c="progress|S1 complete; switch; merge" data-k="c49"></a>. How the scores were made: <a href="/thesis/assets/stories/scoring-sources/build/index.html">Scoring Sources</a>.</p>
+<div class="flow" aria-label="Where the reranker runs"><span class="box">question</span><span class="ar">→</span><span class="box">BM25 + dense → RRF</span><span class="ar">→</span><span class="box hl">rerank top 10</span><span class="ar">·</span><span class="box">graph walk</span><span class="ar">→</span><span class="box hl">order in each hop</span><span class="ar">→</span><span class="box">pack</span><span class="ar">→</span><span class="box hl">G1 gate</span></div>
+<div class="place"><span class="n">1 · text list R</span><h3>Reorder the top 10 of the fused list</h3><p>BM25 and dense lists are fused by RRF (k = 60). The cross-encoder scores the first <code>rerank_top</code> = 10 candidates, sorts them by score (then id) and puts them before the rest. <code>rerank_top</code> = 0 turns the reranker off everywhere <a class="cite" data-c="backend|educator_core/pipeline.py" data-k="c18"></a>. The step-by-step path with real scores: <a href="/thesis/assets/stories/query-flow/build/index.html#touch">Query Flow, step through</a>.</p></div>
+<div class="place"><span class="n">2 · graph list</span><h3>Order passages inside each hop group</h3><p>The concept walk returns passages with a hop number. The thesis rule for H and Hc is <code>hop-balanced/1</code>: the slots are shared across hops 0, 1 and 2 (4 / 3 / 3 at 10 slots), each hop takes its best passages by cross-encoder score, free slots are backfilled, and the list is output by hop, then descending score, then id <a class="cite" data-c="addendumD|D1" data-k="c50"></a>. The earlier rule 7 sorted the whole list by hop, then score, then id, so hop 0 took every slot; it is kept only as history. The balanced rule of Addendum D needs a score for every hop group and refuses to run without the reranker <a class="cite" data-c="backend|educator_core/pipeline.py" data-k="c19"></a>. In the product only, a hop group above 60 passages has only its 60 closest (by dense score) scored; the thesis arms have no cap <a class="cite" data-c="backend|pipeline.py; config.py" data-k="c20"></a>.</p></div>
+<div class="place"><span class="n">3 · G1 gate</span><h3>Should the tutor say "I don't know"?</h3><p>The highest reranker score among the packed passages is compared with 0.05; below it, the tutor abstains. Without the reranker the gate uses the best dense cosine (0.45). Both thresholds are placeholders, not calibrated <a class="cite" data-c="backend|app/tutor/service.py" data-k="c21"></a>. The gate with live scores: <a href="/thesis/assets/stories/query-flow/build/index.html#abstain">Query Flow, "I don't know"</a>.</p></div>
+<p class="small muted">An older chat path recalls 20 candidates, reranks and keeps 5; on a reranker failure it falls back to the recall order <a class="cite" data-c="backend|app/domain/rerank.py" data-k="c22"></a>.</p>
+<h3>Why this model: what is recorded</h3>
+<p>Inherited and already wired; the partner's HTTP reranker was unreachable and was removed under "own APIs only"; a Cohere fee would have been the largest line ($15) of the offline evaluation, while our own compute costs nothing per query; kept optional until it passed a latency and memory gate on the Mac (the backend now fits in 2.05 GB with encoder and reranker); same family as our bge-m3 encoder <a class="cite" data-c="decisions|note §8" data-k="c40"></a>.</p>
+<div class="contra"><b class="h">Not found in any record</b>
+<ul style="margin:6px 0 0">
+<li>Chosen because it is multilingual and covers Persian. True as a property (MIRACL Persian 62.49 on the card), not found as a reason. <a class="cite" data-c="decisions|note §8" data-k="c41"></a></li>
+<li>Chosen because of its size and the int8 CPU export. <a class="cite" data-c="decisions|note §8" data-k="c42"></a></li>
+<li>Compared with jina, mxbai or Qwen3 rerankers first. No comparison found. <a class="cite" data-c="decisions|note §8" data-k="c43"></a></li>
+<li>A benchmark (BEIR or MIRACL) drove the choice. <a class="cite" data-c="decisions|note §8" data-k="c44"></a></li>
+</ul></div>
+<div class="ours"><b class="h">Reading and next steps</b>A defensible default: permissive licence, multilingual with a Persian number, CPU-friendly, same family as the encoder. It is no longer the strongest at its size. For the thesis this matters little, because R and H share the same reranker <a class="cite" data-c="qwen2025card|note §8" data-k="c45"></a>. So: keep it frozen for the thesis and report the model, revision, int8 and 512-token truncation; test Qwen3-Reranker-0.6B on our dev questions for the product; calibrate the G1 gate on human-labelled dev items; run a small Persian check before Persian content goes live <a class="cite" data-c="decisions|note §9" data-k="c46"></a>.</div>
+<p class="small muted">Not measured yet: whether reranking helps on our own course questions (R with <code>rerank_top</code> = 0 vs 10 on dev), how much the 512-token cut removes, and whether the product's 60-passage cap changes which graph passages are packed.</p>
+</section>
+
+<section class="step" id="quiz"><div class="kicker"><span class="lv">Quiz</span>check yourself</div>
+<h2>Four questions</h2>
+<div id="qz"></div>
+</section>
+
+<section class="step" id="src"><div class="kicker">Sources of the lesson</div>
+<h2>Sources</h2>
+<p class="small muted">Only the vault research note on rerankers and the sources it cites. "read" = the note read the primary text for the claims used here.</p>
+<div class="hscroll"><table class="tbl" id="srctbl"></table></div>
+<details><summary>All claims with their marks</summary><div class="hscroll"><table class="tbl" id="cltbl"></table></div></details>
+</section>
+</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var D, SRC, CL = {}, QZ, st = { q: 'Q3', d: 50, sel: null };
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }); }
+  var base = '../data';
+  Promise.all([get(base + '/rerank-demo.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json'), get(base + '/quiz.json')]).then(function (a) {
+    D = a[0]; SRC = a[1].sources; a[2].claims.forEach(function (c) { CL[c.id] = c; }); QZ = a[3].questions;
+    cites(document); example(); touch(); quiz(); sources();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load the data (' + e.message + '). Open the page through a web server, not as a file.'; });
+
+  function sig(x) { return 1 / (1 + Math.exp(-x)); }
+  function f3(x) { return x.toFixed(3); }
+  function f4(x) { return x.toFixed(4); }
+  function ord(n) { var t = n % 100, u = n % 10; return n + ((t > 10 && t < 14) ? 'th' : u === 1 ? 'st' : u === 2 ? 'nd' : u === 3 ? 'rd' : 'th'); }
+  function Q(id) { return D.questions.filter(function (q) { return q.id === id; })[0]; }
+  // reranker order of the first n chunks of the bi-encoder list: logit descending, then chunk index (as build_data.py)
+  function reorder(q, n) {
+    return q.dense_top.slice(0, n).slice().sort(function (a, b) { var la = D.items[a].logit[q.id], lb = D.items[b].logit[q.id]; return lb - la || a - b; });
+  }
+
+  function cites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]'), function (a) {
+      var p = a.getAttribute('data-c').split('|'), s = SRC[p[0]], c = CL[a.getAttribute('data-k')];
+      a.href = '#src-' + p[0];
+      a.textContent = '[' + (s ? s.short : p[0]) + (p[1] ? ', ' + p[1] : '') + ']';
+      if (s) a.title = s.title;
+      if (c) { var m = document.createElement('span'); m.className = 'mk ' + c.status; m.textContent = c.status; m.title = c.id + ': ' + c.text; a.after(m); }
+    });
+  }
+
+  function example() {
+    var q = Q('Q3'), g = q.gold.filter(function (c) { return q.dense_top.indexOf(c) >= 0; })[0], top1 = q.dense_top[0];
+    var r50 = reorder(q, 50), gi = D.items[g], ti = D.items[top1];
+    $('l1-ex').innerHTML = '<p><b>Question Q3:</b> "' + esc(q.question) + '" It says Q1 ("' + esc(Q('Q1').question) + '") in other words.</p>' +
+      '<p>bge-m3 puts the answer chunk <b>' + esc(gi.label) + '</b> only <b>' + ord(q.gold_dense_rank[g]) + '</b> of ' + D.corpus.n.toLocaleString('en') + ' (cosine ' + f3(q.dense_cos[g]) + '). Its 1st chunk, ' + esc(ti.label) + ', has cosine ' + f3(q.dense_cos[top1]) + ' and no answer quote.</p>' +
+      '<p>The reranker reads each pair. It gives the answer chunk ' + f4(sig(gi.logit.Q3)) + ' and the old 1st chunk ' + f4(sig(ti.logit.Q3)) + '. Only the order counts here: both values are small. If it reads the top 50, the answer chunk moves from ' + ord(q.gold_dense_rank[g]) + ' to <b>' + ord(r50.indexOf(g) + 1) + '</b>. If it reads only the top 20, the answer chunk is not in the list, and nothing can bring it back.</p>' +
+      '<p class="small">Our observation <span class="mk inferred">inferred</span>: the top reranker value for Q3 in this list is ' + f4(sig(D.items[r50[0]].logit.Q3)) + ', below the placeholder cut-off 0.05 of the G1 gate (Level 3). That cut-off is not calibrated yet.</p>';
+    $('tldr-ex').textContent = 'On our paraphrase question the reranker lifted the answer chunk from ' + ord(q.gold_dense_rank[g]) + ' to ' + ord(r50.indexOf(g) + 1) + ', but only when it read the top 50.';
+    $('crule').textContent = D.corpus.chunk_rule;
+    $('l0-n').textContent = 'all ' + D.corpus.n.toLocaleString('en') + ' chunks';
+  }
+
+  function btns(el, items, cur, cb) {
+    $(el).innerHTML = items.map(function (it) { return '<button type="button" data-v="' + esc(it[0]) + '" aria-pressed="' + (String(it[0]) === String(cur)) + '">' + esc(it[1]) + '</button>'; }).join('');
+    Array.prototype.forEach.call($(el).querySelectorAll('button'), function (b) { b.addEventListener('click', function () { cb(b.dataset.v); }); });
+  }
+  function touch() {
+    btns('qbtn', D.questions.map(function (q) { return [q.id, q.id]; }), st.q, function (v) { st.q = v; st.sel = null; touch(); });
+    btns('dbtn', D.depths.map(function (d) { return [d, 'top ' + d]; }), st.d, function (v) { st.d = +v; st.sel = null; touch(); });
+    var q = Q(st.q), n = st.d, L = q.dense_top.slice(0, n), R = reorder(q, n);
+    $('qtext').innerHTML = '<b>' + q.id + ':</b> ' + esc(q.question) + ' <span class="faint">(' + esc(q.why) + ')</span>';
+    function row(c, k, side) {
+      var it = D.items[c], gold = q.gold.indexOf(c) >= 0, mv = (L.indexOf(c) + 1) - (R.indexOf(c) + 1), sc = side === 'L' ? f3(q.dense_cos[c]) : f4(sig(it.logit[q.id]));
+      var m = side === 'R' && mv ? '<span class="mv ' + (mv > 0 ? 'up' : 'dn') + '">' + (mv > 0 ? '↑' : '↓') + Math.abs(mv) + '</span>' : '';
+      return '<li><button type="button" class="it' + (gold ? ' gold' : '') + (st.sel === c ? ' sel' : '') + '" data-c="' + c + '" aria-label="' + esc(it.label + (gold ? ', answer chunk' : '')) + '"><span class="rk">' + (k + 1) + '</span><span class="lab">' + esc(it.label) + m + '</span><span class="sc">' + sc + '</span></button></li>';
+    }
+    $('left').innerHTML = L.map(function (c, k) { return row(c, k, 'L'); }).join('');
+    $('right').innerHTML = R.map(function (c, k) { return row(c, k, 'R'); }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#cols .it'), function (b) { b.addEventListener('click', function () { st.sel = +b.dataset.c; touch(); }); });
+    // detail
+    var c = st.sel;
+    if (c === null) { $('detail').innerHTML = '<span class="muted">Tap a row in either column to read the chunk and see both of its places.</span>'; }
+    else {
+      var it = D.items[c];
+      $('detail').innerHTML = '<b class="mono">' + esc(it.label) + '</b> <span class="muted small">lecture ' + esc(it.lecture) + ', window from ' + esc(it.ts) + '</span>' + (q.gold.indexOf(c) >= 0 ? ' <span class="mk verified" style="border-color:var(--teal)">answer chunk</span>' : '') +
+        '<br><span class="small">bge-m3: <b>' + (L.indexOf(c) + 1) + '</b> (cosine ' + f3(q.dense_cos[c]) + ') · reranker: <b>' + (R.indexOf(c) + 1) + '</b> (' + f4(sig(it.logit[q.id])) + '; raw logit ' + it.logit[q.id] + ')</span><p class="ex">' + esc(it.excerpt) + '</p>';
+    }
+    // reading
+    var parts = q.gold.map(function (g) {
+      var lab = D.items[g] ? D.items[g].label : '#' + g, inL = L.indexOf(g) >= 0, dr = q.gold_dense_rank[g];
+      return inL ? 'answer chunk ' + esc(lab) + ': ' + (L.indexOf(g) + 1) + ' → <b>' + (R.indexOf(g) + 1) + '</b>'
+                 : 'answer chunk ' + esc(lab) + ' is outside this list (bge-m3 rank ' + (dr || 'below 60') + '), so the reranker never reads it';
+    });
+    $('tread').innerHTML = '<b>What changed:</b> ' + parts.join('; ') + '.';
+    var cst = D.cost_at_depth[String(n)];
+    $('tcost').textContent = 'Cost of this step: ' + cst.pairs + ' pairs, one model pass each. At the measured 0.5 pairs/s (Kaggle 4-CPU, int8, run rerank-0) that is about ' + cst.s_at_0_5_per_s + ' s per question (arithmetic, not timed here).';
+  }
+
+  function quiz() {
+    $('qz').innerHTML = QZ.map(function (x, i) {
+      return '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(x.q) + '</b><div class="opts">' + x.o.map(function (o, j) { return '<button type="button" data-j="' + j + '">' + String.fromCharCode(65 + j) + '. ' + esc(o) + '</button>'; }).join('') + '</div><p class="small muted fb" hidden></p></div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qz .q'), function (box) {
+      var x = QZ[+box.dataset.i];
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (b) {
+        b.addEventListener('click', function () {
+          var j = +b.dataset.j; b.classList.add(j === x.a ? 'right' : 'wrong');
+          box.querySelectorAll('button')[x.a].classList.add('right');
+          var fb = box.querySelector('.fb'); fb.hidden = false; fb.textContent = (j === x.a ? 'Right. ' : 'Not quite. ') + x.f;
+        });
+      });
+    });
+  }
+
+  function sources() {
+    var used = {}; Array.prototype.forEach.call(document.querySelectorAll('a.cite[data-c]'), function (a) { used[a.getAttribute('data-c').split('|')[0]] = 1; });
+    $('srctbl').innerHTML = '<tr><th>source</th><th>where</th><th>read?</th></tr>' + Object.keys(SRC).filter(function (k) { return used[k]; }).map(function (k) {
+      var s = SRC[k], t = s.url ? '<a href="' + esc(s.url) + '">' + esc(s.title) + '</a>' : esc(s.title);
+      return '<tr id="src-' + k + '"><td><b>' + esc(s.short) + '</b><br>' + t + '</td><td>' + esc(s.venue) + '</td><td class="small">' + (s.verified ? '<span class="mk verified">read</span> ' : '<span class="mk unverified">not read</span> ') + esc(s.how) + '</td></tr>';
+    }).join('');
+    $('cltbl').innerHTML = '<tr><th>id</th><th>claim</th><th>source, locator</th><th>mark</th></tr>' + Object.keys(CL).map(function (id) {
+      var c = CL[id]; return '<tr><td class="m">' + id + '</td><td>' + esc(c.text) + '</td><td class="small">' + esc((SRC[c.key] || {}).short || c.key) + ', ' + esc(c.loc) + '</td><td><span class="mk ' + c.status + '">' + c.status + '</span></td></tr>';
+    }).join('');
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

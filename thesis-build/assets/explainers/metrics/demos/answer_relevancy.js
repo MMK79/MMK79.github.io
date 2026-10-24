@@ -68,7 +68,7 @@
     const shell = K.shell(el, 'Real example: 36 real answers, 3 questions generated from each',
       'Scale: n = 12 questions (9 answerable, 3 unanswerable), 3 arms, one run; a demo, not a benchmark. For each real answer the LLM ' + D.model + ' (temperature 0, thinking off; ' + D.calls + ' calls, ' + D.prompt_tokens + ' + ' + D.completion_tokens +
       ' tokens, USD ' + D.usd + ') wrote 3 questions that the answer would reply to, plus a "noncommittal" flag. Embeddings: ' + D.embedder + ' (384-d), local CPU. The cosines and the mean below are recomputed live from the stored vectors (rounded to 4 decimals). ' +
-      'The Ragas rule gives 0 to a noncommittal answer; the checkbox turns it off to show the raw mean. "Judge" = LLM judge A\'s correctness (1 / 0.5 / 0), not a human label. Generated questions are one LLM run: another run or model gives other numbers.');
+      'The Ragas rule gives 0 to a noncommittal answer; the checkbox turns it off to show the raw mean. "Judge" = LLM judge A\'s correctness (1 / 0.5 / 0). Generated questions are one LLM run: another run or model gives other numbers.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, Object.keys(ARMS).map(a => opt(a, ARMS[a])));
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, Q.map(q => opt(q.id, q.id + ' (' + q.type + '): ' + q.question)));

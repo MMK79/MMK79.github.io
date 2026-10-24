@@ -106,7 +106,7 @@
     const K = root.DemoKit;
     const st = { depth: 20, partial: true, arm: 'both', open: null };
     const shell = K.shell(el, 'Real example: which stage lost the evidence? (12 questions x arms B and C)',
-      'Demo scale: 12 questions x 2 arms = 24 answers, one run, temperature 0; correctness is an LLM judge, no human labels. Arm B = RRF top-5 passages as the prompt context. Arm C = dense top-5 plus up to 5 graph (PPR) passages. THE RULE IS OURS: it follows the catalogue formula (handout 8.4 idea), and there is no reranker in these arms, so "rank / cut" means a gold passage sat in the stored candidate list (top-N of the first-stage run) but was not in the prompt context. Only the top-20 of each run is stored. Gold labels cover only the necessary passages. The three unanswerable questions are right when the system refuses.');
+      'Demo scale: 12 questions x 2 arms = 24 answers, one run, temperature 0; correctness is an LLM judge. Arm B = RRF top-5 passages as the prompt context. Arm C = dense top-5 plus up to 5 graph (PPR) passages. THE RULE IS OURS: it follows the catalogue formula (handout 8.4 idea), and there is no reranker in these arms, so "rank / cut" means a gold passage sat in the stored candidate list (top-N of the first-stage run) but was not in the prompt context. Only the top-20 of each run is stored. Gold labels cover only the necessary passages. The three unanswerable questions are right when the system refuses.');
     const dS = K.slider('candidate depth N (read the first N of each run as "retrieved")', 5, 20, 1, st.depth, v => { st.depth = v; render(); });
     const pChk = K.el('input', { type: 'checkbox', checked: 'checked' });
     pChk.addEventListener('change', () => { st.partial = pChk.checked; render(); });

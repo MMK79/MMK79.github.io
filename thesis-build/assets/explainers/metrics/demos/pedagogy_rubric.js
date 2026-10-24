@@ -38,7 +38,7 @@
     const K = root.DemoKit;
     const N = 20;
     const st = DIMS.map((d, i) => i === 0 ? { yes: 12, some: 5 } : { yes: 10, some: 6 });
-    const shell = K.shell(el, 'Toy example (break it)', 'Toy labels, not measured: 20 pretend tutor responses per dimension. Set how many are Yes and "To some extent"; the rest are No. Real example pending: the pack has no tutor dialogues and no human ratings.');
+    const shell = K.shell(el, 'Toy example (break it)', 'Toy labels, not measured: 20 pretend tutor responses per dimension. Set how many are Yes and "To some extent"; the rest are No. Real example pending: the pack has no tutor dialogues.');
     const out = K.el('div', { class: 'row' }); const res = K.resultBox(); out.append(res.node, K.el('span', { class: 'hint' }, ' S for mistake identification'));
     const rows = K.el('div'); const formula = K.el('div', { class: 'formula', 'aria-live': 'polite' }); const note = K.el('p', { class: 'hint' });
     const bars = [];
@@ -83,7 +83,7 @@
     const K = root.DemoKit;
     const st = { arm: 'B', q: D.ans[0].qid };
     const shell = K.shell(el, 'Real example: pending (partial: a crude rule on the 36 real answers)',
-      'Real example pending: the pack has no tutor dialogues and no human ratings, so there is no real MRBench-style score. Below is only our crude rule on the 36 real RAG answers (n = 12 questions x 3 arms), computed in this page from the answer strings. It is our crude rule, not a pedagogy judgement, and a RAG answerer is not a tutor.');
+      'Real example pending: the pack has no tutor dialogues, so there is no real MRBench-style score. Below is only our crude rule on the 36 real RAG answers (n = 12 questions x 3 arms), computed in this page from the answer strings. It is our crude rule, not a pedagogy judgement, and a RAG answerer is not a tutor.');
     const f3 = K.el('div', { class: 'formula' });
     f3.textContent = 'Rules (ours): reveals = share of the gold answer\'s key terms found in the text (all = Yes, some = To some extent, none = No; unanswerable questions skipped)\nguides = the text contains "?" or a cue word (try, consider, think about, what if, hint, step by step, can you)\ngrounded = cites a passage id [pNNN]: all cited ids in its own context = Yes, some outside = To some extent, none cited = No; refusals skipped';
     const tbl = K.el('div');

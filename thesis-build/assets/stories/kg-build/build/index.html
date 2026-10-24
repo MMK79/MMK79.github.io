@@ -23,12 +23,12 @@ p{margin:0 0 14px;overflow-wrap:anywhere}
 a{color:var(--blue)}
 .muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
 .kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
-.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px}
 #bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;flex-wrap:wrap;gap:5px}
-#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
 #nav a.on{border-color:var(--amber);color:var(--amber)}
 section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
 .hero{padding:52px 0 30px}
@@ -41,22 +41,22 @@ button,select{font:inherit;font-size:14px;background:var(--panel2);color:var(--t
 button{cursor:pointer}button:hover{border-color:var(--faint)}
 button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
 button:focus-visible,select:focus-visible,a:focus-visible,[tabindex]:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 2px 3px 0;color:var(--muted)}
+.tag{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 2px 3px 0;color:var(--muted)}
 .tag.gold{border-color:var(--amber);color:var(--amber)}.tag.ok{border-color:var(--teal);color:var(--teal)}.tag.bad{border-color:var(--warn);color:var(--warn)}
-.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:15px}
+.ans{background:var(--panel2);border-left:3px solid var(--blue);border-radius:8px;padding:10px 12px;margin:8px 0;font-size:15px}
 .ans.warn{border-color:var(--warn)}.ans.good{border-color:var(--teal)}
 .card{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:14px;overflow-wrap:anywhere}
 .card.bad{border-color:var(--warn)}
 .card .hd{display:flex;flex-wrap:wrap;gap:6px;align-items:baseline;font-size:12px;color:var(--muted)}
 .card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
 .card p.quote{color:var(--text);font-size:13.5px}
-mark{background:rgba(242,169,59,.28);color:var(--text);border-radius:3px;padding:0 1px}
+mark{background:rgba(242,169,59,.28);color:var(--text);border-radius:8px;padding:0 1px}
 .bridge{margin:26px 0 0;padding:12px 14px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:15px}
 .bridge b{color:var(--text)}
 .take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
 .ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
 .ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
-.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h,.ours b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
 .ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
 svg{display:block;width:100%;height:auto}
 svg text{fill:var(--text);font:11px var(--body)}
@@ -74,7 +74,7 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 #st-body{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0}
 .strip{display:flex;flex-wrap:wrap;gap:3px;align-items:center;margin:4px 0}
 .strip .small{width:34px}
-.sq{width:16px;height:16px;min-height:16px;padding:0;border-radius:3px;border:1px solid var(--line)}
+.sq{width:16px;height:16px;min-height:16px;padding:0;border-radius:8px;border:1px solid var(--line)}
 .sq.on{outline:2px solid var(--amber)}
 .funnel li{margin:4px 0}
 .legend{display:flex;flex-wrap:wrap;gap:12px;font-size:12px;color:var(--muted)}
@@ -84,7 +84,7 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .g-find input{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 10px;min-height:34px;width:220px;max-width:100%}
 .g-find input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .g-legend{margin:6px 0 4px;align-items:center}
-.g-box{display:inline-block;font:500 11px var(--body);color:var(--muted);border:1px solid var(--faint);background:var(--panel);border-radius:5px;padding:0 5px;margin-right:5px}
+.g-box{display:inline-block;font:500 12px var(--body);color:var(--muted);border:1px solid var(--faint);background:var(--panel);border-radius:8px;padding:0 5px;margin-right:5px}
 .g-box.voc{color:var(--text);border-color:var(--muted);background:var(--panel2);font-weight:600}
 .g-how{margin:4px 0 8px}
 .g-box-wrap{position:relative;border:1px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}
@@ -95,7 +95,7 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .g-hint{position:absolute;left:50%;top:10px;transform:translateX(-50%);background:rgba(11,13,18,.92);border:1px solid var(--line);border-radius:8px;padding:5px 10px;font-size:13px;color:var(--text);pointer-events:none;z-index:6}
 .g-shield{position:absolute;inset:0;z-index:4;width:100%;height:100%;border:0;border-radius:0;background:rgba(11,13,18,.18);color:var(--text);font-size:14px;display:flex;align-items:flex-end;justify-content:center;padding:0 0 14px;touch-action:pan-y}
 .g-shield[hidden]{display:none}
-.g-tip{position:absolute;z-index:7;max-width:220px;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:4px 8px;font-size:12px;color:var(--text);pointer-events:none}
+.g-tip{position:absolute;z-index:7;max-width:220px;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:4px 8px;font-size:12px;color:var(--text);pointer-events:none}
 @media (max-width:640px){#g-cy{height:min(560px,75vh);min-height:420px}.g-find input{width:100%}.g-find{width:100%}}
 .elist{padding-left:18px;margin:4px 0}.linkish{background:none;border:0;padding:0;min-height:0;color:var(--blue);text-align:left;font-size:13px}
 .cqlist li{margin:4px 0}
@@ -111,7 +111,7 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .vtrue{color:var(--teal)}.vfalse{color:var(--warn)}
 .lesson-video:empty::before{content:"Video: BuildingKnowledgeGraph (English, silent; shown on the thesis website build)";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
 #factory-fig:empty::before{content:"Figure: the graph factory";display:block;color:var(--faint);font-size:13px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
-.bd{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.bd{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
 .bd.meas{color:var(--teal);border-color:var(--teal)}.bd.pend{color:var(--blue);border-color:var(--blue);border-style:dashed}.bd.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
 .fstat{border:1px solid var(--blue);border-radius:10px;padding:8px 12px;margin:10px 0 16px;font-size:14px;color:var(--muted)}.fstat b{color:var(--blue)}
 .vs{width:100%;border-collapse:collapse;font-size:14px;margin:6px 0 14px}.vs th,.vs td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}.vs th{color:var(--muted);font-weight:500;font-size:12px}.vs td.n{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;white-space:nowrap}
@@ -119,6 +119,13 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 @media (max-width:640px){.vs .rel{display:none}.vs td.n{white-space:normal}}
 @media (max-width:640px){.grid2,.pin{grid-template-columns:1fr}.stage-tbl td:first-child{white-space:normal}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+.sq{width:24px;height:24px;min-height:24px}
 </style>
 <style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
    The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
@@ -126,23 +133,23 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
 .back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
 .sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
 .sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
 #so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
 #so button:hover,#so button:focus-visible{border-color:#F2A93B}
 #so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
              outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
 #so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
-#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
 #so.open ol{display:block}
 #so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
 #so.rail button{display:none}
@@ -155,6 +162,11 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
 #story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -178,13 +190,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -193,19 +205,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -216,7 +227,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -224,7 +235,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -238,14 +249,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -254,6 +265,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -264,30 +276,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -306,7 +299,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -333,7 +326,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -423,10 +416,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </script>
 
 <div id="story-root" lang="en" dir="ltr">
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>Two runs on one page:</b> the <a href="#full">full build</a> (all nine sources, the thesis graph, not frozen yet) and the <b>pilot slice</b> that the rest of the page opens step by step (two lectures of Caltech CS 156). Each number says which run it comes from and whether it is measured.</p>
+  <p id="caveat"><b>Two runs on one page:</b> the <a href="#full">full build</a> (all nine sources, the thesis graph, frozen) and the <b>pilot slice</b> that the rest of the page opens step by step (two lectures of Caltech CS 156). Each number says which run it comes from and whether it is measured.</p>
   <nav id="nav" aria-label="Sections">
     <a href="#tldr">TL;DR</a><a href="#full">Full build</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#watch">Watch</a><a href="#factory">Factory</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a>
   </nav>
@@ -446,8 +439,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <ol>
     <li><b>Chunks.</b> The transcripts of Lectures 14 and 15 become <span data-n="s1.chunks"></span> passages, each with an id.</li>
     <li><b>Extraction.</b> An LLM reads each passage and writes typed edges from a closed list of three relations. Every edge must quote its passage. It wrote <span data-n="s2.mentions"></span> mentions and kept <span data-n="s2.edges_kept"></span> edges.</li>
-    <li><b>Entity resolution.</b> Names that mean one thing ("SVM", "support vector machines") become one node. <span data-n="s3.distinct_keys"></span> normalised names ended as <span data-n="s5.nodes"></span> concept nodes (<span data-n="s5.candidate_nodes"></span> of them still candidates). An LLM review then rejected <span data-n="s3.review_rejected"></span> of the 30 merges the LLM judge proposed; no human checked either side.</li>
-    <li><b>Entailment gate.</b> Two small checkers score whether the passage supports each edge. <span data-n="s5.assertion_status.accepted-by-gate"></span> of <span data-n="s5.assertions"></span> assertions pass. By our policy, "learn this first" edges are not decided by the checkers; they wait for a human (none reviewed them in this pilot).</li>
+    <li><b>Entity resolution.</b> Names that mean one thing ("SVM", "support vector machines") become one node. <span data-n="s3.distinct_keys"></span> normalised names ended as <span data-n="s5.nodes"></span> concept nodes (<span data-n="s5.candidate_nodes"></span> of them still candidates). An LLM review then rejected <span data-n="s3.review_rejected"></span> of the 30 merges the LLM judge proposed.</li>
+    <li><b>Entailment gate.</b> Two small checkers score whether the passage supports each edge. <span data-n="s5.assertion_status.accepted-by-gate"></span> of <span data-n="s5.assertions"></span> assertions pass. By our policy, "learn this first" edges are not decided by the checkers; they stay proposals in this pilot.</li>
     <li><b>Graph files.</b> All assertions, with their status and evidence, are written as plain CSV and JSONL files (the master copy). A Neo4j load script exists; this run did not use it (the tutor app later loaded the pilot graph into Neo4j).</li>
     <li><b>A question.</b> "What must I understand before the kernel trick?" The strict walk over PREREQUISITE_OF edges finds nothing. A wider walk over USES finds one related concept, the kernel function: related, not a verified prerequisite.</li>
   </ol>
@@ -457,7 +450,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 
 <section class="step" id="full" data-nav="Full build"><div class="kicker">From the pilot to the thesis graph</div>
   <h2>The full build: nine sources, one graph</h2>
-  <div class="fstat" id="f-status"><b>Before the freeze.</b> The extraction, the rule checks and the gate are finished; the last merges are still running. The graph counts and the snapshot hash are filled in when the graph is frozen.</div>
+  <div class="fstat" id="f-status"><b>Frozen.</b> These are the numbers of the frozen thesis graph (S<sub>G</sub> <code>7f28a3a3</code>, after the prerequisite judge and the restore).</div>
   <p>The pilot showed that every stage works on two lectures. The thesis needs the whole course and the eight textbooks that the course maps to. Scaling up raised three new problems; each one had a fix.</p>
   <ol class="story2">
     <li><b>Which extractor?</b> <span class="pr">Problem:</span> a large model for 8,000 passages is slow and costly, so we tried to teach a small open model (Qwen3-4B) from the large model's labels. <span class="fx">Result:</span> it did not reach its teacher: on held-out passages it lost 0.18 F1 on IS_A and 0.08 on USES. It copied the teacher's recall, not its precision. <span class="fx">Fix:</span> keep the large model (Claude Opus 5.5) as the extractor, with the same fixed prompt for every passage. <span class="bd meas">measured</span></li>
@@ -482,11 +475,21 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <p class="small muted" id="f-rules"></p>
   <h3>What the gate said <span class="bd meas">measured</span></h3>
   <p id="f-gate"></p>
+  <h3>Checking the prerequisite edges <span class="bd meas">measured</span></h3>
+  <ol class="story2">
+    <li><b>Problem.</b> <code>PREREQUISITE_OF</code> edges skip the entailment gate: "learn A before B" is a teaching judgement, and a passage-support score is not built to decide it. A blind audit by a model from another family found 11 of 50 eligible prerequisite edges wrong (22%, 95% CI 12.8-35.2%), most of them a motivation or a limitation read as a prerequisite ("local optimum → k-means"). Nearly all of them carry only implied evidence (1,943 of 1,981), so no field could filter them. <span class="bd meas">LLM audit</span></li>
+    <li><b>Fix 1: a prerequisite judge.</b> Claude Opus 5.5 read all 1,992 candidates, each with up to three quotes and the passage around them, and answered keep or drop with an error type. It kept 1,661 and dropped 331 (related-only 179, application 105, motivation 28, reversed 10, limitation 5, not supported 4). A new blind sample: 4 of 50 wrong (8.0%, CI 3.2-18.8%). <span class="bd meas">measured</span></li>
+    <li><b>Why the next idea.</b> The judge's rubric (v1) asked whether the source is <i>needed to understand</i> the target. It kept "overfitting → regularization" but dropped its siblings "overfitting → early stopping" and "→ model selection". Rubric v1 dropped teaching-order prerequisites: a problem before its remedy, a base method before its extension.</li>
+    <li><b>Fix 2: the restore.</b> Rubric v2 counts teaching order and keeps the other drop reasons. Two blind re-judges (Codex and fresh Opus instances, no earlier verdict shown) re-read the 331 drops. An edge comes back only when both keep it: <b>66 restored</b>, 98 contested (stay out), 167 still dropped. Motivation drops came back most (22 of 28). <span class="bd meas">measured</span></li>
+    <li><b>Result.</b> Eligible prerequisite edges: 1,981 → 1,658 → <b>1,724</b>; all eligible edges <b>5,866</b> (USES 2,726, IS_A 1,416); 265 judge drops stay quarantined. A last blind sample of 50 unseen prerequisite edges: 4 wrong under the teaching-order definition the graph uses (8.0%), 9 wrong under the strict "necessary to understand" definition (18.0%). Codex was one of the two restore judges, so this sample does not check the restored edges independently. <span class="bd meas">LLM audit</span></li>
+  </ol>
+  <h3>Why fuzzy matching alone was not enough <span class="bd meas">measured</span></h3>
+  <p>A side experiment replaced the LLM merge judge with string or vector similarity on the same 8,329 candidate pairs (reference: the judge's 860 merges). The best fuzzy matcher (token set ratio ≥ 88) reached F1 0.24 and chained names into one cluster of <b>801 names</b>; the best vector threshold (bge-m3 cosine ≥ 0.90) reached F1 0.41. Fuzzy matching merges a concept with its part or its opposite sibling ("nds kernel" and "pds kernel") and misses synonyms with little shared text ("local regression" and "locally weighted regression"). Where they disagreed, a blind referee from another family sided with the LLM judge in 22 of 25, 25 of 25 and 20 of 20 pairs. So similarity finds the candidates (blocking), and the judge, reading the passages, decides. The frozen graph is unchanged by this test. <span class="bd meas">LLM audit</span></p>
   <h3>What happens at the freeze</h3>
   <ul>
-    <li><b>Load rule.</b> <span id="f-loadrule"></span>. Statuses stay in three separate fields: who made the edge (asserted or inferred), what the gate said, and whether a person reviewed it (nobody has yet). <span class="bd dsg">design</span></li>
+    <li><b>Load rule.</b> <span id="f-loadrule"></span>. Statuses stay in separate fields, among them who made the edge (asserted or inferred) and what the gate said. <span class="bd dsg">design</span></li>
     <li><b>The collapsed copy.</b> Arm Hc reads the same graph with the relation names replaced by one opaque label, made from it by a fixed rule, so H and Hc differ only in the relation types. <span class="bd dsg">design</span></li>
-    <li><b>One hash.</b> The graph files get one snapshot hash, S<sub>G</sub>, written into a manifest before any gold triple or test question is written. A merge after that would change the hash, which is why the last merges run first. Then the snapshot is loaded into Neo4j and the export is checked against the hash. <span class="bd pend">pending</span></li>
+    <li><b>One hash.</b> The graph files get one snapshot hash, S<sub>G</sub>, written into a manifest before any gold triple or test question is written. A merge after that would change the hash, which is why the last merges run first. The snapshot was loaded into an empty Neo4j database and the export matched the snapshot hashes on all five files (S<sub>G</sub> <code>7f28a3a3</code>). <span class="bd meas">done</span></li>
   </ul>
 </section>
 
@@ -511,7 +514,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <p class="who">For a CS student. One running example: the kernel trick from Lecture 15.</p>
   <p>Professor Abu-Mostafa explains the kernel trick in Lecture 15. Our goal: a graph that tells a student what to learn before it, and where each part is explained. Here is what each stage did with that example. The cards below are real output; the page fills them from the data files.</p>
   <table class="tbl stage-tbl"><thead><tr><th>Stage</th><th>Input → output</th><th>Tool in this run</th><th>What went wrong in this run</th></tr></thead><tbody>
-    <tr><td>1 Chunks</td><td>transcript → passages of at most 1,600 characters</td><td>the thesis batch pipeline (Kaggle)</td><td>speech is not prose: "this", "that guy", formulas read aloud</td></tr>
+    <tr><td>1 Chunks</td><td>transcript → passages of at most 1,600 characters</td><td>the earlier pilot batch rule (Kaggle); the thesis units are table-of-contents sections of at most 1,024 bge-m3 tokens</td><td>speech is not prose: "this", "that guy", formulas read aloud</td></tr>
     <tr><td>2 Extraction</td><td>passage → mentions + typed edges with a quote</td><td><span data-m="extractor"></span>, JSON schema</td><td><span data-n="s2.edges_dropped"></span> edges failed the code checks (quote not in the passage, end that is not a mention)</td></tr>
     <tr><td>3 Entity resolution</td><td>mentions → concepts + merge log</td><td>alias table, rapidfuzz, bge-m3, an LLM judge</td><td>the judge merged an adjective, an equation and an error estimate into the wrong concepts</td></tr>
     <tr><td>4 Entailment gate</td><td>edge + passage → supported or not</td><td>HHEM-2.1-open and MiniCheck-Flan-T5-Large</td><td>the two checkers disagree often; a plausible edge (kernel trick USES dot product) failed; by our policy "learn first" edges are not decided by the checkers</td></tr>
@@ -599,7 +602,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <tr><td>Relations</td><td>Closed list. The thesis claim C2 tests three: <code>PREREQUISITE_OF</code> (pedagogical), <code>IS_A</code> and <code>USES</code> (domain). <code>DEFINES</code> and <code>MENTIONS</code> link passages to concepts; <code>HAS_LECTURE</code> and <code>COVERS</code> come from the course structure, not from extraction.</td></tr>
     <tr><td>Evidence</td><td>One assertion per (source, relation, target); one or more evidence records, each with <code>passage_id</code>, <code>passage_hash</code>, quote, reading (stated or implied), extractor, checker scores. No evidence, no edge (rule R6).</td></tr>
     <tr><td>Entity resolution</td><td>Normalise → alias table → candidates (rapidfuzz + bge-m3) → LLM judge on the uncertain band (KGGen-style clusters) → review queue → reversible merge log.</td></tr>
-    <tr><td>Gate</td><td>Each evidence record is scored: "supported" when both checkers give at least 0.5 to the claim against the whole chunk. An IS_A or USES assertion is accepted when at least one of its records is supported; review when the checkers disagree; rejected when all its records fail both. PREREQUISITE_OF: scored but, by policy, left for instructor review.</td></tr>
+    <tr><td>Gate</td><td>Each evidence record is scored: "supported" when both checkers give at least 0.5 to the claim against the whole chunk. An IS_A or USES assertion is accepted when at least one of its records is supported; review when the checkers disagree; rejected when all its records fail both. PREREQUISITE_OF: scored but, by policy, kept as a proposal in this pilot. In the full build a prerequisite judge decides these edges (see <a href="#full">Full build</a>).</td></tr>
     <tr><td>Stores (target)</td><td>The master copy of the graph is plain files in git (done in this pilot); Neo4j is rebuilt from them (script written, not run). Passages, their text and their vectors go to Postgres + pgvector (not done here). Experiments are to read a hashed snapshot, never a live database.</td></tr>
     <tr><td>Compute</td><td>Embedding and checkers run on free machines (Kaggle here) with pinned code; course text uploaded there goes into private datasets that are deleted after download (checked by absence in this run). The LLM calls send the text to the API providers.</td></tr>
   </tbody></table>
@@ -607,7 +610,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <div class="ev"><b class="h">measured in this run</b>
     <ul>
       <li>Alias matching alone linked <span data-n="s3.mentions_linked_by_alias"></span> of <span data-n="s3.raw_mentions"></span> mentions to the seed vocabulary. The rest needed candidates and a judge.</li>
-      <li>The judge (<span data-m="judge"></span>) proposed <span data-n="s3.merged_by_judge"></span> merges into vocabulary concepts and <span data-n="s3.clustered"></span> clusters. An LLM review (no human) read each sentence and rejected <span data-n="s3.review_rejected"></span> of these <span id="n-judged-merges"></span>. Neither side was checked by a person. Rejections it made include: an adjective ("quadratic" → quadratic programming), an error estimate into a method ("validation error" → validation), and one answer whose reason named a different target than its choice.</li>
+      <li>The judge (<span data-m="judge"></span>) proposed <span data-n="s3.merged_by_judge"></span> merges into vocabulary concepts and <span data-n="s3.clustered"></span> clusters. An LLM review read each sentence and rejected <span data-n="s3.review_rejected"></span> of these <span id="n-judged-merges"></span>. Rejections it made include: an adjective ("quadratic" → quadratic programming), an error estimate into a method ("validation error" → validation), and one answer whose reason named a different target than its choice.</li>
       <li>The extractor labelled <span data-n="s2.by_reading.implied"></span> of <span data-n="s2.edges_kept"></span> edges "implied" and <span data-n="s2.by_reading.stated"></span> "stated". These are its own labels, not checked.</li>
       <li>The funnel: <span data-n="s2.edges_kept"></span> kept edges → <span data-n="s5.evidence_records"></span> evidence records after entity resolution (edges to dropped names and loops removed) → <span data-n="s5.assertions"></span> distinct assertions → <span data-n="s5.assertion_status.accepted-by-gate"></span> accepted by the gate.</li>
       <li>Both checkers scored <span data-n="s4.pairs"></span> evidence records: HHEM put <span data-n="s4.hhem_supported"></span> at 0.5 or above, MiniCheck only <span data-n="s4.minicheck_supported"></span>. Of the 319 IS_A and USES records, <span data-n="s4.gate.supported"></span> passed both, <span data-n="s4.gate.rejected"></span> failed both and <span data-n="s4.gate.checkers disagree"></span> had different decisions; the other 71 (PREREQUISITE_OF) went to review whatever their scores.</li>
@@ -619,10 +622,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <ul>
       <li>The judge should never merge without review in the thesis graph, or its "same" band needs a higher bar (both scores high, and the same kind). A gold set of mention pairs must measure this before the freeze.</li>
       <li>The gate needs calibration on our own text: a threshold of 0.5 is the checkers' default, not a value tuned for lecture speech, and the two checkers disagree on many edges. The gold triples will give a precision-recall curve per relation and show which checker to trust.</li>
-      <li>Hypothesis: "learn this first" is seldom said in a lecture (here it may also be missed by extraction, chunk borders or captions). If it holds, prerequisite edges must come mostly from course structure, syllabi and human review; the plan is to freeze them by hash before the test questions are written, and to write those questions independently.</li>
+      <li><span class="bd dsg">superseded</span> Pilot hypothesis: "learn this first" is seldom said in a lecture, so prerequisite edges must come mostly from course structure, syllabi and human review. <b>What the full build did instead:</b> the extractor proposed 2,519 prerequisite edges over nine sources; an Opus prerequisite judge checked every candidate, and two blind re-judges under rubric v2 restored 66 drops. The edges were frozen by hash (S<sub>G</sub> <code>7f28a3a3</code>) before the test questions were written, as planned.</li>
       <li>The strict v1 rule gives no answer. A walk that may also use gate-accepted <code>USES</code> returns the kernel function, but "uses" is not "must be learned first": it is a related concept, not a verified prerequisite. Whether such a rule belongs in the ontology is an open design question.</li>
     </ul></div>
-  <p class="small muted">Not done in this pilot: a human gold set, a second rater, the Postgres load, the Neo4j load, the slides and the book. This is two lectures of eighteen.</p>
+  <p class="small muted">Not done in this pilot: the Postgres load, the Neo4j load, the slides and the book. This is two lectures of eighteen.</p>
 </section>
 
 <section class="step" id="quiz" data-nav="Quiz"><div class="kicker">Quiz</div>
@@ -637,11 +640,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <button>Merge, and add a flag.</button>
     <button>Keep two nodes; the merge log keeps the judge's answer and the review's reason.</button></div>
     <p class="fb small" hidden>A flag does not undo a false identity. When in doubt, keep apart; the log makes the decision visible and reversible.</p></div>
-  <div class="q" data-key="0"><p><b>3.</b> In our design, why does a person, not the entailment gate, decide <code>PREREQUISITE_OF</code> edges?</p><div class="opts">
-    <button>"Learn A before B" is a teaching judgement about a course; a passage-support score is not designed to decide it, so we chose not to let the checkers decide.</button>
-    <button>The checkers cannot read the word "prerequisite".</button>
-    <button>Prerequisite edges are always correct.</button></div>
-    <p class="fb small" hidden>It is a policy from our NLI note, not a measured limit: the checkers did score these edges here, but their scores were not used to accept or reject them.</p></div>
+  <div class="q" data-key="1"><p><b>3.</b> In the full build, what decides whether a <code>PREREQUISITE_OF</code> edge is loaded?</p><div class="opts">
+    <button>The entailment gate, like USES and IS_A.</button>
+    <button>An LLM prerequisite judge reads each edge with its passages; a dropped edge comes back only when two blind re-judges both keep it.</button>
+    <button>Nothing: every extracted prerequisite edge is loaded.</button></div>
+    <p class="fb small" hidden>"Learn A before B" is a teaching judgement; a passage-support score is not built to decide it, so these edges skip the gate (a policy, not a measured limit). Opus judged all 1,992 candidates and dropped 331; under rubric v2 two blind re-judges restored 66 (load policy 3).</p></div>
   <div class="q" data-key="2"><p><b>4.</b> Where is the master copy of the graph?</p><div class="opts">
     <button>In Neo4j; files are exported from it.</button>
     <button>In the LLM's answers.</button>
@@ -661,7 +664,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <h3>What on this page is real, computed or ours</h3>
   <div class="ev"><b class="h">real data</b>The transcripts (CS 156 captions), the chunks of the batch pipeline, every LLM answer (cached as raw JSON), the bge-m3 vectors, the two checkers' scores.</div>
   <div class="ev"><b class="h">implementation consistency (not semantic checking)</b>The graph on the page is recomputed in the browser from the evidence and the merge mapping; <code>scripts/check_core.mjs</code> checks that it equals the Python stage files (it passes). This shows the two programs agree, not that the concepts or edges are right.</div>
-  <div class="ours"><b class="h">ours (modelling)</b>The seed vocabulary of 32 concepts, the claim templates, the 0.5 threshold, the score bands, the walk rule B, and the review of merges (an LLM agent review, not a human rater).</div>
+  <div class="ours"><b class="h">ours (modelling)</b>The seed vocabulary of 32 concepts, the claim templates, the 0.5 threshold, the score bands, the walk rule B, and the review of merges (an LLM agent review).</div>
 </section>
 </main>
 <script id="kg-core">/* kg-core.js: the parts of the pipeline that the page recomputes in the browser (tested by scripts/check_core.mjs against the
@@ -1427,7 +1430,7 @@ window.KGFactory = function (P) {
     function () { return { inp: N(C.s3.distinct_keys) + ' distinct names (' + N(C.s3.raw_mentions) + ' mentions)', out: N(C.s5.nodes) + ' concepts', tool: 'embedder ' + clean(M.embedder) + '; judge ' + clean(M.judge), note: N(C.s3.review_rejected) + ' proposed merges were undone on the review desk (' + N(C.s3.review_accepted) + ' kept).' }; },
     function () {
       var both = C.s4.both_scored;
-      return { inp: N(C.s5.assertions) + ' assertions, each with its evidence', out: Object.keys(C.s5.assertion_status).map(function (k) { return N(C.s5.assertion_status[k]) + ' ' + k; }).join(', '), tool: 'two checkers: ' + nli.map(clean).join(' and '), note: 'A parcel passes only when both lamps light. HHEM supports ' + N(C.s4.hhem_supported) + ' of ' + N(C.s4.pairs) + ' pairs; MiniCheck supports ' + N(C.s4.minicheck_supported) + '; ' + N(both) + ' scored by both' + (both ? '' : ' (MiniCheck has not scored yet, so no parcel counts as checked)') + '. PREREQUISITE_OF goes to human review (' + N(C.s5.by_relation.PREREQUISITE_OF) + ').' };
+      return { inp: N(C.s5.assertions) + ' assertions, each with its evidence', out: Object.keys(C.s5.assertion_status).map(function (k) { return N(C.s5.assertion_status[k]) + ' ' + k; }).join(', '), tool: 'two checkers: ' + nli.map(clean).join(' and '), note: 'A parcel passes only when both lamps light. HHEM supports ' + N(C.s4.hhem_supported) + ' of ' + N(C.s4.pairs) + ' pairs; MiniCheck supports ' + N(C.s4.minicheck_supported) + '; ' + N(both) + ' scored by both' + (both ? '' : ' (MiniCheck has not scored yet, so no parcel counts as checked)') + '. PREREQUISITE_OF edges stay proposals (' + N(C.s5.by_relation.PREREQUISITE_OF) + ').' };
     },
     function () { return { inp: N(C.s5.nodes) + ' nodes, ' + N(C.s5.assertions) + ' assertions, ' + N(C.s5.evidence_records) + ' evidence records', out: '3 files in git: nodes.csv, assertions.csv, evidence.jsonl', tool: 'Neo4j, rebuilt from the files', note: 'The files are the truth; the database can be thrown away and rebuilt.' }; },
     function () { return { inp: Q.question, out: 'rule B returns ' + N(Q.rule_B.answer.length) + ' concepts (rule A returns ' + N(Q.rule_A.answer.length) + ')', tool: 'a graph walk over the files, no model', note: 'The lamp walks from "' + Q.start.replace(/-/g, ' ') + '" backwards along the prerequisite paths.' }; }
@@ -1438,9 +1441,9 @@ window.KGFactory = function (P) {
 
   /* ---------- page ---------- */
   var css = '#factory-fig{position:relative}#factory-fig *{box-sizing:border-box}' +
-    '#factory-fig .kf-card{background:var(--panel,#121620);border:1px solid var(--line,#242B38);border-radius:14px;overflow:hidden}' +
+    '#factory-fig .kf-card{background:var(--panel,#121620);border:1px solid var(--line,#242B38);border-radius:12px;overflow:hidden}' +
     '#factory-fig .kf-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:12px 16px 0;font-family:var(--body,Inter,system-ui,sans-serif)}' +
-    '#factory-fig .kf-fig{font:600 11px var(--mono,ui-monospace,monospace);color:var(--faint,#68707F);letter-spacing:.08em;text-transform:uppercase}' +
+    '#factory-fig .kf-fig{font:600 12px var(--mono,ui-monospace,monospace);color:var(--faint,#68707F);letter-spacing:.08em;text-transform:uppercase}' +
     '#factory-fig .kf-title{font-weight:650;font-size:15px;color:var(--text,#E9ECF2)}' +
     '#factory-fig svg.kf-svg{display:block;width:100%;height:auto;max-width:100%}' +
     '#factory-fig .kf-t{font-family:var(--body,Inter,system-ui,sans-serif);pointer-events:none;user-select:none}' +
@@ -1455,7 +1458,7 @@ window.KGFactory = function (P) {
     '#factory-fig .kf-lbl{fill:var(--muted,#98A0B0);font-weight:650}' +
     '#factory-fig .kf-ro{padding:10px 16px 12px;border-top:1px solid var(--line,#242B38);background:var(--panel2,#171C28);font-family:var(--body,Inter,system-ui,sans-serif);min-height:112px}' +
     '#factory-fig .kf-h{display:flex;align-items:center;gap:8px;margin-bottom:6px;color:var(--text,#E9ECF2);font-weight:650;font-size:14px}' +
-    '#factory-fig .kf-h i{font:700 11px var(--mono,monospace);font-style:normal;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--kfc,#3CC7B4);color:#0B0D12}' +
+    '#factory-fig .kf-h i{font:700 12px var(--mono,monospace);font-style:normal;width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--kfc,#3CC7B4);color:#0B0D12}' +
     '#factory-fig .kf-flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;font-size:14px;color:var(--text,#E9ECF2);margin-bottom:6px}' +
     '#factory-fig .kf-flow i{font-style:normal;color:var(--faint,#68707F)}' +
     '#factory-fig .kf-flow span{background:var(--panel,#121620);border:1px solid var(--line,#242B38);border-radius:8px;padding:2px 8px}' +
@@ -1463,15 +1466,15 @@ window.KGFactory = function (P) {
     '#factory-fig .kf-note{font-size:13px;line-height:1.5;color:var(--muted,#98A0B0)}' +
     '#factory-fig .kf-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 16px 12px;font-size:12px;color:var(--faint,#68707F);font-family:var(--body,Inter,system-ui,sans-serif);border-top:1px solid var(--line,#242B38)}' +
     '#factory-fig .kf-stage{position:relative}#factory-fig .kf-tags{position:absolute;inset:0;pointer-events:none}' +
-    '#factory-fig .kf-tag{position:absolute;transform:translate(-50%,-100%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;pointer-events:auto;cursor:pointer;font:600 13px/1 var(--body,Inter,system-ui,sans-serif);color:var(--text,#E9ECF2);background:var(--panel2,#171C28);border:1px solid var(--line,#242B38);border-radius:999px;padding:3px 10px 3px 3px;min-height:0;box-shadow:0 2px 8px rgba(0,0,0,.35)}' +
-    '#factory-fig .kf-tag i{font:700 11px var(--mono,monospace);font-style:normal;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--panel,#121620);color:var(--muted,#98A0B0);border:1px solid var(--kfc)}' +
+    '#factory-fig .kf-tag{position:absolute;transform:translate(-50%,-100%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;pointer-events:auto;cursor:pointer;font:600 13px/1 var(--body,Inter,system-ui,sans-serif);color:var(--text,#E9ECF2);background:var(--panel2,#171C28);border:1px solid var(--line,#242B38);border-radius:8px;padding:3px 10px 3px 3px;min-height:24px;min-width:24px;box-shadow:0 2px 8px rgba(0,0,0,.35)}' +
+    '#factory-fig .kf-tag i{font:700 12px var(--mono,monospace);font-style:normal;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--panel,#121620);color:var(--muted,#98A0B0);border:1px solid var(--kfc)}' +
     '#factory-fig .kf-tag.on,#factory-fig .kf-tag:hover{border-color:var(--kfc)}#factory-fig .kf-tag.on i{background:var(--kfc);color:#0B0D12}' +
     '#factory-fig .kf-tag:focus-visible{outline:2px solid var(--blue,#7C9CFF);outline-offset:2px}' +
-    '#factory-fig .kf-tag small{font-weight:500;font-size:11.5px;color:var(--muted,#98A0B0);margin-left:4px}#factory-fig .kf-keys{display:none}#factory-fig.kf-narrow .kf-keys{display:flex;flex-wrap:wrap;gap:4px 12px;padding:0 16px 8px;font:12.5px var(--body,Inter,system-ui,sans-serif);color:var(--text,#E9ECF2)}#factory-fig .kf-keys b{font:700 11px var(--mono,monospace);color:var(--kfc);margin-right:4px}' +
-    '#factory-fig .kf-sub{font-weight:500;font-size:11.5px;color:var(--muted,#98A0B0);padding:3px 8px;cursor:default;box-shadow:none;background:rgba(11,13,18,.72)}' +
+    '#factory-fig .kf-tag small{font-weight:500;font-size:12px;color:var(--muted,#98A0B0);margin-left:4px}#factory-fig .kf-keys{display:none}#factory-fig.kf-narrow .kf-keys{display:flex;flex-wrap:wrap;gap:4px 12px;padding:0 16px 8px;font:12.5px var(--body,Inter,system-ui,sans-serif);color:var(--text,#E9ECF2)}#factory-fig .kf-keys b{font:700 12px var(--mono,monospace);color:var(--kfc);margin-right:4px}' +
+    '#factory-fig .kf-sub{font-weight:500;font-size:12px;color:var(--muted,#98A0B0);padding:3px 8px;cursor:default;box-shadow:none;background:rgba(11,13,18,.72)}' +
     '#factory-fig.kf-narrow .kf-tag{padding:1px;gap:0}#factory-fig.kf-narrow .kf-tag span{display:none}#factory-fig.kf-narrow .kf-sub{display:none}' +
     '#factory-fig .kf-legend{display:flex;flex-wrap:wrap;gap:4px 16px;padding:8px 16px 10px;font:12px var(--body,Inter,system-ui,sans-serif);color:var(--muted,#98A0B0)}' +
-    '#factory-fig .kf-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}' +
+    '#factory-fig .kf-legend i{display:inline-block;width:10px;height:10px;border-radius:8px;margin-right:6px;vertical-align:-1px}' +
     '#factory-fig .kf-legend span:first-child::before{content:"Parcels on the belt:";margin-right:10px;color:var(--faint,#68707F)}' +
     '@media (max-width:520px){#factory-fig .kf-ro{min-height:150px}#factory-fig .kf-title{font-size:14px}}';
 
@@ -1608,7 +1611,7 @@ window.KGFactory = function (P) {
         '<div class="card"><div class="hd"><b>2 · Extraction</b><span>' + esc(P.meta.extractor) + '</span></div><p><code>' + esc(e.sn) + '</code> <span class="tag">' + esc(a.r) + '</span> <code>' + esc(e.tn) + '</code> · reading: ' + esc(e.rd) + ' · quote: "' + esc(e.q) + '"</p></div>' +
         '<div class="card"><div class="hd"><b>3 · Entity resolution</b></div><p>Names that became <b>' + esc(lab(a.s)) + '</b>:<br>' + names(a.s) + '</p><p>Names that became <b>' + esc(lab(a.t)) + '</b>:<br>' + names(a.t) + '</p></div>' +
         '<div class="card"><div class="hd"><b>4 · Entailment gate</b></div><p>Claim: "' + esc(e.h) + '" · HHEM ' + (e.hh == null ? '-' : e.hh.toFixed(3)) + ' · MiniCheck ' + (e.mc == null ? '-' : e.mc.toFixed(3)) + ' → <b>' + esc(e.g) + '</b>. The assertion has ' + a.ev.length + ' evidence record' + (a.ev.length === 1 ? '' : 's') + ' and status <b>' + esc(a.st) + '</b>.</p></div>' +
-        '<div class="card"><div class="hd"><b>5 · Graph files</b></div><p><code>' + esc([a.id, a.s, a.r, a.t, a.st, 'unreviewed', a.fl.join('|'), a.ev.length].join(',')) + '</code> in assertions.csv; the quote and the scores in evidence.jsonl.</p></div>' +
+        '<div class="card"><div class="hd"><b>5 · Graph files</b></div><p><code>' + esc([a.id, a.s, a.r, a.t, a.st, a.fl.join('|'), a.ev.length].join(',')) + '</code> in assertions.csv; the quote and the scores in evidence.jsonl.</p></div>' +
         '<div class="card"><div class="hd"><b>6 · Question</b></div><p>"What must I understand before the kernel trick?" Strict rule (PREREQUISITE_OF only): ' + (P.cq.rule_A.answer.length ? P.cq.rule_A.answer.map(function (x) { return esc(x.label); }).join(', ') : '<b>no answer</b>') + '. Wider rule (also what it USES): ' + (B || 'no answer') + ' (a related concept, not a verified prerequisite).</p></div>';
     }
     var t = document.getElementById('src-tbl');
@@ -1636,7 +1639,7 @@ window.KGFactory = function (P) {
   function fmt(v) { return typeof v === 'number' ? (Math.abs(v) < 1 && v !== 0 ? v.toFixed(3) : v.toLocaleString('en')) : v; }
   function pct(a, b) { return b ? Math.round(100 * a / b) + '%' : '-'; }
   var REL_COL = { USES: 'var(--blue)', IS_A: 'var(--teal)', PREREQUISITE_OF: 'var(--amber)' };
-  var ST_LABEL = { 'accepted-by-gate': 'accepted by the gate', review: 'review: checkers disagree', rejected: 'rejected by the gate', proposed: 'proposed: needs instructor review' };
+  var ST_LABEL = { 'accepted-by-gate': 'accepted by the gate', review: 'review: checkers disagree', rejected: 'rejected by the gate', proposed: 'proposed: not decided yet' };
 
   /* ------------------------------------------------------------ state */
   var S = { stage: 1, chunk: 'L15-c13', overrides: {}, showRejected: false, showReview: true, rel: { USES: true, IS_A: true, PREREQUISITE_OF: true },
@@ -1730,7 +1733,7 @@ window.KGFactory = function (P) {
     var n = G.nodes[id]; if (!n) return '';
     var rows = n.keys.slice(0, 8).map(function (k) {
       var e = P.er[k] || {}, ov = S.overrides[k] !== undefined, rev = P.review.verdicts.find(function (v) { return v.mention === k; });
-      var how = ov ? 'changed by you on this page' : rev && rev.verdict === 'reject' ? 'judge merged it, the review undid it' : e.method;
+      var how = ov ? 'changed by you on this page' : rev && rev.verdict === 'reject' ? 'judge merged it, the review undid it' : String(e.method || '').replace(/ until a human decides$/, '');
       return '<span class="tag">' + esc(k) + '</span> <span class="small faint">' + esc(how) + (e.best_emb != null ? ' · bge-m3 ' + e.best_emb + ' · fuzzy ' + e.best_fuzzy : '') + '</span>';
     });
     return '<p class="small"><b>' + esc(n.label) + '</b> <span class="faint">' + esc(n.status === 'vocabulary' ? 'vocabulary concept' : 'candidate concept') + '</span><br>' + rows.join('<br>') + (n.keys.length > 8 ? '<br><span class="faint small">+ ' + (n.keys.length - 8) + ' more names</span>' : '') + '</p>';
@@ -1793,7 +1796,7 @@ window.KGFactory = function (P) {
 
   function stage1(box) {
     var c = P.counts.s1;
-    box.innerHTML = '<p>The batch pipeline cut each lecture transcript into chunks of at most 1,600 characters, with at most 200 characters of overlap, inside 5-minute windows. ' +
+    box.innerHTML = '<p>The earlier pilot batch rule cut each lecture transcript into chunks of at most 1,600 characters, with at most 200 characters of overlap, inside 5-minute windows (the thesis units are table-of-contents sections of at most 1,024 bge-m3 tokens). ' +
       'The two lectures give <b>' + c.chunks + ' chunks</b> (' + c.by_lecture.L14 + ' from Lecture 14, ' + c.by_lecture.L15 + ' from Lecture 15). Each chunk is a passage with an id; every edge later points back to one.</p>' +
       '<p class="small muted">One square per chunk. The colour shows how many edges the extractor kept from it. Click a square to read it.</p><div id="chunk-strip"></div><div id="chunk-read"></div>';
     var strip = $('#chunk-strip', box);
@@ -1851,8 +1854,8 @@ window.KGFactory = function (P) {
       '<li><b>' + c.judged + '</b> go to an LLM judge (' + esc(P.meta.judge) + ', another model family than the extractor) in ' + c.judge_calls + ' batched calls. It chooses same / narrower / broader / related / none / not a concept: ' +
         Object.keys(c.decisions).map(function (k) { return c.decisions[k] + ' ' + k; }).join(', ') + '.</li>' +
       '<li><b>' + c.review_queue + '</b> go to the review queue, where the rules see a conflict.</li>' +
-      '<li>Every merge goes to the merge log. An LLM review (no human) read each judge merge with its sentence and rejected <b>' + c.review_rejected + ' of ' + (c.review_rejected + c.review_accepted) + '</b>. Neither the judge nor the review was checked by a person.</li></ol>' +
-      '<p class="small muted">The review here is an agent review (' + esc(P.meta.reviewer) + '). Click "undo" to split a merge, or "apply" to see what the judge wanted. The graph below changes.</p><div id="mg"></div>';
+      '<li>Every merge goes to the merge log. An LLM review read each judge merge with its sentence and rejected <b>' + c.review_rejected + ' of ' + (c.review_rejected + c.review_accepted) + '</b>.</li></ol>' +
+      '<p class="small muted">The review here is an agent review: Claude Opus read each sentence. Click "undo" to split a merge, or "apply" to see what the judge wanted. The graph below changes.</p><div id="mg"></div>';
     var mg = $('#mg', box);
     function draw() {
       mg.innerHTML = '<table class="tbl"><thead><tr><th>mention</th><th>judge merged it into</th><th>review</th><th></th></tr></thead><tbody>' + P.merges.map(function (m, i) {
@@ -1881,7 +1884,7 @@ window.KGFactory = function (P) {
     var c = P.counts.s4;
     box.innerHTML = '<p>Each edge becomes a short claim (' + Object.keys(P.meta.templates).map(function (k) { return '<code>' + esc(P.meta.templates[k]) + '</code>'; }).join(' ') + ') and two small checkers read it against the whole chunk: ' +
       esc(P.meta.nli[0]) + ' and ' + esc(P.meta.nli[1]) + ', on a Kaggle CPU. An IS_A or USES edge passes when <b>both</b> say "supported" (score at least ' + P.meta.threshold + '). ' +
-      'PREREQUISITE_OF edges are scored but, by our policy, not decided by the checkers: "learn this first" is a teaching judgement, so they wait for a human. The gate estimates whether the chunk supports the claim; it does not prove the claim true.</p>' +
+      'PREREQUISITE_OF edges are scored but, by our policy, not decided by the checkers: "learn this first" is a teaching judgement, so they stay proposals in this pilot. The gate estimates whether the chunk supports the claim; it does not prove the claim true.</p>' +
       '<table class="tbl"><tbody><tr><td>claims scored</td><td class="t">' + c.pairs + '</td></tr><tr><td>HHEM says supported</td><td class="t">' + c.hhem_supported + ' (' + pct(c.hhem_supported, c.pairs) + ')</td></tr>' +
       '<tr><td>MiniCheck says supported</td><td class="t">' + c.minicheck_supported + ' of ' + c.both_scored + ' (' + pct(c.minicheck_supported, c.both_scored) + ')</td></tr>' +
       '<tr><td>gate result per evidence record</td><td class="t">' + Object.keys(c.gate).map(function (k) { return c.gate[k] + ' ' + k; }).join('<br>') + '</td></tr></tbody></table>' +
@@ -1906,7 +1909,7 @@ window.KGFactory = function (P) {
     var c = P.counts.s5;
     var nodesCsv = 'id,label,kind,status,aliases\n' + P.nodes.slice(0, 4).map(function (n) { return [n.id, n.label, n.kind, n.status, n.aliases.slice(0, 3).join('|')].join(','); }).join('\n');
     var a = P.assertions.find(function (x) { return x.s === 'kernel-trick' && x.r === 'USES'; }) || P.assertions[0];
-    var asCsv = 'assertion_id,source,relation,target,status,reviewed,flags,n_evidence\n' + [a.id, a.s, a.r, a.t, a.st, 'unreviewed', a.fl.join('|'), a.ev.length].join(',');
+    var asCsv = 'assertion_id,source,relation,target,status,flags,n_evidence\n' + [a.id, a.s, a.r, a.t, a.st, a.fl.join('|'), a.ev.length].join(',');
     var e = P.evidence[a.ev[0]];
     box.innerHTML = '<p>The master copy of the graph is <b>plain files in git</b>: <code>nodes.csv</code>, <code>assertions.csv</code>, <code>evidence.jsonl</code>, <code>passages.csv</code>, <code>passage_edges.csv</code>, <code>structural.csv</code>, <code>merges.jsonl</code>. ' +
       'The files keep every assertion with its status (accepted, proposed, review, rejected). A snapshot hash over these files names this exact graph: <code>' + esc(P.meta.snapshot) + '</code>. In the target design Neo4j is rebuilt from the files by an idempotent load script, passage text and vectors live in Postgres + pgvector, and a passage is only a stub node (id, hash) in the graph.</p>' +
@@ -2008,7 +2011,7 @@ window.KGFactory = function (P) {
     var frozen = F.status === 'frozen';
     var st = $('#f-status');
     if (st) st.innerHTML = frozen
-      ? '<b>Frozen.</b> These are the numbers of the frozen thesis graph' + (F.as_of ? ' (as of ' + esc(F.as_of) + ')' : '') + '.'
+      ? '<b>Frozen.</b> These are the numbers of the frozen thesis graph (S<sub>G</sub> <code>' + esc(String(Z.s_g || '').slice(0, 8)) + '</code>, after the prerequisite judge and the restore).'
       : '<b>Before the freeze' + (F.as_of ? ', as of ' + esc(F.as_of) : '') + '.</b> The extraction, the rule checks and the gate are finished; the last merges are still running. The graph counts and the snapshot hash are filled in when the graph is frozen, so these numbers can still change.';
     put('f-mentions', X.mentions); put('f-groups', E.name_groups); put('f-maxtok', G.max_premise_tokens);
     put('f-units', X.units); put('f-extractor', X.extractor); put('f-m2', X.mentions); put('f-kept', R.kept);
@@ -2033,7 +2036,7 @@ window.KGFactory = function (P) {
   }).catch(function (e) { var st = $('#f-status'); if (st) st.textContent = 'Could not load the full-build numbers (' + e.message + ').'; });
 })();
 </script>
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 </div>
 <script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
 // Two modes, decided from the page's real content edge (never from a fixed width):

@@ -71,7 +71,7 @@
     const K = root.DemoKit;
     const st = { m: 'corr' };
     const shell = K.shell(el, 'Real example: three arms, accuracy against real cost',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges, no human labels: the intervals are wide. Cost = answer model only (' + D.m.answer_model + '), from real token usage. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so cost differences are partly the context size and B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges: the intervals are wide. Cost = answer model only (' + D.m.answer_model + '), from real token usage. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so cost differences are partly the context size and B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const mSel = K.el('select', { 'aria-label': 'accuracy measure', style: 'width:100%;max-width:100%;box-sizing:border-box' }, Object.keys(MEASURES).map(k => opt(k, MEASURES[k][0])));
     mSel.addEventListener('change', () => { st.m = mSel.value; render(); });

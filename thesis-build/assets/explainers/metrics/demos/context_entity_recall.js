@@ -91,7 +91,7 @@
     const K = root.DemoKit;
     const st = { arm: 'B', q: D.answerable[0] };
     const shell = K.shell(el, 'Real example: do the retrieved passages mention the entities of the gold answer?',
-      'Scale: n = 9 answerable questions (the 3 unanswerable ones have no entities), one run, demo scale, no human labels. Entities are found by OUR rule, not by an LLM as in Ragas: terms of the graph vocabulary (node names and aliases of graph.json), capitalised words or acronyms, and numbers of 3+ digits. A reference entity counts as found when its string occurs in the retrieved passages (case-insensitive, whole word). Arm A (no retrieval) has no context: n/a. Arm C gets about 40% more context than B.');
+      'Scale: n = 9 answerable questions (the 3 unanswerable ones have no entities), one run, demo scale. Entities are found by OUR rule, not by an LLM as in Ragas: terms of the graph vocabulary (node names and aliases of graph.json), capitalised words or acronyms, and numbers of 3+ digits. A reference entity counts as found when its string occurs in the retrieved passages (case-insensitive, whole word). Arm A (no retrieval) has no context: n/a. Arm C gets about 40% more context than B.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, D.answerable.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

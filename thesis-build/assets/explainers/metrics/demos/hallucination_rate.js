@@ -97,7 +97,7 @@
     const K = root.DemoKit;
     const st = { arm: 'B', q: null };
     const shell = K.shell(el, 'Real example: hallucination rate on real answers and a real judge',
-      'Scale: n = 12 questions (9 answerable, 3 unanswerable that arms B and C refuse); judge A labelled two meta-claims in q09/B contradicted although the answer honestly says the year is missing, so that answer counts as flagged, one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Response level = share of non-refused answers with at least one unsupported or contradicted claim; claim level = flagged claims / all claims. In arm A (no retrieval) "unsupported" means not in the corpus sample, not necessarily false. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (9 answerable, 3 unanswerable that arms B and C refuse); judge A labelled two meta-claims in q09/B contradicted although the answer honestly says the year is missing, so that answer counts as flagged, one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '); wide intervals. A demo, not a benchmark. Response level = share of non-refused answers with at least one unsupported or contradicted claim; claim level = flagged claims / all claims. In arm A (no retrieval) "unsupported" means not in the corpus sample, not necessarily false. Arm C gets about 40% more context than B, so B vs C does not isolate the graph.');
     const res = K.resultBox();
     const table = K.el('div', { class: 'formula', style: 'white-space:pre-wrap', 'aria-live': 'polite' });
     const armBar = K.el('div', { class: 'row', role: 'group', 'aria-label': 'arm' });

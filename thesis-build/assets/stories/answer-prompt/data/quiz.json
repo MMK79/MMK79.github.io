@@ -1,0 +1,49 @@
+{
+ "about": "Quiz of the Answer Prompt Choice lesson. a = index of the right option (0-based). Answer key: B A C A (as letters).",
+ "questions": [
+  {
+   "q": "Why did P0's abstain rule fit derivation exercises badly?",
+   "o": [
+    "The passages were too short.",
+    "The final result of a derivation is never written in a passage, so 'the passages do not contain the answer' is almost always true.",
+    "The model could not read citation markers.",
+    "P0 had no abstain rule."
+   ],
+   "a": 1,
+   "f": "A proof or derivation is built from facts; its result is not printed in the course text. P1 and P2 ask instead whether a needed fact is missing."
+  },
+  {
+   "q": "What did the selector use to choose among the prompts?",
+   "o": [
+    "Abstention when gold evidence is in the context (A_present), after a citation-validity check (CV ≥ 0.90).",
+    "Judged accuracy of each prompt on the dev items.",
+    "The H − Hc difference.",
+    "The length of the answers."
+   ],
+   "a": 0,
+   "f": "No judge ran, and no accuracy or H − Hc number was computed. The rule reads abstentions, gold presence and citation markers only."
+  },
+  {
+   "q": "Which arms answer with P2?",
+   "o": [
+    "Only H.",
+    "All five arms, L included.",
+    "The retrieval arms R, H, H-collapsed and G; L has its own closed-book prompt.",
+    "Only R and H, because the dev runs used them."
+   ],
+   "a": 2,
+   "f": "P2 became the shared SYSTEM prompt of the retrieval arms. L answers from its own knowledge under its own prompt."
+  },
+  {
+   "q": "Why must the prompt be fixed and hashed before the main run?",
+   "o": [
+    "So no choice can respond to a main-set outcome: the prompt is part of what the test compares under.",
+    "Because a hashed prompt makes the model deterministic.",
+    "Because Claude needs a fixed prompt to run.",
+    "To make the answers shorter."
+   ],
+   "a": 0,
+   "f": "A choice made after seeing results can drift toward a wanted outcome. Hashing it before the data it governs closes that path. Hashing does not make the model deterministic: that is why each answer is generated three times."
+  }
+ ]
+}

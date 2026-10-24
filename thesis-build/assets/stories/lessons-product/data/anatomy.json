@@ -1,0 +1,171 @@
+{
+ "what": "Touch B: the blocks of one lesson (lessons-site lesson-model/1) and of one book companion (design note), with a real example each. Text is ours, from the cited sources.",
+ "views": [
+  {
+   "id": "lesson",
+   "label": "Lesson, one per topic",
+   "example": "VC dimension (a pilot lesson)",
+   "blocks": [
+    {
+     "id": "video",
+     "kind": "video",
+     "title": "Watch: a short video",
+     "holds": "A Manim animation of the one idea, rendered off the Mac. Final videos run 36 to 48 seconds, without sound.",
+     "example": "The VC-dimension video was rendered again so that it says the curve is consistent with the bound, the same words as the lesson text.",
+     "reach": "The app plays the local video file with its poster. A lesson without its file shows \"video pending\".",
+     "status": "built",
+     "claims": [
+      "c27",
+      "c30"
+     ]
+    },
+    {
+     "id": "interactive",
+     "kind": "interactive",
+     "title": "Touch: an interactive on real data",
+     "holds": "A small widget that changes one thing and shows one effect, on a real data set or the book's own example. A \"Show the code\" panel holds its JavaScript and the Python that made its data.",
+     "example": "Drag 3 to 5 points: the widget tests every dichotomy exactly, so you see m(4) = 14 < 16. A second view puts the CS 156 digits 1 vs 5 learning curve against the VC bound.",
+     "reach": "In the app the widget runs in a sandboxed frame: it cannot read the app's cookies, storage or page.",
+     "status": "built",
+     "claims": [
+      "c26",
+      "c30"
+     ]
+    },
+    {
+     "id": "compare",
+     "kind": "compare",
+     "title": "The same idea in each book",
+     "holds": "One row per book: notation, formula, viewpoint and assumptions, side by side. On a phone, one card per book.",
+     "example": "VC dimension is covered by 5 of the 9 books.",
+     "reach": "Formulas render with KaTeX. A click on a cell's source opens that book at the page.",
+     "status": "built",
+     "claims": [
+      "c25"
+     ]
+    },
+    {
+     "id": "explain",
+     "kind": "explain",
+     "title": "Explain, in layers",
+     "holds": "The idea at three depths. Each layer, takeaway and caveat says which page or lecture moment it comes from, or that it is our own.",
+     "example": "The growth function m(N) = N² − N + 2 had no page, so m(4) = 14 is now cited to LFD p.55 and the general formula is marked as our enumeration.",
+     "reach": "Select any text and press \"Ask about this\": it fills the chat box with the excerpt; it sends nothing until you send it.",
+     "status": "built",
+     "claims": [
+      "c28",
+      "c31"
+     ]
+    },
+    {
+     "id": "practice",
+     "kind": "practice",
+     "title": "Practice",
+     "holds": "Multiple-choice items with an explanation for each answer.",
+     "example": "One VC-dimension item had two right answers; the other-family check found it and the item was fixed.",
+     "reach": "The server scores the answers against the lesson's own items and keeps your best score. Bands: green at 80 % or more, yellow from 50 %, red under 50 %.",
+     "status": "built",
+     "claims": [
+      "c32",
+      "c29"
+     ]
+    },
+    {
+     "id": "sources",
+     "kind": "reading",
+     "title": "Sources, opened in place",
+     "holds": "Every book page and lecture moment the lesson uses.",
+     "example": "A book source opens the local PDF at the page with the cited section boxed; a lecture source plays the local video at the minute.",
+     "reach": "Learn-first links come from the knowledge graph only when at least 2 prerequisite edges agree; a single edge is a lighter \"see also\".",
+     "status": "built",
+     "claims": [
+      "c25",
+      "c19"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "companion",
+   "label": "Book companion, one per chapter",
+   "example": "Hands-On Large Language Models, chapter 3 (the pilot), pp. 73-107",
+   "blocks": [
+    {
+     "id": "map",
+     "kind": "map",
+     "title": "Reading map",
+     "holds": "A small graph: the chapter's sections, the key ideas they hold, and the prerequisites from earlier chapters or other books (dashed). A click on a node jumps to its block.",
+     "example": "The structure comes from the book's table of contents by script; a model drafts the idea-to-prerequisite edges.",
+     "reach": "You open the companion next to the book you are reading.",
+     "status": "built",
+     "claims": [
+      "c38",
+      "c50"
+     ]
+    },
+    {
+     "id": "idea",
+     "kind": "idea",
+     "title": "Key idea blocks: Watch, Touch, Check",
+     "holds": "4 to 10 per chapter. Each has a layered explanation, a Watch clip (Manim, 60 to 120 seconds), a Touch interactive, a Check quiz and \"Read it: pp. N-M\".",
+     "example": "The pilot chapter covers transformer internals, decoding, the KV cache and attention.",
+     "reach": "Each block points back to the book pages it explains.",
+     "status": "built",
+     "claims": [
+      "c38",
+      "c51"
+     ]
+    },
+    {
+     "id": "play",
+     "kind": "play",
+     "title": "Play: a sandbox",
+     "holds": "Sliders over a real formula, a small JavaScript model, a Python cell we wrote, or a \"build it\" board for architecture chapters. Some chapters get none.",
+     "example": "Process and architecture books get build-it boards more than formulas.",
+     "reach": "In the page; a Python cell is ready to run on Colab.",
+     "status": "built",
+     "claims": [
+      "c38"
+     ]
+    },
+    {
+     "id": "check",
+     "kind": "check",
+     "title": "Chapter check",
+     "holds": "5 to 10 questions over the whole chapter, each option with its explanation, each question naming the page its answer rests on.",
+     "example": "No question copies a book exercise.",
+     "reach": "In the page, in the browser.",
+     "status": "built",
+     "claims": [
+      "c38"
+     ]
+    },
+    {
+     "id": "csources",
+     "kind": "reading",
+     "title": "Sources and the copy rules",
+     "holds": "Every claim with its book page. The text is in our own words; a quote is at most 25 words, with its page.",
+     "example": "A script checks each claim's anchor on its page, and every 8-word run against the chapter; a model of another family reads claim and page.",
+     "reach": "Book text never leaves the machine.",
+     "status": "built",
+     "claims": [
+      "c39",
+      "c40"
+     ]
+    },
+    {
+     "id": "tutor",
+     "kind": "link",
+     "title": "Link to the tutor",
+     "holds": "The same unit ids and graph relations as the tutor: key ideas as Concept nodes, Check items as non-gold exercises, Watch and Touch as assets the tutor can attach to an answer.",
+     "example": "A wrong answer would tell the tutor which concept to revisit and which clip to show.",
+     "reach": "Planned: the companions are not yet wired into the tutor app.",
+     "status": "planned",
+     "claims": [
+      "c44"
+     ]
+    }
+   ]
+  }
+ ]
+}

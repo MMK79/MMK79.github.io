@@ -115,7 +115,7 @@
     const get = (q, a) => rows.find(r => r.qid === q && r.arm === a);
     const st = { o: 'correct', x: 'C', y: 'B', flip: {} };
     const shell = K.shell(el, 'Real example: McNemar test on 12 questions, two arms',
-      'Scale: n = 12 questions, one run, temperature 0, LLM judges (not humans), helper-written questions. X and Y are two of the three answer arms; each question is judged right or not for each arm. Arm C gets about 40% more context than B (620 vs 416 words), so C vs B does not isolate the graph. This shows how the test behaves at demo scale, not a benchmark.');
+      'Scale: n = 12 questions, one run, temperature 0, LLM judges, helper-written questions. X and Y are two of the three answer arms; each question is judged right or not for each arm. Arm C gets about 40% more context than B (620 vs 416 words), so C vs B does not isolate the graph. This shows how the test behaves at demo scale, not a benchmark.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const oSel = K.el('select', { 'aria-label': 'outcome', style: 'max-width:62vw' }, Object.keys(OUTCOMES).map(k => opt(k, OUTCOMES[k].label)));
     const xSel = K.el('select', { 'aria-label': 'arm X' }, Object.keys(ARMS).map(k => opt(k, ARMS[k])));

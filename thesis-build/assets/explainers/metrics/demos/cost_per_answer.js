@@ -76,7 +76,7 @@
     const qids = [...new Set(rows.map(r => r.qid))];
     const st = { arm: 'B', q: qids[0] };
     const shell = K.shell(el, 'Real example: tokens and cost of real answers',
-      'Scale: n = 12 questions, one run, temperature 0, no human labels. Only the answer model (' + D.m.answer_model + ') is costed: judge calls, embeddings and retrieval are not included. Latency is the wall-clock time of one non-streaming call from a shared machine, one run, indicative only. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions, one run, temperature 0. Only the answer model (' + D.m.answer_model + ') is costed: judge calls, embeddings and retrieval are not included. Latency is the wall-clock time of one non-streaming call from a shared machine, one run, indicative only. Arm C gets about 40% more context than B (620 vs 416 words) and starts from a different first-stage list, so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + (D.qs[id] ? ' (' + D.qs[id].type + '): ' + D.qs[id].question : ''))));

@@ -62,7 +62,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit;
     const shell = K.shell(el, 'Real example: does the judge change its mind when the answers swap places?',
-      'Scale: n = 36 pairs (3 arm pairs x 12 questions), each judged in both orders by one LLM judge (' + D.m.judge_A + '), temperature 0, no human labels. A demo, not a benchmark. Consistency says the judge is stable, not that it is right.');
+      'Scale: n = 36 pairs (3 arm pairs x 12 questions), each judged in both orders by one LLM judge (' + D.m.judge_A + '), temperature 0. A demo, not a benchmark. Consistency says the judge is stable, not that it is right.');
     const st = { sel: 0, filter: 'all' };
     const c = countsFrom(D.pw), r = compute(c);
     const res = K.resultBox(), res2 = K.resultBox();

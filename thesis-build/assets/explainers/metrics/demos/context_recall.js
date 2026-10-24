@@ -80,7 +80,7 @@
     const qids = Object.keys(D.m.per_question.B);
     const st = { arm: 'B', q: qids[0] };
     const shell = K.shell(el, 'Real example: Context recall on real retrieval and a real judge',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '), no human labels; wide intervals. A demo, not a benchmark. Arm A (no retrieval) has no context, so the metric is undefined there. Claims are split from the gold answer by the judge; verdicts are the real judge output, not editable.');
+      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (judge A ' + D.m.judge_A + '); wide intervals. A demo, not a benchmark. Arm A (no retrieval) has no context, so the metric is undefined there. Claims are split from the gold answer by the judge; verdicts are the real judge output, not editable.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

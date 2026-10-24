@@ -1,0 +1,250 @@
+{
+ "about": "Claims of the Answer Prompt Choice lesson: id, text, source key, locator, mark (verified / unverified / inferred / ours).",
+ "claims": [
+  {
+   "id": "c01",
+   "text": "P0, the registered prompt (configuration I2), word for word, sha256 16f22d02…: its abstain rule is 'If the passages do not contain the answer, reply with exactly NOT_IN_MATERIAL and nothing else.'",
+   "key": "code",
+   "loc": "CANDIDATES['P0']",
+   "status": "verified"
+  },
+  {
+   "id": "c02",
+   "text": "P1 word for word, sha256 e86a4fae…: passages are the only source of course facts; standard mathematics and reasoning may derive, prove or compute the answer; abstain if a fact the answer needs is not in the passages.",
+   "key": "code",
+   "loc": "CANDIDATES['P1']",
+   "status": "verified"
+  },
+  {
+   "id": "c03",
+   "text": "P2 = P1 plus 'Do not reply NOT_IN_MATERIAL only because the final result is not written in a passage; an exercise asks you to derive it.' sha256 7dd91e92….",
+   "key": "code",
+   "loc": "CANDIDATES['P2']",
+   "status": "verified"
+  },
+  {
+   "id": "c04",
+   "text": "In pilot 1 the retrieval arms abstained on 135 of 270 generations. No split of causes into prompt and retrieval was made.",
+   "key": "th",
+   "loc": "§ Shared conditions",
+   "status": "ours"
+  },
+  {
+   "id": "c05",
+   "text": "The registered prompt asked for an abstention when 'the answer' was not in the passages, which is unclear for a derivation exercise. 25 of 30 pilot items are proof, derivation or numeric exercises.",
+   "key": "pm",
+   "loc": "§2.1",
+   "status": "ours"
+  },
+  {
+   "id": "c06",
+   "text": "Example prml:ex2.51 (prove trigonometric identities from exp(iA)): both required gold passages were in H's context, and H abstained (pilot 1, P0).",
+   "key": "pm",
+   "loc": "§2.1",
+   "status": "ours"
+  },
+  {
+   "id": "c07",
+   "text": "Before any dev generation under P1 or P2, the candidates, the selector and the dev item file were hashed in a pre-commit manifest (thesis-pipeline cda24f1).",
+   "key": "prot",
+   "loc": "C, Pre-commit",
+   "status": "ours"
+  },
+  {
+   "id": "c08",
+   "text": "Runs: the 18 gold dev items × arms R and H × 1 generation × P0, P1, P2, with the same retrieval cache and order seed; no judge call; no other candidate; no second round.",
+   "key": "prot",
+   "loc": "C3 Runs",
+   "status": "ours"
+  },
+  {
+   "id": "c09",
+   "text": "Hc was not run separately: it equals H while the router is the placeholder, so it is not counted twice.",
+   "key": "prot",
+   "loc": "C3 Runs",
+   "status": "ours"
+  },
+  {
+   "id": "c10",
+   "text": "A cell is (item, arm). Gold-present = at least one accepted gold unit in the packed list. A failure counts as an abstention. A_present and A_absent are item-weighted abstention rates; CV = share of non-abstaining cells with at least one marker and every marker naming a packed passage.",
+   "key": "prot",
+   "loc": "C3 Selector",
+   "status": "ours"
+  },
+  {
+   "id": "c11",
+   "text": "Rule: eligible iff CV ≥ 0.90; two eligible → lower A_present; a gap under 0.05 → larger D = A_absent − A_present; the winner replaces P0 only if its A_present ≤ P0's − 0.10. 0.90, 0.05 and 0.10 are operational choices, not uncertainty guarantees.",
+   "key": "prot",
+   "loc": "C3 Selector",
+   "status": "ours"
+  },
+  {
+   "id": "c12",
+   "text": "Dev runs were sealed generate-only runs: no judging, no trace; the selector prints and stores aggregates only, and no raw dev reply was opened before the selection record was committed.",
+   "key": "prot",
+   "loc": "C3 Sealing",
+   "status": "ours"
+  },
+  {
+   "id": "c13",
+   "text": "Result: winner P2. A_present P0 5/12, P1 5/24, P2 1/12; A_absent P0 3/4, P1 1/12, P2 1/12; CV P0 1, P1 9/10, P2 32/33; 0 failures.",
+   "key": "prog",
+   "loc": "C3 selection",
+   "status": "ours"
+  },
+  {
+   "id": "c14",
+   "text": "P2 beats P1 by 1/8 ≥ 0.05 and P0 by 1/3 ≥ 0.10.",
+   "key": "prog",
+   "loc": "C3 selection",
+   "status": "ours"
+  },
+  {
+   "id": "c15",
+   "text": "P2 abstains equally with and without gold in context (D = 0), so on dev abstention no longer tracks evidence; the answered-but-unsupported risk moves to the judge and the citation proxy.",
+   "key": "prog",
+   "loc": "C3 selection, note [I]",
+   "status": "inferred"
+  },
+  {
+   "id": "c16",
+   "text": "Gold presence does not establish sufficient evidence, and CV checks marker validity, not support.",
+   "key": "prot",
+   "loc": "C3 Selector",
+   "status": "ours"
+  },
+  {
+   "id": "c17",
+   "text": "Abstention is endpoint-related (an abstention scores 0 on an answerable item), so the selection is tuning on an outcome proxy, on dev only.",
+   "key": "prot",
+   "loc": "C3",
+   "status": "ours"
+  },
+  {
+   "id": "c18",
+   "text": "The winner is implemented verbatim as the core's SYSTEM prompt; G uses the same SYSTEM; I3 refuses any other text.",
+   "key": "prot",
+   "loc": "C3 Candidates",
+   "status": "ours"
+  },
+  {
+   "id": "c19",
+   "text": "L answers without retrieval under its own prompt, which allows abstention, so L is not a pure closed-book condition.",
+   "key": "th",
+   "loc": "§ Arm L",
+   "status": "ours"
+  },
+  {
+   "id": "c20",
+   "text": "Headless Claude Code has no temperature control, so answers are not deterministic; the 3 generations per item and the majority label stay.",
+   "key": "dec",
+   "loc": "D1, note 1",
+   "status": "ours"
+  },
+  {
+   "id": "c21",
+   "text": "R, H, H-collapsed and L are generated three times and the item label is the majority of three; G and the exploratory arms run once.",
+   "key": "th",
+   "loc": "§ Replication",
+   "status": "ours"
+  },
+  {
+   "id": "c22",
+   "text": "Order: the prompt first; then the router and k_graph on dev with the chosen prompt.",
+   "key": "prot",
+   "loc": "C3 Order",
+   "status": "ours"
+  },
+  {
+   "id": "c23",
+   "text": "R's settings, tuned on dev by gold-evidence recall after the prompt: fusion depth 30 and 10 reranked passages (recall 89 of 216).",
+   "key": "th",
+   "loc": "§ Arm R",
+   "status": "ours"
+  },
+  {
+   "id": "c24",
+   "text": "Configuration I4: router s7-b/2, k_graph 30, graph rank hop-balanced/1, depth 30, rerank_top 10 (config_sha256 7cae3a31…).",
+   "key": "prog",
+   "loc": "I4 (D11 step 5)",
+   "status": "ours"
+  },
+  {
+   "id": "c25",
+   "text": "Pilot 1 under P0 is a historical comparator, reported beside pilot 2 and the main run; it is not an isolated prompt sensitivity, and P0 is not re-run on the main set.",
+   "key": "prot",
+   "loc": "C3 Comparator",
+   "status": "ours"
+  },
+  {
+   "id": "c26",
+   "text": "Addendum C amends the registration; it does not preserve it. What is preserved: no main-pool outcome informs any choice, and every choice is fixed and hashed before the data it governs exist.",
+   "key": "prot",
+   "loc": "C, Status and timing",
+   "status": "ours"
+  },
+  {
+   "id": "c27",
+   "text": "After pilot 2, no change to the prompt, router, k_graph, packing, scoring, judge prompt, sample or gate definitions in response to its outputs.",
+   "key": "prot",
+   "loc": "C10",
+   "status": "ours"
+  },
+  {
+   "id": "c28",
+   "text": "An equal cap does not mean equal tokens or equal passage counts: used tokens and list lengths differ between arms and are reported per item and arm.",
+   "key": "th",
+   "loc": "§ Comparison arms",
+   "status": "ours"
+  },
+  {
+   "id": "c29",
+   "text": "In a sample of 50 (question, passage) pairs, 44 reach the cross-encoder's 512-token cap and are truncated; the effect on ranks is not measured.",
+   "key": "th",
+   "loc": "§ Threats, reranker and fusion",
+   "status": "ours"
+  },
+  {
+   "id": "c30",
+   "text": "Reciprocal rank fusion merges two lists, and R's list can take over the context; this dominance of one list is reported per item.",
+   "key": "th",
+   "loc": "§ Threats, reranker and fusion",
+   "status": "ours"
+  },
+  {
+   "id": "c31",
+   "text": "The prompt was chosen on an outcome-related quantity on dev items after pilot 1 was seen; no main-set item had been answered and no choice used the difference between H and H-collapsed.",
+   "key": "th",
+   "loc": "§ Threats, data-informed amendments",
+   "status": "ours"
+  },
+  {
+   "id": "c32",
+   "text": "Arm G's index is a staged build that is still running; G is not ready until it ends, and it then receives the same answer prompt and cap and answers once.",
+   "key": "th",
+   "loc": "§ Arm G",
+   "status": "ours"
+  },
+  {
+   "id": "c33",
+   "text": "Pilot 2 runs the same 30 items with configuration I4 and all five arms; it is a development rerun with descriptive estimates.",
+   "key": "th",
+   "loc": "§ Pilot 2",
+   "status": "ours"
+  },
+  {
+   "id": "c34",
+   "text": "Scope line: arms answer under a passage-restricted answering prompt; the answer model answers most items without retrieval (pilot p_L 0.93).",
+   "key": "prot",
+   "loc": "C1",
+   "status": "ours"
+  },
+  {
+   "id": "c35",
+   "text": "The hop-balanced rank keeps a backfill pass, and its hop-first output order means fusion and packing can still erase deeper-hop differences.",
+   "key": "addd",
+   "loc": "D1.5, D1.7",
+   "status": "ours"
+  }
+ ]
+}

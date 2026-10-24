@@ -117,7 +117,7 @@
   function mountReal(el, D) {
     const K = root.DemoKit, st = { arm: 'B', q: 0, N: 4, smooth: false, strip: true, view: 4 };
     const shell = K.shell(el, 'Real example: BLEU on real gold vs real system answers',
-      'Scale: the 9 answerable questions of the answer study (the 3 unanswerable ones have a placeholder gold answer and are left out), 3 arms, one run; gold answers written by the study helper, one short reference per question, not human annotators; a demo, not a benchmark. BLEU is computed live in this page from the real strings. Corpus BLEU is the meaningful number here; BLEU on one sentence is not, and BLEU has weak validity for LLM answers. The judge verdict (LLM judge A, not a human) is shown for comparison.');
+      'Scale: the 9 answerable questions of the answer study (the 3 unanswerable ones have a placeholder gold answer and are left out), 3 arms, one run; gold answers written by the study helper, one short reference per question; a demo, not a benchmark. BLEU is computed live in this page from the real strings. Corpus BLEU is the meaningful number here; BLEU on one sentence is not, and BLEU has weak validity for LLM answers. The judge verdict (LLM judge A) is shown for comparison.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]); aSel.value = st.arm;
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, D.qs.map((q, i) => opt(i, q.id + ' (' + q.type + '): ' + q.question)));

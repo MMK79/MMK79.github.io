@@ -131,7 +131,7 @@
     const K = root.DemoKit;
     const st = { metric: 'faithfulness', arm: 'A', pair: 'C-B', B: 10000 };
     const shell = K.shell(el, 'Real example: bootstrap interval on real per-question scores',
-      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges (not humans), helper-written questions. The intervals are wide on purpose: this shows how wide an interval is at demo scale, not a benchmark. Arm C gets about 40% more context than B (620 vs 416 words), so B vs C does not isolate the graph.');
+      'Scale: n = 12 questions (9 answerable), one run, temperature 0, LLM judges, helper-written questions. The intervals are wide on purpose: this shows how wide an interval is at demo scale, not a benchmark. Arm C gets about 40% more context than B (620 vs 416 words), so B vs C does not isolate the graph.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const mSel = K.el('select', { 'aria-label': 'metric', style: 'max-width:100%' }, Object.keys(SUITES).map(k => opt(k, SUITES[k].label)));
     const aSel = K.el('select', { 'aria-label': 'arm', style: 'max-width:100%' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);

@@ -24,12 +24,12 @@ p{margin:0 0 14px;overflow-wrap:anywhere}
 a{color:var(--blue)}
 .muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
 .kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
-.lv{display:inline-block;border:1px solid var(--amber);border-radius:999px;padding:0 8px;margin-right:8px}
+.lv{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px}
 #bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;flex-wrap:wrap;gap:5px}
-#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:2px 9px;white-space:nowrap}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
 section.step{padding:60px 0 36px;border-top:1px solid var(--line)}
 .hero{padding:52px 0 30px}
 .hero p.lead{font-size:18px;color:var(--muted)}
@@ -40,18 +40,18 @@ button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
 button:disabled{opacity:.4;cursor:default}
 button:focus-visible,select:focus-visible,a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
-.lbl{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
+.lbl{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
 label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-items:center}
 .take{border-left:3px solid var(--amber);padding:6px 12px;margin:16px 0;background:var(--panel)}
 .ev{border-left:3px solid var(--teal);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
 .ours{border-left:3px solid var(--purple);padding:2px 0 2px 10px;margin:8px 0;font-size:14px}
-.ev b.h,.ours b.h{font-size:11px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h,.ours b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
 .ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
 .pin{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .pin div{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px}
 .pin b{display:block;font-size:13px;color:var(--amber)}
 .pin p{font-size:14px;color:var(--muted);margin:4px 0 0}
-.b{display:inline-block;font:600 10.5px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.b{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
 .b.comp{color:var(--teal);border-color:var(--teal)}
 .b.ours{color:var(--amber);border-color:var(--amber)}
 .b.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
@@ -60,7 +60,7 @@ label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-ite
 .turn{list-style:none;padding:0;margin:12px 0;counter-reset:t}.turn>li{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px 10px 46px;margin:0 0 8px}
 .turn>li::before{counter-increment:t;content:counter(t);position:absolute;left:12px;top:10px;width:24px;height:24px;border-radius:50%;border:1px solid var(--amber);color:var(--amber);font:12px/22px var(--mono);text-align:center}
 .turn h3{margin:0 0 4px;font-size:17px}.turn p{margin:0 0 6px;font-size:14.5px}.turn .stop{color:var(--warn)}
-.model{display:inline-block;font:13px var(--mono);border:1px solid var(--blue);color:var(--blue);border-radius:6px;padding:1px 7px}
+.model{display:inline-block;font:13px var(--mono);border:1px solid var(--blue);color:var(--blue);border-radius:8px;padding:1px 7px}
 .tbl{width:100%;border-collapse:collapse;font-size:13.5px}
 .tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
 .tbl th{color:var(--muted);font-weight:500;font-size:12px}
@@ -85,15 +85,15 @@ label.ck{font-size:14px;color:var(--muted);display:inline-flex;gap:6px;align-ite
 .card p{margin:4px 0 0;color:var(--muted);font-size:13px;line-height:1.5}
 .card.ex{border-color:var(--warn);opacity:.7}
 .rel{font:12px var(--mono)}.rel.USES{color:var(--blue)}.rel.IS_A{color:var(--teal)}.rel.PREREQUISITE_OF{color:var(--amber)}
-.tokbar{display:flex;height:26px;border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:8px 0}
-.tokbar span{display:block;height:100%;border-right:1px solid var(--bg);font:10px/26px var(--mono);color:var(--bg);text-align:center;overflow:hidden;white-space:nowrap}
+.tokbar{display:flex;height:26px;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:8px 0}
+.tokbar span{display:block;height:100%;border-right:1px solid var(--bg);font:12px/26px var(--mono);color:var(--bg);text-align:center;overflow:hidden;white-space:nowrap}
 .pre{font:12px/1.5 var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px;white-space:pre-wrap;overflow-wrap:anywhere;max-height:320px;overflow:auto}
 .design{border:1px dashed var(--purple);border-radius:10px;padding:10px 12px;margin:10px 0;color:var(--muted);font-size:14px}
 .design b{color:var(--purple)}
 svg{display:block;width:100%;height:auto}
 svg text{fill:var(--text);font:11px var(--body)}
 .cmp td.in{color:var(--teal)}.cmp td.out{color:var(--faint)}
-.chip{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:6px;padding:1px 6px;margin:0 3px 4px 0}
+.chip{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 3px 4px 0}
 .chip.only{border-color:var(--amber);color:var(--amber)}
 .chip.ex{border-color:var(--warn);color:var(--warn);text-decoration:line-through}
 details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
@@ -112,7 +112,7 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 .verdict{display:inline-block;font:600 13px var(--body);border-radius:8px;padding:4px 10px;border:1px solid}
 .verdict.pass{color:var(--teal);border-color:var(--teal)}.verdict.stop{color:var(--warn);border-color:var(--warn)}
 .bars{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr) 54px;gap:6px 10px;align-items:center;font-size:13px;margin:8px 0}
-.bars .tr{background:var(--panel2);border:1px solid var(--line);border-radius:4px;height:16px;overflow:hidden}
+.bars .tr{background:var(--panel2);border:1px solid var(--line);border-radius:8px;height:16px;overflow:hidden}
 .bars .tr i{display:block;height:100%;background:var(--purple)}
 .bars .tr i.alt{background:var(--warn)}
 .bars .v{font:12px var(--mono);text-align:right}
@@ -126,6 +126,12 @@ details{margin:10px 0}summary{cursor:pointer;color:var(--muted);font-size:14px}
 @media (max-width:900px){#flow{grid-template-columns:1fr}#steps{position:static;display:flex;flex-wrap:wrap;gap:4px}#steps li button{width:auto;border-color:var(--line)}#steps li button .b{display:none}}
 @media (max-width:640px){.pin{grid-template-columns:1fr}.arms{grid-template-columns:repeat(2,1fr)}.tbl td.m{white-space:normal}}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
 </style>
 <style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
    The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
@@ -133,23 +139,23 @@ html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
 .back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
 .sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
 .sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
 #so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:99px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.35)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
 #so button:hover,#so button:focus-visible{border-color:#F2A93B}
 #so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none;border-inline-start:3px solid transparent}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
 #so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;border-inline-start-color:#F2A93B}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
              outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
 #so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
-#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
 #so.open ol{display:block}
 #so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
 #so.rail button{display:none}
@@ -162,6 +168,11 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
 #story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -185,13 +196,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -200,19 +211,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -223,7 +233,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -231,7 +241,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -245,14 +255,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -261,6 +271,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -271,30 +282,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -313,7 +305,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -340,7 +332,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -430,10 +422,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </script>
 
 <div id="story-root" lang="en" dir="ltr">
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 
 <div id="bar"><div class="wrap">
-  <p id="caveat"><b>Real slice, partly designed system:</b> the question, the passages, the graph and every score come from the CS 156 Lecture 14-15 pilot. Each step says whether it is <span class="b comp">computed</span>, a <span class="b ours">stand-in (ours)</span>, <span class="b app">built in the app</span> (the tutor app runs it; the thesis harness has not run it yet) or a <span class="b dsg">design, not built</span>. No answer is generated on this page.</p>
+  <p id="caveat"><b>Real slice, partly designed system:</b> the question, the passages, the graph and every score come from the CS 156 Lecture 14-15 pilot. Each step says whether it is <span class="b comp">computed</span>, a <span class="b ours">stand-in (ours)</span>, <span class="b app">built in the app</span> (the tutor app runs it) or a <span class="b dsg">design, not built</span>. No answer is generated on this page.</p>
   <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#system">System view</a><a href="#touch">Step through</a><a href="#compare">Compare arms</a><a href="#app">In the app</a><a href="#abstain">"I don't know"</a><a href="#variants">Query variants</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
 </div></div>
 
@@ -450,9 +442,9 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <li><b>Same start.</b> The question is linked to concept ids (alias table plus bge-m3 search over concept names), once, and H and Hc read the same cached seeds. (G, LightRAG, would use its own retrieval; it is not run here.)</li>
   <li><b>The graph arms walk.</b> From the seeds they follow typed edges (PREREQUISITE_OF, IS_A, USES), at most two hops. The typed arm <b>H</b> follows only the relations the router picks; the collapsed arm <b>Hc</b> follows all three. Nothing else differs.</li>
   <li><b>Edges point to passages.</b> Each edge carries evidence records; their passage ids fetch the passage text. That list is fused with the text retriever's list.</li>
-  <li><b>One cap for all.</b> The retrieval arms share one cap of 4,000 tokens for the passage text (counted here with the bge-m3 tokenizer, a proxy for the answer model's); the space used differs by arm. The request carries no relation, hop or path, though the choice of passages itself can still differ.</li>
-  <li><b>What is built.</b> Linking, walk, ranking, fusion and packing are <span class="b comp">computed</span> here on the pilot slice. The router is a <span class="b ours">stand-in</span>. In the tutor app, answer generation (an Alibaba-hosted model whose name is shown on every answer), book citations, the "I don't know" layers and the sentence-level support check are <span class="b app">built in the app</span>; the thesis harness has not run them yet. <a href="#app">The answer path as built</a> walks through one turn.</li>
-  <li><b>A real finding.</b> In the pilot graph no PREREQUISITE_OF edge has passed review, so with the stand-in router's USES + IS_A mask, H and Hc load the same edges and send the same context on all three questions. A narrower mask (for example USES only, in step 3) separates them; so does the non-confirmatory "also load proposed edges" toggle on Q1.</li>
+  <li><b>One cap for all.</b> The retrieval arms share one cap of 4,000 tokens for the passage text (counted with the bge-m3 tokenizer over the serialized passages, which is how the thesis defines B; the preamble and the question lie outside it); the space used differs by arm. The thesis keeps B = 4,000 and runs 8,000 and 2,000 as a registered sensitivity check. The request carries no relation, hop or path, though the choice of passages itself can still differ.</li>
+  <li><b>What is built.</b> Linking, walk, ranking, fusion and packing are <span class="b comp">computed</span> here on the pilot slice. The router is a <span class="b ours">stand-in</span>. In the tutor app, answer generation (an Alibaba-hosted model whose name is shown on every answer), book citations, the "I don't know" layers and the sentence-level support check are <span class="b app">built in the app</span>; <a href="#app">the answer path as built</a> walks through one turn. The thesis harness is built and tested: it answers with Claude Sonnet 5.5 through headless Claude Code, and it ran pilot 1. Pilot 2 waits for arm G, whose index is in a clean staged rebuild.</li>
+  <li><b>A real finding.</b> In this pilot slice no PREREQUISITE_OF edge is asserted, so with the stand-in router's USES + IS_A mask, H and Hc load the same edges and send the same context on all three questions. A narrower mask (for example USES only, in step 3) separates them; so does the non-confirmatory "also load proposed edges" toggle on Q1. Pilot 1 found the same on the thesis items: with a placeholder router, H and Hc sent identical requests on 90 of 90 generations, and under the first rank rule hop-0 passages filled the graph list (only 1 of 30 lists held a deeper-hop passage). Two fixes followed: a cue-table router (s7-b/2) and a hop-balanced rank (hop-balanced/1, k_graph 30). Whether they separate H and Hc is the H versus Hc test.</li>
 </ol>
 </section>
 
@@ -494,7 +486,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   <div class="row">
     <label class="ck"><input type="checkbox" id="leak" checked> exclude the question's own Q&amp;A passages (leakage rule)</label>
     <label class="ck"><input type="checkbox" id="prop"> also load proposed edges (not allowed in the confirmatory arms; they act only as bridges, their own evidence is ungated)</label>
-    <span class="lbl" style="min-width:0">Budget B</span><select id="bsel" aria-label="Token budget"><option value="2000">2,000</option><option value="4000" selected>4,000</option><option value="8000">8,000</option></select>
+    <span class="lbl" style="min-width:0">Budget B</span><select id="bsel" aria-label="Token budget"><option value="2000">2,000</option><option value="4000" selected>4,000</option><option value="8000">8,000</option></select><span class="small faint">4,000 is the thesis cap; 2,000 and 8,000 are its registered sensitivity check.</span>
   </div>
   <div id="flow">
     <ol id="steps"></ol>
@@ -533,7 +525,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <li><h3>Show the answer, or the closest material <span class="b app">built in the app</span></h3>
       <p><b>Problem:</b> "I don't know" alone is a dead end. <b>Fix:</b> on <span class="stop">no answer</span> the student reads "I could not find this in the enabled course material" and gets the three closest passages with their place in the book or lecture. Otherwise the answer comes with references (book · chapter · section · printed page, slide number, or lecture time) and a "How I searched" panel built from the real trace.</p></li>
   </ol>
-  <div class="design"><b>What is still open.</b> The two cut-offs (layer 1 gate, sentence check) are placeholders: they need human-labelled development examples. The app's Text and Hybrid settings are untuned defaults, so they are not yet the evaluated arms R and H. In the thesis harness the gate and the sentence check only log their signals and never change an answer; only the <code>NOT_IN_MATERIAL</code> rule changes a label, the same way for every arm.</div>
+  <div class="design"><b>What is still open.</b> The two cut-offs (layer 1 gate, sentence check) are placeholders: they need labelled development examples. The app's Text and Hybrid settings are untuned defaults, so they are not yet the evaluated arms R and H. In the thesis harness the gate and the sentence check only log their signals and never change an answer; only the <code>NOT_IN_MATERIAL</code> rule changes a label, the same way for every arm.</div>
 </div></section>
 
 <section class="step" id="abstain"><div class="wrap">
@@ -573,10 +565,10 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <p class="small muted">As built, the app does not ask the model to write the answer again after a failed sentence check: the one retry it makes is for invalid citation markers. A rewrite costs another model call and more waiting, and a model that rewrites its own answer does not reliably fix it. HHEM, a second checker, is logged only and never decides.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
-    <li class="layer"><div class="ln">LAYER 4 · before launch</div><h3>Tune the cut-offs on human-labelled examples <span class="b dsg">design, not done</span></h3>
+    <li class="layer"><div class="ln">LAYER 4 · before launch</div><h3>Tune the cut-offs on labelled examples <span class="b dsg">design, not done</span></h3>
       <p>Layers 1 and 3 each need a cut-off. We set them on development examples that a person has labelled (answerable or not, supported or not), never by guessing, and we report the result on separate held-out examples as a <b>risk-coverage curve</b>: coverage = the share of questions the tutor answers; risk = the share of those answers that are wrong. A stricter cut-off answers fewer questions; whether it also makes fewer mistakes is what the curve measures.</p>
       <div id="ab-rc"></div>
-      <p class="small faint">A drawing of the idea, not our data: we have no human labels yet. The dot moves with the placeholder cut-off of layer 1.</p>
+      <p class="small faint">A drawing of the idea, not our data. The dot moves with the placeholder cut-off of layer 1.</p>
     </li>
     <li class="down" aria-hidden="true">↓</li>
     <li class="layer" style="border-color:var(--teal)"><div class="ln" style="color:var(--teal)">WHEN IT STOPS</div><h3>Show the three closest passages <span class="b app">built in the app</span></h3>
@@ -585,7 +577,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </li>
   </ol>
 
-  <div class="design"><b>Kept out of the thesis arms.</b> In the experiment (arms L, R, G, H, Hc) the gate, the retry and the sentence check do not change any answer: a gate would fire differently for each arm and its cut-off would be one more tuned setting. The prompt is the same for all arms, including its one abstain phrase. A reply that contains that phrase anywhere (start, middle or end) is scored as "no answer" in every arm: a rule the protocol added before the main run, after the app showed a model putting the phrase at the end. The harness is planned to <b>log</b> the signals that apply (best reranker score, the abstain phrase, the checker scores; L has no passages to score) for every question and arm, so risk-coverage curves per arm can be drawn afterwards, with no extra model calls. LightRAG's own "Sorry, I'm not able to provide an answer" reply is scored as an abstention.</div>
+  <div class="design"><b>Kept out of the thesis arms.</b> In the experiment (arms L, R, G, H, Hc) the gate, the retry and the sentence check do not change any answer: a gate would fire differently for each arm and its cut-off would be one more tuned setting. The retrieval arms share one prompt, <b>P2</b>, chosen on the development items from three prompts fixed and hashed in advance (P0, P1, P2) by their abstention rate, with no judge. It says that the numbered passages are the only source of course facts, that standard mathematics and reasoning may derive, prove or compute the answer, and that the model writes only <code>NOT_IN_MATERIAL</code> if a fact the answer needs is missing, "but not only because the final result is not written in a passage". In pilot 1, under the registered prompt, the retrieval arms abstained on 135 of 270 generations; the share of the prompt and the share of retrieval in these abstentions were not separated. L answers closed-book under its own prompt. A reply that contains that phrase anywhere (start, middle or end) is scored as "no answer" in every arm: a rule the protocol added before the main run, after the app showed a model putting the phrase at the end. The harness is planned to <b>log</b> the signals that apply (best reranker score, the abstain phrase, the checker scores; L has no passages to score) for every question and arm, so risk-coverage curves per arm can be drawn afterwards, with no extra model calls. LightRAG's own "Sorry, I'm not able to provide an answer" reply is scored as an abstention.</div>
 </div></section>
 
 <section class="step" id="variants"><div class="wrap">
@@ -605,7 +597,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <tbody>
       <tr><td class="m">L</td><td>no</td><td>no</td><td>protocol</td></tr>
       <tr><td class="m">R</td><td>no: the raw question goes to keyword and meaning search</td><td>no</td><td>protocol</td></tr>
-      <tr><td class="m">G</td><td>partly: LightRAG's model picks keywords, which can include words not in the question</td><td>yes, through those keywords</td><td>protocol; not run</td></tr>
+      <tr><td class="m">G</td><td>partly: LightRAG's model picks keywords, which can include words not in the question</td><td>yes, through those keywords</td><td>protocol; its index is in a clean staged rebuild, not run yet</td></tr>
       <tr><td class="m">H, Hc</td><td>no</td><td>yes: one shared linker (alias table + bge-m3), computed once and cached for both</td><td>protocol; stand-in on this page</td></tr>
     </tbody></table></div>
   <h3>What we chose</h3>
@@ -622,8 +614,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <section class="step" id="l2"><div class="kicker"><span class="lv">Level 2</span>academic, with sources</div><h2>Why the protocol looks like this</h2>
 <div class="ev"><b class="h">Literature</b>GraphRAG systems build an entity graph from text chunks with an LLM and answer from graph neighbourhoods or community summaries (Edge et al.); LightRAG retrieves over entity and relation keys at two levels (Guo et al.). Our arm G is planned to run LightRAG with its defaults as the off-the-shelf graph baseline; no LightRAG run is shown here. Comparisons of RAG and GraphRAG report that each wins on different question types, so the strata are reported separately. <span class="small">[edge2024, guo2024, han2025]</span></div>
 <div class="ev"><b class="h">Literature</b>A passage that supports a claim is not proof that the model used it (Wallat et al.), and ALCE measures citation recall (is each statement supported by its citations?) and citation precision (is each citation needed?) with an entailment model (Gao et al.); our designed check covers only part of that. MiniCheck is a small checker close to GPT-4 on grounding benchmarks (Tang et al.). <span class="small">[wallat2024, gao2023, tang2024]</span></div>
-<div class="ev"><b class="h">Ours, measured</b>On 76 claim-premise pairs in 23 clusters (some constructed; labels by one LLM, not human gold), MiniCheck reached balanced accuracy 0.732 (95% interval 0.622-0.852) on the whole premise and 0.454 and 0.501 under two ways of cutting it at 512 tokens. So the designed check scores the whole cited context when it fits MiniCheck's 2,048-token input, logs longer cases instead of cutting them, and never truncates at 512. HHEM is kept as a robustness score only.</div>
-<div class="ours"><b class="h">Ours, the protocol</b>One shared pipeline, <code>link → route → walk → collect → dedupe → rank → fuse(R) → pack(B) → serialize → answer</code>. H and Hc differ only in <code>eligible(edge, route)</code>: in H it is "relation in the router's mask", in Hc it is "true". The protocol specifies fourteen rules against the leaks of our own pipeline (the request carries only (opaque id, text) pairs, the Hc graph is a label-stripped projection, neighbours are sorted by id, only asserted edges load, ranking is type-blind, caches are keyed by arm) and ten harness tests that must pass before the main run. This page implements a demo of several rules and passes a small subset of checks (allowlist, shared cached seeds, no label strings in the projected Hc graph, cap never exceeded, leakage, determinism); the full harness is not built.</div>
+<div class="ev"><b class="h">Ours, measured</b>On 76 claim-premise pairs in 23 clusters (some constructed; labels by one LLM), MiniCheck reached balanced accuracy 0.732 (95% interval 0.622-0.852) on the whole premise and 0.454 and 0.501 under two ways of cutting it at 512 tokens. So the designed check scores the whole cited context when it fits MiniCheck's 2,048-token input, logs longer cases instead of cutting them, and never truncates at 512. HHEM is kept as a robustness score only.</div>
+<div class="ours"><b class="h">Ours, the protocol</b>One shared pipeline, <code>link → route → walk → collect → dedupe → rank → fuse(R) → pack(B) → serialize → answer</code>. H and Hc differ only in <code>eligible(edge, route)</code>: in H it is "relation in the router's mask", in Hc it is "true". The protocol specifies fourteen rules against the leaks of our own pipeline (the request carries only (opaque id, text) pairs, the Hc graph is a label-stripped projection, neighbours are sorted by id, only asserted edges load, ranking is type-blind, caches are keyed by arm) and ten harness tests that must pass before the main run. This page implements a demo of several rules and passes a small subset of checks (allowlist, shared cached seeds, no label strings in the projected Hc graph, cap never exceeded, leakage, determinism). The thesis harness itself is built and tested (its full suite passes on the I4 core cd582de) and ran pilot 1 on 30 items; pilot 2 is approved and waits for arm G's index.</div>
 <div class="ours"><b class="h">Ours, the decision rule</b>Two contrasts in a fixed order, each an exact one-sided McNemar test at α = 0.05 on the fully-correct rate of the primary stratum: H − R first; H − Hc is tested confirmatorily only if the first rejects. Both estimates are reported in every case, and the joint claim needs both rejections. A positive H − Hc shows that type-based edge selection beats no selection with this router; it does not show that the labels' meaning matters beyond selectivity.</div>
 </section>
 
@@ -632,13 +624,13 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <table class="tbl" aria-label="Built and not built">
 <thead><tr><th>step</th><th>on this page</th><th>thesis status</th></tr></thead>
 <tbody>
-<tr><td>Entity linking</td><td>alias table + real bge-m3 scores over concept names; top 3 above 0.60 (ours)</td><td>designed; linker thresholds tuned on the development split</td></tr>
-<tr><td>Router</td><td>a keyword stand-in (ours); you can change the mask</td><td>not built; reads the question text only</td></tr>
-<tr><td>Typed walk, evidence, passage fetch</td><td>computed on the pilot graph files; Hc on a projection built in the page; "asserted" stands in as "accepted-by-gate"</td><td>designed; the app's Neo4j holds the pilot graph, the frozen thesis graph is loaded after its snapshot hash; passages from Postgres by id</td></tr>
-<tr><td>R (BM25 + dense, RRF, rerank)</td><td>BM25 in the page (ours); real bge-m3 and bge-reranker-v2-m3 scores</td><td>designed; BM25 settings and depth tuned on the development split</td></tr>
-<tr><td>Fusion and budget cut</td><td>computed: RRF k = 60, B = 4,000 bge-m3 tokens of passage text (request overhead not counted); R fills 90-98% of B on the three questions at 4,000 but only 80-82% at 2,000, below the protocol's fill test</td><td>frozen in the protocol (tokens of the answer model)</td></tr>
-<tr><td>G (LightRAG defaults)</td><td>not run on this slice</td><td>not built</td></tr>
-<tr><td>Answer generation</td><td>request shown, not sent</td><td>one answer model for all arms, temperature 0, pinned at the main run; the app already answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>) and shows its name</td></tr>
+<tr><td>Entity linking</td><td>alias table + real bge-m3 scores over concept names; top 3 above 0.60 (ours)</td><td>built; the shared linker ran in pilot 1, and its seeds are cached once per question for H and Hc. Its thresholds were not in the development tuning grid (that grid tuned R's depth and rerank_top, and H's router and k_graph)</td></tr>
+<tr><td>Router</td><td>a keyword stand-in (ours); you can change the mask</td><td>built; reads the question text only; table s7-b/2 with k_graph 30 (configuration I4), chosen on the development items: a three-way tie at k_graph 30 broken by the rule fixed in advance. 15 of 30 pilot questions take its fallback row, where H and Hc allow the same edges. This page's demo keeps k_graph 10</td></tr>
+<tr><td>Typed walk, evidence, passage fetch</td><td>computed on the pilot graph files; Hc on a projection built in the page; "asserted" stands in as "accepted-by-gate"</td><td>designed; the app's Neo4j holds the pilot graph, the frozen thesis graph (snapshot hash S<sub>G</sub>) is loaded and checked against that hash; passages from Postgres by id</td></tr>
+<tr><td>R (BM25 + dense, RRF, rerank)</td><td>BM25 in the page (ours); real bge-m3 and bge-reranker-v2-m3 scores (a page scoring run in full precision; the thesis scores use the int8 ONNX build)</td><td>built; list depth 30 and rerank_top 10, tuned on the development split</td></tr>
+<tr><td>Fusion and budget cut</td><td>computed: RRF k = 60, B = 4,000 bge-m3 tokens of passage text (request overhead not counted); R fills 90-98% of B on the three questions at 4,000 and 80-82% at 2,000</td><td>frozen: B = 4,000 bge-m3 tokens of serialized passages, by definition (the preamble and the question lie outside it); 8,000 and 2,000 are a registered sensitivity check (H, R and Hc, one generation, estimates only). The registered fill test failed in pilot 1 (R at 0.9 B or more on 12 of 30) and is reported as failed; its replacement, from pilot 2 on: on the primary pilot items R's used tokens are not below H's and Hc's, and R's median is at least 0.80 B. In pilot 1 R, H and Hc used the same tokens (median 3,547)</td></tr>
+<tr><td>G (LightRAG defaults)</td><td>not run on this slice</td><td>pending: the extraction prompts ran on Qwen3-8B in eight shards, and the index is built in a clean staged rebuild from the stored responses; G is not ready until it ends and has not answered yet. It gets the same prompt and cap B and answers once</td></tr>
+<tr><td>Answer generation</td><td>request shown, not sent</td><td>Claude Sonnet 5.5 through headless Claude Code, with no tools and no session memory. The interface does not expose the temperature, so identical calls can return different text; L, R, H and Hc are generated three times and scored by the majority label, G once. The app answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>) and shows its name</td></tr>
 <tr><td>Citations</td><td>lecture and 5-minute window</td><td>book · chapter · section · printed page: built in the app (structure exists for all nine sources)</td></tr>
 <tr><td>Citation check</td><td>not run here</td><td>built in the app (MiniCheck per sentence on the whole cited context, cut-off 0.5 not tuned); in the harness it only logs</td></tr>
 <tr><td>"Not in the material"</td><td>the abstain phrase is in the prompt</td><td>the phrase anywhere in a reply scores as no answer in all five arms (protocol addendum, before the main run)</td></tr>
@@ -656,7 +648,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 <script id="qf-core">// Query Flow core: the query-time steps of the claim protocol's shared pipeline, run on the KG pilot slice.
 //   link(q) -> route(q) -> walk(seeds, route, eligible) -> collect -> dedupe -> rank -> fuse(R) -> pack(B) -> serialize
 // H and Hc run the same code and differ only in eligible(edge, route). Used by the page (inlined) and by scripts/check_core.mjs.
-// Where the thesis has no implementation yet (router, linker thresholds, k_graph), the values here are OURS and the page says so.
+// Where the page differs from the thesis settings (rank rule, k_graph, R depth and rerank_top, linker thresholds), the values here are the page's own and the page says so.
 (function (G) {
   const STOP = new Set("a an and are as at be but by can do does for from has have how i if in is it its of on or so that the then there these this to was what when where which who why will with you your we they them not".split(" "));
   const tokens = s => (s.toLowerCase().match(/[a-z0-9]+/g) || []).filter(w => !STOP.has(w) && w.length > 1);
@@ -875,7 +867,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     compare(); l3(); abstain(); howSearched();
   }
   function skipText(k) {
-    if (st.arm === "G") return '<div class="design"><b>Not run on this slice.</b> Arm G is planned as LightRAG with its default settings: it would build its own entity graph from the same passages and retrieve over entity and relation keys. No LightRAG run exists on this slice. For a system-level picture of a GraphRAG lane, see the <a href="/thesis/assets/figures/anatomy-system/index.html">isometric figure</a>.</div>';
+    if (st.arm === "G") return '<div class="design"><b>Not run on this slice.</b> Arm G is LightRAG with its default settings: it builds its own entity graph from the same passages and retrieves over entity and relation keys. In the thesis its index is in a clean staged rebuild, and G has not answered yet. No LightRAG run exists on this slice. For a system-level picture of a GraphRAG lane, see the <a href="/thesis/assets/figures/anatomy-system/index.html">isometric figure</a>.</div>';
     if (st.arm === "L") return '<p class="muted">Arm L gets no passages; the one shared prompt tells the model to answer from its own knowledge when no passages are given. No retrieval, so this step does not happen. It is meant to measure what the model knows without our corpus.</p>';
     return '<p class="muted">Arm R does not use the graph, so this step does not happen. R retrieves by text only (step 7).</p>';
   }
@@ -897,7 +889,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     },
     route(res) {
       const rt = res.route, all = ["PREREQUISITE_OF", "IS_A", "USES"];
-      return '<p>The router reads only the question text and returns a relation mask, a direction and a depth of at most 2. <b>The thesis router is not built.</b> This stand-in uses a keyword rule: ' + esc(QF.route(D.questions[st.q]).why) + '.</p>' +
+      return '<p>The router reads only the question text and returns a relation mask, a direction and a depth of at most 2. The thesis router is built: table s7-b/2 walks only PREREQUISITE_OF towards the asked concept when the question has a proof or need cue, and every other question takes the fallback row (all three relations, both directions). This page keeps a keyword stand-in: ' + esc(QF.route(D.questions[st.q]).why) + '.</p>' +
         '<div class="row"><span class="lbl">Mask (H)</span>' + all.map(r => '<label class="ck"><input type="checkbox" name="mask" value="' + r + '"' + (rt.mask.includes(r) ? " checked" : "") + '> ' + relSpan(r) + '</label>').join("") + '</div>' +
         '<p class="small muted">Direction: ' + esc(rt.dir) + ' · depth: ' + rt.depth + '. ' + (st.arm === "Hc" ? '<b>Hc gets the same direction and depth and ignores the mask.</b>' : 'Hc would get the same direction and depth and ignore the mask.') + '</p>';
     },
@@ -917,12 +909,12 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     },
     fetch(res) {
       const gl = res.graph.list;
-      return '<p>The passage ids fetch the passage text (in the thesis: from Postgres by <code>passage_id</code>; here: from the pilot\'s passage file). One entry per passage, at its lowest hop; excluded passages are dropped. Ranking is type-blind: hop ascending, then the cross-encoder score on (question, passage), then id. The top ' + D.meta.k_graph + ' (k_graph, ours) go on.</p>' +
+      return '<p>The passage ids fetch the passage text (in the thesis: from Postgres by <code>passage_id</code>; here: from the pilot\'s passage file). One entry per passage, at its lowest hop; excluded passages are dropped. Ranking is type-blind. This page uses the earlier rule (rule 7): hop ascending, then the cross-encoder score on (question, passage), then id, and keeps the top ' + D.meta.k_graph + ' on this 116-passage slice. The thesis now ranks with hop-balanced/1 (an equal share of the k_graph slots per hop) and k_graph 30; the <a href="/thesis/assets/stories/graph-hops/build/index.html">graph hops lesson</a> shows that rule.</p>' +
         (gl.length ? gl.map((x, i) => '<div class="card' + (i >= D.meta.k_graph ? " ex" : "") + '"><div class="hd"><span class="mono">' + (i + 1) + '. ' + x.id + '</span><span>hop ' + x.hop + '</span><span>rerank ' + x.rr.toFixed(2) + '</span><span>' + esc(C(x.id).lec + " " + C(x.id).loc) + '</span></div><p>' + esc(snip(C(x.id).text)) + '</p></div>').join("") : '<p class="muted">The walk produced no supported passage, so the graph list is empty and the arm falls back to the text list.</p>');
     },
     fuse(res, q) {
       const Rl = res.R;
-      let h = '<p><b>R, the text retriever:</b> BM25 top 50 and bge-m3 dense top 50, fused with RRF (k = 60); the top ' + D.meta.r_candidates + ' are reordered by the bge-reranker-v2-m3 cross-encoder.</p><div class="grid">';
+      let h = '<p><b>R, the text retriever:</b> BM25 top 50 and bge-m3 dense top 50, fused with RRF (k = 60); the top ' + D.meta.r_candidates + ' are reordered by the bge-reranker-v2-m3 cross-encoder. These are this page\'s settings; the thesis uses list depth 30 and rerank_top 10, chosen on dev.</p><div class="grid">';
       h += '<table class="tbl"><thead><tr><th>BM25 top 5</th><th>dense top 5</th><th>after rerank, top 8</th></tr></thead><tbody>';
       for (let i = 0; i < 8; i++) h += '<tr><td class="m">' + (Rl.bm[i] && i < 5 ? Rl.bm[i][0] + ' · ' + Rl.bm[i][1].toFixed(1) : '') + '</td><td class="m">' + (Rl.de[i] && i < 5 ? Rl.de[i][0] + ' · ' + Rl.de[i][1].toFixed(3) : '') + '</td><td class="m">' + (Rl.list[i] ? Rl.list[i].id + ' · ' + Rl.list[i].rr.toFixed(2) : '') + '</td></tr>';
       h += '</tbody></table></div>';
@@ -934,14 +926,14 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       if (st.arm === "L") return '<p>Closed book: the context is empty. The request holds only the system prompt and the question (' + q.qtok + ' bge-m3 tokens).</p>';
       let h = '<p>Passages are added in order while the next one fits in B = ' + B.toLocaleString() + ' tokens, then packing stops. ' + ids.length + ' passages, ' + res.context.used.toLocaleString() + ' tokens of passage text used (' + Math.round(100 * res.context.used / B) + '% of B)' + (res.context.next ? '; the next one (' + res.context.next + ', ' + C(res.context.next).tok + ' tokens) did not fit.' : '.') + '</p>';
       h += '<div class="tokbar" role="img" aria-label="Token budget use">' + ids.map((id, i) => '<span style="width:' + (100 * C(id).tok / B) + '%;background:' + cols[i % 4] + '" title="' + id + ' · ' + C(id).tok + ' tokens">' + id.replace(/^L1(\d)-c/, "$1·") + '</span>').join("") + '</div>';
-      h += '<p class="small faint">Token counts use the bge-m3 tokenizer on the passage text only, a proxy: the protocol counts tokens of the answer model, which is not pinned yet, and the request\'s own overhead is not counted. Sensitivity: 2,000 and 8,000 (menu above). The protocol\'s fill test wants R at 90% of B or more on 90% of pilot items.</p>';
+      h += '<p class="small faint">Token counts use the bge-m3 tokenizer on the passage text, which is how the thesis defines B (the preamble and the question lie outside it). The thesis keeps B = 4,000; 2,000 and 8,000 (menu above) are its registered sensitivity check (H, R and Hc, one generation, estimates only). The fill test, from pilot 2 on: on the primary items R\'s used tokens are not below H\'s and Hc\'s, and R\'s median is at least 0.80 B.</p>';
       h += ids.map((id, i) => '<div class="card"><div class="hd"><span class="mono">p' + String(i + 1).padStart(2, "0") + ' = ' + id + '</span><span>' + esc(C(id).lec + " " + C(id).loc) + '</span><span>' + C(id).tok + ' tokens</span></div><p>' + esc(snip(C(id).text, 160)) + '</p></div>').join("");
       return h;
     },
     answer(res, q) {
       const req = res.request, cov = QF.coverage(D, q, res.context.ids);
       const show = JSON.stringify({ system: req.system, question: req.question, passages: req.passages.map(p => ({ id: p.id, text: snip(p.text, 90) })) }, null, 1);
-      return '<div class="design"><b>Built in the app, not yet in the thesis harness.</b> In the experiment every arm uses one answer model (pinned at the main run), temperature 0, one prompt. The tutor app already writes answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>, chosen by the admin) and shows its name on every answer; see <a href="#app">one turn in the app</a>. On this page nothing was sent. Below is an abbreviated preview of the request that <code>serialize()</code> builds (passage text shortened, numbering field left out). It carries only the system prompt, the question and (opaque id, text) pairs: no arm, relation, hop or path. That removes the explicit labels; the choice and order of passages can still differ between arms.</div>' +
+      return '<div class="design"><b>Built in the app and in the thesis harness.</b> In the experiment the answer model is Claude Sonnet 5.5 through headless Claude Code (no tools, no session memory); the interface does not expose the temperature, so L, R, H and Hc are generated three times and scored by the majority label, and G answers once. The retrieval arms share one prompt (P2); L answers closed-book under its own prompt. The tutor app already writes answers with an Alibaba-hosted model (default <code>qwen3.8-flash</code>, chosen by the admin) and shows its name on every answer; see <a href="#app">one turn in the app</a>. On this page nothing was sent. Below is an abbreviated preview of the request that <code>serialize()</code> builds (passage text shortened, numbering field left out). It carries only the system prompt, the question and (opaque id, text) pairs: no arm, relation, hop or path. That removes the explicit labels; the choice and order of passages can still differ between arms.</div>' +
         '<div class="pre">' + esc(show) + '</div>' +
         '<h3>Coverage proxy against the professor\'s answer</h3><table class="tbl"><tbody>' + cov.map(c => '<tr><td>' + esc(c.point) + '</td><td class="m ' + (c.hits.length ? "vtrue" : "vfalse") + '">' + (c.hits.length ? c.hits.slice(0, 4).join(" ") + (c.hits.length > 4 ? " …" : "") : "no passage") + '</td></tr>').join("") + '</tbody></table><p class="small faint">A point counts when a packed passage mentions one of its concepts (pilot MENTIONS edges). It counts concept-mention overlap (one concept of a point is enough), not evidence that answers the point and not what the model would write.</p>';
     },
@@ -949,11 +941,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       const ids = res.context.ids, ol = D.book_outline || [];
       return '<p>Each passage the answer cites maps back to its source. For the lecture captions on this slice that is the lecture and its 5-minute window:</p>' +
         ids.slice(0, 6).map((id, i) => '<div class="card"><div class="hd"><span class="mono">[' + (i + 1) + ']</span><span>Caltech CS 156, ' + (C(id).lec === "L14" ? "Lecture 14, Support Vector Machines" : "Lecture 15, Kernel Methods") + ', window from ' + C(id).loc + '</span></div></div>').join("") +
-        '<div class="design"><b>Built in the app.</b> For book passages the citation is <i>book · chapter · section · printed page</i>, from the table-of-contents structure of each book (built for all nine sources); the app renders it from the unit rows. The thesis harness has not run yet. The book\'s e-Chapter 8 covers SVMs, kernels and the soft margin; relevant sections, as the OCR headings give them: ' + ol.filter(x => /^8\.(1\.3|3 |4 )/.test(x)).map(esc).join("; ") + '. A citation would read like <code>Learning From Data, e-Chapter 8, §8.4 Soft-margin SVM, p. N</code>; in the app the printed page comes from the unit rows (a separate page map is not built yet).</div>';
+        '<div class="design"><b>Built in the app.</b> For book passages the citation is <i>book · chapter · section · printed page</i>, from the table-of-contents structure of each book (built for all nine sources); the app renders it from the unit rows. The book\'s e-Chapter 8 covers SVMs, kernels and the soft margin; relevant sections, as the OCR headings give them: ' + ol.filter(x => /^8\.(1\.3|3 |4 )/.test(x)).map(esc).join("; ") + '. A citation would read like <code>Learning From Data, e-Chapter 8, §8.4 Soft-margin SVM, p. N</code>; in the app the printed page comes from the unit rows (a separate page map is not built yet).</div>';
     },
     nli(res) {
-      return '<div class="design"><b>Built in the app; in the thesis harness it only logs.</b> After the answer is written, each sentence with a citation is checked against the passages it cites: MiniCheck scores the whole cited context when it fits its 2,048-token input (longer cases are logged, never cut, and get no normal label; never cut at 512); HHEM gives a second, robustness score. A sentence below the threshold is flagged as unsupported. The thresholds must still be calibrated on human-labelled pairs; that is not done. ALCE also counts uncited statements and unneeded citations, which this check alone does not.</div>' +
-        '<p>Why this rule: on 76 claim-premise pairs in 23 clusters, MiniCheck reached balanced accuracy 0.732 on whole premises against 0.454 and 0.501 under two ways of truncating them at 512 tokens; in a constructed case with the evidence split over two chunks, whole premises passed 17-18 of 20 and single chunks 0-4 of 20 (labels by an LLM, not human gold).</p>' +
+      return '<div class="design"><b>Built in the app; in the thesis harness it only logs.</b> After the answer is written, each sentence with a citation is checked against the passages it cites: MiniCheck scores the whole cited context when it fits its 2,048-token input (longer cases are logged, never cut, and get no normal label; never cut at 512); HHEM gives a second, robustness score. A sentence below the threshold is flagged as unsupported. The thresholds must still be calibrated on labelled pairs; that is not done. ALCE also counts uncited statements and unneeded citations, which this check alone does not.</div>' +
+        '<p>Why this rule: on 76 claim-premise pairs in 23 clusters, MiniCheck reached balanced accuracy 0.732 on whole premises against 0.454 and 0.501 under two ways of truncating them at 512 tokens; in a constructed case with the evidence split over two chunks, whole premises passed 17-18 of 20 and single chunks 0-4 of 20 (labels by an LLM).</p>' +
         '<p class="small faint">The same two checkers already scored the domain-relation evidence of the graph (step 5; prerequisite evidence waits for review); here they would check the answer instead.</p>';
     }
   };
@@ -988,7 +980,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   function hhcWhy(out, same) {
     const loaded = D.edges.filter(e => (st.prop ? ["accepted-by-gate", "proposed"] : ["accepted-by-gate"]).includes(e.st)), pre = loaded.filter(e => e.r === "PREREQUISITE_OF").length;
     const m = out.H.route.mask;
-    if (same && !m.includes("PREREQUISITE_OF") && pre === 0) return 'The mask leaves out only PREREQUISITE_OF, and the loaded graph has <b>no</b> PREREQUISITE_OF edge (in the pilot every one is still waiting for human review). So "follow USES and IS_A" and "follow everything" are the same walk. Tick "also load proposed edges" to see what happens when such edges exist.';
+    if (same && !m.includes("PREREQUISITE_OF") && pre === 0) return 'The mask leaves out only PREREQUISITE_OF, and the loaded graph has <b>no</b> PREREQUISITE_OF edge (in the pilot every one is still only proposed). So "follow USES and IS_A" and "follow everything" are the same walk. Tick "also load proposed edges" to see what happens when such edges exist.';
     if (same) return 'The edges that the mask leaves out do not change which passages reach the budget for this question.';
     return 'Hc also follows the relations outside the mask (' + loaded.length + ' loaded edges, ' + pre + ' of them PREREQUISITE_OF), so different passages enter the fusion and the budget.';
   }
@@ -1008,7 +1000,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   function l3text() {
     const o = { B: st.B, leak: true, statuses: ["accepted-by-gate"] }, n = D.questions.map(q => { const H = QF.run(D, q, "H", o), R = QF.run(D, q, "R", o); return H.context.ids.filter(x => !R.context.ids.includes(x)).length; });
     const u = { ...o, route: { mask: ["USES"], dir: "both", depth: 2 } }, usesDiff = D.questions.filter(q => JSON.stringify(QF.run(D, q, "H", u).request) !== JSON.stringify(QF.run(D, q, "Hc", u).request)).length;
-    return 'At B = ' + st.B.toLocaleString() + ', H sends ' + n.join(", ") + ' passages that R does not (Q1-Q3). Whether that helps is for the answer judge, not for the coverage proxy. RQ2 asks on what share of items H and Hc send different inputs. With accepted-by-gate edges and the stand-in mask USES + IS_A they are the same on all three questions, because the loaded graph has <b>no</b> PREREQUISITE_OF edge, so the mask removes nothing. A narrower mask changes that: with USES only, H and Hc differ on ' + usesDiff + ' of 3 questions. With proposed edges added, Q1 differs, while Q2 and Q3 keep identical graph lists (the extra edges do not change the top k_graph passages). So the share depends on the router and on reviewed prerequisite edges; the harness should report it on the pilot snapshot before the main run.';
+    return 'At B = ' + st.B.toLocaleString() + ', H sends ' + n.join(", ") + ' passages that R does not (Q1-Q3). Whether that helps is for the answer judge, not for the coverage proxy. RQ2 asks on what share of items H and Hc send different inputs. With accepted-by-gate edges and the stand-in mask USES + IS_A they are the same on all three questions, because the loaded graph has <b>no</b> PREREQUISITE_OF edge, so the mask removes nothing. A narrower mask changes that: with USES only, H and Hc differ on ' + usesDiff + ' of 3 questions. With proposed edges added, Q1 differs, while Q2 and Q3 keep identical graph lists (the extra edges do not change the top k_graph passages). So the share depends on the router and on asserted prerequisite edges; RQ2 reports that share on the thesis items.';
   }
 
   // ---- product design: the four abstention layers (not part of the thesis arms) ----
@@ -1067,6 +1059,8 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     ["tang2024", "Tang, Laban and Durrett, MiniCheck (EMNLP; arXiv 2404.10774)", "the citation checker", true],
     ["hhem", "Vectara, HHEM-2.1-open model card", "the second checker", true],
     ["protocol", "Our claim protocol (arms L, R, G, H, Hc; fourteen rules; ten harness tests)", "every step of the shared pipeline", true],
+    ["addcd", "Our claim protocol, Addenda B-D (answer model, prompt P2, the fill-test replacement, the hop-balanced rank, the fallback-row limit)", "answer model, prompt, B, fill test, rank rule", true],
+    ["progress", "Our Stage A progress log and pilot post-mortem (pilot 1, the prompt selection, the router tuning, configuration I4, arm G's build state)", "harness and arm status", true],
     ["pilot", "Our KG pilot slice on CS 156 Lectures 14-15 (passages, graph, gate scores)", "all data on this page", true],
     ["kaggle", "Our query-time scoring run: bge-m3 and bge-reranker-v2-m3 on the 116 passages and the concept names", "dense, concept and rerank scores", true],
     ["chen2023rgb", "Chen et al., Benchmarking Large Language Models in Retrieval-Augmented Generation (RGB, AAAI 2024; arXiv 2309.01431)", "refusal rate with noise-only passages", true],
@@ -1077,7 +1071,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   function sources() { $("#srcrows").innerHTML = SRC.map(s => '<tr><td class="m">' + s[0] + '</td><td>' + esc(s[1]) + '</td><td>' + esc(s[2]) + '</td><td class="' + (s[3] ? "vtrue" : "vfalse") + '">' + (s[3] ? "yes" : "no") + '</td></tr>').join(""); }
 })();
 </script>
-<p class="back-ex"><a href="/thesis/explainers.html" data-i18n="ex.tw_back">Back to Explainers</a></p>
+<p class="back-ex"><a href="/explain/pipeline.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_pipeline_h">The pipeline, step by step</span></a></p>
 </div>
 <script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
 // Two modes, decided from the page's real content edge (never from a fixed width):

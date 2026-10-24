@@ -8,27 +8,27 @@
 <link rel="stylesheet" href="/thesis/assets/site.css">
 <link rel="stylesheet" href="/thesis/assets/layout.css">
 <style>
-.fa{font-family:"Vazirmatn",var(--body);direction:rtl;text-align:start;color:var(--muted);font-size:17px;margin-top:14px;max-width:none}
+.fa{font-family:"Vazirmatn",var(--body);direction:rtl;text-align:start;color:var(--muted);font-size:18px;margin-top:14px;max-width:none}
 .people{display:flex;gap:40px;flex-wrap:wrap;margin-top:22px;font-size:15px}
-.people b{display:block;font:500 17px var(--display)}
+.people b{display:block;font:500 18px var(--display)}
 .people span{color:var(--muted)}
 ol.qs{list-style:none;counter-reset:q;margin-top:16px}
 ol.qs li{counter-increment:q;display:grid;grid-template-columns:64px 1fr;gap:12px;padding:16px 0;border-top:1px solid var(--line)}
 ol.qs li::before{content:attr(data-k);font:500 15px var(--mono);color:var(--ai);padding-top:3px}
 ol.qs li b{font-weight:600}
-.arms{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:16px}
+.arms{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:16px}
 .arms div{background:var(--bg);padding:16px 18px}
-.arms b{display:block;font:500 17px var(--display);margin-bottom:4px}
+.arms b{display:block;font:500 18px var(--display);margin-bottom:4px}
 .arms span{font-size:14px;color:var(--muted)}
 .arms .maybe b::after{content:" (under consideration)";font:400 12.5px var(--body);color:var(--faint)}
-.claim-box{margin-top:16px;padding:18px 20px;border:1px solid var(--line);border-inline-start:3px solid var(--ai);border-radius:10px;font-size:16.5px;line-height:1.6}
+.claim-box{margin-top:16px;padding:18px 20px;border:1px solid #3A4352;border-radius:10px;background:var(--panel);font-size:16.5px;line-height:1.6}
 .steps{list-style:none;margin-top:16px}
 .steps li{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
 .steps li span{font:500 13px var(--mono);color:var(--he)}
-.src-tag{display:inline-block;font:500 10.5px/1.5 var(--body);color:var(--faint);border:1px solid var(--line);border-radius:4px;padding:0 5px;margin-inline-start:6px;vertical-align:1px}
+.src-tag{display:inline-block;font:500 12px/1.5 var(--body);color:var(--faint);border:1px solid var(--line);border-radius:8px;padding:0 5px;margin-inline-start:6px;vertical-align:1px}
 .src-tag.prop{color:var(--he);border-color:color-mix(in srgb,var(--he) 45%,var(--line))}
 .kw{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
-.kw span{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 10px}
+.kw span{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 10px}
 .site-foot p+p{margin-top:10px}
 #glossary{scroll-margin-top:calc(var(--hdr) + 12px)}
 </style>
@@ -53,13 +53,13 @@ html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
 html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
 svg{direction:ltr}
 [lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 10.5px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #5A3A30;border-radius:4px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
   background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
 html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
 .site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 19px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#7D8596}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
@@ -68,19 +68,18 @@ html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .s
 .site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
 .site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:2px}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.5)}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#B5BCCB;text-decoration:none;white-space:nowrap}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
 /* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 11px/1.2 "Inter",system-ui,sans-serif;color:#7D8596;text-transform:uppercase;letter-spacing:.06em}
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
 html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#1B2130}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;box-shadow:inset 3px 0 0 #F2A93B}
-html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0 #F2A93B}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
 .site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
 .site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
@@ -91,7 +90,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
   .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#7D8596;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
@@ -99,7 +98,7 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 }
 .site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:6px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
 .site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
 .site-hdr .lang button:hover{color:#E9ECF2}
 .site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
@@ -113,14 +112,14 @@ html[dir="rtl"] .site-hdr .menu a[aria-current="page"]{box-shadow:inset -3px 0 0
 .to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
 .to-top.above-help{bottom:64px}
 @media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:6px;padding:2px 6px}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
 html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 /* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
 .fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#1A1410;border:1px solid #5A3A30;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#F3D9C9;box-shadow:0 6px 20px rgba(0,0,0,.4)}
-.fa-banner a{color:#FFB38F}
-.fa-banner button{background:none;border:0;color:#C9A898;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:6px;cursor:pointer}
-.fa-banner button:hover{background:#2A1E18;color:#fff}
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -129,6 +128,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
       <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
       <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
@@ -139,30 +139,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
       <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
-      <a href="/thesis/metrics.html" data-path="/thesis/metrics.html" data-i18n="nav.ex_metrics">Metrics</a>
-      <a href="/thesis/algorithms.html" data-path="/thesis/algorithms.html" data-i18n="nav.ex_algorithms">Algorithms</a>
-      <a href="/thesis/foundations.html" data-path="/foundations" data-i18n="nav.ex_foundations">Foundations</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
       <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
-      <a href="/thesis/production-stack.html" data-path="/thesis/production-stack.html" data-i18n="nav.ps">RAG &amp; GraphRAG Architecture</a>
-      <a href="/thesis/rag-projects.html" data-path="/thesis/rag-projects.html" data-i18n="nav.rp">What people build</a>
-      <a href="/thesis/tooling.html" data-path="/thesis/tooling.html" data-i18n="nav.tg">Tooling landscape</a>
-      <div class="mh" data-i18n="nav.h_rg">RAG &amp; GraphRAG</div>
-      <a href="/thesis/assets/stories/rag-vs-graphrag/build/index.html" data-path="/thesis/assets/stories/rag-vs-graphrag/" data-i18n="nav.ex_rag_story">RAG vs GraphRAG story</a>
-      <a href="/thesis/assets/figures/anatomy-system/index.html" data-path="/thesis/assets/figures/anatomy-system/" data-i18n="nav.ex_anatomy">Three pipelines (figure)</a>
-      <a href="/thesis/assets/stories/query-flow/build/index.html" data-path="/thesis/assets/stories/query-flow/" data-i18n="nav.ex_qf">What happens when a student asks</a>
-      <div class="mh" data-i18n="nav.h_kg">Knowledge graphs</div>
-      <a href="/thesis/assets/stories/ontology/build/index.html" data-path="/thesis/assets/stories/ontology/" data-i18n="nav.ex_ont">Ontology and knowledge graphs</a>
-      <a href="/thesis/assets/stories/data-pipeline/build/index.html" data-path="/thesis/assets/stories/data-pipeline/" data-i18n="nav.ex_pipe">Our data pipeline</a>
-      <a href="/thesis/assets/stories/placement-simulation/build/index.html" data-path="/thesis/assets/stories/placement-simulation/" data-i18n="nav.ex_pts">Placement test simulation</a>
-      <div class="mh" data-i18n="nav.h_blocks">Building blocks</div>
-      <a href="/thesis/assets/stories/chunking/build/index.html" data-path="/thesis/assets/stories/chunking/" data-i18n="nav.ex_chunk">Chunking strategies</a>
-      <a href="/thesis/assets/stories/indexing/build/index.html" data-path="/thesis/assets/stories/indexing/" data-i18n="nav.ex_index">Indexing for RAG</a>
-      <a href="/thesis/assets/stories/kg-build/build/index.html" data-path="/thesis/assets/stories/kg-build/" data-i18n="nav.ex_kgb">How a knowledge graph is built</a>
-      <div class="mh" data-i18n="nav.h_eval">Evaluation</div>
-      <a href="/thesis/assets/stories/statistical-tests/build/index.html" data-path="/thesis/assets/stories/statistical-tests/" data-i18n="nav.ex_stats">Statistical tests</a>
-      <a href="/thesis/assets/stories/evaluating-rag/build/index.html" data-path="/thesis/assets/stories/evaluating-rag/" data-i18n="nav.ex_eval">Evaluating RAG and GraphRAG</a>
-      <div class="mh" data-i18n="nav.h_ml">Machine learning concepts</div>
-      <a href="/thesis/assets/stories/bias-variance/build/index.html" data-path="/thesis/assets/stories/bias-variance/" data-i18n="nav.ex_bv">Bias and variance</a>
     </div></div></div>
     <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
       <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
@@ -181,7 +162,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
   // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
-  const isHome=!/\/timelines\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
@@ -208,7 +189,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   const I=window.I18N||{lang:"en",set:()=>{}};
   document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
     b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
-  // Persian: a dismissible "machine translation, not reviewed" notice
+  // Persian: a dismissible "machine translation" notice
   let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
   if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
@@ -306,13 +287,14 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       <div><b>Prof. Mir Saman Pishvaee</b><span>Supervisor</span></div>
       <div><b>Prof. Behrouz Minaei</b><span>Advisor</span></div>
     </div>
-    <p class="note-box">The approved title is the Persian one above. The claim, questions, hypotheses and arms below are the working design. They are not yet signed off by the supervisors.</p>
+    <p class="note-box" data-i18n-html="th.note">The approved title is the Persian one above. The claim, questions, hypotheses and arms below are pre-registered; the protocol was amended four times before any item of the main set was answered.</p>
   </section>
 
   <section data-hx-section id="s-claim">
     <h2>The claim</h2>
-    <p class="claim-box">On a locked set of held-out questions about one machine-learning course (Caltech CS 156) that are assigned to the prerequisite or cross-concept strata, we test whether hybrid retrieval over a course knowledge graph with three typed concept-to-concept relations (one pedagogical, <code>PREREQUISITE_OF</code>; two domain, <code>IS_A</code> and <code>USES</code>) gives a higher fully-correct rate than a tuned text retriever (BM25 and dense retrieval, fused and reranked) under the same context-token cap, and whether it gives a higher fully-correct rate than the same retrieval code on the same graph with the three labels collapsed to one; the second contrast estimates the incremental value of explicit relation labels at retrieval time in this implementation.</p>
-    <p class="note-box">This is a pre-registered test, not a result. Both contrasts are tested as specified whatever the final sample size. The thesis states whether the power target of 270 primary items was reached; below that target, a non-rejection is reported as inconclusive and not as evidence of no effect. A null or negative result is a finding.</p>
+    <p class="claim-box" data-i18n-html="th.claim">On a locked set of held-out questions about one machine-learning course (Caltech CS 156) and on exercises from the book <i>Pattern Recognition and Machine Learning</i> with official solutions, assigned to the prerequisite or cross-concept strata, we test whether hybrid retrieval over a course knowledge graph with three typed concept-to-concept relations (one pedagogical, <code>PREREQUISITE_OF</code>; two domain, <code>IS_A</code> and <code>USES</code>) gives a higher fully-correct rate than a tuned text retriever (BM25 and dense retrieval, with fusion and reranking) under the same context-token cap, and whether it gives a higher fully-correct rate than the same retrieval code on the same graph with the three labels collapsed to one; the second contrast estimates the incremental value of explicit relation labels at retrieval time, in this implementation. All arms answer with a prompt that restricts the answer to the given passages, and the answer model answers most questions correctly even without retrieval; the claim therefore tests which retrieval gives more correct answers to a tutor that must stay within the course material, not whether retrieval adds new knowledge to the model.</p>
+    <p class="muted" style="font-size:14.5px" data-i18n-html="th.claim_orig">The original registration named CS 156 only. Amendment B added the PRML exercises with official solutions; amendment C added the last sentence (the scope).</p>
+    <p class="note-box" data-i18n-html="th.claim_status">This is a pre-registered test, not a result. Both contrasts are tested as specified, whatever the final sample size. The thesis states whether the power target of 270 primary-stratum items was reached; below this target, a non-rejection of the null hypothesis is inconclusive, not evidence of no effect. A null or negative result is also a finding. The protocol was amended four times before any item of the main set was answered.</p>
   </section>
 
   <section data-hx-section id="s-rqs">
@@ -340,19 +322,53 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 
   <section data-hx-section id="s-tutors">
     <h2>The arms being compared</h2>
-    <p class="muted">Same answer model, same prompt, temperature 0 and the same context-token cap in every arm. Only the way it finds course knowledge changes.</p>
+    <p class="muted" data-i18n-html="th.arms_intro">Same answer model, same prompt, temperature 0 and the same context-token cap in every arm. Only the way it finds course knowledge changes.</p>
     <div class="arms">
-      <div><b>L: plain LLM</b><span>No course material (closed book). The status quo students already use.</span></div>
-      <div><b>R: tuned text retrieval</b><span>BM25 and dense retrieval, fused and reranked over the course text, tuned on a development set.</span></div>
-      <div><b>G: LightRAG baseline</b><span>A published graph-RAG system, run with its defaults.</span></div>
-      <div><b>H: typed hybrid</b><span>Walks the course knowledge graph along typed relations and fuses the result with R. The thesis system.</span></div>
-      <div><b>Hc: H-collapsed</b><span>The same code on the same graph with the three labels collapsed to one. It shows what explicit labels add at retrieval time.</span></div>
+      <div><b data-i18n="th.arm_l">L: plain LLM</b><span data-i18n-html="th.arm_l_p">No course material (closed book). The status quo students already use; it shows the ceiling of what the model already knows.</span></div>
+      <div><b data-i18n="th.arm_r">R: tuned text retrieval</b><span data-i18n-html="th.arm_r_p">BM25 and dense retrieval (bge-m3) over the course text, fused with RRF and reranked by the cross-encoder bge-reranker-v2-m3. Tuned on development items: depth 30, rerank_top 10.</span></div>
+      <div><b data-i18n="th.arm_g">G: LightRAG baseline</b><span data-i18n-html="th.arm_g_p">LightRAG, a published graph-RAG system, builds its own graph from the same passages and runs with its defaults, once per item. Its index is a clean staged rebuild that is still running; G is not ready until it ends.</span></div>
+      <div><b data-i18n="th.arm_h">H: typed hybrid</b><span data-i18n-html="th.arm_h_p">Links the question to concepts, routes it (router table s7-b/2), walks the course knowledge graph along the allowed typed relations, ranks 30 graph passages with the hop-balanced rule (with the backfill and the output order: hop, descending score, identifier) and fuses them with the passages of R. The thesis system.</span></div>
+      <div><b data-i18n="th.arm_hc">Hc: H-collapsed</b><span data-i18n-html="th.arm_hc_p">The same code on the same graph with the three labels collapsed to one; edge direction stays. It shows what explicit labels add at retrieval time.</span></div>
     </div>
+      <p class="muted" style="margin-top:14px" data-i18n-html="th.arms_expl"><b>Exploratory arms</b> run once on each main item and give estimates only: H-undirected (as Hc, with edge direction removed), H-noprereq (prerequisite edges removed) and H-rule7 (H with the first registered ranking rule).</p>
   </section>
+
+  <section data-hx-section id="s-run">
+    <h2 data-i18n="th.run_h">How answers are scored and reported</h2>
+    <ol class="qs">
+      <li data-k="B"><div data-i18n-html="th.run_b"><b>Context cap.</b> B = 4,000 bge-m3 tokens of passages, fixed in advance and not tuned. Caps of 8,000 and 2,000 tokens are a pre-stated sensitivity condition: H, R and Hc on the main set, one generation, estimates and intervals only. An equal cap is not equal exposure, so the hop histogram of the packed passages and B* (the cap at which the first deeper graph passage that R does not have would enter) are reported too.</div></li>
+      <li data-k="Score"><div data-i18n-html="th.run_score"><b>Scoring.</b> Multiple choice: exact match. Open questions: fully correct only if both judges, DeepSeek v4.1 flash and MiniMax M2.5 (families other than the answer model's), say so. Each generation gets its own label; the item label is the majority of three.</div></li>
+      <li data-k="Judge"><div data-i18n-html="th.run_judge"><b>Judge check.</b> The judges are checked against a panel of two model families: Claude Opus labels each sampled answer, Codex labels it blind and Claude Fable settles disagreements. The panel and the judges can share errors, so this gate is a coarse screen.</div></li>
+      <li data-k="More"><div data-i18n-html="th.run_sec"><b>Secondary and descriptive.</b> One secondary outcome is tested: correctness plus a gold citation (a proxy; it does not show that every claim of the answer is supported). Reported with intervals and without p-values: each stratum (RQ3), arms L and G, the exploratory arms, abstentions by kind, gold-evidence precision at B and the label changes across the three generations. RAGAS 0.4.3 appears only in an optional post hoc appendix (60 items, R, H and Hc, first generation) and decides nothing.</div></li>
+      <li data-k="Risk"><div data-i18n-html="th.run_threats"><b>Threats stated in advance.</b> The cross-encoder truncates each question–passage pair at 512 tokens (the same in every arm), which may weaken its ordering for long exercise questions. In RRF fusion the text list and the graph list compete for the same cap (two-list dominance), so deeper graph passages can lose their place.</div></li>
+    </ol>
+  </section>
+
+  <section data-hx-section id="s-data">
+    <h2 data-i18n="th.data_h">The graph and the question bank</h2>
+    <ol class="qs">
+      <li data-k="S_G"><div data-i18n-html="th.data_graph"><b>The course graph.</b> Claude Opus 5.5 extracted concepts and relations from the course and eight textbooks. The graph was frozen three times: after the first build, after the prerequisite judge and after the restore. The final snapshot S_G has 6,814 concepts, 8,069 passages and 5,866 eligible concept-to-concept edges (PREREQUISITE_OF 1,724, USES 2,726, IS_A 1,416).</div></li>
+      <li data-k="Bank"><div data-i18n-html="th.data_bank"><b>The question bank.</b> 581 items in 469 source clusters, from CS 156 and PRML. Two blind model taggers assign the strata; their agreement is kappa 0.33 for the exact stratum and 0.20 for membership of the primary stratum, so the primary stratum is their intersection. 129 clusters are primary under both taggers and 322 under at least one, before answerability is decided and the pilot clusters are excluded.</div></li>
+    </ol>
+  </section>
+
+  <section data-hx-section id="s-status">
+    <h2 data-i18n="th.st_h">Where the experiment stands</h2>
+    <p class="muted" data-i18n-html="th.st_p">No result of the main run exists yet. The steps so far, in order:</p>
+    <ol class="qs">
+      <li data-k="1"><div data-i18n-html="th.st_1"><b>Pilot 1</b> ran L, R, H and Hc on 30 development items (descriptive only). It found an unclear abstain rule (the retrieval arms abstained on 135 of 270 generations; no cause is attributed), a placeholder router that made H and Hc send the same requests, a judge-parser bug (fixed) and a failed context-fill test (T10).</div></li>
+      <li data-k="2"><div data-i18n-html="th.st_2"><b>Amendment C</b>, from the post-mortem: the scope sentence of the claim, a new answer prompt selected on development items (P2 over P0 and P1, by a rule fixed before any output was read), the router tuning, three generations for L, and new rules for gate 3 and test T10.</div></li>
+      <li data-k="3"><div data-i18n-html="th.st_3"><b>Amendment D</b>: under the registered ranking rule the graph list held only hop-0 passages, so the relations could not change the context. The hop-balanced ranking replaced it, and the router and k_graph were tuned again for H: a three-way tie, broken by the rule fixed in advance, chose s7-b/2 with k_graph 30.</div></li>
+      <li data-k="4"><div data-i18n-html="th.st_4"><b>One scorer source.</b> 197,073 cross-encoder scores were merged at 100 % coverage before tuning; each of the 25 scoring runs reproduced a 200-key overlap bit for bit, on Intel and AMD CPUs.</div></li>
+      <li data-k="5"><div data-i18n-html="th.st_5"><b>Configuration I4</b> is hashed (7cae3a31…): prompt, router, ranking and scores, frozen for pilot 2 and the main run.</div></li>
+      <li data-k="6"><div data-i18n-html="th.st_6"><b>Arm G</b>: the LightRAG index is being rebuilt in clean stages; gate 1 stays open until G runs.</div></li>
+      <li data-k="7"><div data-i18n-html="th.st_7"><b>Next</b>: pilot 2 (the same 30 items, all five arms, I4), then the main run, which needs its own go.</div></li>
+    </ol>
+</section>
 </main>
-<footer class="site-foot"><p id="th-foot" data-i18n="th.foot">Source: the thesis design note and the submitted proposal. Code: Intelligent-Educator backend, frontend and orchestration; thesis text: the Intelligent-Educator-thesis repository.</p>
-  <p id="glossary" data-i18n-html="th.glossary"><b>Persian version.</b> The Persian pages are a machine translation, checked against a fixed glossary and cross-checked by a second model, not yet reviewed by a human. Terminology follows the glossary (thesis convention: the English original of a term is given in a footnote at its first use); data text is kept in <code>i18n/fa/*.json</code> in the thesis-site repository, and anything not yet translated is shown in English with a small tag. Quotes from sources stay in their original language with a Persian gloss.</p></footer>
-<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 139, "real_logos": 176, "rows": 199, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 23, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "placement-simulation"], "figures": ["anatomy-system"]}, "thesis_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian content of the thesis page. Each item carries source: proposal (the author's own wording from Proposal-submitted-v3, copied verbatim) or translated (machine translation of the English design note). Unreviewed by the author.", "title": {"text": "توسعه رویکرد تعاملی مبتنی بر هوش مصنوعی برای افزایش بهره‌وری آموزش: مطالعه موردی درس یادگیری ماشین", "source": "proposal"}, "title_en_proposal": {"text": "Develop Artificial Intelligence Interactive Approach to Enhance Educational Productivity: The Case Study of Machine Learning Course", "source": "proposal"}, "subtitle": {"text": "ساخت خودکار گراف دانش و آموزش خصوصی به کمک بازیابی مبتنی بر گراف: مطالعه موردی درس یادگیری ماشین", "source": "translated"}, "keywords": {"text": ["یادگیری ماشین", "فناوری آموزش", "هوش مصنوعی در آموزش", "گراف دانش", "بازدهی"], "source": "proposal"}, "people": [{"name": "مسعود محررزاده کرد", "role": "دانشجوی کارشناسی ارشد مهندسی صنایع (گرایش مدل‌سازی سیستم‌ها و تحلیل داده) — شماره دانشجویی 402679063", "source": "proposal"}, {"name": "دکتر میر سامان پیشوایی", "role": "استاد راهنما", "source": "proposal"}, {"name": "دکتر بهروز مینایی", "role": "استاد مشاور", "source": "proposal"}], "note": {"text": "عنوان مصوب همان عنوان فارسی بالاست. ادعا، پرسش‌ها، فرضیه‌ها و بازوهای مقایسه در ادامه، طرح کاری‌اند و هنوز به تأیید استادان نرسیده‌اند.", "source": "translated"}, "headings": {"proposal_questions": "پرسش‌های پژوهش (طرح تحقیق ارائه‌شده)", "objectives": "اهداف (طرح تحقیق ارائه‌شده)", "rqs": "پرسش‌های پژوهش (طرح کاری)", "hypotheses": "فرضیه‌ها و قاعده تصمیم", "tutors": "بازوهای مورد مقایسه", "proposal_plan": "مراحل انجام تحقیق (طرح تحقیق ارائه‌شده)", "claim": "ادعا"}, "proposal_questions_intro": {"text": "ازآنجایی‌که در این تحقیق فرضیه‌ای وجود ندارد فقط به بیان سؤالاتی که در این پژوهش درصدد پاسخگویی به آن‌ها می‌باشیم می‌پردازیم که عبارت‌اند از:", "source": "proposal"}, "proposal_questions": [{"id": "P1", "text": "چگونه موجودیت‌ها و روابط را از داده‌های متنی بدون ساختار منابع درس یادگیری ماشین استخراج کنیم و گراف دانش آنها را بسازیم؟", "source": "proposal"}, {"id": "P2", "text": "چگونه ماشین می‌تواند روی گراف دانش ساخته شده استدلال کند؟", "source": "proposal"}, {"id": "P3", "text": "چگونه می‌توان گراف‌های دانش و مدل‌های زبانی را با هم تلفیق کنیم تا خروجی بهتری بدست آوریم؟", "source": "proposal"}, {"id": "P4", "text": "تاثیر به کارگیری استفاده از گراف‌های دانش برای دانشجو به چه شکل است؟ آیا باعث صرفه‌جویی در زمان یادگیرنده می‌شود یا خیر؟ یا در درازمدت در یادگیری و انگیزه یادگیرنده تاثیر می‌گذارد؟", "source": "proposal"}], "objectives": [{"text": "توسعه رویکرد مبتنی بر هوش مصنوعی جهت تولید گراف دانش درس یادگیری ماشین", "source": "proposal"}, {"text": "به کارگیری گراف دانش تولید شده با استفاده از سیستم‌های بازیابی اطلاعات برای ایجینت‌های مدل‌های زبانی", "source": "proposal"}], "research_questions": [{"id": "RQ1", "label": "کارایی", "text": "در لایه اصلی، آیا بازیابی ترکیبی نوع‌دار H زیر سقف مشترک توکن بافت، نرخ پاسخ کاملاً درست بالاتری از بازیاب متنی R می‌دهد؟", "source": "translated"}, {"id": "RQ2", "label": "سازوکار", "text": "در لایه اصلی، آیا H نرخ پاسخ کاملاً درست بالاتری از H-فروریخته می‌دهد، که فقط در گام شایستگی رابطه در پیمایش با H فرق دارد؟ در چه سهمی از پرسش‌ها این دو بازو ورودی متفاوتی به مدل پاسخ‌گو می‌فرستند؟", "source": "translated"}, {"id": "RQ3", "label": "لایه‌ها (توصیفی)", "text": "برآوردهای H − R و H − Hc در لایه‌های تعیین‌شده (پیش‌نیاز، میان‌مفهومی، تعریف، مثال، جست‌وجوی ساده، و خودداری در پرسش‌های بی‌پاسخ) چگونه تغییر می‌کنند؟ هر لایه جداگانه و با بازه گزارش می‌شود؛ برهم‌کنشی آزمون نمی‌شود.", "source": "translated"}, {"id": "RQ4", "label": "هزینه", "text": "هزینه هر پاسخ کاملاً درست برای هر بازو، به‌عنوان تابعی از سهم پرسش‌های لایه اصلی و تعداد پرسش‌های پاسخ‌داده‌شده، با احتساب هزینه استهلاک‌شده ساخت گراف، چقدر است و در کدام ناحیه، اگر وجود داشته باشد، H به‌ازای هر پاسخ درست ارزان‌تر از R است؟", "source": "translated"}, {"id": "RQ5", "label": "کیفیت گراف", "text": "دقت و بازیابی هر یک از سه رابطه در برابر پاره‌متن‌های مرجعِ کامل برچسب‌گذاری‌شده چقدر است، و وقتی 25 و 50 درصد یال‌ها به‌طور تصادفی حذف شوند نرخ پاسخ کاملاً درست H چگونه تغییر می‌کند (اکتشافی)؟", "source": "translated"}], "hypotheses": [{"id": "H1", "text": "کارایی. H نرخ پاسخ کاملاً درست بالاتری از R دارد. آزمون دقیق مک‌نمار یک‌طرفه، ابتدا آزموده می‌شود.", "source": "translated"}, {"id": "H2", "text": "سازوکار. H نرخ پاسخ کاملاً درست بالاتری از Hc دارد. فقط اگر H1 رد شود آزموده می‌شود (توالی ثابت)؛ برآورد و بازه آن در همه حالت‌ها گزارش می‌شود.", "source": "translated"}, {"id": "H3", "text": "توصیفی. در لایه‌های جست‌وجوی ساده و تعریف انتظار می‌رود H − R نزدیک صفر باشد. فقط برآورد و بازه؛ ادعای هم‌ارزی نمی‌شود.", "source": "translated"}, {"id": "H4", "text": "هزینه. هزینه هر پاسخ درست برای H و R با ناحیه سر‌به‌سر گزارش می‌شود، از جمله نتیجه «بدون تقاطع».", "source": "translated"}, {"id": "H5", "text": "اکتشافی. استواری H در برابر حذف تصادفی یال‌ها، به‌صورت یک منحنی گزارش می‌شود. روند خاصی ادعا نمی‌شود.", "source": "translated"}], "tutors_intro": {"text": "در همه بازوها مدل پاسخ‌گو، پرامپت (prompt)، دمای صفر و سقف توکن بافت یکسان است. فقط روش یافتن دانش درس تغییر می‌کند.", "source": "translated"}, "tutors_maybe_label": {"text": "(در دست بررسی)", "source": "translated"}, "tutors": [{"name": "L: LLM ساده", "text": "بدون مواد درسی (کتاب بسته). همان وضع موجودی که دانشجویان هم‌اکنون از آن استفاده می‌کنند.", "maybe": false, "source": "translated"}, {"name": "R: بازیابی متنی تنظیم‌شده", "text": "BM25 و بازیابی چگال، ادغام‌شده و بازرتبه‌بندی‌شده روی متن درس، با تنظیم روی یک مجموعه توسعه.", "maybe": false, "source": "translated"}, {"name": "G: خط پایه LightRAG", "text": "یک سامانه منتشرشده از نوع GraphRAG (تولید به کمک بازیابی مبتنی بر گراف) که با تنظیمات پیش‌فرض اجرا می‌شود.", "maybe": false, "source": "translated"}, {"name": "H: ترکیبی نوع‌دار", "text": "گراف دانش درس را در امتداد رابطه‌های نوع‌دار پیمایش می‌کند و نتیجه را با R ادغام می‌کند. سامانه اصلی پایان‌نامه.", "maybe": false, "source": "translated"}, {"name": "Hc: H-فروریخته", "text": "همان کد روی همان گراف، با سه برچسب فروریخته در یک برچسب. نشان می‌دهد برچسب‌های صریح در زمان بازیابی چه چیزی می‌افزایند.", "maybe": false, "source": "translated"}], "proposal_plan_note": {"text": "در طرح تحقیق ارائه‌شده، مدت پیش‌بینی‌شده 9 ماه و در شش مرحله است.", "source": "translated"}, "proposal_plan": [{"text": "مرور ادبیات و مطالعات کتابخانه‌ای پیرامون موضوع مورد نظر و مدل‌سازی اولیه", "source": "proposal"}, {"text": "استخراج گراف دانش از داده‌های بدون ساختار متنی از منابع درس یادگیری ماشین", "source": "proposal"}, {"text": "تولید خروجی خام گراف‌های دانش", "source": "proposal"}, {"text": "پیاده‌سازی سیستم‌های بازگشتی اطلاعات برای استفاده از گراف‌های دانش و اتصال آنها به ایجنت مدل‌های زبانی", "source": "proposal"}, {"text": "استخراج نتایج مورد نیاز از پروژه و مطالعه موردی", "source": "proposal"}, {"text": "آماده‌سازی مستندات و گزارشات نهایی و تحویل پایان‌نامه و استخراج مقالات از طرح پژوهشی", "source": "proposal"}], "footer": {"text": "منبع: یادداشت طراحی پایان‌نامه و طرح تحقیق ارائه‌شده (نسخه 3). کد: مخزن‌های backend، frontend و orchestration پروژه Intelligent-Educator؛ متن پایان‌نامه: مخزن Intelligent-Educator-thesis.", "source": "translated"}, "claim": {"text": "روی مجموعه‌ای قفل‌شده از پرسش‌های کنارگذاشته‌شده درباره یک درس یادگیری ماشین (CS 156 کلتک) که به لایه‌های پیش‌نیاز یا میان‌مفهومی تعلق دارند، آزمون می‌کنیم که آیا بازیابی ترکیبی روی گراف دانش درس، با سه رابطه نوع‌دار میان مفهوم‌ها (یکی آموزشی، PREREQUISITE_OF؛ دو تا حوزه‌ای، IS_A و USES)، در سقف یکسان توکن بافت، نرخ پاسخ کاملاً درست بالاتری از یک بازیاب متنی تنظیم‌شده (BM25 و بازیابی چگال، ادغام‌شده و بازرتبه‌بندی‌شده) می‌دهد، و نیز آیا نرخ پاسخ کاملاً درست بالاتری از همان کد بازیابی روی همان گراف با سه برچسب فروریخته در یک برچسب می‌دهد؛ مقایسه دوم، ارزش افزوده برچسب‌های صریح رابطه را در زمان بازیابی، در این پیاده‌سازی، برآورد می‌کند.", "source": "translated"}, "claim_status": {"text": "این یک آزمون ثبت‌پیشین است، نه یک نتیجه. هر دو مقایسه، فارغ از اندازه نهایی نمونه، همان‌گونه که مشخص شده آزمون می‌شوند. پایان‌نامه اعلام می‌کند که به هدف توان آماری 270 پرسش اصلی رسیده یا نه؛ زیر آن هدف، رد نشدن فرض صفر «نامعین» گزارش می‌شود و شواهدی بر نبود اثر نیست. نتیجه تهی یا منفی هم یک یافته است.", "source": "translated"}, "decision": {"text": "ادعا فقط وقتی برقرار است که H1 و H2 هر دو رد شوند. اگر H1 رد شود و H2 رد نشود، پایان‌نامه می‌گوید گراف زیر این سقف کمک می‌کند و برچسب‌ها سود قابل‌تشخیصی نمی‌افزایند.", "source": "translated"}}};</script>
+<footer class="site-foot"><p id="th-foot" data-i18n="th.foot">Source: the pre-registered protocol and its four amendments, the decision record and the thesis chapters. Code: Intelligent-Educator backend, frontend and orchestration; thesis text: the Intelligent-Educator-thesis repository.</p>
+  <p id="glossary" data-i18n-html="th.glossary"><b>Persian version.</b> The Persian pages are a machine translation, checked against a fixed glossary and cross-checked by a second model. The English text is authoritative. Terminology follows the glossary (thesis convention: the English original of a term is given in a footnote at its first use); data text is kept in <code>i18n/fa/*.json</code> in the thesis-site repository, and anything not yet translated is shown in English with a small tag. Quotes from sources stay in their original language with a Persian gloss.</p></footer>
+<script>const D={"data": {"iran_stats": ["he.json", "he_quality.json", "he_research.json", "k12.json", "meta.json", "outcomes.json", "provenance.json", "provinces.json", "relations.json", "research_quartiles.json", "timss_class_size.json", "achievement.json", "final_exam.json", "national_outcomes.json"], "ml_courses": ["courses.json", "materials.json", "pipeline.json", "quality.json", "textbooks.json", "universities.json"], "ecosystem": ["edtech.json", "funders.json", "investment.json", "iran_ecosystem.json", "lms.json", "ocw_moocs.json", "products_he_cs.json", "products_market.json"], "datasets": ["datasets.json", "benchmarks.json", "course_videos.json", "course_platforms.json"], "history": ["timeline.json", "people.json", "counts.json", "views.json", "citations.json", "warnings.json"], "llm": ["llm-providers.json"], "production_stack": ["production-stack.json"], "history_media": ["RagVsGraphRag.mp4"], "explainers": {"metrics": {"units": 74, "layers": 7, "real": 55, "partial": 16, "three": 1}, "algorithms": {"units": 30, "layers": 5, "real": 24, "partial": 5, "three": 2}}, "galleries": {"projects": 60, "tools": 141, "real_logos": 176, "rows": 201, "logo_bytes": 626999, "kinds": {"avatar": 34, "repo": 98, "badge": 25, "site": 37, "simple-icons": 7}}, "provenance": 318, "stories": ["rag-vs-graphrag", "bias-variance", "ontology", "kg-build", "chunking", "indexing", "statistical-tests", "evaluating-rag", "data-pipeline", "query-flow", "answer-checkers", "rerankers", "graph-hops", "scoring-sources", "pilot-one", "answer-prompt", "lessons-product", "placement-simulation"], "figures": ["anatomy-system"]}, "thesis_fa": {"_banner": "ترجمه ماشینی؛ با واژه‌نامه سنجیده و با مدلی دیگر راستی‌آزمایی شده، اما بازبینی انسانی نشده است", "_about": "Persian content of the thesis page. Each item carries source: proposal (the author's own wording from Proposal-submitted-v3, copied verbatim) or translated (machine translation of the English design note). Unreviewed by the author. The note, claim, claim status, arms intro and arm texts now come from the th.* keys of i18n/fa.json (Part B audit).", "title": {"text": "توسعه رویکرد تعاملی مبتنی بر هوش مصنوعی برای افزایش بهره‌وری آموزش: مطالعه موردی درس یادگیری ماشین", "source": "proposal"}, "title_en_proposal": {"text": "Develop Artificial Intelligence Interactive Approach to Enhance Educational Productivity: The Case Study of Machine Learning Course", "source": "proposal"}, "subtitle": {"text": "ساخت خودکار گراف دانش و آموزش خصوصی به کمک بازیابی مبتنی بر گراف: مطالعه موردی درس یادگیری ماشین", "source": "translated"}, "keywords": {"text": ["یادگیری ماشین", "فناوری آموزش", "هوش مصنوعی در آموزش", "گراف دانش", "بازدهی"], "source": "proposal"}, "people": [{"name": "مسعود محررزاده کرد", "role": "دانشجوی کارشناسی ارشد مهندسی صنایع (گرایش مدل‌سازی سیستم‌ها و تحلیل داده) — شماره دانشجویی 402679063", "source": "proposal"}, {"name": "دکتر میر سامان پیشوایی", "role": "استاد راهنما", "source": "proposal"}, {"name": "دکتر بهروز مینایی", "role": "استاد مشاور", "source": "proposal"}], "headings": {"proposal_questions": "پرسش‌های پژوهش (طرح تحقیق ارائه‌شده)", "objectives": "اهداف (طرح تحقیق ارائه‌شده)", "rqs": "پرسش‌های پژوهش (طرح کاری)", "hypotheses": "فرضیه‌ها و قاعده تصمیم", "tutors": "بازوهای مورد مقایسه", "proposal_plan": "مراحل انجام تحقیق (طرح تحقیق ارائه‌شده)", "claim": "ادعا"}, "proposal_questions_intro": {"text": "ازآنجایی‌که در این تحقیق فرضیه‌ای وجود ندارد فقط به بیان سؤالاتی که در این پژوهش درصدد پاسخگویی به آن‌ها می‌باشیم می‌پردازیم که عبارت‌اند از:", "source": "proposal"}, "proposal_questions": [{"id": "P1", "text": "چگونه موجودیت‌ها و روابط را از داده‌های متنی بدون ساختار منابع درس یادگیری ماشین استخراج کنیم و گراف دانش آنها را بسازیم؟", "source": "proposal"}, {"id": "P2", "text": "چگونه ماشین می‌تواند روی گراف دانش ساخته شده استدلال کند؟", "source": "proposal"}, {"id": "P3", "text": "چگونه می‌توان گراف‌های دانش و مدل‌های زبانی را با هم تلفیق کنیم تا خروجی بهتری بدست آوریم؟", "source": "proposal"}, {"id": "P4", "text": "تاثیر به کارگیری استفاده از گراف‌های دانش برای دانشجو به چه شکل است؟ آیا باعث صرفه‌جویی در زمان یادگیرنده می‌شود یا خیر؟ یا در درازمدت در یادگیری و انگیزه یادگیرنده تاثیر می‌گذارد؟", "source": "proposal"}], "objectives": [{"text": "توسعه رویکرد مبتنی بر هوش مصنوعی جهت تولید گراف دانش درس یادگیری ماشین", "source": "proposal"}, {"text": "به کارگیری گراف دانش تولید شده با استفاده از سیستم‌های بازیابی اطلاعات برای ایجینت‌های مدل‌های زبانی", "source": "proposal"}], "research_questions": [{"id": "RQ1", "label": "کارایی", "text": "در لایه اصلی، آیا بازیابی ترکیبی نوع‌دار H زیر سقف مشترک توکن بافت، نرخ پاسخ کاملاً درست بالاتری از بازیاب متنی R می‌دهد؟", "source": "translated"}, {"id": "RQ2", "label": "سازوکار", "text": "در لایه اصلی، آیا H نرخ پاسخ کاملاً درست بالاتری از H-collapsed می‌دهد، که فقط در گام شایستگی رابطه در پیمایش با H فرق دارد؟ در چه سهمی از پرسش‌ها این دو بازو ورودی متفاوتی به مدل پاسخ‌گو می‌فرستند؟", "source": "translated"}, {"id": "RQ3", "label": "لایه‌ها (توصیفی)", "text": "برآوردهای H − R و H − Hc در لایه‌های تعیین‌شده (پیش‌نیاز، میان‌مفهومی، تعریف، مثال، جست‌وجوی ساده، و خودداری در پرسش‌های بی‌پاسخ) چگونه تغییر می‌کنند؟ هر لایه جداگانه و با بازه گزارش می‌شود؛ برهم‌کنشی آزمون نمی‌شود.", "source": "translated"}, {"id": "RQ4", "label": "هزینه", "text": "هزینه هر پاسخ کاملاً درست برای هر بازو، به‌عنوان تابعی از سهم پرسش‌های لایه اصلی و تعداد پرسش‌های پاسخ‌داده‌شده، با احتساب هزینه استهلاک‌شده ساخت گراف، چقدر است و در کدام ناحیه، اگر وجود داشته باشد، H به‌ازای هر پاسخ درست ارزان‌تر از R است؟", "source": "translated"}, {"id": "RQ5", "label": "کیفیت گراف", "text": "دقت و بازیابی هر یک از سه رابطه در برابر پاره‌متن‌های مرجعِ کامل برچسب‌گذاری‌شده چقدر است، و وقتی 25 و 50 درصد یال‌ها به‌طور تصادفی حذف شوند نرخ پاسخ کاملاً درست H چگونه تغییر می‌کند (اکتشافی)؟", "source": "translated"}], "hypotheses": [{"id": "H1", "text": "کارایی. H نرخ پاسخ کاملاً درست بالاتری از R دارد. آزمون دقیق مک‌نمار یک‌طرفه، ابتدا آزموده می‌شود.", "source": "translated"}, {"id": "H2", "text": "سازوکار. H نرخ پاسخ کاملاً درست بالاتری از Hc دارد. فقط اگر H1 رد شود آزموده می‌شود (توالی ثابت)؛ برآورد و بازه آن در همه حالت‌ها گزارش می‌شود.", "source": "translated"}, {"id": "H3", "text": "توصیفی. در لایه‌های جست‌وجوی ساده و تعریف انتظار می‌رود H − R نزدیک صفر باشد. فقط برآورد و بازه؛ ادعای هم‌ارزی نمی‌شود.", "source": "translated"}, {"id": "H4", "text": "هزینه. هزینه هر پاسخ درست برای H و R با ناحیه سر‌به‌سر گزارش می‌شود، از جمله نتیجه «بدون تقاطع».", "source": "translated"}, {"id": "H5", "text": "اکتشافی. استواری H در برابر حذف تصادفی یال‌ها، به‌صورت یک منحنی گزارش می‌شود. روند خاصی ادعا نمی‌شود.", "source": "translated"}], "tutors_maybe_label": {"text": "(در دست بررسی)", "source": "translated"}, "tutors": [{"name": "L: LLM ساده", "maybe": false, "source": "translated", "key": "th.arm_l_p"}, {"name": "R: بازیابی متنی تنظیم‌شده", "maybe": false, "source": "translated", "key": "th.arm_r_p"}, {"name": "G: خط پایه LightRAG", "maybe": false, "source": "translated", "key": "th.arm_g_p"}, {"name": "H: ترکیبی نوع‌دار", "maybe": false, "source": "translated", "key": "th.arm_h_p"}, {"name": "Hc: H-collapsed", "maybe": false, "source": "translated", "key": "th.arm_hc_p"}], "proposal_plan_note": {"text": "در طرح تحقیق ارائه‌شده، مدت پیش‌بینی‌شده 9 ماه و در شش مرحله است.", "source": "translated"}, "proposal_plan": [{"text": "مرور ادبیات و مطالعات کتابخانه‌ای پیرامون موضوع مورد نظر و مدل‌سازی اولیه", "source": "proposal"}, {"text": "استخراج گراف دانش از داده‌های بدون ساختار متنی از منابع درس یادگیری ماشین", "source": "proposal"}, {"text": "تولید خروجی خام گراف‌های دانش", "source": "proposal"}, {"text": "پیاده‌سازی سیستم‌های بازگشتی اطلاعات برای استفاده از گراف‌های دانش و اتصال آنها به ایجنت مدل‌های زبانی", "source": "proposal"}, {"text": "استخراج نتایج مورد نیاز از پروژه و مطالعه موردی", "source": "proposal"}, {"text": "آماده‌سازی مستندات و گزارشات نهایی و تحویل پایان‌نامه و استخراج مقالات از طرح پژوهشی", "source": "proposal"}], "footer": {"text": "منبع: پروتکل از پیش ثبت‌شده و چهار اصلاحیه آن، سند تصمیم‌ها و فصل‌های پایان‌نامه. کد: مخزن‌های backend، frontend و orchestration پروژه Intelligent-Educator؛ متن پایان‌نامه: مخزن Intelligent-Educator-thesis.", "source": "translated"}, "decision": {"text": "ادعا فقط وقتی برقرار است که H1 و H2 هر دو رد شوند. اگر H1 رد شود و H2 رد نشود، پایان‌نامه می‌گوید گراف زیر این سقف کمک می‌کند و برچسب‌ها سود قابل‌تشخیصی نمی‌افزایند.", "source": "translated"}}};</script>
 <script>
 // Persian: the page is rebuilt from i18n/fa/thesis.json. Items marked "proposal" are the author's own Persian wording
 // (submitted proposal v3); "translated" items are machine translations of the English design note.
@@ -369,15 +385,18 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <p class="muted" lang="en" dir="ltr" style="margin-top:10px;font-size:15px">${e(F.title_en_proposal.text)}</p>
     <div class="kw">${F.keywords.text.map(k => `<span>${e(k)}</span>`).join("")}</div>
     <div class="people">${F.people.map(p => `<div><b>${e(p.name)}</b><span>${e(p.role)}</span></div>`).join("")}</div>
-    <p class="note-box">${e(F.note.text)}</p>
+    <p class="note-box">${t("th.note")}</p>
   </section>
   <section data-hx-section id="s-pq"><h2>${e(h.proposal_questions)}</h2><p class="muted">${e(F.proposal_questions_intro.text)} ${tag(F.proposal_questions_intro)}</p>${list(F.proposal_questions)}</section>
   <section data-hx-section id="s-obj"><h2>${e(h.objectives)}</h2><ol class="qs">${F.objectives.map((o, i) => `<li data-k="${i + 1}"><div>${e(o.text)} ${tag(o)}</div></li>`).join("")}</ol></section>
-  <section data-hx-section id="s-claim"><h2>${e(h.claim)}</h2><p class="claim-box">${e(F.claim.text)}</p><p class="note-box">${e(F.claim_status.text)}</p></section>
+  <section data-hx-section id="s-claim"><h2>${e(h.claim)}</h2><p class="claim-box">${t("th.claim")}</p><p class="muted" style="font-size:14.5px">${t("th.claim_orig")}</p><p class="note-box">${t("th.claim_status")}</p></section>
   <section data-hx-section id="s-rqs"><h2>${e(h.rqs)}</h2>${list(F.research_questions)}</section>
   <section data-hx-section id="s-hyp"><h2>${e(h.hypotheses)}</h2>${list(F.hypotheses)}<p class="muted">${e(F.decision.text)}</p></section>
-  <section data-hx-section id="s-tutors"><h2>${e(h.tutors)}</h2><p class="muted">${e(F.tutors_intro.text)}</p>
-    <div class="arms">${F.tutors.map(a => `<div${a.maybe ? ' class="maybe-fa"' : ""}><b>${e(a.name)}${a.maybe ? ` <small class="faint" style="font:400 12.5px var(--body)">${e(F.tutors_maybe_label.text)}</small>` : ""}</b><span>${e(a.text)}</span></div>`).join("")}</div></section>
+  <section data-hx-section id="s-tutors"><h2>${e(h.tutors)}</h2><p class="muted">${t("th.arms_intro")}</p>
+    <div class="arms">${F.tutors.map(a => `<div${a.maybe ? ' class="maybe-fa"' : ""}><b>${e(a.name)}${a.maybe ? ` <small class="faint" style="font:400 12.5px var(--body)">${e(F.tutors_maybe_label.text)}</small>` : ""}</b><span>${t(a.key)}</span></div>`).join("")}</div><p class="muted" style="margin-top:14px">${t("th.arms_expl")}</p></section>
+  <section data-hx-section id="s-run"><h2>${t("th.run_h")}</h2><ol class="qs">${[["B","run_b"],["Score","run_score"],["Judge","run_judge"],["More","run_sec"],["Risk","run_threats"]].map(([k, v]) => `<li data-k="${k}"><div>${t("th." + v)}</div></li>`).join("")}</ol></section>
+  <section data-hx-section id="s-data"><h2>${t("th.data_h")}</h2><ol class="qs">${[["S_G","data_graph"],["Bank","data_bank"]].map(([k, v]) => `<li data-k="${k}"><div>${t("th." + v)}</div></li>`).join("")}</ol></section>
+  <section data-hx-section id="s-status"><h2>${t("th.st_h")}</h2><p class="muted">${t("th.st_p")}</p><ol class="qs">${[1,2,3,4,5,6,7].map(i => `<li data-k="${i}"><div>${t("th.st_" + i)}</div></li>`).join("")}</ol></section>
   <section data-hx-section id="s-pplan"><h2>${e(h.proposal_plan)}</h2><p class="note-box">${e(F.proposal_plan_note.text)}</p><ol class="qs">${F.proposal_plan.map((p, i) => `<li data-k="${i + 1}"><div>${e(p.text)} ${tag(p)}</div></li>`).join("")}</ol></section>`;
   document.getElementById("th-foot").textContent = F.footer.text;
 })();

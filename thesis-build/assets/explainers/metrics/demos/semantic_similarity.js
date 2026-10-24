@@ -67,7 +67,7 @@
     const shell = K.shell(el, 'Real example: cosine between real gold and real system answers',
       'Scale: n = 12 questions (9 answerable, 3 unanswerable), 3 arms, one run at temperature 0; gold answers written by the study helper; a demo, not a benchmark. ' +
       'Embeddings: all-MiniLM-L6-v2 (384-d), run locally for this page (CPU, USD 0; data/semantic_similarity.build.py); the cosine below is recomputed live from the stored vectors (rounded to 4 decimals; matches numpy to about 1e-4). ' +
-      'The "judge" is LLM judge A\'s correctness verdict (1 / 0.5 / 0) from the answer study, not a human label.');
+      'The "judge" is LLM judge A\'s correctness verdict (1 / 0.5 / 0) from the answer study.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, Object.keys(ARMS).map(a => opt(a, ARMS[a])));
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, Q.map(q => opt(q.id, q.id + ' (' + q.type + '): ' + q.question)));

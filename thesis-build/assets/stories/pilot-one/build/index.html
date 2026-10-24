@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pilot 1 and what it changed</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--line2:#3A4352;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+--ease:cubic-bezier(.23,1,.32,1)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+.wide{max-width:1040px}
+code,.mono,.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:max(12px,.88em);overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(34px,7.5vw,56px);letter-spacing:-.01em}
+h2{font-size:clamp(26px,5.5vw,36px);margin:6px 0 16px}
+h3{font-size:20px;margin:28px 0 8px}
+p{margin:0 0 14px;max-width:68ch;overflow-wrap:anywhere}
+ul{padding-left:20px;max-width:68ch}li{margin:0 0 8px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13.5px}
+.lvl{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+.lvl b{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px;font-weight:600}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--muted);margin:0 0 6px;line-height:1.4;max-width:none}
+#nav{display:flex;flex-wrap:wrap;gap:6px;row-gap:8px}
+#nav a{position:relative;text-decoration:none;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:5px 11px;white-space:nowrap}
+#nav a::after{content:"";position:absolute;inset:-6px -3px}
+#nav a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+section.step{padding:64px 0 40px;border-top:1px solid var(--line)}
+.hero{padding:56px 0 34px}
+.hero h1{margin:10px 0 16px}
+.hero p.lead{font-size:18.5px;color:var(--muted);max-width:60ch}
+.who{color:var(--faint);font-size:13.5px}
+.ledger{font:14px var(--mono);color:var(--muted);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:10px 0;margin:22px 0 14px;max-width:640px;line-height:1.7}
+.ledger b{color:var(--amber);font-weight:500}
+.tldr{list-style:none;padding:0;margin:0;max-width:none;counter-reset:t}
+.tldr li{padding:11px 0 11px 28px;border-bottom:1px solid var(--line);position:relative;margin:0}
+.tldr li::before{content:counter(t);counter-increment:t;position:absolute;left:0;top:11px;font:500 13px var(--mono);color:var(--amber)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.card p:last-child{margin-bottom:0}
+.card .h{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:6px}
+.card.ours .h{color:var(--purple)}
+.card.warn{border-color:rgba(255,138,101,.45)}.card.warn .h{color:var(--warn)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12.5px}
+.tbl td.m{font-family:var(--mono);font-size:13px}
+.hscroll{overflow-x:auto;max-width:100%}
+.cite{font:12px var(--mono);color:var(--blue);text-decoration:none;overflow-wrap:anywhere}
+.mk{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:0 6px;border:1px solid;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.mk.verified{color:var(--teal);border-color:var(--teal)}
+.mk.unverified{color:var(--warn);border-color:var(--warn)}
+.mk.inferred{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.mk.ours{color:var(--amber);border-color:var(--amber)}
+button{font:inherit;font-size:14px;background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:9px 14px;min-height:44px;max-width:100%;cursor:pointer;
+  transition:transform 160ms var(--ease),border-color 180ms var(--ease),background-color 180ms var(--ease),color 180ms var(--ease)}
+button:active{transform:scale(.97)}
+button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+@media (hover:hover) and (pointer:fine){button:hover{border-color:var(--amber)}}
+.seg{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.seg button[aria-pressed=true]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:12px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel2)}
+.flow span.box.hl{border-color:var(--amber);color:var(--amber)}
+.flow span.ar{color:var(--faint)}
+/* Touch A: the iteration graph */
+#chrono{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;margin:18px 0 8px}
+#rail{list-style:none;margin:0;padding:0;max-width:none;position:relative}
+#rail li{margin:0;position:relative;padding:0 0 14px 30px}
+#rail li::before{content:"";position:absolute;left:9px;top:0;bottom:0;width:1px;background:var(--line2)}
+#rail li:first-child::before{top:22px}
+#rail li:last-child::before{bottom:auto;height:22px}
+#rail li::after{content:"";position:absolute;left:4px;top:17px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:1px solid var(--line2)}
+#rail li.k-config::after{border-color:var(--amber)}
+#rail li.k-amend::after{border-color:var(--purple)}
+#rail li.k-pending::after{border-style:dashed}
+#rail li.on::after{background:var(--amber);border-color:var(--amber)}
+#rail li.lit::before{background:var(--amber)}
+.node{text-align:left;background:var(--panel);color:var(--text);border-radius:10px;padding:9px 12px;width:100%;display:grid;grid-template-columns:5.4em minmax(0,1fr);column-gap:10px;align-items:baseline}
+.node .k{font:500 12px var(--mono);color:var(--muted);grid-row:1 / span 2;line-height:1.35;overflow-wrap:anywhere}
+.node .t{font-size:14px;font-weight:500;line-height:1.3}
+.node .n{font:12.5px var(--mono);color:var(--muted);line-height:1.35;grid-column:2}
+li.k-config .node .k{color:var(--amber)}
+li.k-amend .node .k{color:var(--purple)}
+li.k-pending .node{background:transparent;border-style:dashed}
+.node[aria-pressed=true]{border-color:var(--amber);background:var(--panel2)}
+.node[aria-pressed=true] .n{color:var(--amber)}
+#detail{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;min-height:220px;align-self:start}
+#detail h3{margin:0 0 4px}
+#detail .big{font:20px var(--mono);color:var(--amber);margin:2px 0 4px;line-height:1.3}
+#detail .hash{font:12.5px var(--mono);color:var(--faint);margin:0 0 12px}
+#detail dl{margin:0;display:grid;grid-template-columns:minmax(0,1fr);gap:4px 14px;font-size:14.5px}
+#detail dt{color:var(--faint);font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding-top:8px}
+#detail dd{margin:0}
+#detail .step-nav{display:flex;gap:8px;margin-top:14px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin:4px 0 0}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:50%;border:1px solid var(--line2);margin-right:6px;vertical-align:-1px}
+.legend .lc::before{border-color:var(--amber)}.legend .la::before{border-color:var(--purple)}.legend .lp::before{border-style:dashed}
+@media (min-width:860px){#chrono{grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:28px}#detail{position:sticky;top:110px}}
+/* Touch B: cause -> fix rows */
+#fixes{list-style:none;margin:8px 0 0;padding:0;max-width:none}
+#fixes>li{border-top:1px solid var(--line);padding:18px 0;margin:0}
+#fixes>li[hidden]{display:none}
+.fx-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:10px}
+.fx-head h3{margin:0;font-size:19px}
+.fx-head .num{font-size:13px;color:var(--amber)}
+.fx-head .cat{font:500 12px var(--body);color:var(--faint);letter-spacing:.06em;text-transform:uppercase;margin-left:auto}
+.fx-cols{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.fx-cols div{font-size:14.5px;line-height:1.55}
+.fx-cols b{display:block;font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.fx-cols .fix b{color:var(--teal)}
+.fx-src{margin-top:8px}
+@media (min-width:760px){.fx-cols{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}}
+#fx-count{font-size:13.5px;color:var(--muted);min-height:1.5em;margin:0}
+details{margin:12px 0}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
+.q{border-top:1px solid var(--line);padding:16px 0}
+.q .opts{display:flex;flex-direction:column;gap:8px;margin:10px 0}
+.q button{text-align:left;color:var(--text)}
+.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+#err{display:none;color:var(--warn);border:1px solid var(--warn);border-radius:10px;padding:10px;margin:10px 0}
+@media (max-width:640px){#caveat .more{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-property:color,border-color,background-color!important;transform:none!important}}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/explain/concepts.html" data-path="/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/explain/pipeline.html" data-path="/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/explain/systems.html" data-path="/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/explain/evaluation.html" data-path="/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Real counts</b> from our first pilot and its post-mortem. Pilot-2 results are sealed until the pilot closes.<span class="more"> Marks: <span class="mk verified">verified</span> <span class="mk ours">ours</span> <span class="mk inferred">inferred</span> <span class="mk unverified">unverified</span>.</span></p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">TL;DR</a><a href="#l0">L0</a><a href="#l1">L1</a><a href="#touch">Touch</a><a href="#l2">L2</a><a href="#l3">L3</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="lvl">A layered story about the first real run</div>
+  <h1>Pilot 1 and what it changed</h1>
+  <p class="lead">Before the main experiment, we ran the full harness on 30 items. It did its job: it found five design defects while no main-pool item had been answered. This page shows what failed, what each failure cost, and how the pipeline changed from I0 to I4.</p>
+  <p class="ledger"><b>30</b> items · <b>4</b> of 5 arms · <b>300</b> generations · <b>5</b> defects · <b>2</b> protocol addenda · config <b>I2 → I4</b></p>
+  <p class="who">The run's own results page is. This page tells what came after it.</p>
+  <div id="err"></div>
+</header>
+
+<section class="step" id="tldr"><div class="lvl"><b>TL;DR</b>the short version</div>
+<h2>In six lines</h2>
+<ol class="tldr">
+  <li>Pilot 1 ran 30 items through arms L, R, H and Hc: 300 generations, 0 failures. Arm G was still building. <a class="cite" data-c="prog|Real run" data-k="c02"></a></li>
+  <li>The first pilot was an implementation failure that changed the design, not evidence about the claim. <a class="cite" data-c="th4|First pilot" data-k="c52"></a></li>
+  <li>The router was a placeholder, so H and its control Hc were the same system. Gate 3, as written, could never fire. <a class="cite" data-c="prog|Gate, item 3" data-k="c15"></a></li>
+  <li>The retrieval arms abstained on 135 of 270 generations; no cause is attributed. The closed-book arm got 28 of 30 right. <a class="cite" data-c="pm|§2.2" data-k="c10"></a></li>
+  <li>Addendum C fixed the prompt, the router, T10, gate 3 and the dev set. Addendum D replaced the rank rule so deeper hops get slots. <a class="cite" data-c="addd|D1" data-k="c32"></a></li>
+  <li>I4 now binds everything for pilot 2 and the main run. Pilot 2 is pending, with arm G. <a class="cite" data-c="prog|I4" data-k="c36"></a></li>
+</ol>
+</section>
+
+<section class="step" id="l0"><div class="lvl"><b>Level 0</b>like I am five</div>
+<h2>A dress rehearsal before the show</h2>
+<p>A theatre group plays the whole show once before the real audience comes. Nobody counts that night as the real show. It is there to find what breaks.</p>
+<p>In our rehearsal, two actors who should play different parts said the same lines. The light for one scene could never switch on. Some actors said "I can't answer" even when the answer was in their script.</p>
+<p>So we fixed the script and the stage. We wrote down every fix before the next rehearsal. Then nobody can say we changed the show after we saw the audience.</p>
+<div class="flow" aria-label="The idea in five steps"><span class="box">plan</span><span class="ar">→</span><span class="box hl">rehearse</span><span class="ar">→</span><span class="box">find what broke</span><span class="ar">→</span><span class="box">write the fixes down</span><span class="ar">→</span><span class="box">rehearse again</span></div>
+</section>
+
+<section class="step" id="l1"><div class="lvl"><b>Level 1</b>student</div>
+<h2>What pilot 1 was, and what it showed</h2>
+<p>A <b>pilot</b> is a small run of the real experiment. Our harness sends each question to each <b>arm</b>, a way of answering. <b>L</b> answers with no passages. <b>R</b> retrieves text passages. <b>H</b> adds passages found by walking the typed graph. <b>Hc</b> is H with the edge labels collapsed, the control for the labels.</p>
+<p>The pilot used 30 items: 20 <b>primary</b> items (prerequisite and cross-concept questions, the ones the claim is about) and 10 secondary. Most were proofs. <a class="cite" data-c="prog|Pilot 30" data-k="c01"></a> One answer model, Sonnet 5.5, answered; R, H and Hc answered each item three times. Two judges from another model family scored each answer, under a USD 1.00 cap. They spent USD 0.356. <a class="cite" data-c="prog|Spend" data-k="c04"></a></p>
+<div class="hscroll"><table class="tbl">
+<tr><th>Arm</th><th>Fully correct, 30 items</th><th>Primary, 20 items</th></tr>
+<tr><td>L (no retrieval)</td><td class="m">28 (0.933)</td><td class="m">19</td></tr>
+<tr><td>R (text)</td><td class="m">10 (0.333)</td><td class="m">6</td></tr>
+<tr><td>H (typed graph)</td><td class="m">12 (0.400)</td><td class="m">7</td></tr>
+<tr><td>Hc (labels collapsed)</td><td class="m">11 (0.367)</td><td class="m">7</td></tr>
+</table></div>
+<p class="small">Descriptive only, no test. Sources: <a class="cite" data-c="prog|arm table" data-k="c05"></a> <a class="cite" data-c="pm|§1" data-k="c06"></a></p>
+<h3>One real example, worked</h3>
+<div class="card"><span class="h">prml:ex2.51, a proof exercise</span>
+<p><b>The task.</b> Prove trigonometric identities from exp(iA). The gold record names the passages that hold the facts the proof needs. <a class="cite" data-c="pm|§2.1" data-k="c12"></a></p>
+<p><b>What H saw.</b> Both required gold passages were in H's context.</p>
+<p><b>What H did.</b> It replied NOT_IN_MATERIAL. The prompt said: abstain if the passages do not contain <i>the answer</i>. A proof is never written out in a passage, so the rule is unclear for this kind of item. <a class="cite" data-c="pm|§2.1" data-k="c11"></a></p>
+<p><b>What it does not show.</b> Gold presence lowered abstention only a little (62 % with no required gold in context, 38 % with all of it). <a class="cite" data-c="pm|§2.2" data-k="c13"></a> So we do not say the prompt caused the abstentions. <a class="cite" data-c="th3|answer prompt" data-k="c14"></a></p>
+</div>
+</section>
+
+<section class="step" id="touch"><div class="lvl"><b>Touch</b>walk the iterations</div>
+<h2>From I0 to I4, one step at a time</h2>
+<p>Each step is one hashed configuration (I0 to I4) or the event that forced the next one. Tap a step to see what changed, why, the evidence and the number. The order is the real order; dates are left out.</p>
+</div>
+<div class="wrap wide">
+<div id="chrono">
+  <div><ol id="rail" aria-label="Iterations"></ol>
+  <p class="legend"><span class="lc">configuration</span><span class="la">addendum</span><span>event</span><span class="lp">pending</span></p></div>
+  <div id="detail" aria-live="polite"></div>
+</div>
+</div>
+<div class="wrap">
+<h3 id="changes">What we changed because of it</h3>
+<p>Each row is one failure from pilot 1: what failed, what it cost, and what changed. Filter by the kind of change.</p>
+<div class="seg" role="group" aria-label="Kind of change" id="fx-filter"></div>
+<p id="fx-count" aria-live="polite"></p>
+<ul id="fixes"></ul>
+<p class="small faint">Counts are copied from the run log, the post-mortem and the addenda; the page computes nothing.</p>
+</section>
+
+<section class="step" id="l2"><div class="lvl"><b>Level 2</b>academic</div>
+<h2>Amending a registration in the open</h2>
+<p>The claim, its two contrasts (H − R, then H − Hc) and the fixed-sequence exact McNemar tests were registered before any data. A pilot is allowed to change code and configuration; it is not allowed to quietly rewrite rules. Addendum C states it plainly: it amends the registration; it does not preserve it, and each replaced rule is reported as a replacement. <a class="cite" data-c="prot|Addendum C, status" data-k="c50"></a> What it preserves: no main-pool outcome informs any choice, and every choice is hashed before the data it governs exist.</p>
+<h3>The manipulation check that could not fire</h3>
+<p>Gate 3 asks whether the router changes H's input often enough for H − Hc to mean anything. On 20 primary items, 0/20 differing items still gives an exact one-sided upper bound of 0.139, above the 0.10 threshold, so the gate could never trigger. <a class="cite" data-c="pm|U4, §1" data-k="c16"></a> The replacement runs on all 30 items, where 0/30 triggers and 1/30 (bound 0.149) does not, and also triggers if no primary item differs. It is evaluated once. <a class="cite" data-c="prot|Addendum C, C6" data-k="c25"></a></p>
+<p>The H − R contrast was weakly manipulated too: H's packed list equalled R's on 12 of 30 items. <a class="cite" data-c="pm|§1" data-k="c18"></a></p>
+<h3>Selecting on dev without peeking</h3>
+<p>The new prompt and the router were tuned on dev items only, with rules fixed in advance. The prompt selector read abstention, not accuracy, and used no judge. <a class="cite" data-c="prot|Addendum C, C3" data-k="c20"></a> R was tuned first by gold-evidence recall (depth 30, 10 reranked); every router round tied, and the tie rule, not the data, decided. <a class="cite" data-c="prog|C4 tuning" data-k="c29"></a> Dev needed gold, so 18 answerable pilot candidates left the main pool for dev. <a class="cite" data-c="prot|Addendum C, C7" data-k="c26"></a></p>
+<h3>From hop 0 to a balanced list</h3>
+<p>Rule 7 sorted graph passages by hop, then score, and cut at k_graph. A seed concept alone has dozens of passages, so hop 0 filled the slots. As run, 1 of 30 graph lists held a deeper passage. <a class="cite" data-c="addd|D0, as run" data-k="c30"></a> Under I3 none would: a projection, not an observation. <a class="cite" data-c="addd|D0, counterfactual" data-k="c31"></a> Addendum D gives each hop a quota, backfills unused slots in the old order and returns the set in that order. It reads no label. Rule 8 becomes an equal cap, not an equal length. <a class="cite" data-c="addd|D1.6" data-k="c33"></a> An equal cap is not equal exposure: used tokens and list lengths differ by arm and are reported. <a class="cite" data-c="th3|Design, cap" data-k="c49"></a></p>
+<div class="card warn"><span class="h">Threats that stay open</span>
+<p>Cross-encoder truncation: 44 of 50 sampled pairs reach the 512-token cap. Fusion: RRF can let R's list take over the context; we report this two-list dominance per item. <a class="cite" data-c="th3|Threats, reranker and fusion" data-k="c38"></a> Router: 15 of 30 pilot questions take the default row, where H and Hc allow the same edges. <a class="cite" data-c="th3|Threats, router" data-k="c39"></a> Labels: fourteen rules close the channels in our pipeline through which labels could reach Hc, with residual channels (topology, node text, graph construction) still open. <a class="cite" data-c="th3|Fourteen rules" data-k="c40"></a> Strata: kappa 0.33 on the exact stratum, 0.20 on primary membership. <a class="cite" data-c="th4|Data" data-k="c41"></a></p></div>
+<p class="small muted">Judge agreement in pilot 1: same verdict 153 of 165, kappa 0.77. <a class="cite" data-c="prog|arm table" data-k="c51"></a> Descriptive McNemar on 30 items: H − R b = 4, c = 2, p = 0.344. <a class="cite" data-c="prog|arm table" data-k="c07"></a></p>
+</section>
+
+<section class="step" id="l3"><div class="lvl"><b>Level 3</b>our thesis choice</div>
+<h2>What stays, what goes, what is next</h2>
+<p>The fixes touch configuration, not data. The graph, the passages, the gold evidence, the strata, the bank and the reference answers all stay valid; I2 is replaced. <a class="cite" data-c="pm|§6" data-k="c42"></a> Pilot-1 answers stay as a descriptive record and a historical comparator, never as evidence for the claim.</p>
+<div class="card ours"><span class="h">The claim, scoped</span><p>Closed-book, the model already knew 28 of 30 answers. So the claim now says what it tests: which retrieval gives a tutor restricted to the course material more judged-correct answers, not whether retrieval adds knowledge. L is reported beside every arm. <a class="cite" data-c="prot|Addendum C, C1" data-k="c22"></a> A gold-citation proxy runs as a secondary test only. <a class="cite" data-c="prot|Addendum C, C2" data-k="c23"></a></p></div>
+<h3>Pilot 2 and arm G</h3>
+<p>Pilot 2 reruns the same 30 items under I4 with all five arms. It is an exposed development rerun: its estimates are descriptive, and no outcome-driven change may follow it. <a class="cite" data-c="prot|Addendum C, C9" data-k="c28"></a> L answers closed-book three times; G answers once. <a class="cite" data-c="th3|Arm L, Arm G" data-k="c48"></a> Arm G is pending: its first full build stopped at a 12-hour limit, and a clean staged rebuild is running. <a class="cite" data-c="prog|Arm G, staged clean rebuild" data-k="c37"></a></p>
+<p>Results of pilot 2 are sealed until the pilot closes. The scoring behind the balanced rule is in <a href="/thesis/assets/stories/scoring-sources/build/index.html">One scorer, set before tuning</a>; the rule itself is in <a href="/thesis/assets/stories/graph-hops/build/index.html">Graph hops and ranking</a>; the new answer prompt is in <a href="/thesis/assets/stories/answer-prompt/build/index.html">Choosing the answer prompt</a>.</p>
+</section>
+
+<section class="step" id="quiz"><div class="lvl"><b>Quiz</b>check yourself</div>
+<h2>Four questions</h2>
+<div id="qz"></div>
+</section>
+
+<section class="step" id="src"><div class="lvl"><b>Sources</b>where every number comes from</div>
+<h2>Sources</h2>
+<p class="small muted">The run log, the post-mortem, the decisions, the protocol with its addenda, and the thesis chapters. Where they differ, the newest protocol or decision file wins.</p>
+<div class="hscroll"><table class="tbl" id="srctbl"></table></div>
+<details><summary>All claims with their marks</summary><div class="hscroll"><table class="tbl" id="cltbl"></table></div></details>
+</section>
+</div>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+  var C, F, SRC, CL = {}, QZ, st = { sel: 'p1', cat: 'all' };
+  function get(u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error(u + ': ' + r.status); return r.json(); }); }
+  var base = '../data';
+  Promise.all([get(base + '/chrono.json'), get(base + '/changes.json'), get(base + '/lesson-sources.json'), get(base + '/claims.json'), get(base + '/quiz.json')]).then(function (a) {
+    C = a[0].nodes; F = a[1]; SRC = a[2].sources; a[3].claims.forEach(function (c) { CL[c.id] = c; }); QZ = a[4].questions;
+    cites(document); rail(); fixes(); quiz(); sources();
+  }).catch(function (e) { var el = $('err'); el.style.display = 'block'; el.textContent = 'Could not load the data (' + e.message + '). Open the page through a web server, not as a file.'; });
+
+  function cites(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('a.cite[data-c]'), function (a) {
+      if (a.dataset.done) return; a.dataset.done = '1';
+      var p = a.getAttribute('data-c').split('|'), s = SRC[p[0]], c = CL[a.getAttribute('data-k')];
+      a.href = '#src-' + p[0];
+      a.textContent = '[' + (s ? s.short : p[0]) + (p[1] ? ', ' + p[1] : '') + ']';
+      if (s) a.title = s.title;
+      if (c) { var m = document.createElement('span'); m.className = 'mk ' + c.status; m.textContent = c.status; m.title = c.id + ': ' + c.text; a.after(m); }
+    });
+  }
+  function claimLinks(ids) { return ids.map(function (c) { return '<a class="cite"' + ' data-c="' + CL[c].key + '|' + esc(CL[c].loc) + '" data-k="' + c + '"></a>'; }).join(' '); }
+
+  function rail() {
+    $('rail').innerHTML = C.map(function (n) {
+      return '<li class="k-' + n.kind + '" data-id="' + n.id + '"><button type="button" class="node" aria-pressed="false"><span class="k">' + esc(n.tag) + '</span><span class="t">' + esc(n.title) + '</span><span class="n">' + esc(n.num) + '</span></button></li>';
+    }).join('');
+    Array.prototype.forEach.call($('rail').querySelectorAll('li'), function (li) {
+      li.querySelector('button').addEventListener('click', function () { st.sel = li.dataset.id; paint(); if (window.innerWidth < 860) $('detail').scrollIntoView({ block: 'nearest' }); });
+    });
+    paint();
+  }
+  function paint() {
+    var idx = 0;
+    C.forEach(function (n, i) { if (n.id === st.sel) idx = i; });
+    Array.prototype.forEach.call($('rail').querySelectorAll('li'), function (li, i) {
+      var on = li.dataset.id === st.sel;
+      li.classList.toggle('on', on); li.classList.toggle('lit', i < idx);
+      li.querySelector('button').setAttribute('aria-pressed', String(on));
+    });
+    var n = C[idx];
+    $('detail').innerHTML = '<div class="lvl">' + esc(n.tag) + ' · step ' + (idx + 1) + ' of ' + C.length + '</div><h3>' + esc(n.title) + '</h3><p class="big">' + esc(n.num) + '</p>' +
+      (n.hash ? '<p class="hash">config ' + esc(n.hash) + '…</p>' : '<p class="hash"></p>') +
+      '<dl><dt>What changed</dt><dd>' + esc(n.changed) + '</dd><dt>Why</dt><dd>' + esc(n.why) + '</dd><dt>Evidence</dt><dd>' + esc(n.evidence) + '</dd><dt>Sources</dt><dd>' + claimLinks(n.claims) + '</dd></dl>' +
+      '<div class="step-nav"><button type="button" id="prev"' + (idx === 0 ? ' disabled' : '') + '>← Earlier</button><button type="button" id="next"' + (idx === C.length - 1 ? ' disabled' : '') + '>Later →</button></div>';
+    cites($('detail'));
+    $('prev').addEventListener('click', function () { if (idx > 0) { st.sel = C[idx - 1].id; paint(); } });
+    $('next').addEventListener('click', function () { if (idx < C.length - 1) { st.sel = C[idx + 1].id; paint(); } });
+  }
+
+  function fixes() {
+    var labels = {}; F.categories.forEach(function (c) { labels[c.id] = c.label; });
+    $('fx-filter').innerHTML = F.categories.map(function (c) {
+      var k = c.id === 'all' ? F.cards.length : F.cards.filter(function (x) { return x.cat === c.id; }).length;
+      return '<button type="button" data-cat="' + c.id + '" aria-pressed="' + (c.id === 'all') + '">' + esc(c.label) + ' <span class="mono">' + k + '</span></button>';
+    }).join('');
+    $('fixes').innerHTML = F.cards.map(function (x) {
+      return '<li data-cat="' + x.cat + '"><div class="fx-head"><h3>' + esc(x.title) + '</h3><span class="num">' + esc(x.num) + '</span><span class="cat">' + esc(labels[x.cat]) + '</span></div>' +
+        '<div class="fx-cols"><div><b>What failed</b>' + esc(x.failed) + '</div><div><b>What it cost</b>' + esc(x.cost) + '</div><div class="fix"><b>What we changed</b>' + esc(x.fix) + '</div></div>' +
+        '<div class="fx-src small">' + claimLinks(x.claims) + '</div></li>';
+    }).join('');
+    cites($('fixes'));
+    Array.prototype.forEach.call($('fx-filter').querySelectorAll('button'), function (b) {
+      b.addEventListener('click', function () { st.cat = b.dataset.cat; filter(); });
+    });
+    filter();
+  }
+  function filter() {
+    var shown = 0;
+    Array.prototype.forEach.call($('fx-filter').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', String(b.dataset.cat === st.cat)); });
+    Array.prototype.forEach.call($('fixes').children, function (li) { var on = st.cat === 'all' || li.dataset.cat === st.cat; li.hidden = !on; if (on) shown++; });
+    $('fx-count').textContent = 'Showing ' + shown + ' of ' + F.cards.length + ' changes.';
+  }
+
+  function quiz() {
+    $('qz').innerHTML = QZ.map(function (x, i) {
+      return '<div class="q" data-i="' + i + '"><b>' + (i + 1) + '. ' + esc(x.q) + '</b><div class="opts">' + x.o.map(function (o, j) { return '<button type="button" data-j="' + j + '">' + String.fromCharCode(65 + j) + '. ' + esc(o) + '</button>'; }).join('') + '</div><p class="small muted fb" hidden></p></div>';
+    }).join('');
+    Array.prototype.forEach.call(document.querySelectorAll('#qz .q'), function (box) {
+      var x = QZ[+box.dataset.i];
+      Array.prototype.forEach.call(box.querySelectorAll('button'), function (b) {
+        b.addEventListener('click', function () {
+          var j = +b.dataset.j; b.classList.add(j === x.a ? 'right' : 'wrong');
+          box.querySelectorAll('button')[x.a].classList.add('right');
+          var fb = box.querySelector('.fb'); fb.hidden = false; fb.textContent = (j === x.a ? 'Right. ' : 'Not quite. ') + x.f;
+        });
+      });
+    });
+  }
+
+  function sources() {
+    $('srctbl').innerHTML = '<tr><th>source</th><th>where</th><th>read?</th></tr>' + Object.keys(SRC).map(function (k) {
+      var s = SRC[k];
+      return '<tr id="src-' + k + '"><td><b>' + esc(s.short) + '</b><br>' + esc(s.title) + '</td><td class="small">' + esc(s.venue) + '</td><td class="small">' + (s.verified ? '<span class="mk verified">read</span> ' : '<span class="mk unverified">not read</span> ') + esc(s.how) + '</td></tr>';
+    }).join('');
+    $('cltbl').innerHTML = '<tr><th>id</th><th>claim</th><th>source, locator</th><th>mark</th></tr>' + Object.keys(CL).map(function (id) {
+      var c = CL[id]; return '<tr><td class="m">' + id + '</td><td>' + esc(c.text) + '</td><td class="small">' + esc((SRC[c.key] || {}).short || c.key) + ', ' + esc(c.loc) + '</td><td><span class="mk ' + c.status + '">' + c.status + '</span></td></tr>';
+    }).join('');
+  }
+})();
+</script>
+<p class="back-ex"><a href="/explain/evaluation.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_evaluation_h">Evaluation</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

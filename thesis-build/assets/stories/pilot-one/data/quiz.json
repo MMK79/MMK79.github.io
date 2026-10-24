@@ -1,0 +1,16 @@
+{
+  "questions": [
+    {"q": "Why did pilot 1 say nothing about the value of the relation labels?",
+     "o": ["The placeholder router kept every relation, so H and Hc sent identical requests", "The judges disagreed too often", "Arm G was missing"],
+     "a": 0, "f": "With the placeholder router, H and Hc were the same system: identical requests on 90 of 90 generations."},
+    {"q": "The retrieval arms abstained on 135 of 270 generations. What does the thesis say caused it?",
+     "o": ["The prompt", "Retrieval failure", "No cause is attributed; the share of the prompt and of retrieval was not separated"],
+     "a": 2, "f": "The post-mortem withdrew the claim that the prompt was the main cause. Abstention tracked gold presence only weakly, and no causal split is supported."},
+    {"q": "Why does Addendum D keep a backfill pass after the per-hop quota?",
+     "o": ["To raise the relevance of the list", "So the cap's slots are not lost when a deeper hop is short, without removing a chosen deeper passage", "To make H and Hc differ for sure"],
+     "a": 1, "f": "Backfill is kept for capacity only. Addendum D claims no relevance or separability benefit, and fusion and packing can still erase the difference."},
+    {"q": "Pilot 2 runs on the same 30 items. What is it?",
+     "o": ["A confirmatory test of C2", "An exposed development rerun with descriptive estimates; gate 3 is evaluated once, there", "A replacement of the main run"],
+     "a": 1, "f": "The protocol labels pilot 2 an exposed development rerun. Its results are sealed until the pilot closes, and no outcome-driven change may follow it."}
+  ]
+}

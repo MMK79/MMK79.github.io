@@ -158,11 +158,11 @@ const foundations = u => { const ts = (FDB[u.id] || []).filter(x => FDT[x]); ret
 const origin = u => { const r = PROV[PK + ":" + u.id]; return r ? window.EXS.originBlock(r, T, N, esc) : ""; };
 
 // Related chips: the other page's cards this unit is measured by / measures. A chip links only when that card exists in this build.
-const OTHER = kind === "metrics" ? "algorithms" : "metrics";
+const OTHER = kind === "metrics" ? "algorithms" : "metrics";   // links below are literal "/thesis/x.html" so the export adds the base
 function related(u) {
   const r = rel[u.id], ls = (r && r.links) || []; if (!ls.length) return "";
   const chips = ls.map(c => c.exists
-    ? `<a class="ex-tag ex-rel" lang="en" dir="ltr" href="/${OTHER}.html#${esc(c.id)}" title="${esc(c.note)}">${esc(c.name)}</a>`
+    ? `<a class="ex-tag ex-rel" lang="en" dir="ltr" href="${OTHER === "algorithms" ? "/thesis/algorithms.html" : "/thesis/metrics.html"}#${esc(c.id)}" title="${esc(c.note)}">${esc(c.name)}</a>`
     : `<span class="ex-tag ex-rel soon" lang="en" dir="ltr" title="${esc(T("ex.rel_soon"))}">${esc(c.name)}</span>`).join("");
   return `<div class="ex-blk ex-related"><h4>${esc(T(kind === "algorithms" ? "ex.h_related_m" : "ex.h_related_a"))}</h4>
     ${kind === "algorithms" && r.note ? en("p", E(r.note), "ex-src") : ""}<div class="ex-tags">${chips}</div></div>`;

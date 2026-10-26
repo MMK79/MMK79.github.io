@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head><script>window.SITE_PUBLIC=true</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How GraphRAG chooses its path</title>
+<link rel="stylesheet" href="/thesis/assets/site.css">
+<style>
+:root{--bg:#0B0D12;--panel:#121620;--panel2:#171C28;--line:#242B38;--text:#E9ECF2;--muted:#98A0B0;--faint:#68707F;
+--amber:#F2A93B;--blue:#7C9CFF;--teal:#3CC7B4;--purple:#C28BFF;--warn:#FF8A65;
+--display:"Fraunces",Georgia,serif;--body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--mono:"JetBrains Mono",ui-monospace,Menlo,monospace}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 var(--body);overflow-x:hidden}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px}
+code,.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+code{font-size:.88em;overflow-wrap:anywhere}
+h1,h2,h3{font-family:var(--display);font-weight:300;line-height:1.15;margin:0}
+h1{font-size:clamp(32px,7.5vw,52px)}
+h2{font-size:clamp(26px,5.5vw,36px);margin:4px 0 14px}
+h3{font-size:19px;margin:14px 0 6px}
+p{margin:0 0 14px;overflow-wrap:anywhere}
+a{color:var(--blue)}
+.muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
+.kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar .wrap{padding-top:8px;padding-bottom:8px}
+#caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
+#nav{display:flex;flex-wrap:wrap;gap:5px}
+#nav a{text-decoration:none;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:2px 9px;white-space:nowrap}
+section.step{padding:56px 0 32px;border-top:1px solid var(--line)}
+.hero{padding:52px 0 30px}
+.hero p.lead{font-size:18px;color:var(--muted)}
+button,select,input[type=text]{font:inherit;font-size:14px;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px 12px;min-height:36px;max-width:100%}
+input[type=text]{width:100%}
+button{cursor:pointer;text-align:left}button:hover{border-color:var(--faint)}
+button[aria-pressed=true]{border-color:var(--amber);color:var(--amber)}
+button:focus-visible,select:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.lbl{font:600 12px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);min-width:74px}
+.take{border:1px solid var(--amber);border-radius:10px;padding:8px 12px;margin:16px 0;background:var(--panel)}
+.ev{border:1px solid var(--teal);border-radius:10px;padding:6px 10px;margin:8px 0;font-size:14px}
+.ours{border:1px solid var(--purple);border-radius:10px;padding:6px 10px;margin:8px 0;font-size:14px}
+.ev b.h,.ours b.h{font-size:12px;letter-spacing:.1em;text-transform:uppercase;display:block}
+.ev b.h{color:var(--teal)}.ours b.h{color:var(--purple)}
+.b{display:inline-block;font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;border-radius:8px;padding:1px 7px;border:1px solid;white-space:nowrap;vertical-align:middle}
+.b.comp{color:var(--teal);border-color:var(--teal)}.b.ours{color:var(--amber);border-color:var(--amber)}.b.dsg{color:var(--purple);border-color:var(--purple);border-style:dashed}
+.rel{font:12px var(--mono)}.rel.USES{color:var(--blue)}.rel.IS_A{color:var(--teal)}.rel.PREREQUISITE_OF{color:var(--amber)}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{border-bottom:1px solid var(--line);padding:6px;text-align:left;vertical-align:top;overflow-wrap:anywhere}
+.tbl th{color:var(--muted);font-weight:500;font-size:12px}
+.tbl tr.fire td{background:rgba(242,169,59,.10)}
+.tbl tr.skip td{opacity:.45}
+.tbl td.m{font-family:var(--mono);font-size:12px}
+.tw{overflow-x:auto}
+.mock{border:1px solid var(--line);border-radius:12px;background:var(--panel2);padding:12px 14px;margin:10px 0}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}
+.pane{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
+.pane h3{margin:0 0 4px;font:600 15px var(--body)}
+.pane .cap{font-size:13px;color:var(--muted);margin:0 0 6px}
+svg{display:block;width:100%;height:auto}
+svg text{fill:var(--text);font:10.5px var(--body)}
+.chip{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 3px 4px 0}
+.chip.only{border-color:var(--amber);color:var(--amber)}
+.verdict{display:inline-block;font:600 13px var(--body);border-radius:8px;padding:4px 10px;border:1px solid}
+.verdict.same{color:var(--warn);border-color:var(--warn)}.verdict.diff{color:var(--teal);border-color:var(--teal)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:var(--muted);margin:6px 0}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;margin:10px 0}
+.flow span.box{border:1px solid var(--line);border-radius:8px;padding:4px 9px;background:var(--panel2)}
+.flow span.ar{color:var(--faint)}
+.q{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;margin:12px 0}
+.q .opts{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.q button.right{border-color:var(--teal);color:var(--teal)}.q button.wrong{border-color:var(--warn);color:var(--warn)}
+.design{border:1px dashed var(--purple);border-radius:10px;padding:10px 12px;margin:10px 0;color:var(--muted);font-size:14px}.design b{color:var(--purple)}
+.hoplist{display:none;margin:4px 0 0;padding:0;list-style:none;font-size:14px}
+.hoplist li{margin:0 0 8px}.hoplist .hl{font:600 12px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+.fullsize{font-size:13px;display:none;min-height:24px;padding:4px 0}
+.fullsize[hidden]{display:none!important}
+@media (max-width:700px){.pair{grid-template-columns:1fr}}
+/* phones: the drawn subgraph's labels become too small, so show the same facts as a list (the drawing stays one tap away) */
+@media (max-width:600px){.pane .gsvg{display:none}.hoplist{display:block}.fullsize{display:inline-block}.pane.open .gsvg{display:block;overflow-x:auto}.pane.open .gsvg svg{width:640px;max-width:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Target size (WCAG 2.2 AA, 24 px): more padding, same font size */
+summary{min-height:24px;padding-block:3px}
+input[type=range]{min-height:24px}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;margin:2px;flex:none}
+code{font-size:max(12px,.9em)}
+</style>
+<style>/* Shell for the standalone interactive stories (public/assets/stories/<slug>/build/index.html), added by site.py stories().
+   The shared site header sits above the page; the page's own sticky bar moves below it; a section outline and back links are added. */
+html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
+#bar,.sticky{top:var(--hdr,54px)!important}
+#story-root{min-width:0}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
+.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
+.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:#F2A93B}
+#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
+#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+/* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
+   .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
+   default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
+             outside click, Esc or choosing a section. Never persisted, so every page load starts closed. */
+#so{left:12px;bottom:14px;max-width:calc(100vw - 24px)}
+#so ol{display:none;position:absolute;left:0;bottom:50px;width:min(320px,calc(100vw - 24px));max-height:min(60vh,calc(100vh - var(--hdr,54px) - 90px));overflow-y:auto}
+#so.open ol{display:block}
+#so.rail{left:var(--so-left,12px);bottom:auto;top:calc(var(--hdr,54px) + 120px);width:230px;max-width:none}
+#so.rail button{display:none}
+#so.rail ol{display:block;position:static;width:auto;max-height:calc(100vh - var(--hdr,54px) - 150px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}}
+
+/* ?embed=1 (iframe on another page): no site header, back links or outline */
+html.embed .site-hdr,html.embed .back-ex,html.embed #so,html.embed .fa-banner,html.embed .to-top{display:none!important}
+html.embed #bar,html.embed .sticky{top:0!important}
+
+/* invisible measuring elements some figures append must not widen the page (clip: no scroll container, sticky keeps working) */
+#story-root{overflow-x:clip}
+
+/* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
+   1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root .mm{border-left:0;padding-left:0}
+</style>
+<script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
+</head>
+<body>
+<!-- site header: one bar on every page (injected by site.py and by the timeline build). i18n.js comes first so
+     <html lang/dir> are set before anything below is painted. -->
+<script src="/thesis/assets/i18n.js"></script>
+<style>
+:root{--hdr:54px;--gdeg:90deg}
+html[dir="rtl"]{--gdeg:270deg}
+/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
+   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
+/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
+   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
+   add its @font-face locally and put its name first in --fa-font below. */
+@font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
+html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+html[lang="fa"] body{font-family:var(--body)}
+html[lang="fa"] *{letter-spacing:0!important}
+html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
+html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+svg{direction:ltr}
+[lang="en"]{font-family:"Inter",system-ui,sans-serif}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+.site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
+  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
+html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
+.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
+.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+.site-hdr .lang{margin-inline-start:auto;flex:none}
+/* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
+.site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr .grp{position:relative}
+.site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
+.site-hdr .grp.open>.menu{display:block}
+@media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
+html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
+.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+@media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
+@media (max-width:760px){
+  .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .nav-toggle{display:inline-flex}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr.nav-open nav{display:flex}
+  .site-hdr nav>a{padding:13px 8px;font-size:15px}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
+  .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
+  .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
+  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
+.site-hdr .lang button:hover{color:#E9ECF2}
+.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
+.site-hdr .lang span{color:#3A4352;font-size:12px}
+@media print{.site-hdr,.fa-banner{display:none}}
+.to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
+.to-top:hover{border-color:#3A4352}
+.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+.to-top.above-help{bottom:64px}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
+.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
+/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
+.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
+  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
+.fa-banner a{color:#FF8A65}
+.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
+.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+</style>
+<header class="site-hdr">
+  <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
+  <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-nav"><i aria-hidden="true"></i><span data-i18n="hdr.menu">Menu</span></button>
+  <nav id="site-nav" aria-label="Site" data-i18n-attr="aria-label:hdr.nav_aria">
+    <a href="/thesis/index.html" data-home data-i18n="nav.home">Home</a>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_thesis">Thesis</button><div class="menu"><div class="mp">
+      <a href="/thesis/thesis.html" data-path="/thesis/thesis.html" data-i18n="nav.thesis">Thesis</a>
+      <a href="/thesis/thesis.html#s-status" data-i18n="nav.th_status">Experiment status</a>
+      <a href="/thesis/research-quality.html" data-path="/thesis/research-quality.html" data-i18n="nav.rq">Research quality</a>
+      <a href="/thesis/assets/stories/stage-a-pilot/build/index.html" data-path="/thesis/assets/stories/stage-a-pilot/" data-i18n="nav.th_sap">Stage A pilot results</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_timelines">Timelines</button><div class="menu"><div class="mp">
+      <a href="/thesis/timelines/index.html" data-path="/thesis/timelines/index.html" data-i18n="nav.tl_overview">All timelines</a>
+      <a href="/thesis/timelines/world/combined-story.html" data-path="/thesis/timelines/world/" data-i18n="nav.tl_world">World: AI in education</a>
+      <a href="/thesis/timelines/iran/combined-story.html" data-path="/thesis/timelines/iran/" data-i18n="nav.tl_iran">Iran: AI in education</a>
+      <a href="/thesis/timelines/rag/research-story.html" data-path="/thesis/timelines/rag/ /history.html" data-i18n="nav.tl_rag">RAG and GraphRAG (with history)</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_explain">Explain</button><div class="menu"><div class="mp">
+      <a href="/thesis/explainers.html" data-path="/thesis/explainers.html" data-i18n="nav.ex_overview">All explainers</a>
+      <a href="/thesis/explain/concepts.html" data-path="/thesis/explain/concepts.html /foundations /algorithms.html /assets/stories/ontology/ /assets/stories/bias-variance/" data-i18n="ex.s_concepts_h">Concepts</a>
+      <a href="/thesis/explain/pipeline.html" data-path="/thesis/explain/pipeline.html /assets/stories/data-pipeline/ /assets/stories/chunking/ /assets/stories/indexing/ /assets/stories/kg-build/ /assets/stories/rerankers/ /assets/stories/graph-hops/ /assets/stories/query-flow/" data-i18n="ex.s_pipeline_h">The pipeline, step by step</a>
+      <a href="/thesis/explain/systems.html" data-path="/thesis/explain/systems.html /assets/stories/rag-vs-graphrag/ /assets/figures/anatomy-system/ /assets/figures/architecture-hld/ /assets/figures/architecture-lld/ /assets/stories/graphrag-router/ /production-stack.html /rag-projects.html /tooling.html" data-i18n="ex.s_systems_h">Systems and landscape</a>
+      <a href="/thesis/explain/evaluation.html" data-path="/thesis/explain/evaluation.html /metrics.html /assets/stories/statistical-tests/ /assets/stories/evaluating-rag/ /assets/stories/answer-checkers/ /assets/stories/scoring-sources/ /assets/stories/placement-simulation/" data-i18n="ex.s_evaluation_h">Evaluation</a>
+      <a href="/thesis/sources.html" data-path="/thesis/sources.html" data-i18n="nav.so">Sources</a>
+    </div></div></div>
+    <div class="grp"><button type="button" class="gb" data-i18n="nav.g_data">Data &amp; maps</button><div class="menu"><div class="mp">
+      <a href="/thesis/datasets.html" data-path="/thesis/datasets.html" data-i18n="nav.datasets">Datasets</a>
+      <a href="/thesis/ecosystem.html" data-path="/thesis/ecosystem.html" data-i18n="nav.ecosystem">Who builds it</a>
+      <a href="/thesis/iran-map.html" data-path="/thesis/iran-map.html" data-i18n="nav.iran_map">Iran education map</a>
+      <a href="/thesis/ml-courses.html" data-path="/thesis/ml-courses.html" data-i18n="nav.ml_courses">ML courses</a>
+      <a href="/thesis/challenges.html" data-path="/thesis/challenges.html" data-i18n="nav.challenges">Challenges</a>
+    </div></div></div>
+    
+  </nav>
+  <div class="lang" role="group" aria-label="Language / زبان">
+    <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
+  </div>
+</header>
+<script>
+(()=>{
+  const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
+  // current page: the link whose data-path (a file, or a folder ending in "/") matches; its group button gets aria-current too
+  const isHome=!/\/(timelines|assets|explain)\//.test(here)&&/(^|\/)(index\.html)?$/.test(here);
+  nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
+    const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
+    if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
+  const groups=[...nav.querySelectorAll(".grp")];
+  const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
+  groups.forEach(g=>{ const b=g.querySelector(".gb"), items=[...g.querySelectorAll(".menu a")]; b.setAttribute("aria-haspopup","true"); b.setAttribute("aria-expanded","false");
+    const open=f=>{ groups.forEach(o=>{ if(o!==g) shut(o); }); g.classList.add("open"); b.setAttribute("aria-expanded","true"); if(f==="first") items[0]&&items[0].focus(); if(f==="last") items[items.length-1]&&items[items.length-1].focus(); };
+    b.addEventListener("click",()=>g.classList.contains("open")?shut(g):open());
+    b.addEventListener("keydown",e=>{ if(e.key==="ArrowDown"){ e.preventDefault(); open("first"); } else if(e.key==="ArrowUp"){ e.preventDefault(); open("last"); } else if(e.key==="Escape") shut(g); });
+    g.addEventListener("keydown",e=>{ if(!e.target.closest(".menu")) return; const i=items.indexOf(document.activeElement);
+      if(e.key==="ArrowDown"){ e.preventDefault(); items[(i+1)%items.length].focus(); }
+      else if(e.key==="ArrowUp"){ e.preventDefault(); items[(i-1+items.length)%items.length].focus(); }
+      else if(e.key==="Home"){ e.preventDefault(); items[0].focus(); } else if(e.key==="End"){ e.preventDefault(); items[items.length-1].focus(); }
+      else if(e.key==="Escape"){ shut(g); b.focus(); } });
+    g.addEventListener("focusout",e=>{ if(!g.contains(e.relatedTarget)) shut(g); }); });
+  document.addEventListener("click",e=>{ if(!e.target.closest(".grp")) groups.forEach(shut); });
+  // phones: one Menu button opens the whole list (groups are headings there)
+  const mq=matchMedia("(max-width:760px)"), sync=()=>{ groups.forEach(g=>{ g.querySelector(".gb").tabIndex=mq.matches?-1:0; }); if(!mq.matches){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); } };
+  mq.addEventListener("change",sync); sync();
+  tog.addEventListener("click",()=>{ const o=H.classList.toggle("nav-open"); tog.setAttribute("aria-expanded",o); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&H.classList.contains("nav-open")){ H.classList.remove("nav-open"); tog.setAttribute("aria-expanded","false"); tog.focus(); } });
+  // language switch: EN | فا (remembered; the page reloads in the chosen language)
+  const I=window.I18N||{lang:"en",set:()=>{}};
+  document.querySelectorAll(".site-hdr .lang button").forEach(b=>{ b.setAttribute("aria-pressed",b.dataset.l===I.lang);
+    b.onclick=()=>{ if(b.dataset.l!==I.lang) I.set(b.dataset.l); }; });
+  // Persian: a dismissible "machine translation" notice
+  let off=false; try{ off=localStorage.getItem("fa-banner-off")==="1"; }catch(e){}
+  if(I.fa&&!off){ const mk=()=>{ const d=document.createElement("div"); d.className="fa-banner"; d.setAttribute("role","note");
+      d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
+      
+      d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
+      document.body.appendChild(d); };
+    document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
+})();
+
+/* Show what changed. One rule for every page: when a click, key press or filter change adds or reveals content
+   that lands off-screen or in the lower 30% of the window, scroll it to just under the header and flash an amber
+   outline (1.4 s). Never on page load (only within 600 ms of a real user event) and never while the map "plays"
+   the years (<html data-playing>). Elements with class "live-count" flash whenever their text changes after a
+   user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
+   prefers-reduced-motion: jump instead of smooth scroll, static outline. */
+(()=>{
+  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
+  const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
+  ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
+    if(!e.isTrusted) return;
+    if(e.target.closest&&e.target.closest(".i18n-fn,.i18n-fns,.i18n-tip")) return;   // footnote numbers, list and tooltip never trigger a reveal scroll
+    if(type==="keydown"&&(typing(e.target)||["Shift","Control","Alt","Meta","Tab"].includes(e.key))) return;
+    if((type==="input"||type==="change")&&typing(e.target)) return;  // typing in a search box or dragging a slider: the live count says what changed
+    at=performance.now(); src=e.target; done=false; },true));
+  const recent=()=>performance.now()-at<WINDOW&&document.documentElement.dataset.playing!=="1";
+  const hdr=()=>{ let h=parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--hdr"))||0;
+    const bar=document.querySelector(".bar,.controls"); if(bar&&getComputedStyle(bar).position==="sticky") h+=bar.offsetHeight; return h; };
+  function flash(el){ if(RM.matches){ const o=el.style.outline; el.style.outline=`2px solid ${AMBER}`; el.style.outlineOffset="3px"; setTimeout(()=>{el.style.outline=o;},1400); return; }
+    el.animate([{outline:`2px solid ${AMBER}`,outlineOffset:"3px"},{outline:`2px solid ${AMBER}`,outlineOffset:"3px",offset:.7},{outline:"2px solid transparent",outlineOffset:"3px"}],{duration:1400}); }
+  window.siteFlash=flash;
+  function reveal(el){
+    // when the change sits right after the control that caused it (an expanding row), show the control too
+    const trig=src&&src.closest&&[...(el.parentElement?el.parentElement.children:[])].find(c=>c.contains(src));
+    const tgt=(trig&&trig.nextElementSibling===el&&trig.getBoundingClientRect().height<120)?trig:el;
+    tgt.style.scrollMarginTop=(hdr()+12)+"px";
+    tgt.scrollIntoView({block:"start",behavior:RM.matches?"auto":"smooth"}); flash(el); }
+  const visible=el=>el.getClientRects().length>0&&getComputedStyle(el).visibility!=="hidden";
+  const shown=el=>{ const r=el.getBoundingClientRect(), h=hdr(); return r.bottom>h+8&&r.top<innerHeight*0.7; };
+  // Persian digits are a display layer (i18n.js), so compare text with them folded back to Latin
+  const text=nodes=>[...nodes].map(n=>n.textContent).join("").replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫٬٪]/g,"").replace(/[.,%]/g,"").replace(/\s+/g," ").trim();
+  const mo=new MutationObserver(recs=>{
+    if(!recent()) return;
+    const counts=new Set(), cands=[];
+    for(const r of recs){
+      const t=r.target.nodeType===1?r.target:r.target.parentElement; if(!t) continue;
+      const lc=t.closest(".live-count"); if(lc){ counts.add(lc); continue; }
+      if(t.closest(".site-hdr,.tip,.help,.fa-banner,[role=tooltip]")||t.closest("svg")) continue;
+      if(r.type==="childList"){ if(!r.addedNodes.length||text(r.removedNodes)===text(r.addedNodes)) continue;
+        const add=[...r.addedNodes].filter(n=>n.nodeType===1); cands.push(add.length===1?add[0]:t); }
+      else if(r.type==="attributes"){ if(r.attributeName==="hidden"&&r.oldValue!==null&&!t.hidden) cands.push(t);
+        else if(r.attributeName==="open"&&t.open) cands.push(t); }
+    }
+    counts.forEach(flash);
+    if(done) return;
+    // controls redrawing themselves (option lists, segmented buttons) are not "content"
+    const CTRL="nav,.seg,.ctrl,.filters,form,select,button,label,[role=group],[role=toolbar]";
+    const els=[...new Set(cands)].filter(el=>el.isConnected&&visible(el)&&!el.contains(src)&&!el.closest(CTRL)&&!el.querySelector(":scope > button, :scope > select")&&!(src&&src.closest&&el.contains(src.closest(CTRL))));
+    const outer=els.filter(el=>!els.some(o=>o!==el&&o.contains(el)));
+    outer.sort((a,b)=>a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1);
+    // a page can name the region that matters when it changes (data-reveal), e.g. the map's province panel
+    const hinted=outer.map(el=>el.closest("[data-reveal]")).find(Boolean);
+    if(hinted){ done=true; if(!shown(hinted)) requestAnimationFrame(()=>reveal(hinted)); return; }
+    if(outer.some(el=>shown(el)&&el.getBoundingClientRect().height>=120)) { done=true; return; }  // a big visible change is already in view
+    // the first substantial change the visitor cannot see decides; small in-view captions do not block it
+    const off=outer.filter(el=>!shown(el)&&el.getBoundingClientRect().height>=40);
+    const first=off[0]; if(!first) return;
+    done=true; requestAnimationFrame(()=>reveal(first));
+  });
+  // slides are a fixed stage that never scrolls, so they are not observed
+  const start=()=>{ if(document.getElementById("stage")) return;
+    document.querySelectorAll("main,#panel,#rel,[data-reveal],.live-count").forEach(el=>mo.observe(el,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:["hidden","open"],attributeOldValue:true})); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",start):start();
+})();
+
+/* Back to top: a round button on long pages (not on the fixed-stage slides). Hidden until the visitor has scrolled
+   0.8 of a window; sits above the story pages' "?" help button. */
+(()=>{
+  const mk=()=>{ if(document.getElementById("stage")||document.querySelector(".to-top")) return;
+    const b=document.createElement("button"); b.type="button"; b.className="to-top"; const lbl=window.t?t("hdr.to_top"):"Back to top"; b.setAttribute("aria-label",lbl); b.title=lbl; b.textContent="↑";
+    if(document.querySelector(".qbtn")) b.classList.add("above-help");
+    b.onclick=()=>scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"});
+    document.body.appendChild(b);
+    const upd=()=>b.classList.toggle("on",scrollY>0.8*innerHeight); addEventListener("scroll",upd,{passive:true}); addEventListener("resize",upd); upd(); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk();
+})();
+</script>
+
+<div id="story-root" lang="en" dir="ltr">
+<p class="back-ex"><a href="/thesis/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
+
+<div id="bar"><div class="wrap">
+  <p id="caveat"><b>Selected: s7-b/2 with k_graph 30</b> (configuration I4, 7cae3a31). On dev the three candidate tables tied at k_graph 30 (77 of 216); the tie rule fixed in advance chose s7-b/2. The graph here is a pilot slice (CS 156 Lectures 14-15), not the frozen graph. Nothing here is a result.</p>
+  <nav id="nav" aria-label="Sections"><a href="#tldr">In short</a><a href="#problem">The problem</a><a href="#idea">The idea</a><a href="#fix">The router</a><a href="#try">Try it</a><a href="#cands">Three candidates</a><a href="#hop0">Hop 0</a><a href="#open">Not known yet</a><a href="#quiz">Quiz</a><a href="#src">Sources</a></nav>
+</div></div>
+
+<main>
+<div class="wrap">
+<header class="hero">
+  <div class="kicker">GraphRAG, step by step</div>
+  <h1>How GraphRAG chooses its path</h1>
+  <p class="lead">A question can follow three kinds of link in a knowledge graph. A router reads the question and picks which kinds to follow, and in which direction.</p>
+</header>
+
+<section class="step" id="tldr">
+<h2>In short</h2>
+<div class="take"><p><b>The graph arm H</b> walks the knowledge graph from the concepts named in the question. A <b>router</b> decides which relation types it may follow (<span class="rel IS_A">IS_A</span>, <span class="rel USES">USES</span>, <span class="rel PREREQUISITE_OF">PREREQUISITE_OF</span>) and in which direction. <b>The arm Hc</b> is the control: the same edges, the same direction and depth, but it cannot see the labels, so it follows every type. If H beats Hc, the labels helped.</p></div>
+<p class="muted small">Status: the thesis uses table <b>s7-b/2</b> with <b>k_graph 30</b> (at most 30 graph passages enter fusion), chosen on dev: a three-way tie broken by the rule fixed in advance. The page shows all three candidates. The first pilot had a placeholder router, so H and Hc were the same arm. A router alone was not enough: see <a href="#hop0">the hop-0 problem</a>.</p>
+</section>
+
+<section class="step" id="problem">
+<h2>The problem: with no router, the labels cannot matter</h2>
+<p>Hc exists to answer one question: do the relation labels carry information? H and Hc get the same edges. They differ in one rule only: H keeps an edge when its relation type is allowed by the route, and Hc keeps every edge.</p>
+<p>In the first pilot the router was a placeholder. It allowed every relation type in both directions. Then H keeps every edge, exactly as Hc does.</p>
+<div class="ev"><b class="h">Evidence</b>H and Hc sent identical requests on 90 of 90 generations. The H versus Hc contrast could not work until the router uses the labels. (Pilot post-mortem, section 4.)</div>
+<p>This is not a bug in the walk. It is a missing piece: a function from the question to a route.</p>
+</section>
+
+<section class="step" id="idea">
+<h2>The idea: read the cues in the question</h2>
+<p>Questions carry cues about which link matters. "Why does X require Y" asks for what must come first. "What is X a kind of" asks for parents. "Where is X used" asks who uses X.</p>
+<div class="flow" aria-label="router steps"><span class="box">question</span><span class="ar">→</span><span class="box">find cue (first match wins)</span><span class="ar">→</span><span class="box">relation types + one direction</span><span class="ar">→</span><span class="box">walk 2 hops from the seed concepts</span></div>
+<p>The router is a pure function of the question text and its table. It reads no graph, no question stratum and no label of the answer. One direction applies to every relation in the route.</p>
+<div class="ours"><b class="h">Edge convention</b>"A PREREQUISITE_OF B" means A comes before B. "X IS_A Y" means X is a kind of Y. "A USES B" means A uses B. Direction <code>in</code> follows edges that end at the seed (its prerequisites, its children, its users). Direction <code>out</code> follows edges that start at it (its parents, what it uses).</div>
+</section>
+
+<section class="step" id="fix">
+<h2>The fix: a table of cues, the first match wins</h2>
+<p>A router is an ordered list of rows. Each row has a cue (a pattern in the lower-cased question), the relation types it allows and one direction. The last row has no cue and catches everything else.</p>
+<div class="row"><span class="lbl">Router</span><select id="rsel" aria-label="Router table"></select><span id="rstat" class="b dsg"></span></div>
+<div class="tw"><table class="tbl" id="rtab"></table></div>
+<p class="muted small">Taxonomy and usage cues come before the proof cue. "Why is X a special case of Y" asks about the parent of X, not about prerequisites.</p>
+</section>
+
+<section class="step" id="try">
+<h2>Try it: what each arm walks</h2>
+<p>Type a question about support vector machines, or pick one. The page finds the concepts named in the question (an alias match here; the real arm also uses dense label similarity), applies the router, and walks 2 hops.</p>
+<div class="row"><label for="qin" class="lbl">Question</label></div>
+<input type="text" id="qin" autocomplete="off" spellcheck="false" aria-describedby="qhint">
+<p id="qhint" class="muted small">Concepts it knows: support vector, margin, kernel function, Lagrangian, dual problem, quadratic programming, soft-margin SVM, linear separability, regularization, and more.</p>
+<div class="row" id="qex" role="group" aria-label="Example questions"></div>
+<div class="mock" id="trace" aria-live="polite"></div>
+<div class="pair">
+  <div class="pane" id="paneH"><h3>H: sees the labels</h3><p class="cap" id="capH"></p><ul class="hoplist" id="listH" aria-label="Concepts H reaches, by hop"></ul><button type="button" class="fullsize" data-pane="paneH" aria-expanded="false">Show the drawing</button><div id="svgH" class="gsvg"></div></div>
+  <div class="pane" id="paneHc"><h3>Hc: labels collapsed</h3><p class="cap" id="capHc"></p><ul class="hoplist" id="listHc" aria-label="Concepts Hc reaches, by hop"></ul><button type="button" class="fullsize" data-pane="paneHc" aria-expanded="false">Show the drawing</button><div id="svgHc" class="gsvg"></div></div>
+</div>
+<div class="legend" id="legend"></div>
+<p id="diff"></p>
+</section>
+
+<section class="step" id="cands">
+<h2>Three candidates, one fixed question set</h2>
+<p>The experiment compares three tables on the dev set only. They differ in how many cues they know and in what they do when no cue fires.</p>
+<div class="tw"><table class="tbl" id="ctab"></table></div>
+<ul class="small muted">
+<li><code>s7-a/3</code>: five typed cue rows, then a fallback that allows everything in both directions (H then equals Hc on cue-less questions).</li>
+<li><code>s7-b/2</code>: one proof cue, then the same open fallback.</li>
+<li><code>s7-c/1</code>: the cues of s7-a/3, but the fallback is typed (prerequisites, inwards), so every question walks a typed route.</li>
+</ul>
+<p>Each is tried with <code>k_graph</code> 10, 20 and 30 (at most 9 configurations), for H only and on the development items, by gold-evidence recall in the packed context. At <code>k_graph</code> 30 all three tables had equal recall (77 of 216), so the tie rule fixed in advance chose <b>s7-b/2</b>; R kept its fixed setting (depth 30, 10 reranked). The pilot-1 placeholder is shown in the router menu above for comparison.</p>
+</section>
+
+<section class="step" id="hop0">
+<h2>Why a router alone did not separate H and Hc</h2>
+<p><b>The problem.</b> The first registered rank rule (rule 7) sorted the graph passages by hop, then by cross-encoder score, then by id, and cut the list at <code>k_graph</code>. Each seed concept alone has dozens of passages. So hop-0 passages fill every slot, and the route cannot change the list: H = Hc on that item, whatever the router says.</p>
+<div class="ev"><b class="h">Evidence</b>In the first pilot as run (placeholder router, <code>k_graph</code> 20), 29 of 30 graph lists were all hop 0; only 1 of 30 held a deeper-hop passage. Under configuration I3 (s7-b/2, <code>k_graph</code> 10, rule 7) with the same seed concepts, 0 of 30 lists were projected to hold one. That assumes the same linked seeds; it is a projection, not an observation. (Addendum D, D0.)</div>
+<p><b>The fix.</b> A hop-balanced rank (hop-balanced/1) gives each hop present a quota of ⌈slots left / hops left⌉, filled by cross-encoder score; unused slots pass to later hops. Free slots are then backfilled in (hop, −CE, id) order without removing a chosen deeper passage, and the chosen set is returned in that order. It reads no relation label, so H and Hc still differ only in the eligible edges. Then the router and <code>k_graph</code> were tuned again, which gave s7-b/2 with <code>k_graph</code> 30. <a href="../../graph-hops/build/index.html">Graph hops and ranking</a> shows the rule.</p>
+<div class="design"><b>What this does not fix.</b> Under s7-b/2, 15 of 30 pilot questions take the fallback row (every relation, both directions), where H and Hc allow the same edges. A null H versus Hc result can therefore mean that the router rarely selects, not that the labels have no value. Fusion and packing can still erase deeper-hop differences, and an equal cap of <code>k_graph</code> is not an equal list length. (Addendum D, D1 and D10.)</div>
+</section>
+
+<section class="step" id="open">
+<h2>Not known yet</h2>
+<div class="design"><b>Selected by a tie rule, not by a measured win.</b> On dev, all three tables reached the same recall at <code>k_graph</code> 30 (77 of 216), so the choice of s7-b/2 says the dev metric did not separate them. The walks on the real items are sealed until the pilot closes, so they are not on this page.</div>
+<ul>
+<li><b>Does the router help?</b> That is the H versus Hc test. It is not answered here. Half of the pilot questions (15 of 30) take the fallback row, where the two arms allow the same edges.</li>
+<li><b>The graph here is a pilot slice.</b> It has no asserted PREREQUISITE_OF edge (65 are only proposed). The walks above include them so you can see the prerequisite route; the frozen graph decides what the experiment sees.</li>
+<li><b>The linker here is simpler</b> than the one in the arm (alias match only).</li>
+</ul>
+<p><span class="b comp">computed</span> the cue matching and the walks on this slide, in your browser, from the real tables. <span class="b ours">ours</span> the cue lists. <span class="b dsg">design</span> the tuned router.</p>
+</section>
+
+<section class="step" id="quiz">
+<h2>Check yourself</h2>
+<div class="q" id="quiz1"></div>
+</section>
+
+<section class="step" id="src">
+<h2>Sources</h2>
+<ul class="small">
+<li>Router tables: <code>educator_core/pipeline.py</code> in the I4 core <code>cd582de</code> (pipeline.py sha256 f277de28…; <code>ROUTERS</code>, <code>ROUTER_CANDIDATES</code>, <code>route()</code>), read-only. The router block is byte-identical to the earlier core 8c34209.</li>
+<li>Tuned values: the D4c dev re-tuning (three-way tie at <code>k_graph</code> 30, 77/216) and the I4 manifest (config 7cae3a31, s7-b/2, <code>k_graph</code> 30, hop-balanced/1): the Stage A progress log.</li>
+<li>The hop-0 problem, the projection and the fallback-row limit: protocol Addendum D, D0, D1 and D10.</li>
+<li>H = Hc on 90 of 90 requests in pilot 1: the Stage A pilot post-mortem, section 4.</li>
+<li>Arms and the H versus Hc test: the claim protocol, section 3 and Addendum C (C4, tuning on dev only).</li>
+<li>Graph slice: the CS 156 Lecture 14-15 pilot (<a href="../../query-flow/build/index.html">What happens when a student asks</a>).</li>
+</ul>
+</section>
+</div>
+</main>
+<script>// Router core: the same logic as educator_core.pipeline route() / walk() (sha 8c34209), in JS. No DOM.
+const RouterCore = (() => {
+  const norm = s => s.toLowerCase();
+  const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  // Which row fires: the first row whose cue is found in the lower-cased question; the last row (cue "") is the fallback.
+  function route(table, question) {
+    const q = norm(question);
+    for (let i = 0; i < table.length; i++) if (!table[i].cue || new RegExp(table[i].cue).test(q)) return {row: i, mask: table[i].mask, direction: table[i].direction};
+    throw new Error("router has no fallback row");
+  }
+  // Concepts named in the question: an exact word match of the label or an alias (the arm also adds dense label similarity).
+  function link(question, concepts) {
+    const q = norm(question), out = [];
+    for (const c of concepts) for (const n of [c.label, ...(c.aliases || [])]) {
+      if (n.length > 2 && new RegExp("(?<![a-z0-9])" + esc(norm(n)) + "(?![a-z0-9])").test(q)) { out.push(c.id); break; }
+    }
+    return out;
+  }
+  // Breadth-first walk, depth hops, one direction for every relation. ok(edge) = eligible (H: relation in mask; Hc: always true).
+  function walk(seeds, edges, direction, depth, ok) {
+    const adj = {};
+    for (const e of edges) {
+      if (!ok(e)) continue;
+      if (direction === "out" || direction === "both") (adj[e.s] ||= []).push(e.t);
+      if (direction === "in" || direction === "both") (adj[e.t] ||= []).push(e.s);
+    }
+    for (const k in adj) adj[k].sort();
+    const hop = {}; seeds.forEach(s => hop[s] = 0);
+    let frontier = [...new Set(seeds)].sort();
+    for (let d = 1; d <= depth; d++) { const nxt = [];
+      for (const a of frontier) for (const b of (adj[a] || [])) if (!(b in hop)) { hop[b] = d; nxt.push(b); }
+      frontier = nxt; }
+    return hop;
+  }
+  // The edges the walk used: eligible, traversable in the direction from a node with hop < depth to a node in the walk.
+  function used(hop, edges, direction, depth, ok) {
+    return edges.filter(e => ok(e) && (
+      ((direction === "out" || direction === "both") && e.s in hop && hop[e.s] < depth && e.t in hop && hop[e.t] <= hop[e.s] + 1) ||
+      ((direction === "in" || direction === "both") && e.t in hop && hop[e.t] < depth && e.s in hop && hop[e.s] <= hop[e.t] + 1)));
+  }
+  return {route, link, walk, used};
+})();
+if (typeof module !== "undefined") module.exports = RouterCore;
+</script>
+<script>
+(async () => {
+  const $ = id => document.getElementById(id);
+  const R = RouterCore;
+  let D;
+  try { D = await (await fetch("../data/router.json")).json(); } catch (e) { $("trace").textContent = "The router data file could not be loaded."; return; }
+  const label = Object.fromEntries(D.concepts.map(c => [c.id, c.label]));
+  const REL = ["PREREQUISITE_OF", "IS_A", "USES"], COL = {PREREQUISITE_OF: "#F2A93B", IS_A: "#3CC7B4", USES: "#7C9CFF"};
+  const ids = [D.placeholder, ...D.candidates];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+  const relTags = m => m.length === 3 ? '<span class="faint">every relation</span>' : m.map(r => `<span class="rel ${r}">${r}</span>`).join(" ");
+  const dirTxt = d => d === "both" ? "both directions" : d;
+  let rid = D.meta.default_router, question = D.examples[0].question;
+
+  $("rsel").innerHTML = ids.map(i => `<option value="${i}">${i === D.placeholder ? i + " (pilot 1 placeholder)" : i}</option>`).join("");
+  $("rsel").value = rid;
+  $("rsel").onchange = () => { rid = $("rsel").value; draw(); };
+  $("qin").value = question;
+  $("qin").oninput = () => { question = $("qin").value; draw(); };
+  $("qex").innerHTML = D.examples.map((e, i) => `<button type="button" data-i="${i}">${esc(e.question)}</button>`).join("");
+  $("qex").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; question = D.examples[+b.dataset.i].question; $("qin").value = question; draw(); };
+
+  function routeTable(fired) {
+    const t = D.tables[rid];
+    return `<thead><tr><th>#</th><th>Cue found in the question</th><th>Relation types</th><th>Direction</th><th>Why</th></tr></thead><tbody>` + t.map((r, i) => {
+      const cls = fired === undefined ? "" : i === fired ? "fire" : i > fired ? "skip" : "";
+      return `<tr class="${cls}"><td class="m">${i + 1}</td><td>${esc(r.cue_name)}${i === fired ? ' <span class="b ours">fires</span>' : ""}</td><td>${relTags(r.mask)}</td><td class="m">${dirTxt(r.direction)}</td><td>${esc(r.why)}</td></tr>`;
+    }).join("") + "</tbody>";
+  }
+
+  // radial layout by hop; at most CAP nodes per ring are drawn (the counts in the text are always complete)
+  function svg(hop, edgesUsed, colored, seedSet) {
+    const W = 640, H = 420, cx = W / 2, cy = H / 2, CAP = [8, 12, 16];
+    const byHop = [[], [], []]; Object.keys(hop).sort().forEach(n => byHop[hop[n]].push(n));
+    const pos = {}, shown = new Set(); let hidden = 0;
+    byHop.forEach((arr, h) => {
+      const list = arr.slice(0, CAP[h]); hidden += arr.length - list.length;
+      list.forEach((n, i) => { shown.add(n);
+        if (h === 0) { const a = 2 * Math.PI * i / Math.max(list.length, 1); const r = list.length > 1 ? 26 : 0; pos[n] = [cx + r * Math.cos(a), cy + r * Math.sin(a)]; }
+        else { const a = 2 * Math.PI * (i + (h === 2 ? .5 : 0)) / list.length - Math.PI / 2; const rx = h === 1 ? 120 : 212, ry = h === 1 ? 100 : 170; pos[n] = [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; } });
+    });
+    let o = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Subgraph reached by the walk">`;
+    o += `<defs>` + [...REL, "grey"].map(r => `<marker id="ar-${r}-${colored ? 1 : 0}" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="${COL[r] || "#68707F"}"/></marker>`).join("") + `</defs>`;
+    edgesUsed.filter(e => shown.has(e.s) && shown.has(e.t)).forEach(e => {
+      const [x1, y1] = pos[e.s], [x2, y2] = pos[e.t], dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, k = 9 / L;
+      const c = colored ? COL[e.r] : "#68707F", mk = colored ? e.r : "grey";
+      o += `<line x1="${x1}" y1="${y1}" x2="${x2 - dx * k}" y2="${y2 - dy * k}" stroke="${c}" stroke-width="1.3" opacity=".8" marker-end="url(#ar-${mk}-${colored ? 1 : 0})"${e.asserted === false ? ' stroke-dasharray="4 3"' : ""}/>`;
+    });
+    shown.forEach(n => { const [x, y] = pos[n], h = hop[n], fill = h === 0 ? "#F2A93B" : h === 1 ? "#7C9CFF" : "#3A4254";
+      o += `<circle cx="${x}" cy="${y}" r="${h === 0 ? 7 : 5}" fill="${fill}" stroke="#0B0D12"/>`;
+      const left = x < cx, full = label[n] || n, lim = h === 2 ? 15 : 19, t = full.length > lim ? full.slice(0, lim - 1) + "…" : full;
+      o += `<text x="${x + (left ? -9 : 9)}" y="${y + 3.5}" text-anchor="${left ? "end" : "start"}">${esc(t)}</text>`; });
+    if (hidden) o += `<text x="${W - 6}" y="${H - 6}" text-anchor="end" style="fill:#68707F">+${hidden} more not drawn</text>`;
+    return o + "</svg>";
+  }
+
+  // the same facts as the drawing, as a list by hop (shown on phones instead of the drawing)
+  function hopList(hop, seedsOnly) {
+    const by = [[], [], []]; Object.keys(hop).forEach(n => by[hop[n]].push(label[n] || n));
+    const names = ["Seeds", "1 hop", "2 hops"];
+    const CAP = [8, 12, 16];   // same caps as the drawing; the counts are always complete
+    return by.map((arr, h) => { arr.sort(); const more = arr.length - CAP[h];
+      return `<li><span class="hl">${names[h]} (${arr.length})</span>${arr.length ? arr.slice(0, CAP[h]).map(t => `<span class="chip">${esc(t)}</span>`).join("") + (more > 0 ? `<span class="muted small"> +${more} more</span>` : "") : '<span class="muted">none</span>'}</li>`; }).join("");
+  }
+  document.querySelectorAll(".fullsize").forEach(b => b.onclick = () => { const p = $(b.dataset.pane), open = p.classList.toggle("open"); b.setAttribute("aria-expanded", String(open)); b.textContent = open ? "Hide the drawing" : "Show the drawing"; });
+
+  function draw() {
+    const table = D.tables[rid], rt = R.route(table, question), seeds = R.link(question, D.concepts), depth = D.meta.walk_depth;
+    const okH = e => rt.mask.includes(e.r), okC = () => true;
+    const hH = R.walk(seeds, D.edges, rt.direction, depth, okH), hC = R.walk(seeds, D.edges, rt.direction, depth, okC);
+    const nH = Object.keys(hH).length, nC = Object.keys(hC).length, onlyC = Object.keys(hC).filter(n => !(n in hH));
+    const same = onlyC.length === 0 && Object.keys(hH).every(n => n in hC);
+    const row = table[rt.row];
+    $("trace").innerHTML = `<div class="small muted">1. Router <b>${esc(rid)}</b>: row ${rt.row + 1} of ${table.length} fires (${esc(row.cue_name)}).</div>
+      <div class="small">2. It allows ${relTags(rt.mask)}, direction <b class="mono">${dirTxt(rt.direction)}</b>: ${esc(row.why)}.</div>
+      <div class="small muted">3. Seed concepts found in the question: ${seeds.length ? seeds.map(s => `<span class="chip">${esc(label[s])}</span>`).join("") : "none (the real arm would also try dense label similarity)"}</div>`;
+    // show which row fired in the router table above
+    $("rtab").innerHTML = routeTable(rt.row);
+    $("capH").textContent = `${nH} concepts within ${depth} hops (${nH - seeds.length} beyond the seeds), relations: ${rt.mask.length === 3 ? "all" : rt.mask.join(", ")}.`;
+    $("capHc").textContent = `${nC} concepts within ${depth} hops (${nC - seeds.length} beyond the seeds). Same direction and depth; every edge is eligible.`;
+    $("svgH").innerHTML = seeds.length ? svg(hH, R.used(hH, D.edges, rt.direction, depth, okH), true) : '<p class="muted small">No seed concept in the question, so there is nothing to walk from.</p>';
+    $("svgHc").innerHTML = seeds.length ? svg(hC, R.used(hC, D.edges, rt.direction, depth, okC), false) : "";
+    $("listH").innerHTML = seeds.length ? hopList(hH) : "";
+    $("listHc").innerHTML = seeds.length ? hopList(hC) : "";
+    document.querySelectorAll(".fullsize").forEach(b => { b.hidden = !seeds.length; });
+    $("legend").innerHTML = `<span><span style="color:#F2A93B">●</span> seed</span><span><span style="color:#7C9CFF">●</span> 1 hop</span><span><span style="color:#8A93A6">●</span> 2 hops</span>` + REL.map(r => `<span class="rel ${r}">— ${r}</span>`).join("") + `<span>dashed = proposed in the pilot, not asserted</span><span>grey edges (Hc) = label hidden</span>`;
+    $("diff").innerHTML = !seeds.length ? "" : same
+      ? `<span class="verdict same">H and Hc reach the same concepts</span> <span class="muted">The route allows ${rt.mask.length === 3 ? "every relation" : "the types that happen to be all there is in reach"}, so the labels change nothing for this question. This is what happened on 90 of 90 requests in pilot 1.</span>`
+      : `<span class="verdict diff">H and Hc differ</span> <span class="muted">Hc also reaches ${onlyC.length} concept${onlyC.length > 1 ? "s" : ""} that H leaves out:</span><div style="margin-top:6px">${onlyC.slice(0, 14).map(n => `<span class="chip only">${esc(label[n] || n)}</span>`).join("")}${onlyC.length > 14 ? `<span class="muted small"> +${onlyC.length - 14} more</span>` : ""}</div><p class="muted small">Those concepts bring their passages into Hc's context. Whether H's selection is better is the H versus Hc test, not shown here.</p>`;
+    document.querySelectorAll("#qex button").forEach(b => b.setAttribute("aria-pressed", String(D.examples[+b.dataset.i].question === question)));
+  }
+  // table of the three candidates on the examples
+  $("ctab").innerHTML = `<thead><tr><th>Question</th>${D.candidates.map(c => `<th>${c}</th>`).join("")}</tr></thead><tbody>` + D.examples.map(e => `<tr><td>${esc(e.question)}</td>${D.candidates.map(c => { const r = R.route(D.tables[c], e.question); return `<td>${relTags(r.mask)}<br><span class="mono small muted">${dirTxt(r.direction)}</span></td>`; }).join("")}</tr>`).join("") + "</tbody>";
+  // quiz
+  const quiz = [{q: "The question is \"Why does the dual problem require a Lagrangian?\" Which route does s7-a/3 choose?", o: ["IS_A, out", "PREREQUISITE_OF, in", "every relation, both directions"], a: 1, why: "\"require\" is a proof or requirement word, and the taxonomy and usage cues do not match."}];
+  $("quiz1").innerHTML = `<p>${quiz[0].q}</p><div class="opts">${quiz[0].o.map((t, i) => `<button type="button" data-i="${i}">${t}</button>`).join("")}</div><p class="small muted" id="qwhy" aria-live="polite"></p>`;
+  $("quiz1").onclick = ev => { const b = ev.target.closest("button"); if (!b) return; const ok = +b.dataset.i === quiz[0].a; b.className = ok ? "right" : "wrong"; $("qwhy").textContent = (ok ? "Right. " : "Not quite. ") + quiz[0].why; };
+  draw();
+})();
+</script>
+<p class="back-ex"><a href="/thesis/explain/systems.html"><span data-i18n="ex.tw_back_to">Back to:</span> <span data-i18n="ex.s_systems_h">Systems and landscape</span></a></p>
+</div>
+<script>// Section menu for the standalone stories: a list of the page's h2 headings, scroll-spy, click to jump. Vertical only.
+// Two modes, decided from the page's real content edge (never from a fixed width):
+//   rail   = the list fits left of ALL content (16 px gap, 12 px from the window edge): it sits in the gutter, always shown.
+//   drawer = it does not fit: only a round toggle is shown; the list is a popover that opens on click and closes on an outside click,
+//            Esc or choosing a section. Nothing is persisted: every page load starts closed.
+(() => {
+  const hs = [...document.querySelectorAll("#story-root main h2")];
+  if (hs.length < 2) return;
+  hs.forEach((h, i) => { const sec = h.closest("section[id]"); h.dataset.so = sec ? sec.id : (h.id || (h.id = "so-" + (i + 1))); if (sec) sec.style.scrollMarginTop = "0"; });
+  const label = "Sections";
+  const aside = document.createElement("aside"); aside.id = "so"; aside.setAttribute("aria-label", label);
+  aside.innerHTML = `<button type="button" aria-expanded="false" aria-controls="so-list" aria-label="${label}" title="${label}"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button><ol id="so-list">${hs.map(h => `<li><a href="#${h.dataset.so}">${h.textContent.replace(/[<&]/g, "")}</a></li>`).join("")}</ol>`;
+  document.body.appendChild(aside);
+  const btn = aside.querySelector("button"), links = [...aside.querySelectorAll("a")];
+  const setOpen = (o, focusBtn) => { aside.classList.toggle("open", o); btn.setAttribute("aria-expanded", String(o)); if (!o && focusBtn) btn.focus(); };
+  const isRail = () => aside.classList.contains("rail");
+  btn.addEventListener("click", () => setOpen(!aside.classList.contains("open")));
+  document.addEventListener("pointerdown", e => { if (aside.classList.contains("open") && !aside.contains(e.target)) setOpen(false); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && aside.classList.contains("open")) { setOpen(false, true); } });
+  addEventListener("pagehide", () => setOpen(false)); addEventListener("pageshow", () => setOpen(false));
+  links.forEach(a => a.addEventListener("click", e => {
+    e.preventDefault(); const h = document.querySelector(`[data-so="${a.getAttribute("href").slice(1)}"]`);
+    (h.closest("section") || h).scrollIntoView({behavior: matchMedia("(prefers-reduced-motion:reduce)").matches ? "auto" : "smooth", block: "start"});
+    history.replaceState(null, "", a.getAttribute("href")); setOpen(false); }));
+  // Left edge of everything the reader sees in the story (text, figures, controls), not just the .wrap columns: a figure may bleed past its column.
+  const SKIP = ".site-hdr,.fa-banner,#so,.to-top,[hidden]";
+  const contentEdge = () => {
+    let edge = Infinity; const root = document.getElementById("story-root") || document.body;
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode: n => n.nodeValue.trim() && !n.parentElement.closest(SKIP) && !n.parentElement.closest("script,style,noscript") ? 1 : 3});
+    const rg = document.createRange();
+    for (let n; (n = tw.nextNode());) { rg.selectNodeContents(n); for (const r of rg.getClientRects()) if (r.width > 1 && r.height > 1) edge = Math.min(edge, r.left); }
+    root.querySelectorAll("svg,img,canvas,video,iframe,table,input,select,textarea,button,.wrap").forEach(e => {
+      if (e.closest(SKIP) || (e.closest("svg") && e.tagName !== "svg")) return;
+      const r = e.getBoundingClientRect(); if (r.width < 4 || r.height < 4 || getComputedStyle(e).visibility === "hidden") return;
+      if (e.matches(".wrap")) { const cs = getComputedStyle(e); edge = Math.min(edge, r.left + parseFloat(cs.paddingLeft) + parseFloat(cs.borderLeftWidth)); } else edge = Math.min(edge, r.left);
+    });
+    return edge;
+  };
+  const RAILW = 230;
+  const fit = () => {
+    const edge = contentEdge(), left = edge - 16 - RAILW, rail = isFinite(edge) && left >= 12 && innerWidth >= 1100;
+    aside.classList.toggle("rail", rail);
+    if (rail) { aside.style.setProperty("--so-left", left + "px"); setOpen(false); }
+  };
+  let t; const later = () => { clearTimeout(t); t = setTimeout(fit, 120); };
+  addEventListener("resize", later); addEventListener("load", later); fit();
+  if (window.ResizeObserver) new ResizeObserver(later).observe(document.getElementById("story-root") || document.body);
+  if (window.MutationObserver) new MutationObserver(later).observe(document.getElementById("story-root") || document.body, {childList: true, subtree: true});
+  const spy = () => { let cur = 0; hs.forEach((h, i) => { if (h.getBoundingClientRect().top < innerHeight * .4) cur = i; });
+    links.forEach((a, i) => { a.classList.toggle("on", i === cur); a.toggleAttribute("aria-current", i === cur); }); };
+  addEventListener("scroll", spy, {passive: true}); addEventListener("resize", spy); spy();
+  window.__soFit = fit;
+})();
+</script>
+</body>
+</html>

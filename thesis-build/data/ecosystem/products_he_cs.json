@@ -640,7 +640,7 @@
   "name": "Codio Coach",
   "group": "C_commercial_cs",
   "kind": "commercial",
-  "maker": "Codio (built on Anthropic Claude per vendor)",
+  "maker": "Codio",
   "used_where": [
    {
     "name": "UTeach CS, University of Texas at Austin (Codio customer)",
@@ -929,42 +929,6 @@
    "https://openai.com/chatgpt/education/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
    "https://openai.com/index/chatgpt-study-mode/": "403 bot-blocked for curl (publisher/vendor; DOI handle registered; opens in a browser)",
    "https://techcrunch.com/2025/07/29/openai-launches-study-mode-in-chatgpt": "200 ok"
-  },
-  "checked": "2026-10-01"
- },
- {
-  "id": "claude-edu",
-  "name": "Claude for Education (learning mode)",
-  "group": "D_general_he",
-  "kind": "commercial",
-  "maker": "Anthropic",
-  "used_where": [
-   {
-    "name": "Northeastern University (claimed 50,000 students/faculty/staff, 13 campuses), LSE, Champlain College",
-    "url": "https://www.anthropic.com/news/introducing-claude-for-education"
-   }
-  ],
-  "ai_does": "Socratic learning mode, Canvas LTI integration, Claude Code access for CS",
-  "launch": "2025-04",
-  "scale": {
-   "value": "Northeastern 50,000 users",
-   "as_of": "2025-04",
-   "basis": "claimed (vendor/press)"
-  },
-  "evidence": {
-   "summary": "None independent found.",
-   "link": null,
-   "independent": "n/a"
-  },
-  "student_price": "via university licence",
-  "links": {
-   "product": "https://www.anthropic.com/education",
-   "launch": "https://www.anthropic.com/news/introducing-claude-for-education"
-  },
-  "notes": "Same engine as Codio Coach.",
-  "link_status": {
-   "https://www.anthropic.com/education": "200 ok",
-   "https://www.anthropic.com/news/introducing-claude-for-education": "200 ok"
   },
   "checked": "2026-10-01"
  },

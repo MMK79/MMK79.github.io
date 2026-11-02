@@ -2,7 +2,7 @@
   "note": "Marks: ours = our own run result or count (run log, post-mortem [C]); verified = a rule, decision or statement read in the named file ([V]); inferred = a projection or interpretation the source labels as such ([I], projection). No claim is unverified.",
   "claims": [
     {"id": "c01", "key": "prog", "loc": "Pilot 30", "status": "ours", "text": "Pilot 1 used 30 items: PREREQ 10, CROSS 10 (the 20 primary items) and 10 secondary; formats proof 15, open 10, numeric 4, MC 1."},
-    {"id": "c02", "key": "prog", "loc": "Real run", "status": "ours", "text": "The run made 300 Sonnet 5.5 generations (L 30, R, H and Hc 90 each) with 0 failures."},
+    {"id": "c02", "key": "prog", "loc": "Real run", "status": "ours", "text": "The run made 300 answer-LLM generations (L 30, R, H and Hc 90 each) with 0 failures."},
     {"id": "c03", "key": "prot", "loc": "Addendum B, decisions", "status": "verified", "text": "Arm G was pending; the pilot ran L, R, H and Hc, and gate 1 (all five arms) stays open until G runs."},
     {"id": "c04", "key": "prog", "loc": "Spend", "status": "ours", "text": "The two judges cost USD 0.356 of the USD 1.00 cap; the cap never stopped judging."},
     {"id": "c05", "key": "prog", "loc": "arm table", "status": "ours", "text": "On all 30 items (descriptive): L 28/30 (0.933), R 10/30 (0.333), H 12/30 (0.400), Hc 11/30 (0.367) fully correct."},
@@ -45,7 +45,7 @@
     {"id": "c42", "key": "pm", "loc": "§6", "status": "verified", "text": "Unchanged by the fixes: S_G, S_P, gold, strata, bank and reference answers. I2 is replaced by I3."},
     {"id": "c43", "key": "prog", "loc": "I0", "status": "ours", "text": "I0 (config 6127e269…) refers to the first graph S_G 6e1d2540, with placeholder router and k_graph; kept as the baseline."},
     {"id": "c44", "key": "dec", "loc": "Update, third", "status": "ours", "text": "A blinded audit found 11 of 50 PREREQUISITE_OF edges wrong, so a judge pass made a new graph and a new S_G."},
-    {"id": "c45", "key": "prog", "loc": "Resume on the new S_G", "status": "ours", "text": "I1 (config f8a772f0…) on S_G 5c66b0d2; Sonnet 5.5 is the only answer model."},
+    {"id": "c45", "key": "prog", "loc": "Resume on the new S_G", "status": "ours", "text": "I1 (config f8a772f0…) on S_G 5c66b0d2; one LLM is the only answer model."},
     {"id": "c46", "key": "prog", "loc": "Resume on the final S_G", "status": "ours", "text": "I2 (config bb5615ec…) on the final S_G 7f28a3a3 after the restore; pilot 1 ran under I2."},
     {"id": "c47", "key": "th4", "loc": "tab:r-chrono", "status": "verified", "text": "I3 (config 1bd69f9b…) is superseded; I4 governs the second pilot and the main run."},
     {"id": "c48", "key": "th3", "loc": "Arm L, Arm G", "status": "verified", "text": "L answers without retrieval under its own prompt and is generated three times from pilot 2 on; G answers once. In pilot 1, L ran once."},

@@ -89,7 +89,7 @@
     const qids = Object.keys(D.qs).filter(id => D.qs[id].type !== 'unanswerable' && D.ans[id + '_A']);
     const st = { arm: 'A', q: qids.includes('q06') ? 'q06' : qids[0], keep: 100 };
     const shell = K.shell(el0, 'Real example: token F1 of real answers against real gold answers',
-      'Scale: n = 12 questions (9 answerable, shown here), one run, temperature 0, answerer qwen3.7-plus; the questions and short gold answers were written by Claude from the corpus text (gold answers are short paraphrases of the passages), not by independent annotators. Nothing is judged by an LLM: P, R and F1 are computed in this page from the real strings with the SQuAD recipe. A demo, not a benchmark.');
+      'Scale: n = 12 questions (9 answerable, shown here), one run, temperature 0, answerer qwen3.7-plus; the questions and short gold answers were written by an LLM from the corpus text (gold answers are short paraphrases of the passages), not by independent annotators. Nothing is judged by an LLM: P, R and F1 are computed in this page from the real strings with the SQuAD recipe. A demo, not a benchmark.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const aSel = K.el('select', { 'aria-label': 'arm' }, [opt('A', 'A: no retrieval'), opt('B', 'B: hybrid RRF top-5'), opt('C', 'C: dense top-5 + graph')]);
     const qSel = K.el('select', { 'aria-label': 'question', style: 'width:100%;max-width:100%;box-sizing:border-box' }, qids.map(id => opt(id, id + ' (' + D.qs[id].type + '): ' + D.qs[id].question)));

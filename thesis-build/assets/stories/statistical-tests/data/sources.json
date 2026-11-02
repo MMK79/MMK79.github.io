@@ -1,5 +1,5 @@
 {
- "about": "Sources cited on the Statistical tests page; verified = primary text read at the locator. Built by the sources pass (Opus).",
+ "about": "Sources cited on the Statistical tests page; verified = primary text read at the locator. Built by the sources pass (an LLM subagent).",
  "sources": {
   "mcnemar1947": {
    "short": "McNemar 1947",

@@ -124,7 +124,7 @@
       sel.value = 'q02';
       const info = K.el('div', {}), cols = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:12px' });
       const cav = K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px;margin-top:10px' },
-        'Caveats: n = 24 questions (20 answerable), written by Claude from the corpus text, not a benchmark. Gold labels cover only the passages judged necessary; other passages may also answer, so a "miss" can be a fair hit. The corpus is a sample (at most 10 passages per article). This is demo scale, not an evaluation of the thesis system. This TF-IDF is the cosine variant (raw tf x smooth idf, L2-normalised), a different form from the toy table. Text: Wikipedia contributors, CC BY-SA 4.0.');
+        'Caveats: n = 24 questions (20 answerable), written by an LLM from the corpus text, not a benchmark. Gold labels cover only the passages judged necessary; other passages may also answer, so a "miss" can be a fair hit. The corpus is a sample (at most 10 passages per article). This is demo scale, not an evaluation of the thesis system. This TF-IDF is the cosine variant (raw tf x smooth idf, L2-normalised), a different form from the toy table. Text: Wikipedia contributors, CC BY-SA 4.0.');
       const open = new Set();
       function col(title, color, rk, gold) {
         const rows = rk.slice(0, 6).map((x, i) => {

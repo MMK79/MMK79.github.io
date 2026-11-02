@@ -1,5 +1,5 @@
 {
- "reviewer": "agent review (Claude Opus read each sentence; not a human rater, not a gold standard)",
+ "reviewer": "agent review (an LLM read each sentence; not a human rater, not a gold standard)",
  "rule": "same extension in this course = accept; broader, narrower, related or an adjective = reject (ER note: when in doubt keep apart)",
  "verdicts": [
   {

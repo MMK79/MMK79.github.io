@@ -10,7 +10,7 @@
      "why": "A blinded audit found too many wrong PREREQUISITE_OF edges for the walk to rely on.",
      "evidence": "Everything written against the old snapshot was marked superseded in place; nothing was deleted.", "claims": ["c44"]},
     {"id": "i1", "kind": "config", "tag": "I1", "title": "Configuration on the judged graph", "num": "S_G 5c66b0d2", "hash": "f8a772f0",
-     "changed": "New graph snapshot; Sonnet 5.5 became the only answer model.",
+     "changed": "New graph snapshot; one LLM became the only answer model.",
      "why": "The graph changed, so the manifest that binds it had to change.",
      "evidence": "Superseded when the restored prerequisite edges produced a third snapshot.", "claims": ["c45"]},
     {"id": "i2", "kind": "config", "tag": "I2", "title": "Final graph, first pilot", "num": "S_G 7f28a3a3", "hash": "bb5615ec",

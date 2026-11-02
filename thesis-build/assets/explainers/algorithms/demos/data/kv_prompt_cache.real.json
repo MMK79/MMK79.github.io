@@ -1,5 +1,5 @@
 {
- "tokenizer": "BERT wordpiece (cross-encoder/ms-marco-MiniLM-L-6-v2), NOT Anthropic's or OpenAI's tokenizer: counts are indicative",
+ "tokenizer": "BERT wordpiece (cross-encoder/ms-marco-MiniLM-L-6-v2), NOT the answer model's own tokenizer: counts are indicative",
  "system_prompt": "You are a careful assistant. Answer the question using only the passages below. Quote the passage id you used. If the passages do not contain the answer, say you do not know.",
  "system_tokens": 37,
  "passages": {

@@ -588,7 +588,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
 </section>
 
 <section class="step" id="audit"><div class="kicker">Inputs</div><h2>The edge audit: which edges survived</h2>
-<p>Two language models rated each of 11 proposed instructional edges with one question: does mastering the target <i>require</i> mastering the source? Rater 1 (Claude) also proposed the graph; rater 2 (Codex) was blind to rater 1. An edge was kept only if both said yes. One edge outside the proposal (inner products → linear models) came from a sample of 8 non-edges; rater 1 said yes to it after seeing Codex's answer, so that rating is not blind.</p>
+<p>Two language models rated each of 11 proposed instructional edges with one question: does mastering the target <i>require</i> mastering the source? Rater 1 (an LLM) also proposed the graph; rater 2 (Codex) was blind to rater 1. An edge was kept only if both said yes. One edge outside the proposal (inner products → linear models) came from a sample of 8 non-edges; rater 1 said yes to it after seeing Codex's answer, so that rating is not blind.</p>
 <div class="chart"><div id="a-svg"></div><p class="cap">Solid amber: the 5 kept edges, used by the test. Dashed: proposed edges that were dropped. Model ratings: agreement on the 11 proposed edges 0.45, κ = 0.18.</p></div>
 <div id="a-tbl"></div>
 <details><summary>The 8 sampled non-edges</summary><div id="a-non"></div></details>

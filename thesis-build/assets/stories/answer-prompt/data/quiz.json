@@ -39,7 +39,7 @@
    "o": [
     "So no choice can respond to a main-set outcome: the prompt is part of what the test compares under.",
     "Because a hashed prompt makes the model deterministic.",
-    "Because Claude needs a fixed prompt to run.",
+    "Because the answer LLM needs a fixed prompt to run.",
     "To make the answers shorter."
    ],
    "a": 0,

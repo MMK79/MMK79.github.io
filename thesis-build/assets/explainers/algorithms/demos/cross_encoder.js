@@ -123,7 +123,7 @@
       const info = K.el('div', {}), cols = K.el('div', { style: 'display:flex;flex-wrap:wrap;gap:12px' }), summ = K.el('div', {}), agg = K.el('div', { class: 'hint' });
       const open = new Set();
       const cav = K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px;margin-top:10px' },
-        'Caveats: 20 answerable questions (24 in total); the whole-set gains are within noise (one question moves MRR by about 0.05, no confidence interval yet). n = 24 questions, written by Claude from the corpus text, not a benchmark; gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. The corpus is a sample. Only the top 20 of the first stage are reranked: a gold passage below rank 20 can never be recovered. One question is an anecdote; the aggregate line below is still demo scale (differences of 0.05 MRR are about one question). Text: Wikipedia contributors, CC BY-SA 4.0.');
+        'Caveats: 20 answerable questions (24 in total); the whole-set gains are within noise (one question moves MRR by about 0.05, no confidence interval yet). n = 24 questions, written by an LLM from the corpus text, not a benchmark; gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. The corpus is a sample. Only the top 20 of the first stage are reranked: a gold passage below rank 20 can never be recovered. One question is an anecdote; the aggregate line below is still demo scale (differences of 0.05 MRR are about one question). Text: Wikipedia contributors, CC BY-SA 4.0.');
       function col(title, color, items, gold, fmt) {
         const rows = items.slice(0, 8).map((x, i) => {
           const isG = gold.includes(x.id), key = title + x.id;

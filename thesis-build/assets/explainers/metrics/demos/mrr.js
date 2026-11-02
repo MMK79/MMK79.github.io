@@ -87,7 +87,7 @@
     const K = root.DemoKit;
     const st = { m: 'bm25_lucene', q: D.questions[0].id, drop: new Set() };
     const shell = K.shell(el, 'Real example: MRR on real retrieval runs',
-      'Demo scale: 20 answerable questions over 138 Wikipedia passages, not an evaluation of the thesis system. Questions written by Claude, gold = passages judged necessary. A gold passage outside the stored top-20 counts as 0. With n=20, one question moves MRR by about 0.05: tick "drop" boxes to see it.');
+      'Demo scale: 20 answerable questions over 138 Wikipedia passages, not an evaluation of the thesis system. Questions written by an LLM, gold = passages judged necessary. A gold passage outside the stored top-20 counts as 0. With n=20, one question moves MRR by about 0.05: tick "drop" boxes to see it.');
     const opt = (v, t) => K.el('option', { value: v }, t);
     const mSel = K.el('select', { 'aria-label': 'method' }, METHODS.map(m => opt(m, m)));
     mSel.value = st.m;

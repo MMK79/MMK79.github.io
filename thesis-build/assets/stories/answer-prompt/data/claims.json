@@ -136,7 +136,7 @@
   },
   {
    "id": "c20",
-   "text": "Headless Claude Code has no temperature control, so answers are not deterministic; the 3 generations per item and the majority label stay.",
+   "text": "The headless coding agent that ran the answer LLM has no temperature control, so answers are not deterministic; the 3 generations per item and the majority label stay.",
    "key": "dec",
    "loc": "D1, note 1",
    "status": "ours"

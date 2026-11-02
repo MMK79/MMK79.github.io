@@ -81,7 +81,7 @@
     const K = root.DemoKit;
     const st = { m: 'bm25_lucene', q: (D.questions.find(q => q.id === 'q11') || D.questions[0]).id, drop: new Set() };
     const shell = K.shell(el, 'Real example: AP and MAP on real retrieval runs',
-      'Demo scale: 20 answerable questions over 138 Wikipedia passages, not an evaluation of the thesis system. Questions written by Claude; gold = passages judged necessary (binary), so precision is a lower bound. Only the top-20 of each run is stored: a gold passage beyond rank 20 adds 0, so every AP here is truncated at 20 (a lower bound). Bridge and comparison questions have 2 gold passages and make AP informative; single-hop ones have 1 (AP = 1/rank, like MRR).');
+      'Demo scale: 20 answerable questions over 138 Wikipedia passages, not an evaluation of the thesis system. Questions written by an LLM; gold = passages judged necessary (binary), so precision is a lower bound. Only the top-20 of each run is stored: a gold passage beyond rank 20 adds 0, so every AP here is truncated at 20 (a lower bound). Bridge and comparison questions have 2 gold passages and make AP informative; single-hop ones have 1 (AP = 1/rank, like MRR).');
     const mSel = K.el('select', { 'aria-label': 'method' }, METHODS.map(m => K.el('option', { value: m }, m)));
     mSel.value = st.m; mSel.addEventListener('change', () => { st.m = mSel.value; render(); });
     const rows = K.el('div'), detail = K.el('div', { 'aria-live': 'polite' }), res = K.resultBox();

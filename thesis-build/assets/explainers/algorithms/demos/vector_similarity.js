@@ -241,7 +241,7 @@
       ssel.addEventListener('change', () => { qi = +ssel.value; drawS(); });
       nb.addEventListener('click', () => { normed = !normed; drawS(); });
       const cav = K.el('div', { class: 'hint', style: 'border-left:3px solid var(--warn);padding-left:8px;margin-top:10px' },
-        'Caveats: demo scale, 138 passages, 24 questions written by Claude from the corpus text (not a benchmark), 20 answerable. Gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. The six sentences are a hand-picked sample: they show the mechanics, not how often the measures disagree. Dot and L2 differ from cosine here only because the model\'s own normalisation layer was removed on purpose. Text: Wikipedia contributors, CC BY-SA 4.0.');
+        'Caveats: demo scale, 138 passages, 24 questions written by an LLM from the corpus text (not a benchmark), 20 answerable. Gold labels cover only the passages judged necessary, so a "miss" can be a fair hit. The six sentences are a hand-picked sample: they show the mechanics, not how often the measures disagree. Dot and L2 differ from cosine here only because the model\'s own normalisation layer was removed on purpose. Text: Wikipedia contributors, CC BY-SA 4.0.');
       body.replaceChildren(K.el('h4', {}, '1. Same question, three measures (real top-20 runs)'), K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;width:100%' }, 'question ', sel)), info, summ, cols, agg,
         K.el('h4', {}, '2. Six real sentences: when do the measures agree?'), K.el('div', { class: 'row' }, K.el('label', { style: 'display:block;width:100%' }, 'query ', ssel), nb), stbl, sver, sform, cav);
       drawQ(); drawS();

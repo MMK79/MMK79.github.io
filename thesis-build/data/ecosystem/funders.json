@@ -88,13 +88,6 @@
         "as_of": "2025-03",
         "basis": "claimed",
         "source": "https://siliconangle.com/2025/03/04/openai-launches-nextgenai-consortium-15-research-institutions-50m-funding/"
-      },
-      {
-        "metric": "AFT academy contribution",
-        "value": "$8M cash + $2M in-kind",
-        "as_of": "2025-07",
-        "basis": "claimed",
-        "source": "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
       }
     ],
     "evidence": [],
@@ -105,51 +98,6 @@
     ],
     "verified": true,
     "note": "Cal State deal not verified here."
-  },
-  {
-    "id": "anthropic-edu",
-    "name": "Anthropic (Claude for Education)",
-    "type": "AI lab",
-    "country": "US",
-    "founded": 2021,
-    "segment": "he",
-    "ai_features": [
-      {
-        "name": "Claude for Education / Learning Mode",
-        "launched": "2025-04-02",
-        "what": "Campus-wide Claude; Socratic Learning Mode; first Northeastern, LSE, Champlain"
-      },
-      {
-        "name": "Knowledge Graph + Evaluators with CZI",
-        "launched": null,
-        "what": "Learning-science grounding for classroom AI"
-      }
-    ],
-    "scale": [
-      {
-        "metric": "Gates Foundation partnership",
-        "value": "$200M over 4 years (health, education, mobility, agriculture; education in US, sub-Saharan Africa, India)",
-        "as_of": "2026-05-14",
-        "basis": "claimed",
-        "source": "https://www.anthropic.com/news/gates-foundation-partnership"
-      },
-      {
-        "metric": "AFT academy contribution",
-        "value": "$500k first year",
-        "as_of": "2025-07",
-        "basis": "claimed",
-        "source": "AFT press release"
-      }
-    ],
-    "evidence": [],
-    "business": [],
-    "privacy_note": "",
-    "sources": [
-      "https://techcrunch.com/2025/04/02/anthropic-launches-an-ai-chatbot-tier-for-colleges-and-universities",
-      "https://www.anthropic.com/news/gates-foundation-partnership"
-    ],
-    "verified": true,
-    "note": "Education share of the $200M not published in sources read."
   },
   {
     "id": "google-edu",
@@ -229,32 +177,6 @@
     ],
     "verified": true,
     "note": "Largely in-kind; do not sum with other commitments."
-  },
-  {
-    "id": "aft-academy",
-    "name": "AFT National Academy for AI Instruction",
-    "type": "union / multi-funder programme",
-    "country": "US",
-    "founded": 2025,
-    "segment": "k12",
-    "ai_features": [],
-    "scale": [
-      {
-        "metric": "Total funding",
-        "value": "$23M; free training for 400k teachers by 2030; AFT has 1.8M members",
-        "as_of": "2025-07-08",
-        "basis": "claimed",
-        "source": "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
-      }
-    ],
-    "evidence": [],
-    "business": [],
-    "privacy_note": "",
-    "sources": [
-      "https://www.aft.org/press-release/aft-launch-national-academy-ai-instruction-microsoft-openai-anthropic-and-united"
-    ],
-    "verified": true,
-    "note": "Funders: Microsoft, OpenAI, Anthropic."
   },
   {
     "id": "gates",

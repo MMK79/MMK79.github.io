@@ -9,7 +9,7 @@
       { name: 'rerank', ms: 210 }, { name: 'generate', ms: 1450 },
     ],
     tokens: { n_in: 3200, n_cr: 2000, n_out: 280 },
-    prices: { P_in: 3.00, P_cr: 0.30, P_out: 15.00 },   // USD per million tokens (Anthropic pricing table, 2026-10-08)
+    prices: { P_in: 0.276, P_cr: 0.0276, P_out: 1.101 },   // USD per million tokens: qwen3.7-plus input and output rows as in the real example; cache read ASSUMED 0.1 x input
     lat: [1650, 1720, 1580, 1790, 1610, 1700, 5200, 1660, 1740, 1690],
     top1: [0.71, 0.66, 0.58, 0.62, 0.69, 0.31, 0.64, 0.72, 0.28, 0.67],
     thresh: 0.5, slowFactor: 2,

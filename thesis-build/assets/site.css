@@ -1,39 +1,52 @@
-/* shared tokens + page chrome for the thesis site (timelines carry their own copy of the same tokens) */
+/* Shared page chrome for the thesis site (DESIGN.md, direction A "Field guide", 2026-11-12). The colour and font TOKENS live in the
+   shared header (templates/_header.html), which every page includes; the values below are only a fallback for a page without it.
+   Light and dark follow the reader's system setting (prefers-color-scheme). */
 :root{
-  --bg:#0B0D12; --panel:#121620; --panel2:#171C28; --line:#242B38; --text:#E9ECF2; --muted:#98A0B0; --faint:#68707F;
-  --ai:#F2A93B; --k12:#7C9CFF; --he:#3CC7B4; --both:#C28BFF; --warn:#FF8A65;
-  --line-strong:#3A4352; --he-dim:#1E5A52; --k12-dim:#34447F; --ai-dim:#6A4A12; --warn-dim:#6A3A2C;   /* dim data colours: chip borders and empty bar parts only */
+  --bg:#F6F7F4; --panel:#FFFFFF; --panel2:#ECEFEA; --line:#D5DBD6; --line-strong:#7F8B85; --text:#14201A; --muted:#4A5650; --faint:#5A6660;
+  --key:#2E6B2A; --key-ink:#FFFFFF; --key-tint:#E4EEE1;
+  --ai:#93580A; --k12:#3453C4; --he:#0B7569; --both:#7A45C2; --warn:#B4441C;
   --fs-caption:12px; --fs-label:13.5px; --fs-small:14.5px; --fs-body:16px; --fs-lead:18px; --fs-title:20px; --fs-subhead:26px;   /* DESIGN.md type ramp */
-  --display:"Fraunces",Georgia,serif; --body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --display:"Literata Variable",Georgia,serif; --body:"Schibsted Grotesk Variable",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono Variable",ui-monospace,Menlo,monospace;
+  --ease-out:cubic-bezier(.23,1,.32,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--bg)}
-body{background:var(--bg);color:var(--text);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
-a{color:inherit}
-a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--ai);outline-offset:2px}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--text);font:400 16px/1.6 var(--body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+a{color:inherit;text-underline-offset:.18em;text-decoration-thickness:from-font}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--key);outline-offset:2px}
 main{max-width:1180px;margin:0 auto;padding:0 28px}
-h1,h2,h3{font-family:var(--display);font-weight:300;letter-spacing:-.01em}
-h1{font-size:clamp(36px,5vw,64px);line-height:1.05}
-h2{font-size:clamp(26px,3vw,36px);line-height:1.15;margin:0 0 10px}
-h3{font-size:20px;font-weight:500;line-height:1.25}
-p{max-width:68ch}
+h1,h2,h3{font-family:var(--display);font-weight:500;letter-spacing:-.012em;text-wrap:balance}
+h1{font-size:clamp(34px,4.6vw,56px);line-height:1.1}
+h2{font-size:clamp(26px,2.8vw,34px);line-height:1.2;margin:0 0 10px}
+h3{font-size:20px;font-weight:600;line-height:1.3}
+p{max-width:35em;text-wrap:pretty}
+/* Long-form reading (2026-11-12): prose in the reading face, 18 px / 1.7, about 65-70 characters a line. Zero specificity (:where), so
+   any component that sets its own size or face still wins; tables, labels and controls stay in the UI face. */
+:where(main) :where(p,li,dd,blockquote){font-family:var(--read,var(--display));font-size:1.125rem;line-height:1.7}
+@media (max-width:720px){:where(main) :where(p,li,dd,blockquote){font-size:1.0625rem}}
 .muted{color:var(--muted)} .faint{color:var(--faint)}
-.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-section{padding:56px 0 8px}
+.num{font-family:var(--body);font-variant-numeric:tabular-nums}
+code,kbd,samp{font-family:var(--mono);font-size:.9em}
+section{padding:64px 0 8px}
 .rule{border-top:1px solid var(--line)}
-.btn,.seg button{font:500 13.5px var(--body);color:var(--muted);background:none;border:1px solid var(--line);border-radius:8px;padding:7px 12px;cursor:pointer;text-decoration:none;display:inline-block}
-.btn:hover,.seg button:hover{color:var(--text);border-color:#3A4352}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:2px;gap:2px}
-.seg button{border:none;border-radius:8px;padding:6px 11px}
+.btn,.seg button{font:500 14px var(--body);color:var(--text);background:var(--panel);border:1px solid var(--line-strong);border-radius:6px;padding:7px 12px;min-height:36px;cursor:pointer;text-decoration:none;display:inline-block;transition:background-color .15s ease,transform .12s var(--ease-out)}
+.btn:hover,.seg button:hover{background:var(--panel2)}
+.btn:active,.seg button:active{transform:scale(.97)}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:8px;padding:2px;gap:2px;background:var(--panel)}
+.seg button{border:none;border-radius:6px;padding:6px 11px;background:none}
 .seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
-select{font:14px var(--body);color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 9px}
-footer.site-foot{max-width:1180px;margin:64px auto 0;padding:24px 28px 56px;border-top:1px solid var(--line);color:var(--faint);font-size:13.5px}
-.note-box{border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:8px 12px;color:var(--muted);font-size:14px;margin:10px 0;max-width:80ch}
+select,input[type="search"],input[type="text"]{font:15px var(--body);color:var(--text);background:var(--panel);border:1px solid var(--line-strong);border-radius:6px;padding:6px 9px}
+footer.site-foot{max-width:1180px;margin:72px auto 0;padding:24px 28px 56px;border-top:2px solid var(--text);color:var(--muted);font-size:14px}
+.note-box{border:1px solid var(--line);border-inline-start:0;border-radius:0;background:none;padding:10px 0;color:var(--muted);font-size:14.5px;margin:12px 0;max-width:80ch;border-inline:0}
+@media (max-width:720px){main{padding:0 16px}footer.site-foot{padding-inline:16px}section{padding-top:48px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
-/* Persian: Vazirmatn runs larger than Fraunces at the same size; headings step down and get more line height */
-html[lang="fa"] h1{font-size:clamp(26px,3.6vw,36px);line-height:1.45;font-weight:500}
-html[lang="fa"] h2{font-size:clamp(20px,2.4vw,26px);line-height:1.5;font-weight:500}
+/* Persian: Vazirmatn runs larger than Literata at the same size; headings step down less than before and get more line height */
+html[lang="fa"] h1{font-size:clamp(28px,3.8vw,44px);line-height:1.5;font-weight:600}
+html[lang="fa"] h2{font-size:clamp(21px,2.4vw,28px);line-height:1.5;font-weight:600}
 html[lang="fa"] h3{line-height:1.5}
 html[lang="fa"] body{line-height:1.85}
-html[lang="fa"] p{max-width:75ch}
+html[lang="fa"] p{max-width:34em}
+/* Persian prose: Noto Naskh Arabic (the naskh book hand of printed Persian text), 19 px / 2.0, about 75-80 characters a line */
+html[lang="fa"] :where(main) :where(p,li,dd,blockquote){font-family:var(--read-fa,var(--fa-font));font-size:1.1875rem;line-height:2}
+@media (max-width:720px){html[lang="fa"] :where(main) :where(p,li,dd,blockquote){font-size:1.125rem}}

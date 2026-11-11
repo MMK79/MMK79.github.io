@@ -26,7 +26,7 @@ ol,ul{padding-left:22px}li{margin:4px 0}
 .muted{color:var(--muted)}.faint{color:var(--faint)}.small{font-size:13px}
 .kicker{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
 .lv{display:inline-block;border:1px solid var(--amber);border-radius:8px;padding:0 8px;margin-right:8px}
-#bar{position:sticky;top:0;z-index:20;background:rgba(11,13,18,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+#bar{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 94%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
 #bar .wrap{padding-top:8px;padding-bottom:8px}
 #caveat{font-size:12px;color:var(--warn);margin:0 0 6px;line-height:1.35}
 #nav{display:flex;flex-wrap:wrap;gap:5px}
@@ -107,7 +107,7 @@ svg text{fill:var(--text);font-family:var(--body)}
 .verdict{border-radius:10px;padding:10px 12px;margin:10px 0;border:1px solid var(--amber);background:var(--panel2);font-size:14px}
 .pill{display:inline-block;font:12px var(--mono);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin:0 4px 4px 0}
 .grid512{display:grid;gap:1px;margin:10px 0}
-.grid512 button{min-height:0;padding:0;border:0;border-radius:8px;aspect-ratio:1;background:#1d2330}
+.grid512 button{min-height:0;padding:0;border:0;border-radius:8px;aspect-ratio:1;background:var(--panel2)}
 .grid512 button.c{background:var(--amber)}
 .grid512 button.sel{outline:2px solid var(--text);outline-offset:0}
 .chips{display:flex;flex-wrap:wrap;gap:4px}
@@ -135,18 +135,18 @@ code{font-size:max(12px,.9em)}
 html{scroll-padding-top:calc(var(--hdr,54px) + 110px)}
 #bar,.sticky{top:var(--hdr,54px)!important}
 #story-root{min-width:0}
-.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 "Inter",system-ui,sans-serif}
-.back-ex a{color:#F2A93B;text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
+.back-ex{max-width:760px;margin:14px auto;padding:0 16px;font:500 14px/1.4 var(--body)}
+.back-ex a{color:var(--key);text-decoration:none;display:inline-block;padding-block:4px}.back-ex a:hover,.back-ex a:focus-visible{text-decoration:underline}
 .sv{max-width:760px;margin:10px auto 18px;padding:0 16px}
-.sv video{display:block;width:100%;height:auto;border-radius:10px;background:#0B0D12;border:1px solid #242B38}
-.sv figcaption{font-size:12.5px;color:#68707F;margin-top:6px}
-#so{position:fixed;z-index:40;font:13px/1.35 "Inter",system-ui,sans-serif}
-#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:#E9ECF2;background:#171C28;border:1px solid #242B38;border-radius:50%;cursor:pointer}
-#so button:hover,#so button:focus-visible{border-color:#F2A93B}
-#so ol{list-style:none;margin:0;padding:6px;background:#121620;border:1px solid #242B38;border-radius:12px}
-#so li a{display:block;padding:7px 10px;border-radius:8px;color:#98A0B0;text-decoration:none}
-#so li a:hover,#so li a:focus-visible{color:#E9ECF2}
-#so li a.on{color:#E9ECF2;background:#171C28;font-weight:600}
+.sv video{display:block;width:100%;height:auto;border-radius:10px;background:var(--bg);border:1px solid var(--line)}
+.sv figcaption{font-size:12.5px;color:var(--faint);margin-top:6px}
+#so{position:fixed;z-index:40;font:13px/1.35 var(--body)}
+#so button{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:50%;cursor:pointer}
+#so button:hover,#so button:focus-visible{border-color:var(--key)}
+#so ol{list-style:none;margin:0;padding:6px 0;background:var(--panel);border:1px solid var(--line-strong);border-radius:4px}
+#so li a{display:block;padding:7px 10px;border-radius:8px;color:var(--muted);text-decoration:none}
+#so li a:hover,#so li a:focus-visible{color:var(--text)}
+#so li a.on{color:var(--text);background:var(--panel2);font-weight:600}
 /* Two modes, chosen by story-shell.js from the real left edge of ALL content (text, figures, controls; stories use .wrap widths of 760-860 px):
    .rail   = fits left of the content with a gap: the list sits in the gutter, always shown, never over text.
    default = drawer: a round toggle at the bottom left; the list is a popover that exists ONLY while .open (toggle click) and closes on an
@@ -168,8 +168,19 @@ html.embed #bar,html.embed .sticky{top:0!important}
 
 /* DESIGN.md: flat, no side-stripe borders. The lesson callouts (take, ours, evidence, contra, lost, note, answer, region) become one panel style:
    1 px line, panel fill, 10 px radius; the bold label inside names the kind. Data marks (passage cuts, sentence verdicts, hop slots) keep their stripes. */
-#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid #242B38;border-radius:10px;background:#121620;padding:8px 12px}
+#story-root :is(div,p,aside,section,blockquote):is(.take,.ours,.ev,.contra,.lost,.note,.ans,.region){border:1px solid var(--line);border-radius:10px;background:var(--panel);padding:8px 12px}
 #story-root .mm{border-left:0;padding-left:0}
+
+/* Direction A (2026-11-12): the stories share the site's type and theme. Their own token copies are overridden by the header; here the
+   leftovers: no eyebrow label above the title (craft-floor ban), headings in the display face, reveal-on-scroll never hides content in print. */
+.hero .kicker,header.hero .kicker{display:none}
+#story-root h1,#story-root h2,#story-root h3{font-family:var(--display);letter-spacing:-.012em}
+#story-root h1{font-weight:500}
+@media print{.reveal{opacity:1!important;transform:none!important}}
+#so li a.on{background:var(--key-tint)}
+#story-root .lvl{display:none}
+:where(#story-root) a:not([class]){color:var(--key)}
+#story-root .kicker{text-transform:none;letter-spacing:0;font:600 14px/1.4 var(--body);color:var(--muted)}
 </style>
 <script>if(/[?&]embed\b/.test(location.search))document.documentElement.classList.add("embed")</script>
 </head>
@@ -180,86 +191,145 @@ html.embed #bar,html.embed .sticky{top:0!important}
 <style>
 :root{--hdr:54px;--gdeg:90deg}
 html[dir="rtl"]{--gdeg:270deg}
-/* Persian: Vazirmatn everywhere (Fraunces/Inter/JetBrains Mono have no Persian glyphs), no letter-spacing (it breaks
-   the joining of Persian letters), and every SVG chart stays left-to-right so time runs left to right */
-/* Persian font: Vazirmatn (SIL OFL 1.1, self-hosted: /assets/fonts/Vazirmatn-NL.woff2, the Arabic-script subset with Persian digits, 47 KB, licence in
-   templates/fonts/OFL.txt). ONE-LINE SWITCH for a licensed font such as IranSans or B Nazanin (not openly licensed: never vendored or published here):
-   add its @font-face locally and put its name first in --fa-font below. */
+/* Fonts, all self-hosted (SIL OFL 1.1, licences in templates/fonts/): Literata (headings, lede) and Schibsted Grotesk (text, UI,
+   numbers) from @fontsource-variable 5.3.0, JetBrains Mono (code, relation names) from @fontsource-variable/jetbrains-mono 5.3.0,
+   Vazirmatn for Persian headings and UI (the Arabic-script subset with Persian digits), Noto Naskh Arabic Variable 5.3.0 for Persian prose. ONE-LINE SWITCH for a licensed Persian font such as IranSans
+   or B Nazanin (not openly licensed: never vendored or published here): add its @font-face locally and put it first in --fa-font. */
+@font-face{font-family:"Literata Variable";src:url(/thesis/assets/fonts/literata-latin-standard-normal.woff2) format("woff2-variations");font-weight:200 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Literata Variable";src:url(/thesis/assets/fonts/literata-latin-ext-standard-normal.woff2) format("woff2-variations");font-weight:200 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Schibsted Grotesk Variable";src:url(/thesis/assets/fonts/schibsted-grotesk-latin-wght-normal.woff2) format("woff2-variations");font-weight:400 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Schibsted Grotesk Variable";src:url(/thesis/assets/fonts/schibsted-grotesk-latin-ext-wght-normal.woff2) format("woff2-variations");font-weight:400 900;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"JetBrains Mono Variable";src:url(/thesis/assets/fonts/jetbrains-mono-latin-wght-normal.woff2) format("woff2-variations");font-weight:100 800;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"JetBrains Mono Variable";src:url(/thesis/assets/fonts/jetbrains-mono-latin-ext-wght-normal.woff2) format("woff2-variations");font-weight:100 800;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Noto Naskh Arabic Variable";src:url(/thesis/assets/fonts/noto-naskh-arabic-arabic-wght-normal.woff2) format("woff2-variations");font-weight:400 700;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}
 @font-face{font-family:"Vazirmatn";src:url(/thesis/assets/fonts/Vazirmatn-NL.woff2) format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+200C-200D,U+FB50-FDFF,U+FE70-FEFF}
-html[lang="fa"]{--fa-font:"Vazirmatn",Tahoma,sans-serif;--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
+/* Theme tokens (DESIGN.md, direction A "Field guide", 2026-11-12). They sit in the header, which every page includes AFTER its own
+   <head> styles, so they also re-theme the stories and timelines that carry an old copy of the tokens. The theme follows the reader's
+   system setting (prefers-color-scheme); there is no switch. Data colours keep their meaning in both themes; the light values are darker
+   so text in them passes 4.5:1. */
+:root{color-scheme:light;
+  --bg:#F6F7F4;--panel:#FFFFFF;--panel2:#ECEFEA;--line:#D5DBD6;--line-strong:#7F8B85;--line2:var(--line-strong);
+  --text:#14201A;--muted:#4A5650;--faint:#5A6660;
+  --key:#2E6B2A;--key-ink:#FFFFFF;--key-tint:#E4EEE1;
+  --ai:#93580A;--k12:#3453C4;--he:#0B7569;--both:#7A45C2;--warn:#B4441C;--on-ai:#FFFFFF;
+  --latin:"Schibsted Grotesk Variable",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --display:"Literata Variable",Georgia,serif;--body:var(--latin);--mono:"JetBrains Mono Variable",ui-monospace,Menlo,monospace;
+  --fa-font:"Vazirmatn","Schibsted Grotesk Variable",Tahoma,sans-serif;
+  /* long-form reading (2026-11-12, compared on real pages): Literata for English prose, Noto Naskh Arabic for Persian prose */
+  --read:"Literata Variable",Georgia,serif;--read-fa:"Noto Naskh Arabic Variable","Literata Variable",serif}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;
+  --bg:#0F1412;--panel:#151C19;--panel2:#1B2420;--line:#2A3530;--line-strong:#65756D;
+  --text:#E6ECE8;--muted:#A9B5AF;--faint:#8E9A94;
+  --key:#86C976;--key-ink:#0F1412;--key-tint:#1C2B1C;
+  --ai:#F2A93B;--k12:#8FA9FF;--he:#3CC7B4;--both:#C28BFF;--warn:#FF8A65;--on-ai:#111111}}
+:root{--ai-dim:color-mix(in oklab,var(--ai) 38%,var(--bg));--k12-dim:color-mix(in oklab,var(--k12) 38%,var(--bg));--he-dim:color-mix(in oklab,var(--he) 38%,var(--bg));
+  --both-dim:color-mix(in oklab,var(--both) 38%,var(--bg));--warn-dim:color-mix(in oklab,var(--warn) 38%,var(--bg));--amber-dim:var(--ai-dim);
+  --amber:var(--ai);--blue:var(--k12);--teal:var(--he);--purple:var(--both)}
+html,body{background:var(--bg);color:var(--text)}
+:root{accent-color:var(--key);caret-color:var(--key);scrollbar-color:var(--line-strong) var(--bg)}
+::selection{background:var(--key-tint);color:var(--text)}
+html[lang="fa"]{--display:var(--fa-font);--body:var(--fa-font);--mono:var(--fa-font)}
 html[lang="fa"] body{font-family:var(--body)}
 html[lang="fa"] *{letter-spacing:0!important}
 html[lang="fa"] h1,html[lang="fa"] h2,html[lang="fa"] h3{line-height:1.45}
-html[lang="fa"] svg text{font-family:"Vazirmatn",Tahoma,sans-serif}
+html[lang="fa"] svg text{font-family:var(--fa-font)}
 svg{direction:ltr}
-[lang="en"]{font-family:"Inter",system-ui,sans-serif}
-.i18n-en-tag{display:inline-block;font:500 12px/1.5 "Vazirmatn",sans-serif;color:#FF8A65;border:1px solid #6A3A2C;border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
+[lang="en"]{font-family:var(--latin)}
+.i18n-en-tag{display:inline-block;font:500 12px/1.5 var(--fa-font);color:var(--warn);border:1px solid var(--warn-dim);border-radius:8px;padding:0 5px;margin-inline-start:4px;vertical-align:1px;letter-spacing:0;text-transform:none}
 .site-hdr{position:sticky;top:0;z-index:60;height:var(--hdr);display:flex;align-items:center;gap:28px;padding:0 28px;
-  background:#0B0D12;border-bottom:1px solid #242B38;font-family:"Inter",system-ui,sans-serif}
-html[lang="fa"] .site-hdr{font-family:"Vazirmatn",Tahoma,sans-serif}
-.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:#E9ECF2;white-space:nowrap}
-.site-hdr .mark b{font:500 20px/1 "Fraunces",Georgia,serif;letter-spacing:-.01em}
-.site-hdr .mark span{font-size:12.5px;color:#98A0B0}
+  background:var(--bg);border-bottom:2px solid var(--text);font-family:var(--latin)}
+html[lang="fa"] .site-hdr{font-family:var(--fa-font)}
+.site-hdr .mark{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--text);white-space:nowrap}
+.site-hdr .mark b{font:600 18px/1 var(--latin);letter-spacing:-.01em}
+.site-hdr .mark span{font-size:13px;color:var(--muted)}
 .site-hdr .lang{margin-inline-start:auto;flex:none}
 /* two-level navigation: Home + five groups with dropdowns (hover or click, arrow keys, Esc); on phones one "Menu" button opens a vertical list */
 .site-hdr nav{display:flex;align-items:center;gap:2px;min-width:0}
-.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:8px;font:500 14px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer}
-html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:"Vazirmatn",Tahoma,sans-serif}
-.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:#E9ECF2;background:#151A24}
+.site-hdr nav>a,.site-hdr .gb{position:relative;display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:6px;font:500 14px/1.2 var(--latin);color:var(--muted);text-decoration:none;white-space:nowrap;background:none;border:0;cursor:pointer;transition:color .15s ease,background-color .15s ease}
+html[lang="fa"] .site-hdr nav>a,html[lang="fa"] .site-hdr .gb,html[lang="fa"] .site-hdr .menu a,html[lang="fa"] .site-hdr .nav-toggle{font-family:var(--fa-font)}
+.site-hdr nav>a:hover,.site-hdr .gb:hover,.site-hdr .grp.open>.gb{color:var(--text);background:var(--panel2)}
 .site-hdr .gb::after{content:"";width:5px;height:5px;border-inline-end:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.7}
-.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:#E9ECF2}
-.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-9px;height:2px;background:#F2A93B;border-radius:8px}
+.site-hdr nav>a[aria-current="page"],.site-hdr .gb[aria-current="page"]{color:var(--text)}
+.site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{content:"";position:absolute;inset-inline:12px;bottom:-8px;height:3px;background:var(--key);border-radius:2px}
 .site-hdr .grp{position:relative}
 .site-hdr .menu{display:none;position:absolute;top:100%;inset-inline-start:0;padding-top:12px;z-index:70}
 .site-hdr .grp.open>.menu{display:block}
 @media (hover:hover) and (min-width:761px){.site-hdr .grp:hover>.menu{display:block}}
-.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:#121620;border:1px solid #3A4352;border-radius:12px}
-.site-hdr .menu a{display:block;padding:9px 12px;border-radius:8px;font:500 14px/1.3 "Inter",system-ui,sans-serif;color:#E9ECF2;text-decoration:none;white-space:nowrap}
-/* sub-headings inside a dropdown (Explain: Knowledge graphs, Machine learning concepts) */
-.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid #242B38;font:600 12px/1.2 "Inter",system-ui,sans-serif;color:#98A0B0;text-transform:uppercase;letter-spacing:.06em}
-html[lang="fa"] .site-hdr .mh{font-family:"Vazirmatn",Tahoma,sans-serif;text-transform:none;font-size:12px}
-.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:#E9ECF2;background:#171C28}
-.site-hdr .menu a[aria-current="page"]{color:#E9ECF2;background:#171C28;font-weight:600}
-.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;padding:7px 11px;border:1px solid #242B38;border-radius:8px;background:none;color:#E9ECF2;font:500 13px/1 "Inter",system-ui,sans-serif;cursor:pointer}
-.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(#E9ECF2 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(#E9ECF2 0 0) 0 100%/100% 1.5px no-repeat}
+.site-hdr .mp{display:flex;flex-direction:column;min-width:236px;padding:6px;background:var(--panel);border:1px solid var(--line-strong);border-radius:8px}
+.site-hdr .menu a{display:block;padding:9px 12px;border-radius:6px;font:500 14px/1.3 var(--latin);color:var(--text);text-decoration:none;white-space:nowrap}
+/* sub-headings inside a dropdown */
+.site-hdr .mh{padding:12px 12px 4px;margin-top:4px;border-top:1px solid var(--line);font:600 12px/1.2 var(--latin);color:var(--muted);letter-spacing:.02em}
+html[lang="fa"] .site-hdr .mh{font-family:var(--fa-font);font-size:12px}
+.site-hdr .menu a:hover,.site-hdr .menu a:focus-visible{color:var(--text);background:var(--panel2)}
+.site-hdr .menu a[aria-current="page"]{color:var(--text);background:var(--key-tint);font-weight:600}
+.site-hdr .nav-toggle{display:none;align-items:center;gap:8px;margin-inline-start:auto;min-height:40px;padding:7px 11px;border:1px solid var(--line-strong);border-radius:6px;background:none;color:var(--text);font:500 14px/1 var(--latin);cursor:pointer}
+.site-hdr .nav-toggle i{display:block;width:14px;height:10px;background:linear-gradient(currentColor 0 0) 0 0/100% 1.5px no-repeat,linear-gradient(currentColor 0 0) 0 50%/100% 1.5px no-repeat,linear-gradient(currentColor 0 0) 0 100%/100% 1.5px no-repeat}
 @media (max-width:1180px) and (min-width:761px){.site-hdr{gap:14px;padding:0 16px}.site-hdr .mark span{display:none}.site-hdr nav>a,.site-hdr .gb{padding:8px 9px;font-size:13.5px}}
 @media (max-width:760px){
   .site-hdr{gap:10px;padding:0 12px}.site-hdr .mark span{display:none}.site-hdr .mark b{font-size:16px}
-  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{padding:6px 6px;min-width:28px}.site-hdr .lang span{display:none}
+  .site-hdr .lang{margin-inline-start:0}.site-hdr .lang button{min-height:36px;min-width:36px}.site-hdr .lang span{display:none}
   .site-hdr .nav-toggle{display:inline-flex}
-  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:#0B0D12;border-bottom:1px solid #242B38;z-index:65}
+  .site-hdr nav{display:none;position:fixed;top:var(--hdr);inset-inline:0;max-height:calc(100vh - var(--hdr));max-height:calc(100dvh - var(--hdr));overflow-y:auto;flex-direction:column;align-items:stretch;gap:0;padding:6px 12px 18px;background:var(--bg);border-bottom:2px solid var(--text);z-index:65}
   .site-hdr.nav-open nav{display:flex}
   .site-hdr nav>a{padding:13px 8px;font-size:15px}
-  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12px;color:#98A0B0;letter-spacing:.04em}.site-hdr .gb::after{display:none}
+  .site-hdr .gb{pointer-events:none;padding:14px 8px 4px;font-size:12.5px;color:var(--muted);letter-spacing:.02em}.site-hdr .gb::after{display:none}
   .site-hdr .menu{display:block;position:static;padding:0}.site-hdr .mp{min-width:0;padding:0;background:none;border:0;box-shadow:none}
   .site-hdr .menu a{padding:12px 8px;font-size:15px;white-space:normal}
   .site-hdr nav>a[aria-current="page"]::before,.site-hdr .gb[aria-current="page"]::before{display:none}
-  .site-hdr .gb[aria-current="page"]{color:#F2A93B}
+  .site-hdr .gb[aria-current="page"]{color:var(--key)}
 }
-.site-hdr a:focus-visible,.site-hdr button:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
-.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid #242B38;border-radius:8px;padding:2px}
-.site-hdr .lang button{font:500 13px/1 "Inter",system-ui,sans-serif;color:#98A0B0;background:none;border:0;border-radius:8px;padding:6px 8px;cursor:pointer;min-width:32px}
-.site-hdr .lang button[lang="fa"]{font-family:"Vazirmatn",Tahoma,sans-serif;font-size:14px}
-.site-hdr .lang button:hover{color:#E9ECF2}
-.site-hdr .lang button[aria-pressed="true"]{background:#E9ECF2;color:#0B0D12}
-.site-hdr .lang span{color:#3A4352;font-size:12px}
-@media print{.site-hdr,.fa-banner{display:none}}
+.site-hdr a:focus-visible,.site-hdr button:focus-visible,.thumbs a:focus-visible{outline:2px solid var(--key);outline-offset:2px}
+.site-hdr .lang{display:flex;align-items:center;gap:2px;flex:none;border:1px solid var(--line-strong);border-radius:6px;padding:2px}
+.site-hdr .lang button{font:500 13px/1 var(--latin);color:var(--muted);background:none;border:0;border-radius:4px;padding:6px 8px;cursor:pointer;min-width:32px}
+.site-hdr .lang button[lang="fa"]{font-family:var(--fa-font);font-size:14px}
+.site-hdr .lang button:hover{color:var(--text)}
+.site-hdr .lang button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.site-hdr .lang span{color:var(--line-strong);font-size:12px}
+/* Thumb index: the field guide's edge tabs, one per section group (Thesis, Timelines, Explain, Data). Desktop >= 1400 px: tabs on the
+   page edge, the current section's tab steps out in the key colour. Phones: a strip of the same tabs under the header. In between the
+   header groups are enough, so the tabs are hidden. Never on the fixed-stage slides (#stage). */
+.thumbs{display:none}
+@media (min-width:1400px){
+  .thumbs{display:flex;flex-direction:column;gap:6px;position:fixed;top:calc(var(--hdr) + 56px);inset-inline-end:0;z-index:50}
+  .thumbs a{display:block;width:84px;padding:9px 10px;padding-inline-start:14px;background:var(--panel);border:1px solid var(--line-strong);border-inline-end:0;border-start-start-radius:8px;border-end-start-radius:8px;text-decoration:none;font:500 12.5px/1.25 var(--latin);color:var(--muted);transition:transform .2s cubic-bezier(.23,1,.32,1),color .15s ease}
+  html[lang="fa"] .thumbs a{font-family:var(--fa-font)}
+  .thumbs a b{display:block;font:700 19px/1 var(--latin);color:var(--text);margin-bottom:4px;font-variant-numeric:tabular-nums}
+  html[lang="fa"] .thumbs a b{font-family:var(--fa-font)}
+  @media (hover:hover) and (pointer:fine){.thumbs a:hover{color:var(--text);transform:translateX(-4px)}html[dir="rtl"] .thumbs a:hover{transform:translateX(4px)}}
+  .thumbs a[aria-current="true"]{background:var(--key);border-color:var(--key);color:var(--key-ink);transform:translateX(-10px);width:94px}
+  html[dir="rtl"] .thumbs a[aria-current="true"]{transform:translateX(10px)}
+  .thumbs a[aria-current="true"] b{color:var(--key-ink)}
+}
+@media (max-width:760px){
+  .thumbs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:10px 16px 0;max-width:100%}
+  .thumbs a{display:block;min-height:44px;padding:5px 4px;border:1px solid var(--line-strong);border-radius:6px;text-align:center;text-decoration:none;font:500 11px/1.2 var(--latin);color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  html[lang="fa"] .thumbs a{font-family:var(--fa-font)}
+  .thumbs a b{display:block;font:700 16px/1.1 var(--latin);color:var(--text)}
+  html[lang="fa"] .thumbs a b{font-family:var(--fa-font)}
+  .thumbs a[aria-current="true"]{background:var(--key);border-color:var(--key);color:var(--key-ink)}
+  .thumbs a[aria-current="true"] b{color:var(--key-ink)}
+}
+html.has-stage .thumbs,html.embed .thumbs{display:none!important}
+@media print{.site-hdr,.fa-banner,.thumbs{display:none}}
 .to-top{position:fixed;inset-inline-end:18px;bottom:18px;z-index:55;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
-  background:#121620;border:1px solid #242B38;color:#E9ECF2;font:500 18px/1 "Inter",system-ui,sans-serif;cursor:pointer;
-  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s ease,visibility 0s linear .2s}
-.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s ease}
-.to-top:hover{border-color:#3A4352}
-.to-top:focus-visible{outline:2px solid #F2A93B;outline-offset:2px}
+  background:var(--panel);border:1px solid var(--line-strong);color:var(--text);font:500 18px/1 var(--latin);cursor:pointer;
+  opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .2s ease,transform .2s cubic-bezier(.23,1,.32,1),visibility 0s linear .2s}
+.to-top.on{opacity:1;visibility:visible;transform:none;transition:opacity .2s ease,transform .2s cubic-bezier(.23,1,.32,1)}
+.to-top:hover{border-color:var(--text)}
+.to-top:active{transform:scale(.96)}
+.to-top:focus-visible{outline:2px solid var(--key);outline-offset:2px}
 .to-top.above-help{bottom:64px}
-@media (prefers-reduced-motion:reduce){.to-top,.to-top.on{transition:none;transform:none}}
-.live-count{font:500 12px "JetBrains Mono",ui-monospace,monospace;color:#98A0B0;border-radius:8px;padding:2px 6px}
-html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
-/* Persian pages: a small machine-translation notice, dismissible, linking to the Glossary page */
-.fa-banner{position:fixed;inset-inline-start:14px;bottom:14px;z-index:56;display:flex;align-items:center;gap:8px;max-width:calc(100vw - 100px);
-  background:#121620;border:1px solid #6A3A2C;border-radius:10px;padding:6px 6px 6px 12px;padding-inline:12px 6px;font:500 13px/1.4 "Vazirmatn",Tahoma,sans-serif;color:#E9ECF2}
-.fa-banner a{color:#FF8A65}
-.fa-banner button{background:none;border:0;color:#98A0B0;font:500 16px/1 "Inter",sans-serif;width:28px;height:28px;border-radius:8px;cursor:pointer}
-.fa-banner button:hover{background:#171C28;color:#E9ECF2}
+@media (prefers-reduced-motion:reduce){.to-top,.to-top.on,.thumbs a{transition:none;transform:none}}
+.live-count{font:500 12.5px var(--latin);font-variant-numeric:tabular-nums;color:var(--muted);border-radius:6px;padding:2px 6px}
+html[lang="fa"] .live-count{font-family:var(--fa-font)}
+/* Persian pages: the machine-translation notice is a line under the header (it used to float over the content) */
+.fa-banner{display:flex;align-items:center;gap:8px;max-width:1180px;margin:10px auto 0;padding:6px 12px;padding-inline-end:6px;
+  border:1px solid var(--warn-dim);border-radius:6px;font:500 13px/1.5 var(--fa-font);color:var(--text);background:var(--panel)}
+@media (max-width:1236px){.fa-banner{margin-inline:16px}}
+.fa-banner .bt{flex:1}
+.fa-banner a{color:var(--warn)}
+.fa-banner button{background:none;border:0;color:var(--muted);font:500 18px/1 var(--latin);min-width:36px;min-height:36px;border-radius:6px;cursor:pointer}
+.fa-banner button:hover{background:var(--panel2);color:var(--text)}
 </style>
 <header class="site-hdr">
   <a class="mark" href="/thesis/index.html"><b lang="en">Intelligent Educator</b><span data-i18n="hdr.sub">MSc thesis, IUST</span></a>
@@ -299,6 +369,12 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
     <button type="button" data-l="en" lang="en" title="English">EN</button><span aria-hidden="true">|</span><button type="button" data-l="fa" lang="fa" title="فارسی">فا</button>
   </div>
 </header>
+<nav class="thumbs" aria-label="Sections" data-i18n-attr="aria-label:hdr.thumbs_aria">
+  <a href="/thesis/thesis.html" data-g="0"><b>1</b><span data-i18n="nav.g_thesis">Thesis</span></a>
+  <a href="/thesis/timelines/index.html" data-g="1"><b>2</b><span data-i18n="nav.g_timelines">Timelines</span></a>
+  <a href="/thesis/explainers.html" data-g="2"><b>3</b><span data-i18n="nav.g_explain">Explain</span></a>
+  <a href="/thesis/datasets.html" data-g="3"><b>4</b><span data-i18n="nav.g_data">Data &amp; maps</span></a>
+</nav>
 <script>
 (()=>{
   const H=document.querySelector(".site-hdr"), nav=H.querySelector("nav"), tog=H.querySelector(".nav-toggle"), here=location.pathname;
@@ -307,6 +383,11 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
   nav.querySelectorAll("a").forEach(a=>{ const ps=(a.dataset.path||"").split(" ").filter(Boolean);
     const on=a.hasAttribute("data-home")?isHome:ps.some(p=>p.endsWith("/")?here.includes(p):here.endsWith(p));
     if(on){ a.setAttribute("aria-current","page"); const g=a.closest(".grp"); if(g) g.querySelector(".gb").setAttribute("aria-current","page"); } });
+  // thumb index: the tab of the current group steps out (aria-current="true"; the group button keeps aria-current="page")
+  const tg=[...nav.querySelectorAll(".grp")].findIndex(g=>g.querySelector('.gb[aria-current="page"]'));
+  document.querySelectorAll(".thumbs a").forEach(a=>{ if(+a.dataset.g===tg) a.setAttribute("aria-current","true"); });
+  const stg=()=>{ if(document.getElementById("stage")) document.documentElement.classList.add("has-stage"); };
+  document.readyState==="loading"?addEventListener("DOMContentLoaded",stg):stg();
   // dropdowns: click or Enter opens, arrows move, Esc closes and returns to the button, focus leaving closes; hover (mouse) is in CSS
   const groups=[...nav.querySelectorAll(".grp")];
   const shut=g=>{ g.classList.remove("open"); g.querySelector(".gb").setAttribute("aria-expanded","false"); };
@@ -336,7 +417,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
       d.innerHTML=`<span class="bt">${I.t("i18n.banner")}</span><button type="button" aria-label="${I.t("i18n.banner_close")}" title="${I.t("i18n.banner_close")}">×</button>`;
       
       d.querySelector("button").onclick=()=>{ d.remove(); try{ localStorage.setItem("fa-banner-off","1"); }catch(e){} };
-      document.body.appendChild(d); };
+      (document.querySelector(".thumbs")||H).insertAdjacentElement("afterend",d); };
     document.readyState==="loading"?addEventListener("DOMContentLoaded",mk):mk(); }
 })();
 
@@ -347,7 +428,7 @@ html[lang="fa"] .live-count{font-family:"Vazirmatn",Tahoma,sans-serif}
    user event. A page may mark the region that matters with data-reveal (it then wins over other changes).
    prefers-reduced-motion: jump instead of smooth scroll, static outline. */
 (()=>{
-  const WINDOW=600, AMBER="#F2A93B", RM=matchMedia("(prefers-reduced-motion: reduce)");
+  const WINDOW=600, AMBER=(getComputedStyle(document.documentElement).getPropertyValue("--key").trim()||"#2E6B2A"), RM=matchMedia("(prefers-reduced-motion: reduce)");
   let at=-Infinity, src=null, done=false;  // -Infinity: no user event yet, so nothing that renders in the first 600 ms of the page counts as "recent"
   const typing=t=>t&&t.matches&&(t.matches('input[type="range"]')||(t.matches('input:not([type=checkbox]):not([type=radio]):not([type=button]),textarea,[contenteditable]')));
   ["click","keydown","input","change"].forEach(type=>addEventListener(type,e=>{
